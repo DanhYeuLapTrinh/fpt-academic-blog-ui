@@ -1,32 +1,32 @@
 import "./App.css";
-import { Container } from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { loggedInRoutes, publicRoutes } from "./user/routes/routes";
-import Home from "./user/components/pages/Home/Home";
+import HomeLayout from "./user/layouts/HomeLayout";
+import LoginLayout from "./user/layouts/LoginLayout";
+import RequireAuth from "./user/utils/RequireAuth";
+import Unauthorized from "./user/components/pages/Unauthorized/Unauthorized";
 function App() {
   return (
     <div>
       <BrowserRouter>
         <Routes>
-          {publicRoutes.map((item, index) => {
-            const Layout = item.layout;
-            const Page = item.component;
-            return (
-              <Route
-                key={index}
-                path={item.path}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
-          })}
-          {loggedInRoutes.map((item, index) => {
-            const Page = item.component;
-            return <Route key={index} path={item.path} element={<Page />} />;
-          })}
+          <Route element={<LoginLayout />}>
+            {publicRoutes.map((item, index) => {
+              const Page = item.component;
+              return <Route key={index} path={item.path} element={<Page />} />;
+            })}
+          </Route>
+          <Route element={<HomeLayout />} >
+            <Route element={<RequireAuth allowRoles={["student"]}/>} >
+              {loggedInRoutes.map((item, index) => {
+                const Page = item.component;
+                return (
+                  <Route key={index} path={item.path} element={<Page />} />
+                );
+              })}
+            </Route>
+          </Route>
+          <Route path="*" element={<Unauthorized/>}/>
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,8 +1,9 @@
 import { Container, Stack, Typography } from "@mui/material";
 import React from "react";
 import Text from "../components/atoms/Text/Text";
+import { Outlet } from "react-router-dom";
 
-export default function LoginLayout({ children }) {
+export default function LoginLayout() {
   return (
     <Container
       style={{
@@ -35,7 +36,7 @@ export default function LoginLayout({ children }) {
           trường Đại học FPT.
         </Text>
       </Stack>
-      <div>{children}</div>
+      <Outlet />
     </Container>
   );
 }
