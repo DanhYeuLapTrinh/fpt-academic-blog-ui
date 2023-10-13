@@ -8,25 +8,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          {publicRoutes.map((item, index) => {
-            const Layout = item.layout;
-            const Page = item.component;
-            return (
-              <Route
-                key={index}
-                path={item.path}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
-          })}
-          {loggedInRoutes.map((item, index) => {
-            const Page = item.component;
-            return <Route key={index} path={item.path} element={<Page />} />;
-          })}
+          <div>Hello</div>
         </Routes>
       </BrowserRouter>
     </div>
