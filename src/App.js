@@ -8,7 +8,7 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <div>Good</div>
+          <div>Hello</div>
         </Routes>
       </BrowserRouter>
     </div>
