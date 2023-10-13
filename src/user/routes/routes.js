@@ -5,6 +5,7 @@ import OTPForm from "../components/organisms/OTPForm/OTPForm"
 import RecoverPasswordForm from "../components/organisms/RecoverPasswordForm/RecoverPasswordForm"
 import Home from "../components/pages/Home/Home"
 import Feed from "../components/pages/Feed/Feed"
+import News from "../components/pages/News/News"
 const publicRoutes = [
   {path: '/login', component: LoginForm, layout: LoginLayout},
   {path: '/email-entry', component: EmailEntryForm, layout: LoginLayout},
@@ -14,7 +15,8 @@ const publicRoutes = [
 
 const loggedInRoutes = [
   {path: '/', component: Home},
-  {path: '/feed', component: Feed}
+  {path: '/feed', component: Feed},
+  {path: '/news', component: News}
 ]
 
 export {publicRoutes, loggedInRoutes}
