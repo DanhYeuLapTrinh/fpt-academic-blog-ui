@@ -23,7 +23,7 @@ export default function EmailEntryForm() {
 
   const handleSubmit = async (values, { setFieldError }) => {
     if (values.email) {
-      setEmail(values.email);
+      
       try {
         await axios.post(
           "users/send-code",
@@ -31,6 +31,7 @@ export default function EmailEntryForm() {
             email: values.email,
           })
         );
+        setEmail(values.email);
         values.email = "";
         navigate("/otp");
       } catch (error) {

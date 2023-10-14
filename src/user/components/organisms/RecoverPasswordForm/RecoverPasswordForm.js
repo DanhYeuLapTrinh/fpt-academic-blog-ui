@@ -54,11 +54,13 @@ export default function RecoverPasswordForm() {
             setFieldError("confirm", "Không thể kết nối với sever");
             values.password = "";
             values.confirm = "";
-          } else if (error.response?.status === 400) {
-            console.log("Im not understand");
+          } else if (error.response?.status === 401) {
+            setFieldError("confirm", "Bạn chưa nhập email");
+            
           } else {
             setFieldError("confirm", "Có lỗi trong quá trình xử lý");
-            values.otp = "";
+            values.password = "";
+            values.confirm = "";
           }
         }
       }
