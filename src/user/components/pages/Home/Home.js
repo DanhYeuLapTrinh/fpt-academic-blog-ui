@@ -1,11 +1,14 @@
-import React from "react";
-import Header from "../../organisms/Header/Header";
-import { Divider } from "@mui/material";
+import React, { useContext } from "react";
+import { AuthContext } from "../../../context/AuthProvider";
 
 export default function Home() {
+  const {auth} = useContext(AuthContext)
+
   return (
     <>
-      Home
+      {auth.user}
+      {auth.role}
+      {auth.token}
     </>
   );
 }

@@ -1,24 +1,40 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { loggedInRoutes, publicRoutes } from "./user/routes/routes";
+import { loggedInUserRoutes, publicRoutes, recoverPasswordRoutes } from "./user/routes/routes";
 import HomeLayout from "./user/layouts/HomeLayout";
 import LoginLayout from "./user/layouts/LoginLayout";
 import RequireAuth from "./user/utils/RequireAuth";
 import Unauthorized from "./user/components/pages/Unauthorized/Unauthorized";
+import RequireEmail from "./user/utils/RequireEmail";
 function App() {
   return (
     <div>
       <BrowserRouter>
         <Routes>
+          {/* Puclic routes */}
           <Route element={<LoginLayout />}>
             {publicRoutes.map((item, index) => {
               const Page = item.component;
               return <Route key={index} path={item.path} element={<Page />} />;
             })}
           </Route>
-          <Route element={<HomeLayout />} >
-            <Route element={<RequireAuth allowRoles={["student"]}/>} >
-              {loggedInRoutes.map((item, index) => {
+          {/* Reset password routes */}
+          <Route element={<LoginLayout />}>
+            <Route element={<RequireEmail />}>
+            {recoverPasswordRoutes.map((item, index) => {
+              const Page = item.component;
+              return <Route key={index} path={item.path} element={<Page />} />;
+            })}
+            </Route>
+          </Route>
+          {/* Logged in dser routes */}
+          <Route element={<HomeLayout />}>
+            <Route
+              element={
+                <RequireAuth allowRoles={["student", "mentor", "lecturer"]} />
+              }
+            >
+              {loggedInUserRoutes.map((item, index) => {
                 const Page = item.component;
                 return (
                   <Route key={index} path={item.path} element={<Page />} />
@@ -26,7 +42,7 @@ function App() {
               })}
             </Route>
           </Route>
-          <Route path="*" element={<Unauthorized/>}/>
+          <Route path="*" element={<Unauthorized />} />
         </Routes>
       </BrowserRouter>
     </div>
