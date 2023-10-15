@@ -47,7 +47,7 @@ function App() {
               })}
             </Route>
           </Route>
-          {/* code từ đây */}
+          {/* Logged in admin routes */}
           <Route element={<RequireAuth allowRoles={["admin"]} />}>
             {loggedInAdminRoutes.map((item, index) => {
               const Page = item.component;
