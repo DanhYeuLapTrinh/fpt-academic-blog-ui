@@ -8,9 +8,11 @@ import Text from "../../atoms/Text/Text";
 import axios from "../../../api/axios";
 import { LoginContext } from "../../../context/LoginProvider";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 
 export default function RecoverPasswordForm() {
   const { email } = useContext(LoginContext);
+  const {auth} = useAuth()
   const [showPassword, setShowPassword] = useState(false);
   const handleClick = () => {
     setShowPassword((prevData) => !prevData);
@@ -39,7 +41,7 @@ export default function RecoverPasswordForm() {
             }),
             {
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                Authorization: `Bearer ${auth.token}`,
               },
             }
           );

@@ -23,7 +23,6 @@ export default function EmailEntryForm() {
 
   const handleSubmit = async (values, { setFieldError }) => {
     if (values.email) {
-      
       try {
         await axios.post(
           "users/send-code",
