@@ -21,4 +21,30 @@ const loggedInUserRoutes = [
   { path: "/news", component: News },
 ];
 
-export { publicRoutes, loggedInUserRoutes, recoverPasswordRoutes };
+const loggedInAdminRoutes = [
+  //Welcome Page
+  { path: "/", component: Welcome },
+  //User
+  { path: "/users", component: UserList },
+  { path: "/add-user", component: AddNewUserPage },
+  { path: "/ban-user", component: BanAccount },
+  //Categories Page
+  { path: "/categories-list", component: CategoriesListPage },
+  { path: "/add-category", component: AddNewCategory },
+  { path: "/edit-category", component: EditCategory },
+  { path: "/delete-category", component: DeleteCategory },
+  //Tags Page
+  { path: "/tags-list", component: TagListPage },
+  { path: "/add-tag", component: AddNewTagPage },
+  { path: "/edit-tag", component: EditTagPage },
+  { path: "/delete-tag", component: DeleteTagPage },
+  //Reports Page
+  { path: "/reported-profile", component: ReportedProfilePage },
+  { path: "/reported-comment", component: ReportedCommentPage },
+  //Activity Log Page
+  { path: "/activity-log", component: ActivityLogPage },
+  //Setting Page
+  { path: "/setting", component: SettingPage },
+];
+
+export { publicRoutes, loggedInUserRoutes, recoverPasswordRoutes, loggedInAdminRoutes };

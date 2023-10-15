@@ -1,12 +1,16 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import HomeLayout from "./user/layouts/HomeLayout";
 import LoginLayout from "./user/layouts/LoginLayout";
 import RequireAuth from "./user/utils/RequireAuth";
 import Unauthorized from "./user/components/pages/Unauthorized/Unauthorized";
 import RequireEmail from "./user/utils/RequireEmail";
-import { loggedInUserRoutes, publicRoutes, recoverPasswordRoutes } from "./master/routes";
+import {
+  loggedInUserRoutes,
+  publicRoutes,
+  recoverPasswordRoutes,
+  loggedInAdminRoutes,
+} from "./master/routes";
 function App() {
   return (
     <div>
@@ -28,7 +32,7 @@ function App() {
             })}
             </Route>
           </Route>
-          {/* Logged in dser routes */}
+          {/* Logged in user routes */}
           <Route element={<HomeLayout />}>
             <Route
               element={
@@ -42,6 +46,13 @@ function App() {
                 );
               })}
             </Route>
+          </Route>
+          {/* code từ đây */}
+          <Route element={<RequireAuth allowRoles={["admin"]} />}>
+            {loggedInAdminRoutes.map((item, index) => {
+              const Page = item.component;
+              return <Route key={index} path={item.path} element={<Page />} />;
+            })}
           </Route>
           <Route path="*" element={<Unauthorized />} />
         </Routes>
