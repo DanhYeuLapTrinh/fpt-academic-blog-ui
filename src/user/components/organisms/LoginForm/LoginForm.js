@@ -1,5 +1,5 @@
 import { Box, Divider, InputAdornment, Stack, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
 import FormInput from "../../atoms/FormInput/FormInput";
 import MyButton from "../../atoms/MyButton/MyButton";
@@ -10,10 +10,10 @@ import * as Yup from "yup";
 import Text from "../../atoms/Text/Text";
 import axios from "../../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../../context/AuthProvider";
+import useAuth from "../../../hooks/useAuth";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const {setAuth} = useContext(AuthContext)
+  const {setAuth} = useAuth()
   const navigate = useNavigate()
   const INITIAL_FORM_STATE = {
     username: "",

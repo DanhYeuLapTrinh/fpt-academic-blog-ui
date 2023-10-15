@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Button, IconButton } from "@mui/material";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "../../../api/axios";
-import { AuthContext } from "../../../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 export default function GoogleLoginButton({ children, ...props }) {
-  const {setAuth} = useContext(AuthContext)
+  const {setAuth} = useAuth()
   const navigate = useNavigate()
   const configGoogleBtn = {
     ...props,

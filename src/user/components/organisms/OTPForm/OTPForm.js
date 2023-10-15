@@ -8,9 +8,11 @@ import Text from "../../atoms/Text/Text";
 import axios from "../../../api/axios";
 import { LoginContext } from "../../../context/LoginProvider";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthProvider";
 
 export default function OTPForm() {
   const { email } = useContext(LoginContext);
+  const {setAuth} = useContext(AuthContext)
   const [timer, setTimer] = useState(30);
   const [disabled, setDisabled] = useState(true);
   const navigate = useNavigate()
@@ -54,7 +56,7 @@ export default function OTPForm() {
             headers: { "Content-Type": "application/json" },
           }
         );
-        localStorage.setItem("access_token", response.data.token)
+        setAuth({token : response?.data?.token})
         values.otp = ""
         navigate("/recover-password")
       } catch (error) {

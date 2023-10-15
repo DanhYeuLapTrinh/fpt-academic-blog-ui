@@ -1,11 +1,12 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { loggedInUserRoutes, publicRoutes, recoverPasswordRoutes } from "./user/routes/routes";
+
 import HomeLayout from "./user/layouts/HomeLayout";
 import LoginLayout from "./user/layouts/LoginLayout";
 import RequireAuth from "./user/utils/RequireAuth";
 import Unauthorized from "./user/components/pages/Unauthorized/Unauthorized";
 import RequireEmail from "./user/utils/RequireEmail";
+import { loggedInUserRoutes, publicRoutes, recoverPasswordRoutes } from "./master/routes";
 function App() {
   return (
     <div>
@@ -31,7 +32,7 @@ function App() {
           <Route element={<HomeLayout />}>
             <Route
               element={
-                <RequireAuth allowRoles={["student", "mentor", "lecturer"]} />
+                <RequireAuth allowRoles={["student", "mentor", "lecturer", "admin"]} />
               }
             >
               {loggedInUserRoutes.map((item, index) => {
