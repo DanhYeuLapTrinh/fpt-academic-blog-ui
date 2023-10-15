@@ -2,7 +2,11 @@ import React from "react";
 import { Button, IconButton } from "@mui/material";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "../../../api/axios";
+import { useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 export default function GoogleLoginButton({ children, ...props }) {
+  const {setAuth} = useAuth()
+  const navigate = useNavigate()
   const configGoogleBtn = {
     ...props,
     variant: props.variant,
@@ -29,8 +33,13 @@ export default function GoogleLoginButton({ children, ...props }) {
           headers: { "Content-Type": "application/json" },
         }
       );
-      localStorage.setItem("access_token", serverResponse.data.token);
-      console.log(response.access_token);
+      const auth = {
+        user: serverResponse?.data?.username,
+        role: serverResponse?.data?.roleName,
+        token: serverResponse?.data?.token
+      };
+      setAuth(auth)
+      navigate("/")
     },
   });
 

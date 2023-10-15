@@ -1,5 +1,5 @@
 import { Box, Divider, InputAdornment, Stack, Typography } from "@mui/material";
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
 import FormInput from "../../atoms/FormInput/FormInput";
 import MyButton from "../../atoms/MyButton/MyButton";
@@ -9,9 +9,12 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Text from "../../atoms/Text/Text";
 import axios from "../../../api/axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const {setAuth} = useAuth()
+  const navigate = useNavigate()
   const INITIAL_FORM_STATE = {
     username: "",
     password: "",
@@ -35,9 +38,18 @@ export default function LoginForm() {
             password: values.password,
           })
         );
-        localStorage.setItem("access_token", response.data.token);
+        const auth = {
+          user: response?.data?.username,
+          role: response?.data?.roleName,
+          token: response?.data?.token
+        };
+        setAuth(auth)
         values.username = "";
         values.password = "";
+        if(auth.role === "admin") {
+          // Navigate to admin page
+          alert("You are admin")
+        } else navigate("/")
       } catch (error) {
         if (!error?.response) {
           console.log("No server response");
