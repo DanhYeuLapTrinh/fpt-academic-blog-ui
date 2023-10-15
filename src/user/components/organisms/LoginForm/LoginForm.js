@@ -46,11 +46,9 @@ export default function LoginForm() {
         setAuth(auth);
         values.username = "";
         values.password = "";
-        if (auth.role === "admin") {
-          // Navigate to admin page
-          alert("You are admin");
-          navigate("/welcome");
-        } else navigate("/");
+        if(auth.role === "admin") {
+          navigate("/welcome")
+        } else navigate("/")
       } catch (error) {
         if (!error?.response) {
           console.log("No server response");

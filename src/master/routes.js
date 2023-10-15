@@ -6,6 +6,7 @@ import RecoverPasswordForm from "../user/components/organisms/RecoverPasswordFor
 import Feed from "../user/components/pages/Feed/Feed";
 import News from "../user/components/pages/News/News";
 import Welcome from "../admin/components/pages/Welcome/Welcome";
+
 const publicRoutes = [
   { path: "/login", component: LoginForm },
   { path: "/email-entry", component: EmailEntryForm },
@@ -48,3 +49,4 @@ const loggedInAdminRoutes = [
 ];
 
 export { publicRoutes, loggedInUserRoutes, recoverPasswordRoutes, loggedInAdminRoutes };
+
