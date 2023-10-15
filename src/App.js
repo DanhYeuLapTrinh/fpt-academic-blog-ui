@@ -1,6 +1,5 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import HomeLayout from "./user/layouts/HomeLayout";
 import LoginLayout from "./user/layouts/LoginLayout";
 import RequireAuth from "./user/utils/RequireAuth";
@@ -27,19 +26,17 @@ function App() {
           {/* Reset password routes */}
           <Route element={<LoginLayout />}>
             <Route element={<RequireEmail />}>
-              {recoverPasswordRoutes.map((item, index) => {
-                const Page = item.component;
-                return (
-                  <Route key={index} path={item.path} element={<Page />} />
-                );
-              })}
+            {recoverPasswordRoutes.map((item, index) => {
+              const Page = item.component;
+              return <Route key={index} path={item.path} element={<Page />} />;
+            })}
             </Route>
           </Route>
-          {/* Logged in dser routes */}
+          {/* Logged in user routes */}
           <Route element={<HomeLayout />}>
             <Route
               element={
-                <RequireAuth allowRoles={["student", "mentor", "lecturer"]} />
+                <RequireAuth allowRoles={["student", "mentor", "lecturer", "admin"]} />
               }
             >
               {loggedInUserRoutes.map((item, index) => {

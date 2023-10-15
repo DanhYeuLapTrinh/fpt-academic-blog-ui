@@ -11,11 +11,11 @@ import AuthProvider from "./user/context/AuthProvider";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={MyTheme}>
-    <LoginProvider>
-      <AuthProvider>
+   <AuthProvider>
+      <LoginProvider>
         <App />
-      </AuthProvider>
-    </LoginProvider>
+      </LoginProvider>
+   </AuthProvider>
   </ThemeProvider>
 );
 reportWebVitals();
