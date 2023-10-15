@@ -47,8 +47,7 @@ export default function LoginForm() {
         values.username = "";
         values.password = "";
         if(auth.role === "admin") {
-          // Navigate to admin page
-          alert("You are admin")
+          navigate("/welcome")
         } else navigate("/")
       } catch (error) {
         if (!error?.response) {
