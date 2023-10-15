@@ -13,8 +13,8 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const {setAuth} = useAuth()
-  const navigate = useNavigate()
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
     username: "",
     password: "",
@@ -41,9 +41,9 @@ export default function LoginForm() {
         const auth = {
           user: response?.data?.username,
           role: response?.data?.roleName,
-          token: response?.data?.token
+          token: response?.data?.token,
         };
-        setAuth(auth)
+        setAuth(auth);
         values.username = "";
         values.password = "";
         if(auth.role === "admin") {
