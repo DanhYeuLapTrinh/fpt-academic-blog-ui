@@ -3,6 +3,7 @@ import { Input } from "@material-tailwind/react";
 import SearchIcon from "@mui/icons-material/Search";
 import { axiosConfig } from "../../../api/axios";
 import useAuth from "../../../../user/hooks/useAuth";
+import { TablePagination } from "@mui/material";
 
 function BanAccountList() {
   const { auth } = useAuth();
@@ -10,6 +11,9 @@ function BanAccountList() {
   const [records, setRecords] = useState([]);
   const [bannedAccounts, setBannedAccounts] = useState([]);
   const [isBanning, setIsBanning] = useState(false); // Biến để kiểm tra xem có đang trong quá trình cấm tài khoản hay không
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const headers = {
     Authorization: `Bearer ${auth.token}`,
@@ -31,9 +35,8 @@ function BanAccountList() {
 
   const handleSearch = (event) => {
     const filteredData = data.filter((item) =>
-      item.name.toLowerCase().includes(event.target.value.toLowerCase())
+      item.username.toLowerCase().includes(event.target.value.toLowerCase())
     );
-
     setRecords(filteredData);
   };
 
@@ -88,12 +91,12 @@ function BanAccountList() {
   return (
     <div className="m-5">
       <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-bold">User List</h2>
+        <h2 className="text-2xl font-bold">Danh sách người dùng</h2>
 
         <div className="w-1/3">
           <Input
             icon={<SearchIcon className="h-5 w-5" />}
-            label="Search"
+            label="Tìm kiếm người dùng..."
             type="text"
             onChange={handleSearch}
           />
@@ -102,7 +105,7 @@ function BanAccountList() {
 
       <div className="bg-white shadow overflow-x-auto rounded-xl">
         <table className="table-auto w-full text-left border">
-          <thead>
+          <thead className="bg-gray-500">
             <tr className="border-b">
               <th className="px-4 py-2">ID</th>
               <th className="px-4 py-2">Username</th>
@@ -113,41 +116,55 @@ function BanAccountList() {
           </thead>
 
           <tbody>
-            {records.map((item) => (
-              <tr key={item.id} className="border-b">
-                <td className="p-4">{item.id}</td>
-                <td className="p-4">{item.username}</td>
-                <td className="p-4">{item.role.roleName}</td>
-                <td className="p-4">{item.isBan ? "Cấm" : "Bình thường"}</td>
+            {records
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((item) => (
+                <tr key={item.id} className="border-b">
+                  <td className="p-4">{item.id}</td>
+                  <td className="p-4">{item.username}</td>
+                  <td className="p-4">{item.role.roleName}</td>
+                  <td className="p-4">{item.isBan ? "Cấm" : "Bình thường"}</td>
 
-                <td className="p-4 flex items-center">
-                  {isBanning ? ( // Kiểm tra nếu đang trong quá trình cấm tài khoản
-                    <button
-                      className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-                      disabled
-                    >
-                      Đang cấm...
-                    </button>
-                  ) : item.isBan ? (
-                    <button
-                      className="bg-green-500 text-white px-4 py-2 rounded-lg"
-                      onClick={() => unbanAccount(item.id)}
-                    >
-                      Bỏ cấm tài khoản
-                    </button>
-                  ) : (
-                    <button
-                      className="bg-red-500 text-white px-4 py-2 rounded-lg"
-                      onClick={() => toggleBanStatus(item.id)}
-                    >
-                      Cấm tài khoản
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
+                  <td className="p-4 flex items-center">
+                    {isBanning ? ( // Kiểm tra nếu đang trong quá trình cấm tài khoản
+                      <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                        disabled
+                      >
+                        Đang cấm...
+                      </button>
+                    ) : item.isBan ? (
+                      <button
+                        className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                        onClick={() => unbanAccount(item.id)}
+                      >
+                        Bỏ cấm tài khoản
+                      </button>
+                    ) : (
+                      <button
+                        className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                        onClick={() => toggleBanStatus(item.id)}
+                      >
+                        Cấm tài khoản
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={records.length} // Tổng số hàng
+          page={page} // Trang hiện tại
+          onPageChange={(event, newPage) => setPage(newPage)} // Xử lý khi thay đổi trang
+          rowsPerPage={rowsPerPage} // Số hàng mỗi trang
+          onRowsPerPageChange={(event) => {
+            setRowsPerPage(parseInt(event.target.value, 10));
+            setPage(0);
+          }}
+        />
       </div>
     </div>
   );

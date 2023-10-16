@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { axiosConfig } from "../../../api/axios";
 import useAuth from "../../../../user/hooks/useAuth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const DeleteTag = () => {
   const [tagId, setTagId] = useState(""); // Thêm state để lưu trữ tagId
@@ -26,17 +28,27 @@ export const DeleteTag = () => {
       alert("Vui lòng chọn một thẻ để xóa.");
       return;
     }
-
+    const t = tagList.find((tag) => tag.id === tagId);
     // Gửi yêu cầu xóa thẻ dựa trên tagId sử dụng phương thức POST
     axiosConfig
       .post("admin/delete-tag", { tagId }, { headers }) // Sử dụng POST để xóa thẻ
       .then((res) => {
+        toast.success(`Xóa thẻ thành công`, {
+          position: "top-right",
+          autoClose: 3000, // Tự đóng thông báo sau 3 giây
+        });
         console.log(res);
         // Sau khi xóa thành công, cập nhật danh sách thẻ
         setTagList((prevTags) => prevTags.filter((tag) => tag.id !== tagId));
         setTagId(""); // Đặt tagId về trạng thái ban đầu
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error(`Xóa thẻ thất bại`, {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        console.log(err);
+      });
   };
 
   return (
@@ -50,9 +62,9 @@ export const DeleteTag = () => {
             value={tagId}
           >
             <option value="">Chọn một thẻ</option>
-            {tagList.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.tagName}
+            {tagList.map((tag) => (
+              <option key={tag.id} value={tag.id}>
+                {tag.tagName}
               </option>
             ))}
           </select>
@@ -64,6 +76,7 @@ export const DeleteTag = () => {
           </button>
         </div>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>
   );
 };

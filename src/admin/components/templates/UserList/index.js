@@ -9,6 +9,9 @@ import useAuth from "../../../../user/hooks/useAuth";
 import Modal from "react-modal";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { TablePagination } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function UserResultList() {
   const { auth } = useAuth();
@@ -18,12 +21,14 @@ function UserResultList() {
   const [muteDuration, setMuteDuration] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState("");
+  const [selectedUsername, setSelectedUsername] = useState("");
   const [mutedUserIds, setMutedUserIds] = useState([]);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [editingUserId, setEditingUserId] = useState(null);
   const [newRole, setNewRole] = useState("");
-  const [showRoleSuccessModal, setShowRoleSuccessModal] = useState(false);
   const [originalRole, setOriginalRole] = useState(""); // Biến lưu trữ vai trò ban đầu
+  //Split page
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const headers = {
     Authorization: `Bearer ${auth.token}`,
@@ -45,23 +50,15 @@ function UserResultList() {
 
   const openMuteModal = (id) => {
     setSelectedUserId(id);
+    const selectedUser = data.find((user) => user.id === id);
+    if (selectedUser) {
+      setSelectedUsername(selectedUser.username);
+    }
     setShowMuteModal(true);
   };
 
   const closeMuteModal = () => {
     setShowMuteModal(false);
-  };
-
-  const openSuccessModal = () => {
-    setShowSuccessModal(true);
-  };
-
-  const closeSuccessModal = () => {
-    setShowSuccessModal(false);
-  };
-
-  const closeRoleSuccessModal = () => {
-    setShowRoleSuccessModal(false);
   };
 
   const muteUser = () => {
@@ -78,7 +75,10 @@ function UserResultList() {
           setMutedUserIds(updatedMutedUserIds);
           setIsMuted(true);
           setShowMuteModal(false);
-          openSuccessModal();
+          toast.success(`Mute ${selectedUsername} thành công!`, {
+            position: "top-right",
+            autoClose: 3000,
+          });
         });
     }
   };
@@ -94,6 +94,10 @@ function UserResultList() {
           setMutedUserIds(updatedMutedUserIds);
           setIsMuted(false);
           setShowMuteModal(false);
+          toast.success(`Unmute ${selectedUsername} thành công!`, {
+            position: "top-right",
+            autoClose: 3000,
+          });
         });
     }
   };
@@ -109,8 +113,11 @@ function UserResultList() {
       .post("admin/set-role", { id: userId, role: newRole }, { headers })
       .then((res) => {
         setEditingUserId(null);
-        setShowRoleSuccessModal(true);
         updateRecordRole(userId, newRole);
+        toast.success(`Thay đổi vai trò thành công!`, {
+          position: "top-right",
+          autoClose: 3000,
+        });
       })
       .catch((error) => {
         console.error("Lỗi khi cập nhật vai trò:", error);
@@ -139,12 +146,12 @@ function UserResultList() {
   return (
     <div className="m-5">
       <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-bold">User List</h2>
+        <h2 className="text-2xl font-bold">Danh sách người dùng</h2>
 
         <div className="w-1/3">
           <Input
             icon={<SearchIcon className="h-5 w-5" />}
-            label="Search"
+            label="Tìm kiếm người dùng..."
             type="text"
             onChange={handleSearch}
           />
@@ -153,7 +160,7 @@ function UserResultList() {
 
       <div className="bg-white shadow overflow-x-auto rounded-xl">
         <table className="table-auto w-full text-left border">
-          <thead>
+          <thead className="bg-gray-500">
             <tr className="border-b">
               <th className="px-4 py-2">ID</th>
               <th className="px-4 py-2">Username</th>
@@ -166,66 +173,81 @@ function UserResultList() {
           </thead>
 
           <tbody>
-            {records.map((item) => (
-              <tr key={item.id} className="border-b">
-                <td className="p-4">{item.id}</td>
-                <td className="p-4">{item.username}</td>
-                <td className="p-4">{item.email}</td>
-                <td className="p-4">{item.phone}</td>
-                <td className="p-4">{item.role.roleName}</td>
-                <td className="p-4">{item.status}</td>
-                <td className="p-4 flex items-center">
-                  {editingUserId === item.id ? (
-                    <>
-                      <select
-                        value={newRole}
-                        onChange={(e) => setNewRole(e.target.value)}
-                        className="mr-4"
-                      >
-                        <option value="admin">Admin</option>
-                        <option value="mentor">Mentor</option>
-                        <option value="lecturer">Lecturer</option>
-                        <option value="student">Student</option>
-                      </select>
-                      <CheckCircleIcon
-                        className="text-green-500 cursor-pointer"
-                        onClick={() => saveRoleChanges(item.id)}
-                      />
-                      <CancelIcon
-                        className="text-red-500 cursor-pointer"
-                        onClick={cancelEditing}
-                      />
-                    </>
-                  ) : mutedUserIds.includes(item.id) ? (
-                    <>
-                      <VolumeOffIcon
-                        className="text-red-500 cursor-pointer"
-                        onClick={unmuteUser}
-                      />
-                      <EditIcon
-                        onClick={() =>
-                          startEditing(item.id, item.role.roleName)
-                        }
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <VolumeUpIcon
-                        className="text-green-500 cursor-pointer"
-                        onClick={() => openMuteModal(item.id)}
-                      />
-                      <EditIcon
-                        onClick={() =>
-                          startEditing(item.id, item.role.roleName)
-                        }
-                      />
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
+            {records
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((item) => (
+                <tr key={item.id} className="border-b">
+                  <td className="p-4">{item.id}</td>
+                  <td className="p-4">{item.username}</td>
+                  <td className="p-4">{item.email}</td>
+                  <td className="p-4">{item.phone}</td>
+                  <td className="p-4">{item.role.roleName}</td>
+                  <td className="p-4">{item.status}</td>
+                  <td className="p-4 flex items-center">
+                    {editingUserId === item.id ? (
+                      <>
+                        <select
+                          value={newRole}
+                          onChange={(e) => setNewRole(e.target.value)}
+                          className="mr-4"
+                        >
+                          <option value="admin">Admin</option>
+                          <option value="mentor">Mentor</option>
+                          <option value="lecturer">Lecturer</option>
+                          <option value="student">Student</option>
+                        </select>
+                        <CheckCircleIcon
+                          className="text-green-500 cursor-pointer"
+                          onClick={() => saveRoleChanges(item.id)}
+                        />
+                        <CancelIcon
+                          className="text-red-500 cursor-pointer"
+                          onClick={cancelEditing}
+                        />
+                      </>
+                    ) : mutedUserIds.includes(item.id) ? (
+                      <>
+                        <VolumeOffIcon
+                          className="text-red-500 cursor-pointer"
+                          onClick={unmuteUser}
+                        />
+                        <EditIcon
+                          onClick={() =>
+                            startEditing(item.id, item.role.roleName)
+                          }
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <VolumeUpIcon
+                          className="text-green-500 cursor-pointer"
+                          onClick={() => openMuteModal(item.id)}
+                        />
+                        <EditIcon
+                          onClick={() =>
+                            startEditing(item.id, item.role.roleName)
+                          }
+                        />
+                      </>
+                    )}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
+
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={records.length} // Tổng số hàng
+          page={page} // Trang hiện tại
+          onPageChange={(event, newPage) => setPage(newPage)} // Xử lý khi thay đổi trang
+          rowsPerPage={rowsPerPage} // Số hàng mỗi trang
+          onRowsPerPageChange={(event) => {
+            setRowsPerPage(parseInt(event.target.value, 10));
+            setPage(0);
+          }}
+        />
       </div>
 
       <Modal
@@ -247,36 +269,7 @@ function UserResultList() {
         />
         <button onClick={muteUser}>OK</button>
       </Modal>
-
-      <Modal
-        isOpen={showSuccessModal}
-        onRequestClose={closeSuccessModal}
-        style={{
-          content: {
-            maxWidth: "400px",
-            margin: "auto",
-            maxHeight: "100px",
-          },
-        }}
-      >
-        <h3>Mute người dùng thành công!</h3>
-        <button onClick={closeSuccessModal}>OK</button>
-      </Modal>
-
-      <Modal
-        isOpen={showRoleSuccessModal}
-        onRequestClose={closeRoleSuccessModal}
-        style={{
-          content: {
-            maxWidth: "400px",
-            margin: "auto",
-            maxHeight: "100px",
-          },
-        }}
-      >
-        <h3>Thay đổi vai trò người dùng thành công!</h3>
-        <button onClick={closeRoleSuccessModal}>OK</button>
-      </Modal>
+      <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>
   );
 }
