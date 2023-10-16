@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { axiosConfig } from "../../../api/axios";
 import useAuth from "../../../../user/hooks/useAuth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const EditTag = () => {
   const [tag, setTag] = useState({
@@ -33,7 +35,20 @@ export const EditTag = () => {
     e.preventDefault();
     axiosConfig
       .post("admin/edit-tag", tag, { headers })
-      .then((res) => console.log(res))
+      .then((res) => {
+        // Cập nhật danh sách thẻ sau khi cập nhật thành công
+        const updatedTagList = [...tagList];
+        const index = updatedTagList.findIndex((t) => t.id === tag.tagId);
+        if (index !== -1) {
+          updatedTagList[index].tagName = tag.tagName;
+        }
+        setTagList(updatedTagList);
+
+        toast.success("Chỉnh sửa thẻ thành công", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      })
       .catch((err) => console.log(err));
   }
 
@@ -69,6 +84,7 @@ export const EditTag = () => {
           Cập nhật thẻ
         </button>
       </form>
+      <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>
   );
 };

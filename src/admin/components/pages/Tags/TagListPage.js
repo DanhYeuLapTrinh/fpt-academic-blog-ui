@@ -1,9 +1,7 @@
-import React from 'react'
-
+import React from "react";
+import TagList from "../../templates/TagList";
 function TagListPage() {
-  return (
-    <div>TagListPage</div>
-  )
+  return <TagList />;
 }
 
-export default TagListPage
+export default TagListPage;
