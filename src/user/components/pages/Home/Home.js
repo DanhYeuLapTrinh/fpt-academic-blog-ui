@@ -1,14 +1,12 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../../context/AuthProvider";
+import React from "react";
+import { Container, Stack } from "@mui/material";
+import TrendingList from "../../templates/TrendingList";
+
 
 export default function Home() {
-  const {auth} = useContext(AuthContext)
-
   return (
-    <>
-      {auth.user}
-      {auth.role}
-      {auth.token}
-    </>
+    <Container>
+      <TrendingList/>
+    </Container>
   );
 }

@@ -2,8 +2,10 @@ import { Box, Stack } from "@mui/material";
 import React from "react";
 import Text from "../../atoms/Text/Text";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
+import useAuth from "../../../hooks/useAuth";
 
 export default function UserTab() {
+  const { auth } = useAuth();
   return (
     <Box>
       <Stack direction={"row"} alignItems={"center"} spacing={3}>
