@@ -28,7 +28,6 @@ export const DeleteTag = () => {
       alert("Vui lòng chọn một thẻ để xóa.");
       return;
     }
-    const t = tagList.find((tag) => tag.id === tagId);
     // Gửi yêu cầu xóa thẻ dựa trên tagId sử dụng phương thức POST
     axiosConfig
       .post("admin/delete-tag", { tagId }, { headers }) // Sử dụng POST để xóa thẻ
