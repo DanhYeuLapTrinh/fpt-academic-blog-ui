@@ -4,6 +4,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { axiosConfig } from "../../../api/axios";
 import useAuth from "../../../../user/hooks/useAuth";
 import { TablePagination } from "@mui/material";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function BanAccountList() {
   const { auth } = useAuth();
@@ -45,7 +47,10 @@ function BanAccountList() {
     axiosConfig
       .post("admin/ban-user", { id }, { headers })
       .then((res) => {
-        console.log("Cập nhật trạng thái cấm tài khoản thành công.");
+        toast.success("Cấm tài khoản thành công", {
+          position: "top-right",
+          autoClose: 3000,
+        });
         // Cập nhật lại trạng thái cấm tài khoản trong danh sách
         setRecords((prevRecords) => {
           const updatedRecords = prevRecords.map((item) => {
@@ -59,8 +64,12 @@ function BanAccountList() {
         setIsBanning(false); // Kết thúc quá trình cấm tài khoản
       })
       .catch((error) => {
-        console.error("Lỗi khi cập nhật trạng thái cấm tài khoản:", error);
+        toast.success("Cấm tài khoản xảy ra lỗi", {
+          position: "top-right",
+          autoClose: 3000,
+        });
         setIsBanning(false); // Kết thúc quá trình cấm tài khoản (trong trường hợp lỗi)
+        console.log(error);
       });
   };
 
@@ -68,7 +77,10 @@ function BanAccountList() {
     axiosConfig
       .post("admin/unban-user", { id }, { headers })
       .then((res) => {
-        console.log("Tài khoản đã được bỏ cấm.");
+        toast.success("Bỏ cấm tài khoản thành công", {
+          position: "top-right",
+          autoClose: 3000,
+        });
         // Cập nhật lại danh sách tài khoản và danh sách tài khoản bị cấm
         setRecords((prevRecords) => {
           const updatedRecords = prevRecords.map((item) => {
@@ -84,6 +96,10 @@ function BanAccountList() {
         );
       })
       .catch((error) => {
+        toast.success("Bỏ cấm tài khoản không thành công", {
+          position: "top-right",
+          autoClose: 3000,
+        });
         console.error("Lỗi khi bỏ cấm tài khoản:", error);
       });
   };
@@ -166,6 +182,7 @@ function BanAccountList() {
           }}
         />
       </div>
+      <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>
   );
 }
