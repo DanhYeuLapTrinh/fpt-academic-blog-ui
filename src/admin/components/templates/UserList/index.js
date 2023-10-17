@@ -19,13 +19,13 @@ function UserResultList() {
   const [records, setRecords] = useState([]);
   const [showMuteModal, setShowMuteModal] = useState(false);
   const [muteDuration, setMuteDuration] = useState(1);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState({});
   const [selectedUserId, setSelectedUserId] = useState("");
   const [selectedUsername, setSelectedUsername] = useState("");
-  const [mutedUserIds, setMutedUserIds] = useState([]);
   const [editingUserId, setEditingUserId] = useState(null);
   const [newRole, setNewRole] = useState("");
   const [originalRole, setOriginalRole] = useState(""); // Biến lưu trữ vai trò ban đầu
+
   //Split page
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -39,6 +39,13 @@ function UserResultList() {
       setData(res.data);
       setRecords(res.data);
     });
+  }, []);
+
+  useEffect(() => {
+    const storedIsMuted = JSON.parse(localStorage.getItem("isMuted"));
+    if (storedIsMuted) {
+      setIsMuted(storedIsMuted);
+    }
   }, []);
 
   const handleSearch = (event) => {
@@ -71,10 +78,18 @@ function UserResultList() {
           { headers }
         )
         .then((res) => {
-          const updatedMutedUserIds = [...mutedUserIds, selectedUserId];
-          setMutedUserIds(updatedMutedUserIds);
-          setIsMuted(true);
+          // Tạo một bản sao của đối tượng isMuted
+          const updatedIsMuted = { ...isMuted };
+          updatedIsMuted[selectedUserId] = true;
+
+          // Lưu updatedIsMuted vào localStorage
+          localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
+
+          // Cập nhật state
+          setIsMuted(updatedIsMuted);
+
           setShowMuteModal(false);
+
           toast.success(`Mute ${selectedUsername} thành công!`, {
             position: "top-right",
             autoClose: 3000,
@@ -83,29 +98,37 @@ function UserResultList() {
     }
   };
 
-  const unmuteUser = () => {
-    if (selectedUserId) {
-      axiosConfig
-        .post("admin/unmute-user", { id: selectedUserId }, { headers })
-        .then((res) => {
-          const updatedMutedUserIds = mutedUserIds.filter(
-            (userId) => userId !== selectedUserId
-          );
-          setMutedUserIds(updatedMutedUserIds);
-          setIsMuted(false);
-          setShowMuteModal(false);
-          toast.success(`Unmute ${selectedUsername} thành công!`, {
-            position: "top-right",
-            autoClose: 3000,
-          });
+  const unmuteUser = (userId) => {
+    axiosConfig
+      .post("admin/unmute-user", { id: userId }, { headers })
+      .then((res) => {
+        // Tạo một bản sao của đối tượng isMuted
+        const updatedIsMuted = { ...isMuted };
+        updatedIsMuted[userId] = false;
+
+        // Lưu updatedIsMuted vào localStorage
+        localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
+
+        // Cập nhật state
+        setIsMuted(updatedIsMuted);
+
+        setShowMuteModal(false);
+
+        toast.success(`Unmute ${selectedUsername} thành công!`, {
+          position: "top-right",
+          autoClose: 3000,
         });
-    }
+      });
   };
 
   const startEditing = (userId, currentRole) => {
     setEditingUserId(userId);
     setNewRole(currentRole);
-    setOriginalRole(currentRole); // Lưu vai trò ban đầu
+    setOriginalRole(currentRole);
+  };
+
+  const cancelEditing = () => {
+    setEditingUserId(null);
   };
 
   const saveRoleChanges = (userId) => {
@@ -122,10 +145,6 @@ function UserResultList() {
       .catch((error) => {
         console.error("Lỗi khi cập nhật vai trò:", error);
       });
-  };
-
-  const cancelEditing = () => {
-    setEditingUserId(null);
   };
 
   // Hàm cập nhật vai trò người dùng trong danh sách
@@ -205,13 +224,14 @@ function UserResultList() {
                           onClick={cancelEditing}
                         />
                       </>
-                    ) : mutedUserIds.includes(item.id) ? (
+                    ) : isMuted[item.id] ? (
                       <>
                         <VolumeOffIcon
                           className="text-red-500 cursor-pointer"
-                          onClick={unmuteUser}
+                          onClick={() => unmuteUser(item.id)}
                         />
                         <EditIcon
+                          className="cursor-pointer"
                           onClick={() =>
                             startEditing(item.id, item.role.roleName)
                           }
@@ -224,6 +244,7 @@ function UserResultList() {
                           onClick={() => openMuteModal(item.id)}
                         />
                         <EditIcon
+                          className="cursor-pointer"
                           onClick={() =>
                             startEditing(item.id, item.role.roleName)
                           }
@@ -239,10 +260,10 @@ function UserResultList() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={records.length} // Tổng số hàng
-          page={page} // Trang hiện tại
-          onPageChange={(event, newPage) => setPage(newPage)} // Xử lý khi thay đổi trang
-          rowsPerPage={rowsPerPage} // Số hàng mỗi trang
+          count={records.length}
+          page={page}
+          onPageChange={(event, newPage) => setPage(newPage)}
+          rowsPerPage={rowsPerPage}
           onRowsPerPageChange={(event) => {
             setRowsPerPage(parseInt(event.target.value, 10));
             setPage(0);
