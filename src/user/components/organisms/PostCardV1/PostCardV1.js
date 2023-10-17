@@ -20,7 +20,7 @@ export default function PostCardV1(props) {
           borderRadius: "10px",
         }}
       />
-      <Author color={props.authorColor}/>
+      <Author author={true} text="bởi Chat GPT" color={props.authorColor}/>
       <Box
         sx={{
           overflow: "hidden",

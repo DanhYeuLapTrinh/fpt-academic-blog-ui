@@ -1,23 +1,14 @@
-import { Box, Container, IconButton, Stack } from "@mui/material";
+import { Box, Container, IconButton } from "@mui/material";
 import React from "react";
-import Text from "../../atoms/Text/Text";
 import PostCardV1 from "../PostCardV1/PostCardV1";
-import SeeAllButton from "../../atoms/SeeAllButton/SeeAllButton";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
+import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 export default function LatestPostSection() {
   return (
     <Box sx={{ marginBottom: "59px" }}>
-      <Container
-        sx={{
-          paddingBottom: "20px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <Text fontSize="26px">Mới đăng gần đây</Text>
-        <SeeAllButton />
+      <Container>
+        <SectionTitle title="Mới đăng gần đây"/>
       </Container>
       <Box
         sx={{
@@ -25,29 +16,29 @@ export default function LatestPostSection() {
           height: "340px",
           bgcolor: "primary.main",
           display: "flex",
-          position: "relative",
         }}
       >
-        <IconButton
-          sx={{
-            position: "absolute",
-            left: "250px",
-            top: "50%",
-            transform: "translate(50%, -50%)",
-          }}
-        >
-          <ArrowBackIosRoundedIcon
-            sx={{ fontSize: "40px", color: "secondary.main" }}
-          />
-        </IconButton>
         <Container
           sx={{
             height: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            position: "relative",
           }}
         >
+          <IconButton
+            sx={{
+              position: "absolute",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+              left: "-5%",
+            }}
+          >
+            <ArrowBackIosRoundedIcon
+              sx={{ fontSize: "40px", color: "secondary.main" }}
+            />
+          </IconButton>
           <PostCardV1
             authorColor="secondary.main"
             color="secondary.main"
@@ -84,19 +75,19 @@ export default function LatestPostSection() {
             boxHeight="275px"
             boxWidth="265px"
           />
+          <IconButton
+            sx={{
+              position: "absolute",
+              top: "50%",
+              transform: "translate(50%, -50%)",
+              right: "-5%",
+            }}
+          >
+            <ArrowForwardIosRoundedIcon
+              sx={{ fontSize: "40px", color: "secondary.main" }}
+            />
+          </IconButton>
         </Container>
-        <IconButton
-          sx={{
-            position: "absolute",
-            right: "250px",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          <ArrowForwardIosRoundedIcon
-            sx={{ fontSize: "40px", color: "secondary.main" }}
-          />
-        </IconButton>
       </Box>
     </Box>
   );
