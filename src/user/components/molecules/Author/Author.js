@@ -8,9 +8,9 @@ export default function Author(props) {
     <Stack direction={'row'} sx={{alignItems: 'center'}} spacing={1}>
       <UserProfile width="28px" height="28px" src="../assets/img/rec.jpg"
       alt="User"/>
-      <Text fontSize="12px" color={props.color}>bởi Chat GPT</Text>
-      <Text fontSize="20px" color={props.color}>&middot;</Text>
-      <Text fontSize="12px" color={props.color}>30 phút trước</Text>
+      <Text fontSize="12px" color={props.color ? props.color : 'text.main'}>bởi Chat GPT</Text>
+      <Text fontSize="20px" color={props.color ? props.color : 'text.main'}>&middot;</Text>
+      <Text fontSize="12px" color={props.color ? props.color : 'text.main'}>30 phút trước</Text>
     </Stack>
   )
 }

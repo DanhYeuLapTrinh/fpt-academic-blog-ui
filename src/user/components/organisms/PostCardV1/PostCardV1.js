@@ -6,13 +6,13 @@ import { Box, Stack } from "@mui/material";
 export default function PostCardV1(props) {
   return (
     <Stack
-      sx={{ width: "100%", height: props.boxHeight }}
+      sx={{ width: props.boxWidth, height: props.boxHeight }}
       justifyContent={"space-between"}
     >
       <Box
         sx={{
           width: "100%",
-          height: props.small ? "130px" : "268px",
+          height: props.h ? props.h : "268px",
           backgroundImage:
             'url("https://images.unsplash.com/photo-1696362400167-0af7071b500c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1952&q=80")',
           backgroundSize: "cover",
@@ -20,7 +20,7 @@ export default function PostCardV1(props) {
           borderRadius: "10px",
         }}
       />
-      <Author />
+      <Author color={props.authorColor}/>
       <Box
         sx={{
           overflow: "hidden",
@@ -30,7 +30,7 @@ export default function PostCardV1(props) {
           WebkitBoxOrient: "vertical",
         }}
       >
-        <Text fontSize={props.title} lineHeight={props.small ? "22px" : "26px"}>
+        <Text fontSize={props.title} lineHeight={props.small ? "22px" : "26px"} color={props.color}>
           Những khoảnh khắc đáng nhớ trong cuộc hành trình đời
         </Text>
       </Box>
@@ -44,7 +44,7 @@ export default function PostCardV1(props) {
             WebkitBoxOrient: "vertical",
           }}
         >
-          <Text fontWeight="400" fontSize="13px">
+          <Text fontWeight="400" fontSize="13px" color={props.color}>
             Dưới trái tim của thành phố náo nhiệt, nơi ánh đèn neon làm cho bầu
             trời đêm sáng bóng với những màu sắc rực rỡ, một cảm giác vô tận của
             những khả năng không ngừng tràn ngập không khí. Mọi người vội vã đi
@@ -62,9 +62,9 @@ export default function PostCardV1(props) {
         </Box>
       )}
       <Stack direction={"row"} spacing={"12px"}>
-        <PostTag color="primary.main" />
-        <PostTag color="primary.main" />
-        <PostTag color="primary.main" />
+        <PostTag color={props.tagColor ? props.tagColor : 'primary.main'} />
+        <PostTag color={props.tagColor ? props.tagColor : 'primary.main'} />
+        <PostTag color={props.tagColor ? props.tagColor : 'primary.main'} />
       </Stack>
     </Stack>
   );
