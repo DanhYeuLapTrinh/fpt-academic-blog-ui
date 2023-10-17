@@ -1,9 +1,7 @@
-import React from 'react'
-
+import React from "react";
+import AddCategory from "../../templates/AddCategory";
 function AddNewCategory() {
-  return (
-    <div>AddNewCategory</div>
-  )
+  return <AddCategory />;
 }
 
-export default AddNewCategory
+export default AddNewCategory;
