@@ -34,6 +34,7 @@ export default function PostCardV2(props) {
           background:
             "linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.5))",
           zIndex: -1,
+          borderRadius: '10px'
         }}
       />
       <Author color="secondary.main" />
