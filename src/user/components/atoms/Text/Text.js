@@ -7,11 +7,11 @@ export default function Text({children,...props}) {
     fontWeight: "500",
     sx: {
       textOverflow: "ellipsis",
-      color: 'text.main',
+      color: props.color ? props.color : 'text.main',
     },
     ...props,
   }
   return (
-    <Typography {...configText} sx={{textOverflow: "ellipsis"}}>{children}</Typography>
+    <Typography {...configText}>{children}</Typography>
   )
 }
