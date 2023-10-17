@@ -18,6 +18,9 @@ const MyTheme = createTheme({
     lightText: {
       main: "#c3c3c3", // xám nhạt nhất
     },
+    golden: {
+      main: "#ffbd2e" // vàng gold
+    }
   },
 });
 

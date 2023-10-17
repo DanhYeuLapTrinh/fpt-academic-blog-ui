@@ -9,7 +9,7 @@ export default function PostCardV2(props) {
     <Box
       sx={{
         width: "100%",
-        height: "492px",
+        height: props.height,
         backgroundImage:
           'url("https://images.unsplash.com/photo-1696362400167-0af7071b500c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1952&q=80")',
         backgroundSize: "cover",
@@ -32,12 +32,12 @@ export default function PostCardV2(props) {
           width: "100%",
           height: "100%",
           background:
-            "linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.5))",
+            "linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.8))",
           zIndex: -1,
-          borderRadius: '10px'
+          borderRadius: "10px",
         }}
       />
-      <Author color="secondary.main" />
+      <Author author={true} text="bởi Chat GPT" color="secondary.main" />
       <Box
         sx={{
           overflow: "hidden",
@@ -57,12 +57,12 @@ export default function PostCardV2(props) {
           overflow: "hidden",
           textOverflow: "ellipsis",
           display: "-webkit-box",
-          WebkitLineClamp: 4,
+          WebkitLineClamp: props.clamp,
           WebkitBoxOrient: "vertical",
           paddingTop: "10px",
         }}
       >
-        <Text fontWeight="400" fontSize="13px" color="secondary.main">
+        <Text fontWeight="400" fontSize="14px" color="secondary.main">
           Dưới trái tim của thành phố náo nhiệt, nơi ánh đèn neon làm cho bầu
           trời đêm sáng bóng với những màu sắc rực rỡ, một cảm giác vô tận của
           những khả năng không ngừng tràn ngập không khí. Mọi người vội vã đi
