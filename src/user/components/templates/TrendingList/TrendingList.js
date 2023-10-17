@@ -1,8 +1,8 @@
 import React from "react";
-import PostCardV1 from "../organisms/PostCardV1/PostCardV1";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import PostCardV2 from "../organisms/PostCardV2/PostCardV2";
-import Text from "../atoms/Text/Text";
+import Text from "../../atoms/Text/Text";
+import PostCardV2 from "../../organisms/PostCardV2/PostCardV2";
+import PostCardV1 from "../../organisms/PostCardV1/PostCardV1";
 
 export default function TrendingList() {
   return (

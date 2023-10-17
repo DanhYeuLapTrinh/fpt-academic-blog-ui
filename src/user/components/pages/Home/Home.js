@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Stack } from "@mui/material";
-import TrendingList from "../../templates/TrendingList";
+import TrendingList from "../../templates/TrendingList/TrendingList";
 
 
 export default function Home() {

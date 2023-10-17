@@ -5,7 +5,10 @@ import Text from "../../atoms/Text/Text";
 import { Box, Stack } from "@mui/material";
 export default function PostCardV1(props) {
   return (
-    <Stack sx={{ width: "100%", height: props.boxHeight }} justifyContent={'space-between'}>
+    <Stack
+      sx={{ width: "100%", height: props.boxHeight }}
+      justifyContent={"space-between"}
+    >
       <Box
         sx={{
           width: "100%",
@@ -42,18 +45,26 @@ export default function PostCardV1(props) {
           }}
         >
           <Text fontWeight="400" fontSize="13px">
-            Thiên văn học, bản năng tò mò của con người đối với vũ trụ vô tận,
-            đã dẫn đến những khám phá tuyệt vời và bí ẩn đằng sau những điểm
-            sáng trên bầu trời đêm. Kính thiên văn, như chiếc cửa sổ mở ra với
-            bản đồ sao, giúp chúng ta chiêm ngưỡng những hành tinh xa xôi, những
-            tinh tú huyền
+            Dưới trái tim của thành phố náo nhiệt, nơi ánh đèn neon làm cho bầu
+            trời đêm sáng bóng với những màu sắc rực rỡ, một cảm giác vô tận của
+            những khả năng không ngừng tràn ngập không khí. Mọi người vội vã đi
+            dọc theo những con phố đông đúc, mỗi người một câu chuyện riêng, tạo
+            nên một bức tranh động lực của cuộc sống. Các quán cà phê tràn ra
+            tiếng cười vào không khí khi bạn bè tụ tập qua những cốc cà phê nóng
+            hổi, chia sẻ những giấc mơ và ước mơ. Trong khi đó, một nghệ sĩ độc
+            tấu chơi một giai điệu êm dịu trên một cây đàn guitar cũ, hòa nhạc
+            những nốt hồn nhiên đến qua những người qua đường. Mùi thơm của thức
+            ăn đường phố lan tỏa từ những quán nổi loạn, kích thích vị giác với
+            một đồng diễn của hương vị. Phía trên, các tòa nhà chọc trời chạm
+            tới thiên đàng, bề mặt phản chiếu của chúng bắt chước múa ánh sáng
+            thành phố.
           </Text>
         </Box>
       )}
       <Stack direction={"row"} spacing={"12px"}>
-        <PostTag color="primary.main"/>
-        <PostTag color="primary.main"/>
-        <PostTag color="primary.main"/>
+        <PostTag color="primary.main" />
+        <PostTag color="primary.main" />
+        <PostTag color="primary.main" />
       </Stack>
     </Stack>
   );
