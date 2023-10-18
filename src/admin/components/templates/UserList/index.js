@@ -38,6 +38,7 @@ function UserResultList() {
     axiosConfig.get("admin/users", { headers }).then((res) => {
       setData(res.data);
       setRecords(res.data);
+      console.log(res.data);
     });
   }, []);
 
@@ -182,12 +183,12 @@ function UserResultList() {
           <thead className="bg-gray-500">
             <tr className="border-b">
               <th className="px-4 py-2">ID</th>
-              <th className="px-4 py-2">Username</th>
+              <th className="px-4 py-2">Tài khoản</th>
               <th className="px-4 py-2">Email</th>
-              <th className="px-4 py-2">Phone</th>
-              <th className="px-4 py-2">Role</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Actions</th>
+              <th className="px-4 py-2">Số điện thoại</th>
+              <th className="px-4 py-2">Vai trò</th>
+              <th className="px-4 py-2">Trạng thái</th>
+              <th className="px-4 py-2">Hành động</th>
             </tr>
           </thead>
 

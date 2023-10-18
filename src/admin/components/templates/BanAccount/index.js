@@ -13,11 +13,11 @@ function BanAccountList() {
   const [records, setRecords] = useState([]);
   const [isBanning, setIsBanning] = useState(false);
   const [isBanningId, setIsBanningId] = useState(null);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [banStatus, setBanStatus] = useState(
     JSON.parse(localStorage.getItem("banStatus")) || {}
   );
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const headers = {
     Authorization: `Bearer ${auth.token}`,
@@ -133,10 +133,10 @@ function BanAccountList() {
           <thead className="bg-gray-500">
             <tr className="border-b">
               <th className="px-4 py-2">ID</th>
-              <th className="px-4 py-2">Username</th>
-              <th className="px-4 py-2">Role</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Actions</th>
+              <th className="px-4 py-2">Tài khoản</th>
+              <th className="px-4 py-2">Vai trò</th>
+              <th className="px-4 py-2">Trạng thái</th>
+              <th className="px-4 py-2">Hành động</th>
             </tr>
           </thead>
 
