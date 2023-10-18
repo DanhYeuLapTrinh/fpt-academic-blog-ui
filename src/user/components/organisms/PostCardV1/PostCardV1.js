@@ -3,6 +3,7 @@ import Author from "../../molecules/Author/Author";
 import PostTag from "../../atoms/PostTag/PostTag";
 import Text from "../../atoms/Text/Text";
 import { Box, Stack } from "@mui/material";
+import Wrapper from "../../atoms/Wrapper/Wrapper";
 export default function PostCardV1(props) {
   return (
     <Stack
@@ -14,36 +15,24 @@ export default function PostCardV1(props) {
           width: "100%",
           height: props.h ? props.h : "268px",
           backgroundImage:
-            'url("https://images.unsplash.com/photo-1696362400167-0af7071b500c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1952&q=80")',
+            'url("https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2008&q=80")',
           backgroundSize: "cover",
           backgroundPosition: "center",
           borderRadius: "10px",
         }}
       />
-      <Author author={true} text="bởi Chat GPT" color={props.authorColor}/>
-      <Box
-        sx={{
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-        }}
-      >
-        <Text fontSize={props.title} lineHeight={props.small ? "22px" : "26px"} color={props.color}>
+      <Author author={true} text="bởi Chat GPT" color={props.authorColor} />
+      <Wrapper WebkitLineClamp="2">
+        <Text
+          fontSize={props.title}
+          lineHeight={props.small ? "22px" : "26px"}
+          color={props.color}
+        >
           Những khoảnh khắc đáng nhớ trong cuộc hành trình đời
         </Text>
-      </Box>
+      </Wrapper>
       {props.hasDescription && (
-        <Box
-          sx={{
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: "4",
-            WebkitBoxOrient: "vertical",
-          }}
-        >
+        <Wrapper WebkitLineClamp="4">
           <Text fontWeight="400" fontSize="13px" color={props.color}>
             Dưới trái tim của thành phố náo nhiệt, nơi ánh đèn neon làm cho bầu
             trời đêm sáng bóng với những màu sắc rực rỡ, một cảm giác vô tận của
@@ -59,12 +48,12 @@ export default function PostCardV1(props) {
             tới thiên đàng, bề mặt phản chiếu của chúng bắt chước múa ánh sáng
             thành phố.
           </Text>
-        </Box>
+        </Wrapper>
       )}
       <Stack direction={"row"} spacing={"12px"}>
-        <PostTag color={props.tagColor ? props.tagColor : 'primary.main'} />
-        <PostTag color={props.tagColor ? props.tagColor : 'primary.main'} />
-        <PostTag color={props.tagColor ? props.tagColor : 'primary.main'} />
+        <PostTag color={props.tagColor ? props.tagColor : "primary.main"} />
+        <PostTag color={props.tagColor ? props.tagColor : "primary.main"} />
+        <PostTag color={props.tagColor ? props.tagColor : "primary.main"} />
       </Stack>
     </Stack>
   );
