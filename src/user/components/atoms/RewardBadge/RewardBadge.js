@@ -26,7 +26,7 @@ export default function RewardBadge(props) {
         </Text>
       )}
       <VerifiedIcon
-        sx={{ fontSize: props.small ? "20px" : "22px", color: "golden.main" }}
+        sx={{ fontSize: props.small ? "26px" : "22px", color: "golden.main" }}
       />
     </Paper>
   );

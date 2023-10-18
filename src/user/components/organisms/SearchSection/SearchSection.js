@@ -8,7 +8,7 @@ export default function SearchSection() {
     <Stack
       sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
       spacing={"30px"}
-      margin={'95px 0'}
+      margin={'110px 0'}
     >
       <SearchBarTop />
       <Stack

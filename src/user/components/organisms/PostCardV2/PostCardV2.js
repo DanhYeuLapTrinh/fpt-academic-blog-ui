@@ -3,6 +3,7 @@ import React from "react";
 import Author from "../../molecules/Author/Author";
 import Text from "../../atoms/Text/Text";
 import PostTag from "../../atoms/PostTag/PostTag";
+import Wrapper from "../../atoms/Wrapper/Wrapper";
 
 export default function PostCardV2(props) {
   return (
@@ -11,11 +12,11 @@ export default function PostCardV2(props) {
         width: "100%",
         height: props.height,
         backgroundImage:
-          'url("https://images.unsplash.com/photo-1696362400167-0af7071b500c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1952&q=80")',
+          'url("https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2008&q=80")',
         backgroundSize: "cover",
         backgroundPosition: "center",
         borderRadius: "10px",
-        padding: "20px",
+        padding: "25px",
         display: "flex",
         flexDirection: "column",
         alignItems: "flex-start",
@@ -32,36 +33,18 @@ export default function PostCardV2(props) {
           width: "100%",
           height: "100%",
           background:
-            "linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.8))",
+            "linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.7))",
           zIndex: -1,
           borderRadius: "10px",
         }}
       />
       <Author author={true} text="bởi Chat GPT" color="secondary.main" />
-      <Box
-        sx={{
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          display: "-webkit-box",
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: "vertical",
-          paddingTop: "10px",
-        }}
-      >
+      <Wrapper WebkitLineClamp="2" paddingTop="10px">
         <Text fontSize={props.title} color="secondary.main" lineHeight="36px">
           Những khoảnh khắc đáng nhớ trong cuộc hành trình đời
         </Text>
-      </Box>
-      <Box
-        sx={{
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          display: "-webkit-box",
-          WebkitLineClamp: props.clamp,
-          WebkitBoxOrient: "vertical",
-          paddingTop: "10px",
-        }}
-      >
+      </Wrapper>
+      <Wrapper WebkitLineClamp={props.clamp} paddingTop="10px">
         <Text fontWeight="400" fontSize="14px" color="secondary.main">
           Dưới trái tim của thành phố náo nhiệt, nơi ánh đèn neon làm cho bầu
           trời đêm sáng bóng với những màu sắc rực rỡ, một cảm giác vô tận của
@@ -77,7 +60,7 @@ export default function PostCardV2(props) {
           thiên đàng, bề mặt phản chiếu của chúng bắt chước múa ánh sáng thành
           phố.
         </Text>
-      </Box>
+      </Wrapper>
       <Stack direction={"row"} spacing={"12px"} paddingTop={"15px"}>
         <PostTag color="secondary.main" />
         <PostTag color="secondary.main" />

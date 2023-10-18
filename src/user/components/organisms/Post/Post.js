@@ -1,12 +1,12 @@
 import { Box, Stack } from "@mui/material";
 import React from "react";
-import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
-import Text from "../../../atoms/Text/Text";
-import Author from "../../../molecules/Author/Author";
-import PostTag from "../../../atoms/PostTag/PostTag";
-import Wrapper from "../../../atoms/Wrapper/Wrapper";
+import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
+import Wrapper from "../../atoms/Wrapper/Wrapper";
+import Text from "../../atoms/Text/Text";
+import Author from "../../molecules/Author/Author";
+import PostTag from "../../atoms/PostTag/PostTag";
 
-export default function RewardedPostsUnder() {
+export default function Post() {
   return (
     <div style={{ width: "100%", paddingTop: "20px" }}>
       <Stack direction={"row"}>
@@ -14,26 +14,19 @@ export default function RewardedPostsUnder() {
           sx={{
             backgroundImage:
               'url("https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2008&q=80")',
-            width: "265px",
-            height: "240px",
+            width: "240px",
+            height: "149px",
             backgroundSize: "cover",
             backgroundPosition: "center",
             borderRadius: "10px",
             position: "relative",
           }}
         >
-          <RewardBadge
-            small={true}
-            position="absolute"
-            top="15px"
-            right="15px"
-            zIndex="999"
-          />
         </Box>
-        <Box sx={{ width: "calc(100% - 265px)", p: "0px 20px" }}>
-          <Stack height={"240px"} justifyContent={"space-evenly"}>
+        <Box sx={{ width: "calc(100% - 240px)", p: "0px 0px 0px 20px" }}>
+          <Stack height={"149px"} justifyContent={"space-evenly"}>
             <Wrapper WebkitLineClamp="2">
-              <Text fontSize="24px" lineHeight="30px">
+              <Text fontSize="20px" lineHeight="24px">
                 Những khoảnh khắc đáng nhớ trong cuộc hành trình đời
               </Text>
             </Wrapper>
@@ -42,12 +35,12 @@ export default function RewardedPostsUnder() {
                 overflow: "hidden",
                 textOverflow: "ellipsis",
                 display: "-webkit-box",
-                WebkitLineClamp: 3,
+                WebkitLineClamp: 2,
                 WebkitBoxOrient: "vertical",
                 paddingTop: "5px",
               }}
             >
-              <Text fontWeight="400" fontSize="14px">
+              <Text fontWeight="400" fontSize="13px">
                 Dưới trái tim của thành phố náo nhiệt, nơi ánh đèn neon làm cho
                 bầu trời đêm sáng bóng với những màu sắc rực rỡ, một cảm giác vô
                 tận của những khả năng không ngừng tràn ngập không khí. Mọi
@@ -63,15 +56,17 @@ export default function RewardedPostsUnder() {
                 bề mặt phản chiếu của chúng bắt chước múa ánh sáng thành phố.
               </Text>
             </Box>
-            <Author author={true} text="bởi Chat GPT" />
-            <Stack direction={"row"} spacing={"12px"} paddingTop={"5px"}>
-              <PostTag color="primary.main" />
-              <PostTag color="primary.main" />
-              <PostTag color="primary.main" />
+            <Stack width={'100%'} direction={'row'} alignItems={'center'} justifyContent={'space-between'}>
+              <Author author={true} text="bởi Chat GPT" />
+              <Stack direction={"row"} spacing={"12px"}>
+                <PostTag color="primary.main" />
+                <PostTag color="primary.main" />
+                <PostTag color="primary.main" />
+              </Stack>
             </Stack>
           </Stack>
         </Box>
       </Stack>
     </div>
-  );
+  )
 }
