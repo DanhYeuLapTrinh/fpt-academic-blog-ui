@@ -6,6 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 function AddCategory() {
   const [cateList, setCateList] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSemester, setSelectedSemester] = useState("");
+
   const { auth } = useAuth();
 
   const headers = {
@@ -17,7 +20,7 @@ function AddCategory() {
       setCateList(res.data);
       console.log(res.data);
     });
-  }, []); // Đảm bảo sử dụng [] để chỉ gọi useEffect sau khi component được render
+  }, []);
 
   return (
     <div className="w-full max-w-full h-full items-center bg-background">
@@ -25,7 +28,11 @@ function AddCategory() {
         <h2 className="text-2xl font-bold mb-4">Thêm danh mục mới</h2>
         <p className="text-red-500"></p>
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <select className="border p-2 rounded-lg" name="cateIdChuyenNganh">
+          <select
+            className="border p-2 rounded-lg"
+            name="cateChuyenNganh"
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
             <option value="">Chọn chuyên ngành</option>
             {cateList.map((cate) => (
               <option key={cate.id} value={cate.id}>
@@ -33,28 +40,36 @@ function AddCategory() {
               </option>
             ))}
           </select>
-          <select className="border p-2 rounded-lg" name="cateId">
+
+          <select
+            className="border p-2 rounded-lg"
+            name="cateHocKy"
+            onChange={(e) => setSelectedSemester(e.target.value)}
+            disabled={!selectedCategory}
+          >
             <option value="">Chọn học kỳ</option>
-            {cateList.map((cate) => (
-              <React.Fragment key={cate.id}>
-                {cate.childCategories.map((childCate) => (
-                  <option key={childCate.id} value={childCate.id}>
-                    {childCate.categoryName}
-                  </option>
-                ))}
-              </React.Fragment>
-            ))}
+            {selectedCategory &&
+              cateList
+                .find((cate) => cate.id === selectedCategory)
+                ?.childCategories.map((childCate) =>
+                  childCate.categoryType === "Semester" ? (
+                    <option key={childCate.id} value={childCate.id}>
+                      {childCate.categoryName}
+                    </option>
+                  ) : null
+                )}
           </select>
 
           <input
-            className={`border p-2 rounded-lg`}
+            className="border p-2 rounded-lg"
             type="text"
             placeholder="Tên môn học"
-            name="cateName"
+            name="cateMonHoc"
+            disabled={!selectedCategory || !selectedSemester}
           />
         </div>
         <button className="bg-buttonSubmit text-white py-2 px-4 rounded">
-          Thêm thẻ
+          Thêm danh mục
         </button>
       </form>
       <ToastContainer position="top-right" autoClose={3000} closeOnClick />
