@@ -8,16 +8,13 @@ import News from "../user/components/pages/News/News";
 //Admin Routes
 import Welcome from "../admin/components/pages/Welcome/Welcome";
 import UserList from "../admin/components/pages/Users/UserList";
-import AddNewUserPage from "../admin/components/pages/Users/AddNewUserPage";
 import BanAccount from "../admin/components/pages/Users/BanAccount";
 import CategoriesListPage from "../admin/components/pages/Categories/CategoriesListPage";
 import AddNewCategory from "../admin/components/pages/Categories/AddNewCategory";
 import EditCategory from "../admin/components/pages/Categories/EditCategory";
 import DeleteCategory from "../admin/components/pages/Categories/DeleteCategory";
 import TagListPage from "../admin/components/pages/Tags/TagListPage";
-import AddNewTagPage from "../admin/components/pages/Tags/AddNewTagPage";
 import EditTagPage from "../admin/components/pages/Tags/EditTagPage";
-import DeleteTagPage from "../admin/components/pages/Tags/DeleteTagPage";
 import ReportedProfilePage from "../admin/components/pages/Reports/ReportedProfilePage";
 import ReportedCommentPage from "../admin/components/pages/Reports/ReportedCommentPage";
 import ActivityLogPage from "../admin/components/pages/ActivityLog/ActivityLogPage";
@@ -43,7 +40,6 @@ const loggedInAdminRoutes = [
   { path: "/welcome", component: Welcome },
   //User
   { path: "/users", component: UserList },
-  { path: "/add-user", component: AddNewUserPage },
   { path: "/ban-user", component: BanAccount },
   //Categories Page
   { path: "/categories-list", component: CategoriesListPage },
@@ -52,9 +48,7 @@ const loggedInAdminRoutes = [
   { path: "/delete-category", component: DeleteCategory },
   //Tags Page
   { path: "/tags-list", component: TagListPage },
-  { path: "/add-tag", component: AddNewTagPage },
   { path: "/edit-tag", component: EditTagPage },
-  { path: "/delete-tag", component: DeleteTagPage },
   //Reports Page
   { path: "/reported-profile", component: ReportedProfilePage },
   { path: "/reported-comment", component: ReportedCommentPage },

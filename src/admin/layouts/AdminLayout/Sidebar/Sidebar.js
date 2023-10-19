@@ -70,18 +70,6 @@ export default function Sidebar() {
                   Danh sách tài khoản
                 </ListItem>
               </Link>
-              <Link to={"/add-user"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Thêm tài khoản
-                </ListItem>
-              </Link>
               <Link to={"/ban-user"}>
                 <ListItem>
                   <ListItemPrefix>
@@ -236,18 +224,6 @@ export default function Sidebar() {
                   Tất cả thẻ
                 </ListItem>
               </Link>
-              <Link to={"/add-tag"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Thêm thẻ
-                </ListItem>
-              </Link>
               <Link to={"/edit-tag"}>
                 <ListItem>
                   <ListItemPrefix>
@@ -258,18 +234,6 @@ export default function Sidebar() {
                     />
                   </ListItemPrefix>
                   Chỉnh sửa thẻ
-                </ListItem>
-              </Link>
-              <Link to={"/delete-tag"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Xóa thẻ
                 </ListItem>
               </Link>
             </List>
