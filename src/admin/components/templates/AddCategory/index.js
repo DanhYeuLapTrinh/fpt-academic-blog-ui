@@ -6,7 +6,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 function AddCategory() {
   const [cateList, setCateList] = useState([]);
+
   const [selectedCategory, setSelectedCategory] = useState("");
+
   const [selectedSemester, setSelectedSemester] = useState("");
 
   const { auth } = useAuth();
@@ -40,7 +42,9 @@ function AddCategory() {
               </option>
             ))}
           </select>
+        </div>
 
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <select
             className="border p-2 rounded-lg"
             name="cateHocKy"
@@ -48,9 +52,10 @@ function AddCategory() {
             disabled={!selectedCategory}
           >
             <option value="">Chọn học kỳ</option>
+            {console.log(selectedCategory)}
             {selectedCategory &&
               cateList
-                .find((cate) => cate.id === selectedCategory)
+                .find((cate) => cate.id == selectedCategory)
                 ?.childCategories.map((childCate) =>
                   childCate.categoryType === "Semester" ? (
                     <option key={childCate.id} value={childCate.id}>
@@ -59,7 +64,8 @@ function AddCategory() {
                   ) : null
                 )}
           </select>
-
+        </div>
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <input
             className="border p-2 rounded-lg"
             type="text"
@@ -68,9 +74,11 @@ function AddCategory() {
             disabled={!selectedCategory || !selectedSemester}
           />
         </div>
-        <button className="bg-buttonSubmit text-white py-2 px-4 rounded">
-          Thêm danh mục
-        </button>
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <button className="bg-buttonSubmit text-white py-2 px-4 rounded">
+            Thêm danh mục
+          </button>
+        </div>
       </form>
       <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>

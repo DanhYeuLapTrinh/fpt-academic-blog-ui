@@ -16,6 +16,7 @@ export const AddNewUser = () => {
   };
 
   const [user, setUser] = useState(initialUser);
+  
   const [errors, setErrors] = useState({
     username: "",
     password: "",
