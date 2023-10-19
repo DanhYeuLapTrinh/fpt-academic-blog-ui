@@ -33,7 +33,7 @@ function UserResultList() {
   };
   const [formData, setFormData] = useState(initialUser);
 
-  const [errors, setErrors] = useState({
+  const [formErrors, setFormErrors] = useState({
     username: "",
     password: "",
     fullname: "",
@@ -66,6 +66,25 @@ function UserResultList() {
   //Popup thêm người dùng mới
   const [open, setOpen] = useState(false);
 
+  //Regex
+  const usernameRegex = /.+/; // Non-empty field
+  const usernameErrorMessage = "Tên tài khoản không được bỏ trống";
+
+  const passwordRegex = /.+/; // Non-empty field
+  const passwordErrorMessage = "Mật khẩu không được bỏ trống";
+
+  const fullnameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/; // Letters with diacritics, spaces, hyphens, and apostrophes
+  const fullnameErrorMessage = "Tên đầy đủ không hợp lệ";
+
+  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  const emailErrorMessage = "Địa chỉ email không hợp lệ";
+
+  const phoneRegex = /^\d{1,10}$/; // Maximum of 10 digits
+  const phoneErrorMessage = "Số điện thoại tối đa 10 số";
+
+  const roleRegex = /.+/; // Non-empty field
+  const roleErrorMessage = "Vai trò không được bỏ trống";
+
   //All Handle
   const handleClickOpen = () => {
     setOpen(true);
@@ -79,10 +98,43 @@ function UserResultList() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    setErrors({ ...errors, [name]: "" });
+    setFormErrors({ ...formErrors, [name]: "" });
   };
 
   const handleAddUser = () => {
+    if (data.some((user) => user.username === formData.username)) {
+      setFormErrors({ ...formErrors, username: "Tên tài khoản đã tồn tại" });
+      return;
+    }
+    if (!usernameRegex.test(formData.username)) {
+      setFormErrors({ ...formErrors, username: usernameErrorMessage });
+      return;
+    }
+
+    if (!passwordRegex.test(formData.password)) {
+      setFormErrors({ ...formErrors, password: passwordErrorMessage });
+      return;
+    }
+
+    if (!fullnameRegex.test(formData.fullname)) {
+      setFormErrors({ ...formErrors, fullname: fullnameErrorMessage });
+      return;
+    }
+
+    if (!emailRegex.test(formData.email)) {
+      setFormErrors({ ...formErrors, email: emailErrorMessage });
+      return;
+    }
+
+    if (!phoneRegex.test(formData.phone)) {
+      setFormErrors({ ...formErrors, phone: phoneErrorMessage });
+      return;
+    }
+
+    if (!roleRegex.test(formData.role)) {
+      setFormErrors({ ...formErrors, role: roleErrorMessage });
+      return;
+    }
     axiosConfig
       .post("admin/register", formData, { headers })
       .then((response) => {
@@ -98,7 +150,7 @@ function UserResultList() {
 
   const resetForm = () => {
     setFormData(initialUser);
-    setErrors(initialUser);
+    setFormData(initialUser);
   };
 
   const headers = {
@@ -237,6 +289,8 @@ function UserResultList() {
                   variant="standard"
                   value={formData.username}
                   onChange={handleInputChange}
+                  error={Boolean(formErrors.username)}
+                  helperText={formErrors.username}
                 />
                 <TextField
                   margin="dense"
@@ -247,6 +301,8 @@ function UserResultList() {
                   variant="standard"
                   value={formData.password}
                   onChange={handleInputChange}
+                  error={Boolean(formErrors.password)}
+                  helperText={formErrors.password}
                 />
                 <TextField
                   margin="dense"
@@ -257,16 +313,8 @@ function UserResultList() {
                   variant="standard"
                   value={formData.fullname}
                   onChange={handleInputChange}
-                />
-                <TextField
-                  margin="dense"
-                  label="Nhập số điện thoại"
-                  type="tel"
-                  name="phone"
-                  fullWidth
-                  variant="standard"
-                  value={formData.phone}
-                  onChange={handleInputChange}
+                  error={Boolean(formErrors.fullname)}
+                  helperText={formErrors.fullname}
                 />
                 <TextField
                   margin="dense"
@@ -277,12 +325,27 @@ function UserResultList() {
                   variant="standard"
                   value={formData.email}
                   onChange={handleInputChange}
+                  error={Boolean(formErrors.email)}
+                  helperText={formErrors.email}
+                />
+                <TextField
+                  margin="dense"
+                  label="Nhập số điện thoại"
+                  type="tel"
+                  name="phone"
+                  fullWidth
+                  variant="standard"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  error={Boolean(formErrors.phone)}
+                  helperText={formErrors.phone}
                 />
                 <select
                   className="mt-4 border-b-2 border-solid outline-0 w-full"
                   name="role"
                   onChange={handleInputChange}
                   value={formData.role}
+                  error={Boolean(formErrors.role)}
                 >
                   <option value="">Chọn vai trò</option>
                   <option value="Admin">Admin</option>
