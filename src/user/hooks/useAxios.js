@@ -27,7 +27,7 @@ const useAxios = (configObject) => {
         });
         setResponse(res);
       } catch (error) {
-        setError(error.message);
+        setError(error.status);
       } finally {
         setIsLoading(false);
       }

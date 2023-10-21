@@ -10,11 +10,5 @@ export default function NavOption({ children }) {
       padding: "10px",
     },
   };
-  return (
-    <Link style={{ textDecoration: "none" }}>
-      <ListItemText>
-        <Typography {...configTypo}>{children}</Typography>
-      </ListItemText>
-    </Link>
-  );
+  return <Typography {...configTypo}>{children}</Typography>;
 }

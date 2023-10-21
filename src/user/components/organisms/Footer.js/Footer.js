@@ -7,7 +7,6 @@ import {
   Stack,
 } from "@mui/material";
 import React from "react";
-import NavListContainer from "../../molecules/Navigation/NavListContainer";
 import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 import FooterFblog from "../../molecules/FooterDetail/FooterFblog";
@@ -17,7 +16,7 @@ import FooterContact from "../../molecules/FooterDetail/FooterContact";
 
 export default function Footer() {
   return (
-    <div>
+    <div className="footer">
       <Box sx={{ bgcolor: "primary.main" }}>
         <Container>
           <List sx={{ display: "flex", gap: "30px", p: "20px 0" }}>
@@ -62,12 +61,14 @@ export default function Footer() {
           </Stack>
         </Container>
         <Divider orientation="horizontal" />
-        <Stack alignItems={'center'} padding={'40px 0 20px 0'}>
+        <Stack alignItems={"center"} padding={"40px 0 20px 0"}>
           <Text fontWeight="400" fontSize="12px">
             Kênh thông tin số 1 dành cho sinh viên, giảng viên thuộc trường Đại
             học FPT
           </Text>
-          <Text fontWeight="400" fontSize="12px">Mọi chi tiết xin liên hệ Liên Hợp Quốc</Text>
+          <Text fontWeight="400" fontSize="12px">
+            Mọi chi tiết xin liên hệ Liên Hợp Quốc
+          </Text>
         </Stack>
       </Box>
     </div>
