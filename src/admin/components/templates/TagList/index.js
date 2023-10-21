@@ -51,7 +51,7 @@ function TagList() {
 
   const handleAddTag = () => {
     if (newTagName.trim() === "") {
-      setErrorMessage("Tên thể không được bỏ trống.");
+      setErrorMessage("Tên thẻ không được bỏ trống.");
       return;
     }
     if (newTagName.length > 15) {
@@ -178,9 +178,7 @@ function TagList() {
         <table className="table-auto w-full text-left border">
           <thead className="bg-gray-500">
             <tr className="border-b">
-              <th className="px-4 py-2">ID</th>
               <th className="px-4 py-2">Tag Name</th>
-              <th className="px-4 py-2">Creation Date</th>
               <th className="px-4 py-2"></th>
             </tr>
           </thead>
@@ -189,9 +187,7 @@ function TagList() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((tag) => (
                 <tr key={tag.id} className="border-b">
-                  <td className="px-4 py-2">{tag.id}</td>
                   <td className="px-4 py-2">{tag.tagName}</td>
-                  <td className="px-4 py-2">{tag.creationDate}</td>
                   <td className="px-4 py-2">
                     <DeleteForeverIcon
                       style={{ color: "red", cursor: "pointer" }}
