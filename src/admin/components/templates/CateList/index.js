@@ -1,41 +1,127 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { axiosConfig } from "../../../api/axios";
+import useAuth from "../../../../user/hooks/useAuth";
 
 function CateList() {
+  const { auth } = useAuth();
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSemester, setSelectedSemester] = useState(null);
+  const [majors, setMajors] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  const headers = {
+    Authorization: `Bearer ${auth.token}`,
+  };
+
+  useEffect(() => {
+    // Tải dữ liệu từ API majors
+    axiosConfig
+      .get("admin/majors", { headers })
+      .then((response) => {
+        setMajors(response.data);
+      })
+      .catch((error) => {
+        console.error("Error loading majors data:", error);
+      });
+
+    // Tải dữ liệu từ API categories
+    axiosConfig
+      .get("admin/categories", { headers })
+      .then((response) => {
+        const categoriesData = response.data;
+
+        // Lọc và sắp xếp categoriesData dựa trên majorName trong majors
+        const filteredCategories = majors.map((major) => {
+          return {
+            majorName: major.majorName,
+            categories: categoriesData.filter(
+              (category) => category.majorName === major.majorName
+            ),
+          };
+        });
+
+        setCategories(filteredCategories);
+      })
+      .catch((error) => {
+        console.error("Error loading categories data:", error);
+      });
+  }, [majors]);
+
+  const handleCategoryClick = (category) => {
+    setSelectedCategory(category);
+    setSelectedSemester(null);
+  };
+
+  const handleSemesterClick = (semester) => {
+    setSelectedSemester(semester);
+  };
+
   return (
-    <div className="m-5">
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-bold">All Categories</h2>
-      </div>
-
-      <div className="bg-white shadow overflow-x-auto rounded-xl">
-        <div className="w-full border">
-          <div className="w-full h-[600px] relative">
-            <button className="absolute w-[200px] h-[80px] top-[32px] left-[32px] bg-[#f1dcdc] rounded-[20px]">
-              <div className=" font-semibold ">Kỹ thuật phần mềm</div>
-            </button>
-
-            <button className="absolute w-[200px] h-[80px] top-[32px] left-[260px] bg-[#e9deb4] rounded-[20px]">
-              <div className=" font-semibold ">Quản trị kinh doanh</div>
-            </button>
-
-            <button className="absolute w-[200px] h-[80px] top-[32px] left-[488px] bg-[#eceea1] rounded-[20px]">
-              <div className=" font-semibold ">Trí tuệ nhân tạo</div>
-            </button>
-
-            <button className="absolute w-[200px] h-[80px] top-[140px] left-[32px] bg-[#b1f37d] rounded-[20px]">
-              <div className=" font-semibold ">Ngôn ngữ Nhật</div>
-            </button>
-
-            <button className="absolute w-[200px] h-[80px] top-[140px] left-[260px] bg-[#7fffaa] rounded-[20px]">
-              <div className=" font-semibold ">An toàn thông tin</div>
-            </button>
-
-            <button className="absolute w-[200px] h-[80px] top-[140px] left-[488px] bg-[#72f0ca] rounded-[20px]">
-              <div className=" font-semibold ">Vi mạch bán dẫn</div>
-            </button>
+    <div>
+      {categories.map((majorCategory) => (
+        <div
+          key={majorCategory.majorName}
+          className="border rounded-md p-6 shadow-lg mb-4"
+        >
+          <h1 className="text-2xl font-semibold mb-4">
+            {majorCategory.majorName}
+          </h1>
+          <div className="flex space-x-4">
+            <div className="w-1/3 p-4 border rounded-md shadow-md">
+              <h2 className="text-lg font-semibold mb-2">Chuyên ngành</h2>
+              <ul>
+                {majorCategory.categories.map((category) => (
+                  <li
+                    key={category.id}
+                    className={`cursor-pointer ${
+                      selectedCategory?.id === category.id
+                        ? "font-bold text-blue-500"
+                        : ""
+                    }`}
+                    onClick={() => handleCategoryClick(category)}
+                  >
+                    {category.categoryName}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="w-1/3 p-4 border rounded-md shadow-md">
+              {selectedCategory && (
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Học kỳ</h2>
+                  <ul>
+                    {selectedCategory.childCategories.map((semester) => (
+                      <li
+                        key={semester.id}
+                        className={`cursor-pointer ${
+                          selectedSemester?.id === semester.id
+                            ? "font-bold text-blue-500"
+                            : ""
+                        }`}
+                        onClick={() => handleSemesterClick(semester)}
+                      >
+                        {semester.categoryName}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            <div className="w-1/3 p-4 border rounded-md shadow-md">
+              {selectedSemester && (
+                <div>
+                  <h2 className="text-lg font-semibold mb-2">Môn học</h2>
+                  <ul>
+                    {selectedSemester.childCategories.map((course) => (
+                      <li key={course.id}>{course.categoryName}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }
