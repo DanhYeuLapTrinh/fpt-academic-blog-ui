@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@material-tailwind/react";
 import SearchIcon from "@mui/icons-material/Search";
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
-import VolumeOffIcon from "@mui/icons-material/VolumeOff";
 import EditIcon from "@mui/icons-material/Edit";
 import { axiosConfig } from "../../../api/axios";
 import useAuth from "../../../../user/hooks/useAuth";
@@ -19,8 +17,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Popover } from "@headlessui/react";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 function UserResultList() {
   const initialUser = {
