@@ -58,6 +58,24 @@ function UserResultList() {
 
   const [selectedUsername, setSelectedUsername] = useState("");
 
+  const [mutedUserIds, setMutedUserIds] = useState([]);
+
+  const [editingUserId, setEditingUserId] = useState(null);
+
+  const [newRole, setNewRole] = useState("");
+
+  const [showRoleSuccessModal, setShowRoleSuccessModal] = useState(false);
+
+  const [originalRole, setOriginalRole] = useState(""); // Biến lưu trữ vai trò ban đầu
+
+  const [isBanning, setIsBanning] = useState(false);
+
+  const [isBanningId, setIsBanningId] = useState(null);
+
+  const [banStatus, setBanStatus] = useState(
+    JSON.parse(localStorage.getItem("banStatus")) || {}
+  );
+
   //Split page
   const [page, setPage] = useState(0);
 
@@ -166,6 +184,11 @@ function UserResultList() {
     });
   }, []);
 
+  //Store ban/unban state to localStorage
+  useEffect(() => {
+    localStorage.setItem("banStatus", JSON.stringify(banStatus));
+  }, [banStatus]);
+
   //Store mute/unmute state to localStorage
   useEffect(() => {
     const storedIsMuted = JSON.parse(localStorage.getItem("isMuted"));
@@ -247,6 +270,118 @@ function UserResultList() {
           position: "top-right",
           autoClose: 3000,
         });
+      });
+  };
+
+  //Set Role
+  const startEditing = (userId, currentRole) => {
+    setEditingUserId(userId);
+    setNewRole(currentRole);
+    setOriginalRole(currentRole); // Lưu vai trò ban đầu
+  };
+
+  const saveRoleChanges = (userId) => {
+    axiosConfig
+      .post("admin/set-role", { id: userId, role: newRole }, { headers })
+      .then((res) => {
+        setEditingUserId(null);
+        setShowRoleSuccessModal(true);
+        updateRecordRole(userId, newRole);
+        toast.success("Sửa vai trò thành công", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      })
+      .catch((error) => {
+        console.error("Lỗi khi cập nhật vai trò:", error);
+      });
+  };
+
+  const cancelEditing = () => {
+    setEditingUserId(null);
+  };
+
+  // Hàm cập nhật vai trò người dùng trong danh sách
+  const updateRecordRole = (userId, newRole) => {
+    setRecords((prevRecords) =>
+      prevRecords.map((record) =>
+        record.id === userId
+          ? { ...record, role: { roleName: newRole } }
+          : record
+      )
+    );
+  };
+
+  //Ban-Unban
+  const handleBanButtonClick = (id) => {
+    if (banStatus[id]) {
+      unbanAccount(id);
+    } else {
+      banAccount(id);
+    }
+  };
+
+  const banAccount = (id) => {
+    setIsBanning(true);
+    setIsBanningId(id);
+    axiosConfig
+      .post("admin/ban-user", { id }, { headers })
+      .then((res) => {
+        toast.success("Cấm tài khoản thành công", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        setRecords((prevRecords) => {
+          const updatedRecords = prevRecords.map((item) => {
+            if (item.id === id) {
+              return { ...item, isBan: true };
+            }
+            return item;
+          });
+          return updatedRecords;
+        });
+        setIsBanning(false);
+        setIsBanningId(null);
+        setBanStatus({ ...banStatus, [id]: true });
+      })
+      .catch((error) => {
+        toast.error("Cấm tài khoản xảy ra lỗi", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        setIsBanning(false);
+        setIsBanningId(null);
+        console.error(error);
+      });
+  };
+
+  const unbanAccount = (id) => {
+    axiosConfig
+      .post("admin/unban-user", { id }, { headers })
+      .then((res) => {
+        toast.success("Bỏ cấm tài khoản thành công", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        setRecords((prevRecords) => {
+          const updatedRecords = prevRecords.map((item) => {
+            if (item.id === id) {
+              return { ...item, isBan: false };
+            }
+            return item;
+          });
+          return updatedRecords;
+        });
+        setBanStatus({ ...banStatus, [id]: false });
+        setIsBanning(false);
+        setIsBanningId(null);
+      })
+      .catch((error) => {
+        toast.error("Bỏ cấm tài khoản không thành công", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        console.error("Lỗi khi bỏ cấm tài khoản:", error);
       });
   };
 
@@ -389,33 +524,103 @@ function UserResultList() {
                   <td className="p-4">{item.username}</td>
                   <td className="p-4">{item.email}</td>
                   <td className="p-4">{item.phone}</td>
-                  <td className="p-4">{item.role.roleName}</td>
-                  <td className="p-4">{item.status}</td>
+                  <td className="p-4 w-100">
+                    {editingUserId === item.id ? (
+                      <div>
+                        <select
+                          value={newRole}
+                          onChange={(e) => setNewRole(e.target.value)}
+                          className="mr-4"
+                        >
+                          <option value="admin">Admin</option>
+                          <option value="mentor">Mentor</option>
+                          <option value="lecturer">Lecturer</option>
+                          <option value="student">Student</option>
+                        </select>
+                        <CheckCircleIcon
+                          className="text-green-500 cursor-pointer"
+                          onClick={() => saveRoleChanges(item.id)}
+                        />
+                        <CancelIcon
+                          className="text-red-500 cursor-pointer"
+                          onClick={cancelEditing}
+                        />
+                      </div>
+                    ) : (
+                      <div className="">
+                        {item.role.roleName}
+                        <EditIcon
+                          onClick={() =>
+                            startEditing(item.id, item.role.roleName)
+                          }
+                          sx={{
+                            width: "18px",
+                            height: "18px",
+                            paddingLeft: "1px",
+                            marginLeft: "2px",
+                          }}
+                        />
+                      </div>
+                    )}
+                  </td>
+                  <td className="p-4">
+                    <div className="flex flex-col">
+                      {banStatus[item.id] ? "Đang bị cấm" : "Bình thường"}
+                      {isMuted[item.id] ? "Đang bị hạn chế" : ""}
+                    </div>
+                  </td>
                   <td className="p-4 flex items-center">
-                    <Popover className="relative">
-                      {({ open }) => (
+                    <div className="flex flex-col">
+                      <div className="pb-1">
+                        {banStatus[item.id] ? ( // If banStatus is true for this row, show "Bỏ cấm tài khoản" button
+                          <button
+                            className={`${
+                              isBanning && isBanningId === item.id
+                                ? "bg-blue-500"
+                                : "bg-green-500"
+                            } text-white text-xs px-2 py-1 rounded-lg`}
+                            onClick={() => handleBanButtonClick(item.id)}
+                          >
+                            {isBanning && isBanningId === item.id
+                              ? "Đang cấm..."
+                              : "Bỏ cấm tài khoản"}
+                          </button>
+                        ) : (
+                          // If banStatus is false for this row, show "Cấm tài khoản" button
+                          <button
+                            className={`${
+                              isBanning && isBanningId === item.id
+                                ? "bg-blue-500"
+                                : "bg-red-500"
+                            } text-white text-xs px-2 py-1 rounded-lg`}
+                            onClick={() => handleBanButtonClick(item.id)}
+                          >
+                            {isBanning && isBanningId === item.id
+                              ? "Đang cấm..."
+                              : "Cấm tài khoản"}
+                          </button>
+                        )}
+                      </div>
+                      {isMuted[item.id] ? (
                         <>
-                          <Popover.Button>
-                            <MoreVertIcon className="h-5 w-5 cursor-pointer text-gray-500" />
-                          </Popover.Button>
-                          {open && (
-                            <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-                              <div className="py-1">
-                                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                  Set Role
-                                </button>
-                                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                  Ban Account
-                                </button>
-                                <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                  Mute Account
-                                </button>
-                              </div>
-                            </div>
-                          )}
+                          <button
+                            className="text-white text-xs px-2 py-1 rounded-lg bg-green-500"
+                            onClick={() => unmuteUser(item.id)}
+                          >
+                            Hủy hạn chế tài khoản
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            className="text-white text-xs px-2 py-1 rounded-lg bg-red-500"
+                            onClick={() => openMuteModal(item.id)}
+                          >
+                            Hạn chế tài khoản
+                          </button>
                         </>
                       )}
-                    </Popover>
+                    </div>
                   </td>
                 </tr>
               ))}
