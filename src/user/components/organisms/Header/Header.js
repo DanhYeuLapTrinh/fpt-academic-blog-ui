@@ -1,8 +1,9 @@
 import React from "react";
-import NavListContainer from "../../molecules/Navigation/NavListContainer";
 import UserTab from "../../molecules/UserTab/UserTab";
 import { Box, Container, Divider, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
+import { Link } from "react-router-dom";
+import NavList from "../../molecules/Navigation/NavList";
 
 export default function Header() {
   return (
@@ -17,11 +18,13 @@ export default function Header() {
           alignItems={"center"}
           spacing={2}
         >
-          <Text fontFamily="Klavika" color="primary.main" fontSize="42px">
-            fblog
-          </Text>
+          <Link to={"/"}>
+            <Text fontFamily="Klavika" color="primary.main" fontSize="42px">
+              fblog
+            </Text>
+          </Link>
           <Divider orientation="vertical" sx={{ height: "25px" }} />
-          <NavListContainer />
+          <NavList />
         </Stack>
         <UserTab />
       </Stack>
