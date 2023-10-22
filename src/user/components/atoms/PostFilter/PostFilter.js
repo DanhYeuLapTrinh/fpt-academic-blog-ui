@@ -1,20 +1,10 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import InputLabel from "@mui/material/InputLabel";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Text from "../../atoms/Text/Text";
 import { FormHelperText, IconButton, Stack } from "@mui/material";
-import { Icon } from "@iconify/react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import SelectOption from "../SelectOption/SelectOption";
 export default function PostFilter() {
   const [major, setMajor] = useState("Ngành");
   const [majorID, setMajorID] = useState("");
