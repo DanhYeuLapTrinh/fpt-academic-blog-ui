@@ -42,6 +42,7 @@ export default function LoginForm() {
           user: response?.data?.username,
           role: response?.data?.roleName,
           token: response?.data?.token,
+          refreshToken: response?.data?.refreshToken
         };
         setAuth(auth);
         values.username = "";
