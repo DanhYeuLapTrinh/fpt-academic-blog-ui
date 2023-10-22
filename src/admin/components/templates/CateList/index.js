@@ -4,51 +4,33 @@ import useAuth from "../../../../user/hooks/useAuth";
 
 function CateList() {
   const { auth } = useAuth();
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSemester, setSelectedSemester] = useState(null);
+
   const [majors, setMajors] = useState([]);
   const [categories, setCategories] = useState([]);
+
+  const [selectedMajor, setSelectedMajor] = useState(null);
+  const [selectedSemester, setSelectedSemester] = useState(null);
 
   const headers = {
     Authorization: `Bearer ${auth.token}`,
   };
 
   useEffect(() => {
-    // Tải dữ liệu từ API majors
-    axiosConfig
-      .get("admin/majors", { headers })
-      .then((response) => {
-        setMajors(response.data);
-      })
-      .catch((error) => {
-        console.error("Error loading majors data:", error);
+    const fetchData = async () => {
+      const majorsRes = await axiosConfig.get("/admin/majors", { headers });
+      setMajors(majorsRes.data);
+
+      const categoriesRes = await axiosConfig.get("/categories", {
+        headers,
       });
+      setCategories(categoriesRes.data);
+    };
 
-    // Tải dữ liệu từ API categories
-    axiosConfig
-      .get("admin/categories", { headers })
-      .then((response) => {
-        const categoriesData = response.data;
+    fetchData();
+  }, []);
 
-        // Lọc và sắp xếp categoriesData dựa trên majorName trong majors
-        const filteredCategories = majors.map((major) => {
-          return {
-            majorName: major.majorName,
-            categories: categoriesData.filter(
-              (category) => category.majorName === major.majorName
-            ),
-          };
-        });
-
-        setCategories(filteredCategories);
-      })
-      .catch((error) => {
-        console.error("Error loading categories data:", error);
-      });
-  }, [majors]);
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
+  const handleMajorClick = (major) => {
+    setSelectedMajor(major);
     setSelectedSemester(null);
   };
 
@@ -57,69 +39,50 @@ function CateList() {
   };
 
   return (
-    <div>
-      {categories.map((majorCategory) => (
-        <div
-          key={majorCategory.majorName}
-          className="border rounded-md p-6 shadow-lg mb-4"
-        >
-          <h1 className="text-2xl font-semibold mb-4">
-            {majorCategory.majorName}
-          </h1>
-          <div className="flex space-x-4">
-            <div className="w-1/3 p-4 border rounded-md shadow-md">
-              <h2 className="text-lg font-semibold mb-2">Chuyên ngành</h2>
-              <ul>
-                {majorCategory.categories.map((category) => (
-                  <li
-                    key={category.id}
-                    className={`cursor-pointer ${
-                      selectedCategory?.id === category.id
-                        ? "font-bold text-blue-500"
-                        : ""
-                    }`}
-                    onClick={() => handleCategoryClick(category)}
-                  >
-                    {category.categoryName}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="w-1/3 p-4 border rounded-md shadow-md">
-              {selectedCategory && (
+    <div className="bg-gray-100 p-8 grid grid-cols-3 gap-6">
+      {majors.map((major) => (
+        <div key={major.id} className="bg-white p-6 rounded-lg shadow-md">
+          <h1 className="text-2xl font-semibold mb-4">{major.majorName}</h1>
+          <h2 className="text-lg font-semibold mb-2">Chuyên ngành</h2>
+          {categories
+            .filter((c) => c.majorName === major.majorName)
+            .map((specialization) => (
+              <div
+                key={specialization.id}
+                className="cursor-pointer px-3 py-1 rounded bg-blue-500 text-white mb-2"
+                onClick={() => handleMajorClick(specialization)}
+              >
+                {specialization.categoryName}
+              </div>
+            ))}
+
+          {selectedMajor?.majorName === major.majorName && (
+            <>
+              <h2 className="text-lg font-semibold mb-2">Học kỳ</h2>
+              {selectedMajor.childCategories.map((semester) => (
+                <div
+                  key={semester.id}
+                  className="cursor-pointer px-3 py-1 rounded bg-gray-200 hover:bg-gray-300 mb-2"
+                  onClick={() => handleSemesterClick(semester)}
+                >
+                  {semester.categoryName}
+                </div>
+              ))}
+
+              {selectedSemester && (
                 <div>
-                  <h2 className="text-lg font-semibold mb-2">Học kỳ</h2>
-                  <ul>
-                    {selectedCategory.childCategories.map((semester) => (
-                      <li
-                        key={semester.id}
-                        className={`cursor-pointer ${
-                          selectedSemester?.id === semester.id
-                            ? "font-bold text-blue-500"
-                            : ""
-                        }`}
-                        onClick={() => handleSemesterClick(semester)}
-                      >
-                        {semester.categoryName}
+                  <h2 className="text-lg font-semibold mb-2">Môn học</h2>
+                  <ul className="list-disc pl-5">
+                    {selectedSemester.childCategories.map((subject) => (
+                      <li key={subject.id} className="text-black text-sm mb-1">
+                        {subject.categoryName}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
-            </div>
-            <div className="w-1/3 p-4 border rounded-md shadow-md">
-              {selectedSemester && (
-                <div>
-                  <h2 className="text-lg font-semibold mb-2">Môn học</h2>
-                  <ul>
-                    {selectedSemester.childCategories.map((course) => (
-                      <li key={course.id}>{course.categoryName}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </div>
+            </>
+          )}
         </div>
       ))}
     </div>

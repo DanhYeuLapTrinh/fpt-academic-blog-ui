@@ -12,9 +12,9 @@ function AddCategory() {
 
   const [selectedSemester, setSelectedSemester] = useState("");
 
-  const [selectedMajor, setSelectedMajor] = useState("");
+  const [selectedMajorID, setSelectedMajorID] = useState("");
 
-  const [selectedMajorID, setSelectedMajorID] = useState(""); // To store the selected major's ID
+  const [selectedMajorIdModal, setSelectedMajorIdModal] = useState("");
 
   const [majorList, setMajorList] = useState([]);
 
@@ -33,9 +33,8 @@ function AddCategory() {
   };
 
   useEffect(() => {
-    axiosConfig.get("admin/categories", { headers }).then((res) => {
+    axiosConfig.get("/categories", { headers }).then((res) => {
       setCateList(res.data);
-      console.log(res.data);
     });
 
     axiosConfig.get("admin/majors", { headers }).then((res) => {
@@ -55,73 +54,69 @@ function AddCategory() {
   // Hàm xử lý khi nhấn "Thêm danh mục"
   const handleAddCategory = (e) => {
     e.preventDefault();
-    if (
-      !selectedCategory ||
-      !selectedMajorID ||
-      !selectedSemester ||
-      !selectedSubject
-    ) {
+
+    // Check if you are adding a new specialization
+    const isNewCategory = selectedCategory === "addNew";
+
+    let majorId = selectedCategory === "addNew" ? selectedMajorID : null;
+    let specialization =
+      selectedCategory === "addNew" ? newMajor : selectedCategory;
+
+    if (!selectedSemester || !selectedSubject) {
       toast.error("Vui lòng điền đầy đủ thông tin.");
       return;
     }
 
-    // Dữ liệu để gửi về backend
-    const data = {
-      specialization: selectedCategory,
-      semester: selectedSemester,
-      subject: selectedSubject,
-      majorId: selectedMajorID || selectedCategory,
-    };
+    if (isNewCategory && !specialization) {
+      toast.error("Vui lòng nhập tên chuyên ngành mới.");
+      return;
+    }
 
-    // Gửi request HTTP POST hoặc PUT với dữ liệu data
+    // Call the API to add the specialization
     axiosConfig
-      .post("admin/new-category", data, { headers })
-      .then((response) => {
-        // Xử lý kết quả hoặc thông báo thành công
-        toast.success("Thêm danh mục thành công!");
+      .post(
+        "admin/new-category",
+        {
+          specialization,
+          semester: selectedSemester,
+          subject: selectedSubject,
+          majorId,
+        },
+        { headers }
+      )
+      .then((res) => {
+        toast.success("Thêm thành công!");
       })
-      .catch((error) => {
-        // Xử lý lỗi hoặc hiển thị thông báo lỗi
-        toast.error("Lỗi khi thêm danh mục.");
+      .catch((err) => {
+        toast.error("Có lỗi xảy ra");
       });
   };
 
-  const data = {
-    specialization: selectedCategory,
-    semester: selectedSemester,
-    subject: selectedSubject,
-    majorId: selectedMajorID,
-  };
-
   // Hàm xử lý khi chọn majorName từ modal
-  const handleMajorSelection = (major, majorName) => {
-    setSelectedMajor(majorName);
-    setSelectedMajorID(major.id); // Store the selected major's ID
+  const handleMajorSelection = (major) => {
+    setSelectedMajorIdModal(major.id);
     closeMajorModal();
-    setShowMajorInput(true); // Show the input for adding a new major
+    setShowMajorInput(true);
   };
 
   // Hàm xử lý khi chọn chuyên ngành
   const handleCategoryChange = (e) => {
-    // Nếu chọn chuyên ngành có sẵn
     if (cateList.some((cate) => cate.categoryName === e.target.value)) {
       const selectedCate = cateList.find(
         (cate) => cate.categoryName === e.target.value
       );
+      setSelectedCategory(selectedCate.categoryName);
+
+      // Tìm major có cùng tên với category đã chọn
       const matchedMajor = majorList.find(
         (major) => major.majorName === selectedCate.majorName
       );
-      if (matchedMajor) {
-        setSelectedMajorID(matchedMajor.id);
-      }
 
-      // Nếu chọn chuyên ngành mới
+      // Xử lý khi chọn thêm chuyên ngành mới
     } else if (e.target.value === "addNew") {
       openMajorModal();
+      setSelectedCategory("addNew");
     }
-
-    setSelectedCategory(e.target.value);
-    //...
   };
 
   // Hàm xử lý khi chọn học kỳ
@@ -130,7 +125,7 @@ function AddCategory() {
   };
 
   const renderSemesterSelect = () => {
-    if (selectedCategory === "addNew") {
+    if (selectedCategory == "addNew") {
       // Nếu chọn thêm chuyên ngành, hiển thị 9 học kỳ từ 1 đến 9
       return (
         <select
@@ -200,11 +195,8 @@ function AddCategory() {
                   {cate.categoryName}
                 </option>
               ))}
-              {selectedMajorID ? (
-                <option value={selectedMajorID}>{selectedMajor}</option>
-              ) : (
-                <option value="addNew">Thêm chuyên ngành</option>
-              )}
+
+              <option value="addNew">Thêm chuyên ngành</option>
             </select>
           )}
         </div>
@@ -220,9 +212,6 @@ function AddCategory() {
             name="cateMonHoc"
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
-            disabled={
-              !selectedCategory || !selectedMajorID || !selectedSemester
-            }
           />
         </div>
         <div className="grid grid-cols-2 gap-4 mb-4">
@@ -251,7 +240,7 @@ function AddCategory() {
             {majorList.map((major) => (
               <li
                 key={major.id}
-                onClick={() => handleMajorSelection(major.id, major.majorName)}
+                onClick={() => handleMajorSelection(major.id)}
                 className="cursor-pointer hover:bg-gray-200 p-2 rounded"
               >
                 {major.majorName}
