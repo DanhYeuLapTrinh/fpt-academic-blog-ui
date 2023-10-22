@@ -72,6 +72,8 @@ export const EditTag = () => {
               </option>
             ))}
           </select>
+        </div>
+        <div className="grid grid-cols-2 gap-4 mb-4">
           <input
             className="border p-2 rounded-lg"
             type="text"

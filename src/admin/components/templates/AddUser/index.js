@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import { axiosConfig } from "../../../api/axios";
 import useAuth from "../../../../user/hooks/useAuth";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const AddNewUser = () => {
   const initialUser = {
@@ -14,6 +16,7 @@ export const AddNewUser = () => {
   };
 
   const [user, setUser] = useState(initialUser);
+  
   const [errors, setErrors] = useState({
     username: "",
     password: "",
@@ -22,7 +25,6 @@ export const AddNewUser = () => {
     phone: "",
     role: "",
   });
-  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -42,13 +44,12 @@ export const AddNewUser = () => {
   const resetForm = () => {
     setUser(initialUser);
     setErrors(initialUser);
-    setSuccessMessage(null);
   };
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    // Validation logic
+    // Regex
     const phonePattern = /^\d{10}$/;
     const emailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/;
     const namePattern = /^[A-Za-z\s]+$/;
@@ -56,15 +57,15 @@ export const AddNewUser = () => {
     const newErrors = {};
 
     if (!user.username) {
-      newErrors.username = "Tài khoản bắt buộc";
+      newErrors.username = "Tài khoản không được bỏ trống.";
     }
 
     if (!user.password) {
-      newErrors.password = "Mật khẩu bắt buộc";
+      newErrors.password = "Mật khẩu không được bỏ trống.";
     }
 
     if (!user.role) {
-      newErrors.role = "Vai trò bắt buộc";
+      newErrors.role = "Vai trò không được bỏ trống.";
     }
 
     if (!phonePattern.test(user.phone)) {
@@ -89,9 +90,18 @@ export const AddNewUser = () => {
         .then((res) => {
           console.log(res);
           resetForm(); // Reset the form
-          setSuccessMessage("Thêm tài khoản thành công.");
+          toast.success("Thêm tài khoản thành công", {
+            position: "top-right",
+            autoClose: 3000,
+          });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          toast.error("Thêm thẻ thất bại, đã có lỗi xảy ra!!!", {
+            position: "top-right",
+            autoClose: 3000,
+          });
+        });
     }
   }
 
@@ -190,13 +200,11 @@ export const AddNewUser = () => {
           </select>
           {errors.role && <div className="text-red-500">{errors.role}</div>}
         </div>
-        {successMessage && (
-          <div className="text-green-500 mb-4">{successMessage}</div>
-        )}
         <button className="bg-buttonSubmit text-white py-2 px-4 rounded">
           Thêm tài khoản
         </button>
       </form>
+      <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>
   );
 };
