@@ -39,9 +39,7 @@ function App() {
           <Route element={<HomeLayout />}>
             <Route
               element={
-                <RequireAuth
-                  allowRoles={["student", "mentor", "lecturer", "admin"]}
-                />
+                <RequireAuth allowRoles={["student", "mentor", "lecturer"]} />
               }
             >
               {loggedInUserRoutes.map((item, index) => {

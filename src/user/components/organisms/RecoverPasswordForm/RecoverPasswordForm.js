@@ -9,8 +9,10 @@ import axios from "../../../api/axios";
 import { LoginContext } from "../../../context/LoginProvider";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 export default function RecoverPasswordForm() {
+  const axiosPrivate = useAxiosPrivate()
   const { email } = useContext(LoginContext);
   const {auth} = useAuth()
   const [showPassword, setShowPassword] = useState(false);
@@ -29,21 +31,15 @@ export default function RecoverPasswordForm() {
   });
 
   const handleSubmit = async (values, { setFieldError }) => {
-    try {
       if (values.password && values.confirm) {
         try {
           if (values.password !== values.confirm) throw new Error();
-          await axios.post(
+          await axiosPrivate.post(
             "users/reset-password",
             JSON.stringify({
               email: email,
               password: values.password,
             }),
-            {
-              headers: {
-                Authorization: `Bearer ${auth.token}`,
-              },
-            }
           );
           values.password = "";
           values.confirm = "";
@@ -66,12 +62,6 @@ export default function RecoverPasswordForm() {
           }
         }
       }
-    } catch (error) {
-      if (values.password !== values.confrim) {
-        setFieldError("confirm", "Mật khẩu không trùng nhau");
-        values.confirm = "";
-      }
-    }
   };
 
   return (
