@@ -3,15 +3,19 @@ import useAuth from "./useAuth";
 import axios from "../api/axios";
 
 export default function useRefreshToken() {
-  const {auth, setAuth} = useAuth();
+  const { setAuth } = useAuth();
   const refresh = async () => {
     const response = await axios.post("auth/refresh-token", {
-      token: auth.refreshToken,
+      refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
     });
-    setAuth(prev => {
-      return {...prev, token: response?.data?.token, refreshToken: response?.data?.refreshToken}
-    })
-    return response.data.token
+    localStorage.setItem(
+      "refreshToken",
+      JSON.stringify(response?.data?.refreshToken)
+    );
+    setAuth((prev) => {
+      return { ...prev, token: response?.data?.token };
+    });
+    return response.data.token;
   };
-  return refresh
+  return refresh;
 }

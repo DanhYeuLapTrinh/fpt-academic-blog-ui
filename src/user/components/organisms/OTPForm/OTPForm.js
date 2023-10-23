@@ -52,9 +52,6 @@ export default function OTPForm() {
             email: email,
             code: values.otp,
           }),   
-          {
-            headers: { "Content-Type": "application/json" },
-          }
         );
         setAuth({token : response?.data?.token})
         values.otp = ""
