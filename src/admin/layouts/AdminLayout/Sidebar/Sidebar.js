@@ -70,18 +70,6 @@ export default function Sidebar() {
                   Danh sách tài khoản
                 </ListItem>
               </Link>
-              <Link to={"/ban-user"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Cấm tài khoản
-                </ListItem>
-              </Link>
             </List>
           </AccordionBody>
         </Accordion>

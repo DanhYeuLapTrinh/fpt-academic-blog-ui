@@ -561,8 +561,10 @@ function UserResultList() {
                   </td>
                   <td className="p-4">
                     <div className="flex flex-col">
-                      {banStatus[item.id] ? "Đang bị cấm" : "Bình thường"}
-                      {isMuted[item.id] ? "Đang bị hạn chế" : ""}
+                      <div>
+                        {banStatus[item.id] ? "Đang bị cấm" : "Bình thường"}
+                      </div>
+                      <div>{isMuted[item.id] ? "Đang bị hạn chế" : ""}</div>
                     </div>
                   </td>
                   <td className="p-4 flex items-center">
