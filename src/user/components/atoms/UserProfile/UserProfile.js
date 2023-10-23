@@ -6,21 +6,21 @@ export default function UserProfile({ ...props }) {
     width: "36px",
     height: "36px",
     sx: {
-      borderRadius: '50px',
-      backgroundColor: 'red'
-    }
-  };
-  const configPic = {
-    width: "100%",
-    height: "100%",
-    style: {
-      borderRadius: '50px'
+      borderRadius: "50px",
     },
     ...props,
   };
+  const configPic = {
+    style: {
+      borderRadius: "50px",
+      width: "100%",
+      height: "100%",
+    },
+    src: props.src,
+  };
   return (
     <Box {...configContainer}>
-      <img {...configPic} />
+      <img {...configPic} alt={props.alt} />
     </Box>
   );
 }

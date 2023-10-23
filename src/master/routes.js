@@ -18,6 +18,7 @@ import ReportedProfilePage from "../admin/components/pages/Reports/ReportedProfi
 import ReportedCommentPage from "../admin/components/pages/Reports/ReportedCommentPage";
 import ActivityLogPage from "../admin/components/pages/ActivityLog/ActivityLogPage";
 import SettingPage from "../admin/components/pages/Setting/SettingPage";
+import Write from "../user/components/pages/Write/Write";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -32,6 +33,7 @@ const loggedInUserRoutes = [
   { path: "/", component: Home },
   { path: "/feed", component: Feed },
   { path: "/news", component: News },
+  {path: "/write", component: Write},
 ];
 
 const loggedInAdminRoutes = [

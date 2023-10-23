@@ -2,25 +2,32 @@ import { useEffect, useState } from "react";
 
 const useAxios = (configObject) => {
   const {
+    condition,
     axiosInstance,
     method,
     endpoint,
     requestConfig = {}, // headers, data, token, ...
   } = configObject;
 
-  const [response, setResponse] = useState([]);
+  const [response, setResponse] = useState({});
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted((prev) => !prev);
+  }, []);
 
   useEffect(() => {
+    if (!mounted) return;
     const fetchData = async () => {
       try {
         const res = await axiosInstance[method.toLowerCase()](endpoint, {
           ...requestConfig,
         });
-        setResponse(JSON.stringify(res));
+        setResponse(res);
       } catch (error) {
-        setError(error.message);
+        setError(error.status);
       } finally {
         setIsLoading(false);
       }
@@ -28,8 +35,7 @@ const useAxios = (configObject) => {
 
     fetchData();
 
-    // clean - nếu component unmount thì dừng việc call API
-  }, []);
+  }, [condition]);
 
   return [response, error, isLoading];
 };

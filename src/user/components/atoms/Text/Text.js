@@ -4,8 +4,11 @@ import React from 'react'
 export default function Text({children,...props}) {
   const configText = {
     fontFamily: 'Roboto, sans-serif',
-    color: 'text.main',
     fontWeight: "500",
+    sx: {
+      textOverflow: "ellipsis",
+      color: props.color ? props.color : 'text.main',
+    },
     ...props,
   }
   return (

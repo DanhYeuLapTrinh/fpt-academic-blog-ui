@@ -43,12 +43,13 @@ export default function LoginForm() {
           role: response?.data?.roleName,
           token: response?.data?.token,
         };
+        localStorage.setItem("refreshToken", JSON.stringify(response?.data?.refreshToken))
         setAuth(auth);
         values.username = "";
         values.password = "";
-        if(auth.role === "admin") {
-          navigate("/welcome")
-        } else navigate("/")
+        if (auth.role === "admin") {
+          navigate("/welcome");
+        } else navigate("/");
       } catch (error) {
         if (!error?.response) {
           console.log("No server response");

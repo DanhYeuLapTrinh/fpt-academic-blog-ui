@@ -5,8 +5,7 @@ import { AuthContext } from "../context/AuthProvider";
 export default function RequireAuth({ allowRoles }) {
   const location = useLocation();
   const {auth} = useContext(AuthContext)
-  console.log(auth)
-  return allowRoles.find((role) => role === auth?.role) && auth?.token ? (
+  return (allowRoles.find((role) => role === auth?.role) && auth?.token) ? (
     <Outlet />
   ) : auth?.user ? (
     <Navigate to="/unauthorized" state={{ from: location }} replace />
