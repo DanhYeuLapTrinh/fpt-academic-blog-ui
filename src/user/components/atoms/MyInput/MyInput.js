@@ -11,12 +11,13 @@ export default function MyInput({ ...props }) {
       fontSize: props.size,
       marginBottom: props.mb
     },
-    variant: "outlined",
+    variant: props.variant ? props.variant : "outlined",
     placeholder: props.text,
     InputProps: {
       startAdornment: (
         <InputAdornment position="start">{props.icon}</InputAdornment>
       ),
+      disableUnderline: props.disableUnderline
     },
   };
   return <TextField {...config} />;
