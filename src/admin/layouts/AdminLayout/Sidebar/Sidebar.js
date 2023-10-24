@@ -123,18 +123,6 @@ export default function Sidebar() {
                   Tất cả danh mục
                 </ListItem>
               </Link>
-              <Link to={"/add-category"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Thêm danh mục
-                </ListItem>
-              </Link>
             </List>
           </AccordionBody>
         </Accordion>
