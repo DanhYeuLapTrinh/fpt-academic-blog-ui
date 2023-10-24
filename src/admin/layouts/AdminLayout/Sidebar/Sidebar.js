@@ -135,30 +135,6 @@ export default function Sidebar() {
                   Thêm danh mục
                 </ListItem>
               </Link>
-              <Link to={"/edit-category"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Chỉnh sửa danh mục
-                </ListItem>
-              </Link>
-              <Link to={"/delete-category"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Xóa danh mục
-                </ListItem>
-              </Link>
             </List>
           </AccordionBody>
         </Accordion>
