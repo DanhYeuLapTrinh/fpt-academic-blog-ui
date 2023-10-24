@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { axiosConfig } from "../../../api/axios";
-import useAuth from "../../../../user/hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Modal } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
-function AddCategory() {
+function AddCategory({ closeAddCategoryModal }) {
   const [cateList, setCateList] = useState([]);
 
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -26,19 +26,15 @@ function AddCategory() {
 
   const [selectedSubject, setSelectedSubject] = useState("");
 
-  const { auth } = useAuth();
-
-  const headers = {
-    Authorization: `Bearer ${auth.token}`,
-  };
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    axiosConfig.get("/categories", { headers }).then((res) => {
+    axiosPrivate.get("/categories").then((res) => {
       setCateList(res.data);
       console.log(res.data);
     });
 
-    axiosConfig.get("admin/majors", { headers }).then((res) => {
+    axiosPrivate.get("admin/majors").then((res) => {
       setMajorList(res.data);
     });
   }, []);
@@ -74,8 +70,8 @@ function AddCategory() {
     };
 
     // Gửi request HTTP POST hoặc PUT với dữ liệu data
-    axiosConfig
-      .post("admin/new-category", data, { headers })
+    axiosPrivate
+      .post("admin/new-category", data)
       .then((response) => {
         // Xử lý kết quả hoặc thông báo thành công
         toast.success("Thêm danh mục thành công!");
@@ -118,59 +114,44 @@ function AddCategory() {
   };
 
   // Hàm xử lý khi chọn học kỳ
+  const renderSemesterSelect = () => {
+    const semesters = Array.from({ length: 9 }, (_, i) => i + 1);
+
+    return (
+      <select
+        className="border p-2 rounded-lg"
+        value={selectedSemester}
+        onChange={handleSemesterChange}
+        disabled={!selectedCategory || !selectedMajorID}
+      >
+        <option value="">Chọn học kỳ</option>
+        {semesters.map((semester) => (
+          <option key={semester} value={`Kỳ ${semester}`}>
+            Kỳ {semester}
+          </option>
+        ))}
+      </select>
+    );
+  };
+
   const handleSemesterChange = (e) => {
     setSelectedSemester(e.target.value);
   };
 
-  const renderSemesterSelect = () => {
-    if (selectedCategory === "addNew") {
-      // Nếu chọn thêm chuyên ngành, hiển thị 9 học kỳ từ 1 đến 9
-      return (
-        <select
-          className="border p-2 rounded-lg"
-          value={selectedSemester}
-          onChange={handleSemesterChange}
-        >
-          <option value="">Chọn học kỳ</option>
-          {Array.from({ length: 9 }, (_, i) => (
-            <option key={i + 1} value={i + 1}>
-              Kỳ {i + 1}
-            </option>
-          ))}
-        </select>
-      );
-    } else {
-      // Nếu chọn từ danh mục API, hiển thị danh sách học kỳ từ childCategories
-      const selectedCategoryObj = cateList.find(
-        (cate) => cate.categoryName == selectedCategory
-      );
-      if (selectedCategoryObj) {
-        const semesterOptions = selectedCategoryObj.childCategories
-          .filter((childCate) => childCate.categoryType == "Semester")
-          .map((childCate) => (
-            <option key={childCate.id} value={childCate.categoryName}>
-              {childCate.categoryName}
-            </option>
-          ));
-        return (
-          <select
-            className="border p-2 rounded-lg"
-            value={selectedSemester}
-            onChange={handleSemesterChange}
-          >
-            <option value="">Chọn học kỳ</option>
-            {semesterOptions}
-          </select>
-        );
-      }
-    }
+  const handleCloseModal = () => {
+    closeAddCategoryModal(); // Gọi hàm để đóng modal ở đây
   };
 
   return (
     <div className="w-full max-w-full h-full items-center bg-background">
       <form className="h-full bg-white p-10 rounded-lg border border-gray-200">
         <h2 className="text-2xl font-bold mb-4">Thêm danh mục mới</h2>
-        <p className="text-red-500"></p>
+        <button
+          onClick={handleCloseModal}
+          className="absolute top-0 right-0 p-2 cursor-pointer"
+        >
+          <CancelIcon className="text-red-500" />
+        </button>
         <div className="grid grid-cols-2 gap-4 mb-4">
           {showMajorInput ? ( // Show input when a major is selected
             <input

@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { axiosConfig } from "../../../api/axios";
-import useAuth from "../../../../user/hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 export const EditTag = () => {
+  const axiosPrivate = useAxiosPrivate();
   const [tag, setTag] = useState({
     tagId: "",
     tagName: "",
   });
-
-  const { auth } = useAuth();
-
-  const headers = {
-    Authorization: `Bearer ${auth.token}`,
-  };
 
   const [tagList, setTagList] = useState([]);
 
@@ -23,8 +17,8 @@ export const EditTag = () => {
   };
 
   useEffect(() => {
-    axiosConfig
-      .get("admin/tags", { headers })
+    axiosPrivate
+      .get("admin/tags")
       .then((res) => {
         setTagList(res.data);
       })
@@ -33,8 +27,8 @@ export const EditTag = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    axiosConfig
-      .post("admin/edit-tag", tag, { headers })
+    axiosPrivate
+      .post("admin/edit-tag", tag)
       .then((res) => {
         // Cập nhật danh sách thẻ sau khi cập nhật thành công
         const updatedTagList = [...tagList];

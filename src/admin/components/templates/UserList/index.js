@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Input } from "@material-tailwind/react";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
-import { axiosConfig } from "../../../api/axios";
-import useAuth from "../../../../user/hooks/useAuth";
 import Modal from "react-modal";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -17,6 +15,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 function UserResultList() {
   const initialUser = {
@@ -38,7 +37,7 @@ function UserResultList() {
     role: "",
   });
 
-  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
   const [data, setData] = useState([]);
 
@@ -149,8 +148,8 @@ function UserResultList() {
       setFormErrors({ ...formErrors, role: roleErrorMessage });
       return;
     }
-    axiosConfig
-      .post("admin/register", formData, { headers })
+    axiosPrivate
+      .post("admin/register", formData)
       .then((response) => {
         // Xử lý phản hồi từ máy chủ nếu cần
         console.log("Thêm mới thành công!");
@@ -167,13 +166,9 @@ function UserResultList() {
     setFormData(initialUser);
   };
 
-  const headers = {
-    Authorization: `Bearer ${auth.token}`,
-  };
-
   //Call api get user list
   useEffect(() => {
-    axiosConfig.get("admin/users", { headers }).then((res) => {
+    axiosPrivate.get("admin/users").then((res) => {
       setData(res.data);
       setRecords(res.data);
       console.log(res.data);
@@ -218,12 +213,8 @@ function UserResultList() {
   const muteUser = () => {
     const duration = parseInt(muteDuration, 10);
     if (selectedUserId) {
-      axiosConfig
-        .post(
-          "admin/mute-user",
-          { id: selectedUserId, muteDuration: duration },
-          { headers }
-        )
+      axiosPrivate
+        .post("admin/mute-user", { id: selectedUserId, muteDuration: duration })
         .then((res) => {
           // Tạo một bản sao của đối tượng isMuted
           const updatedIsMuted = { ...isMuted };
@@ -247,26 +238,24 @@ function UserResultList() {
 
   //Funtion unmute
   const unmuteUser = (userId) => {
-    axiosConfig
-      .post("admin/unmute-user", { id: userId }, { headers })
-      .then((res) => {
-        // Tạo một bản sao của đối tượng isMuted
-        const updatedIsMuted = { ...isMuted };
-        updatedIsMuted[userId] = false;
+    axiosPrivate.post("admin/unmute-user", { id: userId }).then((res) => {
+      // Tạo một bản sao của đối tượng isMuted
+      const updatedIsMuted = { ...isMuted };
+      updatedIsMuted[userId] = false;
 
-        // Lưu updatedIsMuted vào localStorage
-        localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
+      // Lưu updatedIsMuted vào localStorage
+      localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
 
-        // Cập nhật state
-        setIsMuted(updatedIsMuted);
+      // Cập nhật state
+      setIsMuted(updatedIsMuted);
 
-        setShowMuteModal(false);
+      setShowMuteModal(false);
 
-        toast.success(`Unmute ${selectedUsername} thành công!`, {
-          position: "top-right",
-          autoClose: 3000,
-        });
+      toast.success(`Unmute ${selectedUsername} thành công!`, {
+        position: "top-right",
+        autoClose: 3000,
       });
+    });
   };
 
   //Set Role
@@ -277,8 +266,8 @@ function UserResultList() {
   };
 
   const saveRoleChanges = (userId) => {
-    axiosConfig
-      .post("admin/set-role", { id: userId, role: newRole }, { headers })
+    axiosPrivate
+      .post("admin/set-role", { id: userId, role: newRole })
       .then((res) => {
         setEditingUserId(null);
         setShowRoleSuccessModal(true);
@@ -320,8 +309,8 @@ function UserResultList() {
   const banAccount = (id) => {
     setIsBanning(true);
     setIsBanningId(id);
-    axiosConfig
-      .post("admin/ban-user", { id }, { headers })
+    axiosPrivate
+      .post("admin/ban-user", { id })
       .then((res) => {
         toast.success("Cấm tài khoản thành công", {
           position: "top-right",
@@ -352,8 +341,8 @@ function UserResultList() {
   };
 
   const unbanAccount = (id) => {
-    axiosConfig
-      .post("admin/unban-user", { id }, { headers })
+    axiosPrivate
+      .post("admin/unban-user", { id })
       .then((res) => {
         toast.success("Bỏ cấm tài khoản thành công", {
           position: "top-right",

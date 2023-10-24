@@ -10,8 +10,6 @@ import Welcome from "../admin/components/pages/Welcome/Welcome";
 import UserList from "../admin/components/pages/Users/UserList";
 import CategoriesListPage from "../admin/components/pages/Categories/CategoriesListPage";
 import AddNewCategory from "../admin/components/pages/Categories/AddNewCategory";
-import EditCategory from "../admin/components/pages/Categories/EditCategory";
-import DeleteCategory from "../admin/components/pages/Categories/DeleteCategory";
 import TagListPage from "../admin/components/pages/Tags/TagListPage";
 import EditTagPage from "../admin/components/pages/Tags/EditTagPage";
 import ReportedProfilePage from "../admin/components/pages/Reports/ReportedProfilePage";
@@ -33,7 +31,7 @@ const loggedInUserRoutes = [
   { path: "/", component: Home },
   { path: "/feed", component: Feed },
   { path: "/news", component: News },
-  {path: "/write", component: Write},
+  { path: "/write", component: Write },
 ];
 
 const loggedInAdminRoutes = [
@@ -45,8 +43,6 @@ const loggedInAdminRoutes = [
   //Categories Page
   { path: "/categories-list", component: CategoriesListPage },
   { path: "/add-category", component: AddNewCategory },
-  { path: "/edit-category", component: EditCategory },
-  { path: "/delete-category", component: DeleteCategory },
   //Tags Page
   { path: "/tags-list", component: TagListPage },
   { path: "/edit-tag", component: EditTagPage },
