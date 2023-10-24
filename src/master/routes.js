@@ -42,7 +42,6 @@ const loggedInAdminRoutes = [
 
   //Categories Page
   { path: "/categories-list", component: CategoriesListPage },
-  { path: "/add-category", component: AddNewCategory },
   //Tags Page
   { path: "/tags-list", component: TagListPage },
   { path: "/edit-tag", component: EditTagPage },
