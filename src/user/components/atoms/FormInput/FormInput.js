@@ -1,12 +1,21 @@
 import React from "react";
 import { Box, TextField } from "@mui/material";
-import { useField } from "formik";
+import { useField, useFormikContext } from "formik";
 
 export default function FormInput({ name, children, ...props }) {
   const [field, mata] = useField(name);
+  const {submitForm} = useFormikContext()
+
+  const handleKeyUp = (e) => {
+    if(e.keyCode == 13) {
+      submitForm()
+    }
+  }
+  
   const configTextField = {
     ...field,
     ...props,
+    onKeyUp: handleKeyUp,
     spellCheck: false,
     autoFocus: props.autoFocus,
     sx: {
