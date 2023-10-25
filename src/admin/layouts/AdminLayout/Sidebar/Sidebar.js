@@ -25,9 +25,11 @@ export default function Sidebar() {
   return (
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
       <div className="mb-2">
-        <Typography className="text-custom text-4xl font-bold ml-16">
-          fblog
-        </Typography>
+        <Link>
+          <Typography className="text-custom text-4xl font-bold ml-16 cursor-pointer">
+            fblog
+          </Typography>
+        </Link>
       </div>
       <List>
         <Accordion

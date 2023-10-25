@@ -8,7 +8,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { TablePagination } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Button } from "@mui/base";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -16,6 +15,9 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import AddNewButton from "../../atoms/AddNewButton";
+import { handleSearch } from "../../../utils/User/userAction";
+import AddUserForm from "../../../utils/User/userAction";
 
 function UserResultList() {
   const initialUser = {
@@ -39,6 +41,8 @@ function UserResultList() {
 
   const axiosPrivate = useAxiosPrivate();
 
+  const [isAddUserFormOpen, setAddUserFormOpen] = useState(false);
+
   const [data, setData] = useState([]);
 
   const [records, setRecords] = useState([]);
@@ -52,8 +56,6 @@ function UserResultList() {
   const [selectedUserId, setSelectedUserId] = useState("");
 
   const [selectedUsername, setSelectedUsername] = useState("");
-
-  const [mutedUserIds, setMutedUserIds] = useState([]);
 
   const [editingUserId, setEditingUserId] = useState(null);
 
@@ -107,6 +109,16 @@ function UserResultList() {
     setOpen(false);
   };
 
+  // Function to open the add user form modal
+  const handleOpenAddUserForm = () => {
+    setAddUserFormOpen(true);
+  };
+
+  // Function to close the add user form modal
+  const handleCloseAddUserForm = () => {
+    setAddUserFormOpen(false);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -114,51 +126,19 @@ function UserResultList() {
     setFormErrors({ ...formErrors, [name]: "" });
   };
 
-  const handleAddUser = () => {
-    if (data.some((user) => user.username === formData.username)) {
-      setFormErrors({ ...formErrors, username: "Tên tài khoản đã tồn tại" });
-      return;
-    }
-    if (!usernameRegex.test(formData.username)) {
-      setFormErrors({ ...formErrors, username: usernameErrorMessage });
-      return;
-    }
-
-    if (!passwordRegex.test(formData.password)) {
-      setFormErrors({ ...formErrors, password: passwordErrorMessage });
-      return;
-    }
-
-    if (!fullnameRegex.test(formData.fullname)) {
-      setFormErrors({ ...formErrors, fullname: fullnameErrorMessage });
-      return;
-    }
-
-    if (!emailRegex.test(formData.email)) {
-      setFormErrors({ ...formErrors, email: emailErrorMessage });
-      return;
-    }
-
-    if (!phoneRegex.test(formData.phone)) {
-      setFormErrors({ ...formErrors, phone: phoneErrorMessage });
-      return;
-    }
-
-    if (!roleRegex.test(formData.role)) {
-      setFormErrors({ ...formErrors, role: roleErrorMessage });
-      return;
-    }
+  // Function to add a new user
+  const handleAddUser = (userData) => {
+    // Call the API to add a new user with `userData` passed as a parameter
     axiosPrivate
-      .post(process.env.REACT_APP_NEW_USER, formData)
+      .post(process.env.REACT_APP_NEW_USER, userData)
       .then((response) => {
-        // Xử lý phản hồi từ máy chủ nếu cần
+        // Handle the response from the server if needed
         console.log("Thêm mới thành công!");
       })
       .catch((error) => {
-        // Xử lý lỗi nếu có
+        // Handle errors if any
         console.error("Lỗi khi thêm mới người dùng:", error);
       });
-    handleClose();
   };
 
   const resetForm = () => {
@@ -188,11 +168,8 @@ function UserResultList() {
     }
   }, []);
 
-  const handleSearch = (event) => {
-    const filteredData = data.filter((item) =>
-      item.username.toLowerCase().includes(event.target.value.toLowerCase())
-    );
-    setRecords(filteredData);
+  const handleSearchUser = (event) => {
+    handleSearch(event, data, setRecords);
   };
 
   //Popup form input time to mute
@@ -382,7 +359,7 @@ function UserResultList() {
   return (
     <div className="m-5">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Danh sách người dùng</h2>
+        <h2 className="text-3xl font-bold">Danh sách người dùng</h2>
       </div>
       <div className="flex justify-between py-4">
         <div className="w-1/3">
@@ -390,105 +367,21 @@ function UserResultList() {
             icon={<SearchIcon className="h-5 w-5" />}
             label="Tìm kiếm người dùng..."
             type="text"
-            onChange={handleSearch}
+            onChange={handleSearchUser}
           />
         </div>
         <div>
           <form className="rounded-lg">
-            <Button
-              className="px-4 h-12 rounded-lg shadow-md bg-custom text-white text-center"
-              onClick={handleClickOpen}
-            >
-              <AddCircleIcon className="mr-2" />
-              Thêm người dùng mới
-            </Button>
-            <Dialog open={open} onClose={handleClose}>
-              <DialogTitle>Thêm người dùng mới</DialogTitle>
-              <DialogContent style={{ paddingBottom: "5px" }}>
-                <TextField
-                  margin="dense"
-                  label="Tên tài khoản"
-                  type="text"
-                  name="username"
-                  fullWidth
-                  variant="standard"
-                  value={formData.username}
-                  onChange={handleInputChange}
-                  error={Boolean(formErrors.username)}
-                  helperText={formErrors.username}
-                />
-                <TextField
-                  margin="dense"
-                  label="Nhập mật khẩu"
-                  type="password"
-                  name="password"
-                  fullWidth
-                  variant="standard"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  error={Boolean(formErrors.password)}
-                  helperText={formErrors.password}
-                />
-                <TextField
-                  margin="dense"
-                  label="Tên đầy đủ"
-                  type="text"
-                  name="fullname"
-                  fullWidth
-                  variant="standard"
-                  value={formData.fullname}
-                  onChange={handleInputChange}
-                  error={Boolean(formErrors.fullname)}
-                  helperText={formErrors.fullname}
-                />
-                <TextField
-                  margin="dense"
-                  label="Địa chỉ email"
-                  type="email"
-                  name="email"
-                  fullWidth
-                  variant="standard"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  error={Boolean(formErrors.email)}
-                  helperText={formErrors.email}
-                />
-                <TextField
-                  margin="dense"
-                  label="Nhập số điện thoại"
-                  type="tel"
-                  name="phone"
-                  fullWidth
-                  variant="standard"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  error={Boolean(formErrors.phone)}
-                  helperText={formErrors.phone}
-                />
-                <select
-                  className="mt-4 border-b-2 border-solid outline-0 w-full"
-                  name="role"
-                  onChange={handleInputChange}
-                  value={formData.role}
-                  error={Boolean(formErrors.role)}
-                >
-                  <option value="">Chọn vai trò</option>
-                  <option value="Admin">Admin</option>
-                  <option value="Mentor">Mentor</option>
-                  <option value="Lecturer">Lecturer</option>
-                  <option value="Student">Student</option>
-                </select>
-              </DialogContent>
-              <DialogActions style={{ paddingTop: "10px" }}>
-                <Button onClick={handleClose}>Hủy thêm</Button>
-                <Button
-                  onClick={handleAddUser}
-                  className="bg-green-500 rounded h-8 w-20 text-white"
-                >
-                  Thêm mới
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <AddNewButton
+              title="Thêm người dùng mới"
+              handleClick={handleOpenAddUserForm}
+            />
+            <AddUserForm
+              open={isAddUserFormOpen}
+              onClose={handleCloseAddUserForm}
+              onAddUser={handleAddUser}
+              data={data}
+            />
           </form>
         </div>
       </div>
@@ -498,8 +391,8 @@ function UserResultList() {
             <tr className="border-b">
               <th className="px-4 py-2">ID</th>
               <th className="px-4 py-2">Tài khoản</th>
+              <th className="px-4 py-2">Tên đầy đủ</th>
               <th className="px-4 py-2">Email</th>
-              <th className="px-4 py-2">Số điện thoại</th>
               <th className="px-4 py-2">Vai trò</th>
               <th className="px-4 py-2">Trạng thái</th>
               <th className="px-4 py-2"></th>
@@ -512,8 +405,8 @@ function UserResultList() {
                 <tr key={item.id} className="border-b">
                   <td className="p-4">{item.id}</td>
                   <td className="p-4">{item.username}</td>
+                  <td className="p-4">{item.fullName}</td>
                   <td className="p-4">{item.email}</td>
-                  <td className="p-4">{item.phone}</td>
                   <td className="p-4 w-100">
                     {editingUserId === item.id ? (
                       <div>
