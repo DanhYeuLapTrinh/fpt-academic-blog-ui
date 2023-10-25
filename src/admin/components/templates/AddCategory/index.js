@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { axiosConfig } from "../../../api/axios";
-import useAuth from "../../../../user/hooks/useAuth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Modal } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
-function AddCategory() {
+function AddCategory({ closeAddCategoryModal }) {
   const [cateList, setCateList] = useState([]);
 
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [selectedSemester, setSelectedSemester] = useState("");
 
-  const [selectedMajorID, setSelectedMajorID] = useState("");
+  const [selectedMajor, setSelectedMajor] = useState("");
 
-  const [selectedMajorIdModal, setSelectedMajorIdModal] = useState("");
+  const [selectedMajorID, setSelectedMajorID] = useState(""); // To store the selected major's ID
 
   const [majorList, setMajorList] = useState([]);
 
@@ -26,18 +26,19 @@ function AddCategory() {
 
   const [selectedSubject, setSelectedSubject] = useState("");
 
-  const { auth } = useAuth();
+  const [subjectError, setSubjectError] = useState("");
 
-  const headers = {
-    Authorization: `Bearer ${auth.token}`,
-  };
+  const [categoryError, setCategoryError] = useState("");
+
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    axiosConfig.get("/categories", { headers }).then((res) => {
+    axiosPrivate.get(process.env.REACT_APP_CATEGORIES_LIST).then((res) => {
       setCateList(res.data);
+      console.log(res.data);
     });
 
-    axiosConfig.get("admin/majors", { headers }).then((res) => {
+    axiosPrivate.get(process.env.REACT_APP_MAJORS_LIST).then((res) => {
       setMajorList(res.data);
     });
   }, []);
@@ -55,124 +56,114 @@ function AddCategory() {
   const handleAddCategory = (e) => {
     e.preventDefault();
 
-    // Check if you are adding a new specialization
-    const isNewCategory = selectedCategory === "addNew";
-
-    let majorId = selectedCategory === "addNew" ? selectedMajorID : null;
-    let specialization =
-      selectedCategory === "addNew" ? newMajor : selectedCategory;
-
-    if (!selectedSemester || !selectedSubject) {
-      toast.error("Vui lòng điền đầy đủ thông tin.");
-      return;
-    }
-
-    if (isNewCategory && !specialization) {
-      toast.error("Vui lòng nhập tên chuyên ngành mới.");
-      return;
-    }
-
-    // Call the API to add the specialization
-    axiosConfig
-      .post(
-        "admin/new-category",
-        {
-          specialization,
-          semester: selectedSemester,
-          subject: selectedSubject,
-          majorId,
-        },
-        { headers }
+    // Kiểm tra môn học trùng và lỗi môn học
+    if (
+      cateList.some(
+        (cate) =>
+          cate.subject === selectedSubject && cate.semester === selectedSemester
       )
-      .then((res) => {
-        toast.success("Thêm thành công!");
+    ) {
+      setSubjectError("Môn học đã tồn tại ở học kỳ này");
+      return;
+    } else {
+      setSubjectError(""); // Xóa lỗi môn học nếu không trùng
+    }
+
+    // Kiểm tra danh mục trống và lỗi danh mục
+    if (!selectedSubject) {
+      setSubjectError("Danh mục không được để trống");
+      return;
+    } else {
+      setSubjectError(""); // Xóa lỗi danh mục nếu không trống
+    }
+
+    const data = {
+      specialization: selectedCategory,
+      semester: selectedSemester,
+      subject: selectedSubject,
+      majorId: selectedMajorID || selectedCategory,
+    };
+
+    axiosPrivate
+      .post(process.env.REACT_APP_ADD_NEW_CATEGORY, data)
+      .then((response) => {
+        toast.success("Thêm danh mục thành công!");
       })
-      .catch((err) => {
-        toast.error("Có lỗi xảy ra");
+      .catch((error) => {
+        toast.error("Lỗi khi thêm danh mục.");
       });
   };
 
   // Hàm xử lý khi chọn majorName từ modal
-  const handleMajorSelection = (major) => {
-    setSelectedMajorIdModal(major.id);
+  const handleMajorSelection = (major, majorName) => {
+    setSelectedMajor(majorName);
+    setSelectedMajorID(major.id); // Store the selected major's ID
     closeMajorModal();
-    setShowMajorInput(true);
+    setShowMajorInput(true); // Show the input for adding a new major
   };
 
   // Hàm xử lý khi chọn chuyên ngành
   const handleCategoryChange = (e) => {
+    // Nếu chọn chuyên ngành có sẵn
     if (cateList.some((cate) => cate.categoryName === e.target.value)) {
       const selectedCate = cateList.find(
         (cate) => cate.categoryName === e.target.value
       );
-      setSelectedCategory(selectedCate.categoryName);
-
-      // Tìm major có cùng tên với category đã chọn
       const matchedMajor = majorList.find(
         (major) => major.majorName === selectedCate.majorName
       );
+      if (matchedMajor) {
+        setSelectedMajorID(matchedMajor.id);
+      }
 
-      // Xử lý khi chọn thêm chuyên ngành mới
+      // Nếu chọn chuyên ngành mới
     } else if (e.target.value === "addNew") {
       openMajorModal();
-      setSelectedCategory("addNew");
     }
+
+    setSelectedCategory(e.target.value);
+    //...
   };
 
   // Hàm xử lý khi chọn học kỳ
+  const renderSemesterSelect = () => {
+    const semesters = Array.from({ length: 9 }, (_, i) => i + 1);
+
+    return (
+      <select
+        className="border p-2 rounded-lg"
+        value={selectedSemester}
+        onChange={handleSemesterChange}
+        disabled={!selectedCategory || !selectedMajorID}
+      >
+        <option value="">Chọn học kỳ</option>
+        {semesters.map((semester) => (
+          <option key={semester} value={`Kỳ ${semester}`}>
+            Kỳ {semester}
+          </option>
+        ))}
+      </select>
+    );
+  };
+
   const handleSemesterChange = (e) => {
     setSelectedSemester(e.target.value);
   };
 
-  const renderSemesterSelect = () => {
-    if (selectedCategory == "addNew") {
-      // Nếu chọn thêm chuyên ngành, hiển thị 9 học kỳ từ 1 đến 9
-      return (
-        <select
-          className="border p-2 rounded-lg"
-          value={selectedSemester}
-          onChange={handleSemesterChange}
-        >
-          <option value="">Chọn học kỳ</option>
-          {Array.from({ length: 9 }, (_, i) => (
-            <option key={i + 1} value={i + 1}>
-              Kỳ {i + 1}
-            </option>
-          ))}
-        </select>
-      );
-    } else {
-      // Nếu chọn từ danh mục API, hiển thị danh sách học kỳ từ childCategories
-      const selectedCategoryObj = cateList.find(
-        (cate) => cate.categoryName == selectedCategory
-      );
-      if (selectedCategoryObj) {
-        const semesterOptions = selectedCategoryObj.childCategories
-          .filter((childCate) => childCate.categoryType == "Semester")
-          .map((childCate) => (
-            <option key={childCate.id} value={childCate.categoryName}>
-              {childCate.categoryName}
-            </option>
-          ));
-        return (
-          <select
-            className="border p-2 rounded-lg"
-            value={selectedSemester}
-            onChange={handleSemesterChange}
-          >
-            <option value="">Chọn học kỳ</option>
-            {semesterOptions}
-          </select>
-        );
-      }
-    }
+  const handleCloseModal = () => {
+    closeAddCategoryModal(); // Gọi hàm để đóng modal ở đây
   };
 
   return (
     <div className="w-full max-w-full h-full items-center bg-background">
       <form className="h-full bg-white p-10 rounded-lg border border-gray-200">
         <h2 className="text-2xl font-bold mb-4">Thêm danh mục mới</h2>
-        <p className="text-red-500"></p>
+        <button
+          onClick={handleCloseModal}
+          className="absolute top-0 right-0 p-2 cursor-pointer"
+        >
+          <CancelIcon className="text-red-500" />
+        </button>
         <div className="grid grid-cols-2 gap-4 mb-4">
           {showMajorInput ? ( // Show input when a major is selected
             <input
@@ -195,8 +186,11 @@ function AddCategory() {
                   {cate.categoryName}
                 </option>
               ))}
-
-              <option value="addNew">Thêm chuyên ngành</option>
+              {selectedMajorID ? (
+                <option value={selectedMajorID}>{selectedMajor}</option>
+              ) : (
+                <option value="addNew">Thêm chuyên ngành</option>
+              )}
             </select>
           )}
         </div>
@@ -212,12 +206,16 @@ function AddCategory() {
             name="cateMonHoc"
             value={selectedSubject}
             onChange={(e) => setSelectedSubject(e.target.value)}
+            disabled={
+              !selectedCategory || !selectedMajorID || !selectedSemester
+            }
           />
         </div>
+        {subjectError && <p className="text-red-500">{subjectError}</p>}
         <div className="grid grid-cols-2 gap-4 mb-4">
           <button
             className="bg-buttonSubmit text-white py-2 px-4 rounded"
-            onClick={handleAddCategory} // Gọi hàm khi nhấn nút "Thêm danh mục"
+            onClick={handleAddCategory}
           >
             Thêm danh mục
           </button>
@@ -240,7 +238,7 @@ function AddCategory() {
             {majorList.map((major) => (
               <li
                 key={major.id}
-                onClick={() => handleMajorSelection(major.id)}
+                onClick={() => handleMajorSelection(major.id, major.majorName)}
                 className="cursor-pointer hover:bg-gray-200 p-2 rounded"
               >
                 {major.majorName}

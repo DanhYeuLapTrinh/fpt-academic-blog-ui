@@ -24,6 +24,11 @@ export default function Sidebar() {
 
   return (
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+      <div className="mb-2">
+        <Typography className="text-custom text-4xl font-bold ml-16">
+          fblog
+        </Typography>
+      </div>
       <List>
         <Accordion
           open={open === 1}
@@ -68,18 +73,6 @@ export default function Sidebar() {
                     />
                   </ListItemPrefix>
                   Danh sách tài khoản
-                </ListItem>
-              </Link>
-              <Link to={"/ban-user"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Cấm tài khoản
                 </ListItem>
               </Link>
             </List>
@@ -133,42 +126,6 @@ export default function Sidebar() {
                     />
                   </ListItemPrefix>
                   Tất cả danh mục
-                </ListItem>
-              </Link>
-              <Link to={"/add-category"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Thêm danh mục
-                </ListItem>
-              </Link>
-              <Link to={"/edit-category"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Chỉnh sửa danh mục
-                </ListItem>
-              </Link>
-              <Link to={"/delete-category"}>
-                <ListItem>
-                  <ListItemPrefix>
-                    <FiberManualRecordIcon
-                      style={{ fontSize: "small" }}
-                      strokeWidth={3}
-                      className="h-3 w-5"
-                    />
-                  </ListItemPrefix>
-                  Xóa danh mục
                 </ListItem>
               </Link>
             </List>
@@ -327,14 +284,14 @@ export default function Sidebar() {
             <ListItemPrefix>
               <SettingsIcon className="h-5 w-5" />
             </ListItemPrefix>
-            Settings
+            Cài đặt
           </ListItem>
         </Link>
         <ListItem>
           <ListItemPrefix>
             <LogoutIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Log Out
+          Đăng xuất
         </ListItem>
       </List>
     </Card>

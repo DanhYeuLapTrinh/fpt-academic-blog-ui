@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import useAuth from "../../../../user/hooks/useAuth";
-import { axiosConfig } from "../../../api/axios";
 import { TablePagination } from "@mui/material";
 import { Button } from "@mui/base";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -12,21 +10,18 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 function TagList() {
   const [tagData, setTagData] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const { auth } = useAuth();
   const [open, setOpen] = useState(false);
   const [newTagName, setNewTagName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [tagToDelete, setTagToDelete] = useState({ id: null, name: null });
-
-  const headers = {
-    Authorization: `Bearer ${auth.token}`,
-  };
+  const axiosPrivate = useAxiosPrivate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -39,8 +34,8 @@ function TagList() {
   };
 
   useEffect(() => {
-    axiosConfig
-      .get("admin/tags", { headers })
+    axiosPrivate
+      .get(process.env.REACT_APP_TAGS_LIST)
       .then((response) => {
         setTagData(response.data);
       })
@@ -67,8 +62,8 @@ function TagList() {
     }
 
     // If all validations pass, add the tag
-    axiosConfig
-      .post("admin/new-tag", { tagName: newTagName }, { headers })
+    axiosPrivate
+      .post(process.env.REACT_APP_ADD_NEW_TAG, { tagName: newTagName })
       .then((response) => {
         const newTag = response.data;
         setTagData([...tagData, newTag]);
@@ -95,12 +90,11 @@ function TagList() {
 
   const handleDeleteConfirmation = () => {
     // Perform delete action here
-    axiosConfig
-      .post(
-        "admin/delete-tag",
-        { tagId: tagToDelete.id, tagName: tagToDelete.name },
-        { headers }
-      )
+    axiosPrivate
+      .post(process.env.REACT_APP_DELETE_TAG, {
+        tagId: tagToDelete.id,
+        tagName: tagToDelete.name,
+      })
       .then(() => {
         // Remove the tag from the local state
         const updatedTagData = tagData.filter(

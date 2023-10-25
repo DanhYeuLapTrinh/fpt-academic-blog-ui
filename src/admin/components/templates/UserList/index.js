@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Input } from "@material-tailwind/react";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
-import { axiosConfig } from "../../../api/axios";
-import useAuth from "../../../../user/hooks/useAuth";
 import Modal from "react-modal";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -17,6 +15,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 function UserResultList() {
   const initialUser = {
@@ -38,7 +37,7 @@ function UserResultList() {
     role: "",
   });
 
-  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
 
   const [data, setData] = useState([]);
 
@@ -149,8 +148,8 @@ function UserResultList() {
       setFormErrors({ ...formErrors, role: roleErrorMessage });
       return;
     }
-    axiosConfig
-      .post("admin/register", formData, { headers })
+    axiosPrivate
+      .post(process.env.REACT_APP_NEW_USER, formData)
       .then((response) => {
         // Xử lý phản hồi từ máy chủ nếu cần
         console.log("Thêm mới thành công!");
@@ -167,13 +166,9 @@ function UserResultList() {
     setFormData(initialUser);
   };
 
-  const headers = {
-    Authorization: `Bearer ${auth.token}`,
-  };
-
   //Call api get user list
   useEffect(() => {
-    axiosConfig.get("admin/users", { headers }).then((res) => {
+    axiosPrivate.get(process.env.REACT_APP_USER_LIST).then((res) => {
       setData(res.data);
       setRecords(res.data);
       console.log(res.data);
@@ -218,12 +213,11 @@ function UserResultList() {
   const muteUser = () => {
     const duration = parseInt(muteDuration, 10);
     if (selectedUserId) {
-      axiosConfig
-        .post(
-          "admin/mute-user",
-          { id: selectedUserId, muteDuration: duration },
-          { headers }
-        )
+      axiosPrivate
+        .post(process.env.REACT_APP_MUTE_ACCOUNT, {
+          id: selectedUserId,
+          muteDuration: duration,
+        })
         .then((res) => {
           // Tạo một bản sao của đối tượng isMuted
           const updatedIsMuted = { ...isMuted };
@@ -247,8 +241,8 @@ function UserResultList() {
 
   //Funtion unmute
   const unmuteUser = (userId) => {
-    axiosConfig
-      .post("admin/unmute-user", { id: userId }, { headers })
+    axiosPrivate
+      .post(process.env.REACT_APP_UNMUTE_ACCOUNT, { id: userId })
       .then((res) => {
         // Tạo một bản sao của đối tượng isMuted
         const updatedIsMuted = { ...isMuted };
@@ -277,8 +271,8 @@ function UserResultList() {
   };
 
   const saveRoleChanges = (userId) => {
-    axiosConfig
-      .post("admin/set-role", { id: userId, role: newRole }, { headers })
+    axiosPrivate
+      .post(process.env.REACT_APP_SET_ROLE, { id: userId, role: newRole })
       .then((res) => {
         setEditingUserId(null);
         setShowRoleSuccessModal(true);
@@ -320,8 +314,8 @@ function UserResultList() {
   const banAccount = (id) => {
     setIsBanning(true);
     setIsBanningId(id);
-    axiosConfig
-      .post("admin/ban-user", { id }, { headers })
+    axiosPrivate
+      .post(process.env.REACT_APP_BAN_ACCOUNT, { id })
       .then((res) => {
         toast.success("Cấm tài khoản thành công", {
           position: "top-right",
@@ -352,8 +346,8 @@ function UserResultList() {
   };
 
   const unbanAccount = (id) => {
-    axiosConfig
-      .post("admin/unban-user", { id }, { headers })
+    axiosPrivate
+      .post(process.env.REACT_APP_UNBAN_ACCOUNT, { id })
       .then((res) => {
         toast.success("Bỏ cấm tài khoản thành công", {
           position: "top-right",
@@ -387,7 +381,7 @@ function UserResultList() {
 
   return (
     <div className="m-5">
-      <div className="flex justify-between items-center mb-5">
+      <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Danh sách người dùng</h2>
       </div>
       <div className="flex justify-between py-4">
@@ -561,8 +555,10 @@ function UserResultList() {
                   </td>
                   <td className="p-4">
                     <div className="flex flex-col">
-                      {banStatus[item.id] ? "Đang bị cấm" : "Bình thường"}
-                      {isMuted[item.id] ? "Đang bị hạn chế" : ""}
+                      <div>
+                        {banStatus[item.id] ? "Đang bị cấm" : "Bình thường"}
+                      </div>
+                      <div>{isMuted[item.id] ? "Đang bị hạn chế" : ""}</div>
                     </div>
                   </td>
                   <td className="p-4 flex items-center">
