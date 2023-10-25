@@ -61,7 +61,7 @@ export default function PostFilter() {
     setTagID();
   };
   return (
-    <Stack direction={"row"} spacing={1} sx={{padding: '0 12px'}}>
+    <Stack direction={"row"} spacing={1} sx={{padding: '50px 12px 30px'}}>
       <FormControl error={major === undefined && true}>
         <Select
           sx={{ height: "30px", pr: "5px" }}

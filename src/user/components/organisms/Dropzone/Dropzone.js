@@ -27,7 +27,7 @@ export default function Dropzone() {
     maxSize: 1024 * 5000 
   });
   return (
-    <>
+    <Box sx={{padding: '10px 12px 20px '}}>
       <div
         {...getRootProps({
           //styling
@@ -67,6 +67,6 @@ export default function Dropzone() {
           </Box>
         )}
       </div>
-    </>
+    </Box>
   );
 }

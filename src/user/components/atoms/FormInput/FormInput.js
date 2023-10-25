@@ -11,11 +11,12 @@ export default function FormInput({ name, children, ...props }) {
       submitForm()
     }
   }
-  // bị doulbe phần gửi mail vì 1 ô nên mặc định là enter rồi
+  // bị double phần gửi mail vì 1 ô nên mặc định là enter rồi
+
   const configTextField = {
     ...field,
     ...props,
-    onKeyUp: handleKeyUp,
+    ...(props.onkeyup && {onKeyUp: handleKeyUp}),
     spellCheck: false,
     autoFocus: props.autoFocus,
     sx: {

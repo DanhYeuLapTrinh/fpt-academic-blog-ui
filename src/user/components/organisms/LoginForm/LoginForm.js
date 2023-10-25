@@ -118,6 +118,7 @@ export default function LoginForm() {
           <Stack sx={{ mb: "32px" }}>
             <FormInput
               name="password"
+              onkeyup
               text="Mật khẩu"
               size="14px"
               type={showPassword ? "text" : "password"}

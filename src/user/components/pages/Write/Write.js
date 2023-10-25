@@ -7,22 +7,20 @@ import Dropzone from "../../organisms/Dropzone/Dropzone";
 
 export default function Write() {
   return (
-    <Container sx={{ p: "30px 0" }}>
-      {/* <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-      >
-        <PostFilter />
-      </Stack>
+    <Container>
+      <PostFilter />
       <TitleField />
-      <Box width={"100%"} height={"220px"} sx={{borderRadius: "10px",border: "3px dashed black", m:"30px 0 20px 0" }}></Box>
+      <Dropzone />
       <ContentField />
-      <Stack direction={'row'} justifyContent={'flex-end'} spacing={2} paddingTop={'30px'}>
+      <Stack
+        direction={"row"}
+        justifyContent={"flex-end"}
+        spacing={2}
+        paddingTop={"30px"}
+      >
         <Button variant="outlined">Lưu bản nháp</Button>
         <Button variant="contained">Gửi bài</Button>
-      </Stack> */}
-      <Dropzone/>
+      </Stack>
     </Container>
   );
 }
