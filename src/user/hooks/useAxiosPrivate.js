@@ -5,7 +5,7 @@ import { axiosPrivate } from "../api/axios";
 
 export default function useAxiosPrivate() {
   const refresh = useRefreshToken();
-  const { auth } = useAuth();
+  const auth = JSON.parse(localStorage.getItem("auth"));
   useEffect(() => {
     const requestInterceptor = axiosPrivate.interceptors.request.use(
       (config) => {

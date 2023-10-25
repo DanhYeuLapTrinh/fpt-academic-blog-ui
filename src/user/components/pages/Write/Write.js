@@ -3,11 +3,14 @@ import { Box, Button, Container, Stack } from "@mui/material";
 import PostFilter from "../../atoms/PostFilter/PostFilter";
 import ContentField from "../../organisms/ContentField/ContentField";
 import TitleField from "../../organisms/TitleField/TitleField";
+import Dropzone from "../../organisms/Dropzone/Dropzone";
+import useRefreshToken from "../../../hooks/useRefreshToken";
 
 export default function Write() {
+  const refresh = useRefreshToken()
   return (
     <Container sx={{ p: "30px 0" }}>
-      <Stack
+      {/* <Stack
         direction={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
@@ -20,7 +23,9 @@ export default function Write() {
       <Stack direction={'row'} justifyContent={'flex-end'} spacing={2} paddingTop={'30px'}>
         <Button variant="outlined">Lưu bản nháp</Button>
         <Button variant="contained">Gửi bài</Button>
-      </Stack>
+      </Stack> */}
+      <Dropzone/>
+      <button onClick={refresh}>Refresh</button>
     </Container>
   );
 }
