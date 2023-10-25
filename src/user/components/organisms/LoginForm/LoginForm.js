@@ -51,11 +51,9 @@ export default function LoginForm() {
           user: response?.data?.username,
           role: response?.data?.roleName,
           token: response?.data?.token,
+          refreshToken: response?.data?.refreshToken
         };
-        localStorage.setItem(
-          "refreshToken",
-          JSON.stringify(response?.data?.refreshToken)
-        );
+        localStorage.setItem("auth", JSON.stringify(auth))
         setAuth(auth);
         values.username = "";
         values.password = "";
