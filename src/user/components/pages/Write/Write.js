@@ -4,10 +4,8 @@ import PostFilter from "../../atoms/PostFilter/PostFilter";
 import ContentField from "../../organisms/ContentField/ContentField";
 import TitleField from "../../organisms/TitleField/TitleField";
 import Dropzone from "../../organisms/Dropzone/Dropzone";
-import useRefreshToken from "../../../hooks/useRefreshToken";
 
 export default function Write() {
-  const refresh = useRefreshToken()
   return (
     <Container sx={{ p: "30px 0" }}>
       {/* <Stack
@@ -25,7 +23,6 @@ export default function Write() {
         <Button variant="contained">Gửi bài</Button>
       </Stack> */}
       <Dropzone/>
-      <button onClick={refresh}>Refresh</button>
     </Container>
   );
 }

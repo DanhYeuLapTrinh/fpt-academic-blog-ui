@@ -27,7 +27,6 @@ export default function LoginForm() {
     username: "",
     password: "",
   };
-
   const FORM_VALIDATION = Yup.object().shape({
     username: Yup.string().required("Tên đăng nhập không được bỏ trống."),
     password: Yup.string().required("Mật khẩu không được bỏ trống."),
@@ -41,7 +40,7 @@ export default function LoginForm() {
       try {
         setIsLoading(true);
         const response = await axios.post(
-          "users/login",
+          process.env.REACT_APP_LOGIN_API,
           JSON.stringify({
             username: values.username.trim(),
             password: values.password,

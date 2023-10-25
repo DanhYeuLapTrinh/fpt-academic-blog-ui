@@ -11,7 +11,7 @@ export default function FormInput({ name, children, ...props }) {
       submitForm()
     }
   }
-  
+  // bị doulbe phần gửi mail vì 1 ô nên mặc định là enter rồi
   const configTextField = {
     ...field,
     ...props,

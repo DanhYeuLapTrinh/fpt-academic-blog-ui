@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Box, InputAdornment, Stack } from "@mui/material";
+import React, { useContext, useState } from "react";
+import { Box, CircularProgress, InputAdornment, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
@@ -10,6 +10,7 @@ import { LoginContext } from "../../../context/LoginProvider";
 import { useNavigate } from "react-router-dom";
 export default function EmailEntryForm() {
   const { setEmail } = useContext(LoginContext);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
     email: "",
@@ -24,8 +25,9 @@ export default function EmailEntryForm() {
   const handleSubmit = async (values, { setFieldError }) => {
     if (values.email) {
       try {
+        setIsLoading(true)
         await axios.post(
-          "users/send-code",
+          process.env.REACT_APP_SEND_CODE,
           JSON.stringify({
             email: values.email,
           })
@@ -45,6 +47,8 @@ export default function EmailEntryForm() {
           setFieldError("password", "Thất bại");
           values.email = "";
         }
+      } finally {
+        setIsLoading(false)
       }
     }
   };
@@ -54,11 +58,7 @@ export default function EmailEntryForm() {
         <Text fontSize="32px" fontWeight="500" marginBottom="10px">
           Tìm tài khoản của bạn
         </Text>
-        <Text
-          fontSize="16px"
-          fontWeight="400"
-          marginBottom="40px"
-        >
+        <Text fontSize="16px" fontWeight="400" marginBottom="40px">
           Vui lòng nhập email đã đăng ký tại{" "}
           <span
             style={{
@@ -100,14 +100,21 @@ export default function EmailEntryForm() {
               }
             />
             <MyButton variant="contained">
-              <Text
-                p="5px 0"
-                fontSize="14px"
-                fontWeight="500"
-                color="secondary.main"
-              >
-                GỬI MÃ XÁC NHẬN
-              </Text>
+              {!isLoading ? (
+                <Text
+                  p="5px 0"
+                  fontSize="14px"
+                  fontWeight="500"
+                  color="secondary.main"
+                >
+                  GỬI MÃ XÁC NHẬN
+                </Text>
+              ) : (
+                <CircularProgress
+                  sx={{ m: "5.5px 0", color: "white" }}
+                  size={20}
+                />
+              )}
             </MyButton>
           </Form>
         </Formik>
