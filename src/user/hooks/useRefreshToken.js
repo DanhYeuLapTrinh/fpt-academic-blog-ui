@@ -8,6 +8,7 @@ export default function useRefreshToken() {
     const response = await axios.post("auth/refresh-token", {
       refreshToken: auth.refreshToken,
     });
+    auth.token = response?.data?.token
     auth.refreshToken = response?.data?.refreshToken
     localStorage.setItem("auth", JSON.stringify(auth));
     setAuth((prev) => {
