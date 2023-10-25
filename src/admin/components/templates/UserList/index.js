@@ -376,7 +376,7 @@ function UserResultList() {
 
   return (
     <div className="m-5">
-      <div className="flex justify-between items-center mb-5">
+      <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Danh sách người dùng</h2>
       </div>
       <div className="flex justify-between py-4">

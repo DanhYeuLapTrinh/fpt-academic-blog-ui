@@ -26,6 +26,10 @@ function AddCategory({ closeAddCategoryModal }) {
 
   const [selectedSubject, setSelectedSubject] = useState("");
 
+  const [subjectError, setSubjectError] = useState("");
+
+  const [categoryError, setCategoryError] = useState("");
+
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -51,17 +55,28 @@ function AddCategory({ closeAddCategoryModal }) {
   // Hàm xử lý khi nhấn "Thêm danh mục"
   const handleAddCategory = (e) => {
     e.preventDefault();
+
+    // Kiểm tra môn học trùng và lỗi môn học
     if (
-      !selectedCategory ||
-      !selectedMajorID ||
-      !selectedSemester ||
-      !selectedSubject
+      cateList.some(
+        (cate) =>
+          cate.subject === selectedSubject && cate.semester === selectedSemester
+      )
     ) {
-      toast.error("Vui lòng điền đầy đủ thông tin.");
+      setSubjectError("Môn học đã tồn tại ở học kỳ này");
       return;
+    } else {
+      setSubjectError(""); // Xóa lỗi môn học nếu không trùng
     }
 
-    // Dữ liệu để gửi về backend
+    // Kiểm tra danh mục trống và lỗi danh mục
+    if (!selectedSubject) {
+      setSubjectError("Danh mục không được để trống");
+      return;
+    } else {
+      setSubjectError(""); // Xóa lỗi danh mục nếu không trống
+    }
+
     const data = {
       specialization: selectedCategory,
       semester: selectedSemester,
@@ -69,15 +84,12 @@ function AddCategory({ closeAddCategoryModal }) {
       majorId: selectedMajorID || selectedCategory,
     };
 
-    // Gửi request HTTP POST hoặc PUT với dữ liệu data
     axiosPrivate
       .post("admin/new-category", data)
       .then((response) => {
-        // Xử lý kết quả hoặc thông báo thành công
         toast.success("Thêm danh mục thành công!");
       })
       .catch((error) => {
-        // Xử lý lỗi hoặc hiển thị thông báo lỗi
         toast.error("Lỗi khi thêm danh mục.");
       });
   };
@@ -199,10 +211,11 @@ function AddCategory({ closeAddCategoryModal }) {
             }
           />
         </div>
+        {subjectError && <p className="text-red-500">{subjectError}</p>}
         <div className="grid grid-cols-2 gap-4 mb-4">
           <button
             className="bg-buttonSubmit text-white py-2 px-4 rounded"
-            onClick={handleAddCategory} // Gọi hàm khi nhấn nút "Thêm danh mục"
+            onClick={handleAddCategory}
           >
             Thêm danh mục
           </button>

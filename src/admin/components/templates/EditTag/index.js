@@ -18,7 +18,7 @@ export const EditTag = () => {
 
   useEffect(() => {
     axiosPrivate
-      .get("admin/tags")
+      .get("/tags")
       .then((res) => {
         setTagList(res.data);
       })
