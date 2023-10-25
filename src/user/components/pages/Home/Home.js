@@ -12,11 +12,18 @@ import Filter from "../../molecules/Filter/Filter";
 import TrendingTagSection from "../../organisms/TrendingTagSection/TrendingTagSection";
 import ShortList from "../../templates/ShortList/ShortList";
 import PostList from "../../templates/PostList/PostList";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    localStorage.removeItem("auth")
+    navigate("/login")
+  }
   return (
     <div>
       <Container>
+        <button onClick={handleLogout} style={{color: 'red'}}>Log out</button>
         <TrendingList />
         <SearchSection />
       </Container>

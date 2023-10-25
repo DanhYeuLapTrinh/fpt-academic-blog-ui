@@ -16,7 +16,7 @@ export default function FormInput({ name, children, ...props }) {
   const configTextField = {
     ...field,
     ...props,
-    onKeyUp: handleKeyUp,
+    ...(props.onkeyup && {onKeyUp: handleKeyUp}),
     spellCheck: false,
     autoFocus: props.autoFocus,
     sx: {
