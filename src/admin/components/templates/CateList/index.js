@@ -42,10 +42,12 @@ function CateList() {
   };
 
   const fetchData = async () => {
-    const majorsRes = await axiosPrivate.get("/admin/majors");
+    const majorsRes = await axiosPrivate.get(process.env.REACT_APP_MAJORS_LIST);
     setMajors(majorsRes.data);
 
-    const categoriesRes = await axiosPrivate.get("/categories");
+    const categoriesRes = await axiosPrivate.get(
+      process.env.REACT_APP_CATEGORIES_LIST
+    );
     setCategories(categoriesRes.data);
   };
 
@@ -106,7 +108,7 @@ function CateList() {
         setDeleting(true);
 
         // Send a request to delete the selected item
-        await axiosPrivate.post("/admin/delete-category", {
+        await axiosPrivate.post(process.env.REACT_APP_DELETE_CATEGORY, {
           id: itemToDelete.id,
         });
 
@@ -178,10 +180,13 @@ function CateList() {
   const handleEditCategory = async () => {
     try {
       if (editableItemId) {
-        const response = await axiosPrivate.post("admin/edit-category", {
-          id: editableItemId,
-          categoryName: editedCategoryName,
-        });
+        const response = await axiosPrivate.post(
+          process.env.REACT_APP_EDIT_CATEGORY,
+          {
+            id: editableItemId,
+            categoryName: editedCategoryName,
+          }
+        );
 
         if (response.status === 200) {
           toast.success(`Đã chỉnh sửa thành công: ${editedCategoryName}`);

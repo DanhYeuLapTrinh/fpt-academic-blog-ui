@@ -33,12 +33,12 @@ function AddCategory({ closeAddCategoryModal }) {
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    axiosPrivate.get("/categories").then((res) => {
+    axiosPrivate.get(process.env.REACT_APP_CATEGORIES_LIST).then((res) => {
       setCateList(res.data);
       console.log(res.data);
     });
 
-    axiosPrivate.get("admin/majors").then((res) => {
+    axiosPrivate.get(process.env.REACT_APP_MAJORS_LIST).then((res) => {
       setMajorList(res.data);
     });
   }, []);
@@ -85,7 +85,7 @@ function AddCategory({ closeAddCategoryModal }) {
     };
 
     axiosPrivate
-      .post("admin/new-category", data)
+      .post(process.env.REACT_APP_ADD_NEW_CATEGORY, data)
       .then((response) => {
         toast.success("Thêm danh mục thành công!");
       })

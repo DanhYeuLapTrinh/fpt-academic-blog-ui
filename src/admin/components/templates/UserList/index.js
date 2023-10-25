@@ -149,7 +149,7 @@ function UserResultList() {
       return;
     }
     axiosPrivate
-      .post("admin/register", formData)
+      .post(process.env.REACT_APP_NEW_USER, formData)
       .then((response) => {
         // Xử lý phản hồi từ máy chủ nếu cần
         console.log("Thêm mới thành công!");
@@ -168,7 +168,7 @@ function UserResultList() {
 
   //Call api get user list
   useEffect(() => {
-    axiosPrivate.get("admin/users").then((res) => {
+    axiosPrivate.get(process.env.REACT_APP_USER_LIST).then((res) => {
       setData(res.data);
       setRecords(res.data);
       console.log(res.data);
@@ -214,7 +214,10 @@ function UserResultList() {
     const duration = parseInt(muteDuration, 10);
     if (selectedUserId) {
       axiosPrivate
-        .post("admin/mute-user", { id: selectedUserId, muteDuration: duration })
+        .post(process.env.REACT_APP_MUTE_ACCOUNT, {
+          id: selectedUserId,
+          muteDuration: duration,
+        })
         .then((res) => {
           // Tạo một bản sao của đối tượng isMuted
           const updatedIsMuted = { ...isMuted };
@@ -238,24 +241,26 @@ function UserResultList() {
 
   //Funtion unmute
   const unmuteUser = (userId) => {
-    axiosPrivate.post("admin/unmute-user", { id: userId }).then((res) => {
-      // Tạo một bản sao của đối tượng isMuted
-      const updatedIsMuted = { ...isMuted };
-      updatedIsMuted[userId] = false;
+    axiosPrivate
+      .post(process.env.REACT_APP_UNMUTE_ACCOUNT, { id: userId })
+      .then((res) => {
+        // Tạo một bản sao của đối tượng isMuted
+        const updatedIsMuted = { ...isMuted };
+        updatedIsMuted[userId] = false;
 
-      // Lưu updatedIsMuted vào localStorage
-      localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
+        // Lưu updatedIsMuted vào localStorage
+        localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
 
-      // Cập nhật state
-      setIsMuted(updatedIsMuted);
+        // Cập nhật state
+        setIsMuted(updatedIsMuted);
 
-      setShowMuteModal(false);
+        setShowMuteModal(false);
 
-      toast.success(`Unmute ${selectedUsername} thành công!`, {
-        position: "top-right",
-        autoClose: 3000,
+        toast.success(`Unmute ${selectedUsername} thành công!`, {
+          position: "top-right",
+          autoClose: 3000,
+        });
       });
-    });
   };
 
   //Set Role
@@ -267,7 +272,7 @@ function UserResultList() {
 
   const saveRoleChanges = (userId) => {
     axiosPrivate
-      .post("admin/set-role", { id: userId, role: newRole })
+      .post(process.env.REACT_APP_SET_ROLE, { id: userId, role: newRole })
       .then((res) => {
         setEditingUserId(null);
         setShowRoleSuccessModal(true);
@@ -310,7 +315,7 @@ function UserResultList() {
     setIsBanning(true);
     setIsBanningId(id);
     axiosPrivate
-      .post("admin/ban-user", { id })
+      .post(process.env.REACT_APP_BAN_ACCOUNT, { id })
       .then((res) => {
         toast.success("Cấm tài khoản thành công", {
           position: "top-right",
@@ -342,7 +347,7 @@ function UserResultList() {
 
   const unbanAccount = (id) => {
     axiosPrivate
-      .post("admin/unban-user", { id })
+      .post(process.env.REACT_APP_UNBAN_ACCOUNT, { id })
       .then((res) => {
         toast.success("Bỏ cấm tài khoản thành công", {
           position: "top-right",
