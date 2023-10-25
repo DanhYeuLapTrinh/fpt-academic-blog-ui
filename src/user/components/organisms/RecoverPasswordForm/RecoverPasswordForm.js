@@ -35,7 +35,7 @@ export default function RecoverPasswordForm() {
         try {
           if (values.password !== values.confirm) throw new Error();
           await axiosPrivate.post(
-            "users/reset-password",
+            process.env.REACT_APP_RESET_PASSWORD,
             JSON.stringify({
               email: email,
               password: values.password,

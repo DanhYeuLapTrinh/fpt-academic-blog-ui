@@ -33,7 +33,7 @@ export default function OTPForm() {
       setDisabled(true);
       setTimer(30);
       await axios.post(
-        "users/send-code",
+        process.env.REACT_APP_SEND_CODE,
         JSON.stringify({
           email: email,
         })
@@ -47,7 +47,7 @@ export default function OTPForm() {
     if (values.otp) {
       try {
         const response = await axios.post(
-          "users/verify-code",
+          process.env.REACT_APP_VERIFY_CODE,
           JSON.stringify({
             email: email,
             code: values.otp,
