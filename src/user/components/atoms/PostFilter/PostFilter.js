@@ -11,8 +11,6 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 export default function PostFilter() {
   const axiosPrivate = useAxiosPrivate();
-  const {auth} = useAuth()
-  console.log(auth)
   const {
     data,
     setData,
@@ -63,7 +61,7 @@ export default function PostFilter() {
     setTagID();
   };
   return (
-    <Stack direction={"row"} spacing={1}>
+    <Stack direction={"row"} spacing={1} sx={{padding: '0 12px'}}>
       <FormControl error={major === undefined && true}>
         <Select
           sx={{ height: "30px", pr: "5px" }}
@@ -153,7 +151,7 @@ export default function PostFilter() {
             <Text fontSize="14px">Thẻ</Text>
           </MenuItem>
           {tagList?.map((tag) => (
-            <MenuItem value={tag.tagName} onClick={() => setTagID(tag.id)}>
+            <MenuItem key={tag.id} value={tag.tagName} onClick={() => setTagID(tag.id)}>
             <Text fontSize="14px">{tag.tagName}</Text>
           </MenuItem>
           ))}

@@ -1,40 +1,31 @@
-import React from "react";
-import { Box, Container, Stack } from "@mui/material";
+import React, { useState } from "react";
+import { Box, Button, Container, Stack } from "@mui/material";
 import PostFilter from "../../atoms/PostFilter/PostFilter";
-import useAuth from "../../../hooks/useAuth";
-import SelectOption from "../../atoms/SelectOption/SelectOption";
-import Text from "../../atoms/Text/Text";
+import ContentField from "../../organisms/ContentField/ContentField";
+import TitleField from "../../organisms/TitleField/TitleField";
+import Dropzone from "../../organisms/Dropzone/Dropzone";
 import useRefreshToken from "../../../hooks/useRefreshToken";
-import axios from "../../../api/axios";
-import usePostTag from "../../../hooks/usePostTag";
+
 export default function Write() {
-  const { auth, setAuth } = useAuth();
-  const refresh = useRefreshToken();
-  const rftoken = localStorage.getItem("refreshToken");
-  const { majorID, semesterID, subjectID, tagID } = usePostTag();
+  const refresh = useRefreshToken()
   return (
     <Container sx={{ p: "30px 0" }}>
-      <Stack
+      {/* <Stack
         direction={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
       >
         <PostFilter />
-        <button
-          onClick={() => console.log(majorID, semesterID, subjectID, tagID)}
-        >
-          Click
-        </button>
-        <button
-          onClick={() => {
-            refresh()
-            console.log("---------------------------------")
-          }}
-        >
-          Refresh
-        </button>
-        {/* <SelectOption/> */}
       </Stack>
+      <TitleField />
+      <Box width={"100%"} height={"220px"} sx={{borderRadius: "10px",border: "3px dashed black", m:"30px 0 20px 0" }}></Box>
+      <ContentField />
+      <Stack direction={'row'} justifyContent={'flex-end'} spacing={2} paddingTop={'30px'}>
+        <Button variant="outlined">Lưu bản nháp</Button>
+        <Button variant="contained">Gửi bài</Button>
+      </Stack> */}
+      <Dropzone/>
+      <button onClick={refresh}>Refresh</button>
     </Container>
   );
 }

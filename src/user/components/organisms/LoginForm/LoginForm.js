@@ -1,4 +1,11 @@
-import { Box, Divider, InputAdornment, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  InputAdornment,
+  Stack,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import { useState } from "react";
 import FormInput from "../../atoms/FormInput/FormInput";
@@ -13,6 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
@@ -31,6 +39,7 @@ export default function LoginForm() {
   const handleSubmit = async (values, { setFieldError }) => {
     if (values.username && values.password) {
       try {
+        setIsLoading(true);
         const response = await axios.post(
           "users/login",
           JSON.stringify({
@@ -42,8 +51,9 @@ export default function LoginForm() {
           user: response?.data?.username,
           role: response?.data?.roleName,
           token: response?.data?.token,
+          refreshToken: response?.data?.refreshToken
         };
-        localStorage.setItem("refreshToken", JSON.stringify(response?.data?.refreshToken))
+        localStorage.setItem("auth", JSON.stringify(auth))
         setAuth(auth);
         values.username = "";
         values.password = "";
@@ -63,6 +73,8 @@ export default function LoginForm() {
           values.username = "";
           values.password = "";
         }
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -158,14 +170,21 @@ export default function LoginForm() {
             </Link>
           </Stack>
           <MyButton variant="contained">
-            <Text
-              p="5px 0"
-              fontSize="14px"
-              fontWeight="500"
-              color="secondary.main"
-            >
-              Đăng nhập
-            </Text>
+            {!isLoading ? (
+              <Text
+                p="5px 0"
+                fontSize="14px"
+                fontWeight="500"
+                color="secondary.main"
+              >
+                Đăng nhập
+              </Text>
+            ) : (
+              <CircularProgress
+                sx={{ m: "5.5px 0", color: "white" }}
+                size={20}
+              />
+            )}
           </MyButton>
         </Form>
       </Formik>

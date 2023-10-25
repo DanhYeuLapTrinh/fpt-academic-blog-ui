@@ -1,17 +1,16 @@
-import React from "react";
 import useAuth from "./useAuth";
 import axios from "../api/axios";
 
 export default function useRefreshToken() {
   const { setAuth } = useAuth();
+  const auth = JSON.parse(localStorage.getItem("auth"));
   const refresh = async () => {
     const response = await axios.post("auth/refresh-token", {
-      refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
+      refreshToken: auth.refreshToken,
     });
-    localStorage.setItem(
-      "refreshToken",
-      JSON.stringify(response?.data?.refreshToken)
-    );
+    auth.token = response?.data?.token
+    auth.refreshToken = response?.data?.refreshToken
+    localStorage.setItem("auth", JSON.stringify(auth));
     setAuth((prev) => {
       return { ...prev, token: response?.data?.token };
     });

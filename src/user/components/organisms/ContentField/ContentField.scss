@@ -1,0 +1,60 @@
+.tox.tox-tinymce {
+  .tox-editor-header {
+    box-shadow: none !important;
+  }
+  .tox-statusbar__branding svg {
+    display: none;
+  }
+  border: none;
+  font-family: "Roboto", sans-serif;
+  .mce-content-body[data-mce-placeholder] {
+    font-family: "Roboto", sans-serif !important;
+    font-size: 40px !important;
+  }
+  body {
+    font-family: Roboto, sans-serif;
+    font-weight: 500;
+  }
+  .tox-toolbar__primary {
+    background-color: white !important;
+  }
+  .tox-statusbar__resize-handle {
+    display: none !important;
+  }
+  .tox-statusbar {
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #757575 !important;
+    border-top: none !important;
+    color: rgba(34, 47, 62, 0.7);
+    display: flex;
+    flex: 0 0 auto;
+    font-size: 14px;
+    font-weight: 400;
+    height: 40px;
+    overflow: hidden;
+    padding: 0 8px;
+    position: relative;
+    text-transform: none;
+  }
+  .tox-statusbar__path-item {
+    display: none;
+  }
+  p {
+    display: block;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
+  .tox-statusbar__right-container {
+  padding-bottom: 15px;
+    .tox-statusbar__wordcount {
+      margin: 0 !important;
+      color: #5927e5;
+      border-radius: 10px;
+      font-family: "Roboto";
+      font-weight: 600;
+    }
+  }
+}
