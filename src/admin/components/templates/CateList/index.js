@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Checkbox } from "@material-tailwind/react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import CancelIcon from "@mui/icons-material/Cancel";
+import EditIcon from "@mui/icons-material/Edit";
 import { Button } from "@mui/base";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { toast, ToastContainer } from "react-toastify";
@@ -27,6 +27,11 @@ function CateList() {
   const [deleting, setDeleting] = useState(false);
 
   const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editableItemId, setEditableItemId] = useState(null);
+  const [editedCategoryName, setEditedCategoryName] = useState("");
+  const [isEditConfirmationOpen, setIsEditConfirmationOpen] = useState(false);
 
   const openAddCategoryModal = () => {
     setIsAddCategoryModalOpen(true);
@@ -143,14 +148,74 @@ function CateList() {
     );
   };
 
+  const openEditCategoryModal = () => {
+    if (selectedCategories.length === 1) {
+      setIsEditModalOpen(true);
+      setEditableItemId(selectedCategories[0]);
+    }
+    if (selectedSubjects.length === 1) {
+      setIsEditModalOpen(true);
+      setEditableItemId(selectedSubjects[0]);
+    } else {
+      toast.error("Chỉ có thể chỉnh sửa một danh mục mỗi lần.");
+    }
+  };
+
+  const closeEditCategoryModal = () => {
+    setIsEditModalOpen(false);
+    setEditableItemId(null);
+    setEditedCategoryName("");
+  };
+
+  const openEditConfirmation = () => {
+    setIsEditConfirmationOpen(true);
+  };
+
+  const closeEditConfirmation = () => {
+    setIsEditConfirmationOpen(false);
+  };
+
+  const handleEditCategory = async () => {
+    try {
+      if (editableItemId) {
+        const response = await axiosPrivate.post("admin/edit-category", {
+          id: editableItemId,
+          categoryName: editedCategoryName,
+        });
+
+        if (response.status === 200) {
+          toast.success(`Đã chỉnh sửa thành công: ${editedCategoryName}`);
+          closeEditConfirmation();
+          closeEditCategoryModal();
+          fetchData();
+        } else {
+          toast.error(`Chỉnh sửa thất bại: ${editedCategoryName}`);
+        }
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Có lỗi xảy ra khi chỉnh sửa danh mục.");
+    }
+  };
+
   return (
     <div className="m-5">
       <div className="flex justify-between items-center mb-5">
         <h2 className="text-2xl font-bold">Danh sách các danh mục</h2>
         <div className="col-span-1">
+          {(selectedCategories.length === 1 ||
+            selectedSubjects.length === 1) && (
+            <Button
+              className="px-4 h-12 rounded-lg shadow-md bg-custom text-white text-center mr-4"
+              onClick={openEditCategoryModal}
+            >
+              <EditIcon className="mr-2" />
+              Chỉnh sửa danh mục
+            </Button>
+          )}
           <Button
             className="px-4 h-12 rounded-lg shadow-md bg-custom text-white text-center"
-            onClick={openAddCategoryModal} // Mở form "Thêm danh mục mới"
+            onClick={openAddCategoryModal}
           >
             <AddCircleIcon className="mr-2" />
             Thêm danh mục mới
@@ -184,10 +249,12 @@ function CateList() {
                       {specialization.categoryName}
                     </div>
                   </div>
-                  <DeleteForeverIcon
-                    onClick={() => openDeleteConfirmation(specialization)} // Open delete confirmation
-                    className="cursor-pointer text-red-600"
-                  />
+                  {selectedCategories.includes(specialization.id) && (
+                    <DeleteForeverIcon
+                      onClick={() => openDeleteConfirmation(specialization)}
+                      className="cursor-pointer text-red-600"
+                    />
+                  )}
                 </div>
               ))}
 
@@ -206,7 +273,7 @@ function CateList() {
                         color="green"
                       />
                       <div
-                        className="cursor-pointer px-3 py-1 rounded hover:bg-gray-300"
+                        className="cursor-pointer px-3 py-1 rounded hover-bg-gray-300"
                         onClick={() => handleSemesterClick(semester)}
                       >
                         {semester.categoryName}
@@ -233,10 +300,12 @@ function CateList() {
                             {subject.categoryName}
                           </div>
                         </div>
-                        <DeleteForeverIcon
-                          onClick={() => openDeleteConfirmation(subject)} // Open delete confirmation
-                          className="cursor-pointer text-red-600"
-                        />
+                        {selectedSubjects.includes(subject.id) && (
+                          <DeleteForeverIcon
+                            onClick={() => openDeleteConfirmation(subject)}
+                            className="cursor-pointer text-red-600"
+                          />
+                        )}
                       </div>
                     ))}
                   </div>
@@ -246,7 +315,6 @@ function CateList() {
           </div>
         ))}
 
-        {/* Delete Confirmation Dialog */}
         {isDeleteConfirmationOpen && (
           <div className="fixed top-0 left-0 h-screen w-screen flex items-center justify-center bg-gray-800 bg-opacity-50">
             <div className="bg-white p-4 rounded shadow-md">
@@ -259,10 +327,10 @@ function CateList() {
               </p>
               <div className="text-center">
                 <button
-                  className={`bg-red-500 text-white px-4 py-2 rounded mr-2 hover-bg-red-600 ${
+                  className={`bg-red-500 text-white px-4 py-2 rounded mr-2 ${
                     deleting ? "opacity-50 cursor-not-allowed" : ""
                   }`}
-                  onClick={handleDelete} // Confirm deletion
+                  onClick={handleDelete}
                   disabled={deleting}
                 >
                   {deleting ? "Đang xóa..." : "Có"}
@@ -271,7 +339,7 @@ function CateList() {
                   className={`bg-gray-500 text-white px-4 py-2 rounded hover-bg-gray-600 ${
                     deleting ? "opacity-50 cursor-not-allowed" : ""
                   }`}
-                  onClick={closeDeleteConfirmation} // Cancel deletion
+                  onClick={closeDeleteConfirmation}
                   disabled={deleting}
                 >
                   Không
@@ -280,6 +348,55 @@ function CateList() {
             </div>
           </div>
         )}
+
+        {isEditModalOpen && (
+          <div className="fixed top-0 left-0 h-screen w-screen flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="bg-white p-8 rounded-lg shadow-md">
+              <div>
+                <input
+                  type="text"
+                  value={editedCategoryName}
+                  onChange={(e) => setEditedCategoryName(e.target.value)}
+                  placeholder="Nhập tên danh mục mới"
+                />
+              </div>
+              <div className="mt-4">
+                <button
+                  onClick={openEditConfirmation}
+                  className="mr-4 bg-green-500 w-12 h-8 text-white rounded-lg"
+                >
+                  Lưu
+                </button>
+                <button onClick={closeEditCategoryModal}>Hủy</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isEditConfirmationOpen && (
+          <div className="fixed top-0 left-0 h-screen w-screen flex items-center justify-center bg-gray-800 bg-opacity-50">
+            <div className="bg-white p-4 rounded shadow-md">
+              <p className="text-lg font-semibold mb-4 text-center">
+                Bạn có chắc chắn muốn lưu thay đổi?
+              </p>
+              <div className="text-center">
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded mr-2"
+                  onClick={handleEditCategory}
+                >
+                  Đồng ý
+                </button>
+                <button
+                  className="bg-gray-500 text-white px-4 py-2 rounded"
+                  onClick={closeEditConfirmation}
+                >
+                  Hủy
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
       </div>
     </div>
