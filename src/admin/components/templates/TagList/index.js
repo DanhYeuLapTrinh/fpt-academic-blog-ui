@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { TablePagination } from "@mui/material";
 import { Button } from "@mui/base";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -11,7 +10,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
-
+import AddNewButton from "../../atoms/AddNewButton";
 function TagList() {
   const [tagData, setTagData] = useState([]);
   const [page, setPage] = useState(0);
@@ -129,13 +128,7 @@ function TagList() {
         <h2 className="text-2xl font-bold">Tất cả thẻ</h2>
 
         <div>
-          <Button
-            className="px-4 h-12 rounded-lg shadow-md bg-custom text-white text-center"
-            onClick={handleClickOpen}
-          >
-            <AddCircleIcon className="mr-2" />
-            Thêm thẻ mới
-          </Button>
+          <AddNewButton title="Thêm thẻ mới" handleClick={handleClickOpen} />
           <div className="w-100">
             <Dialog open={open} onClose={handleClose}>
               <DialogTitle style={{ fontWeight: "bold" }}>

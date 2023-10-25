@@ -8,6 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddCategory from "../AddCategory";
+import AddNewButton from "../../atoms/AddNewButton";
 
 function CateList() {
   const axiosPrivate = useAxiosPrivate();
@@ -104,30 +105,26 @@ function CateList() {
   const handleDelete = async () => {
     if (itemToDelete && !deleting) {
       try {
-        // Start the delete process, prevent further deletions until it's complete
         setDeleting(true);
 
-        // Send a request to delete the selected item
         await axiosPrivate.post(process.env.REACT_APP_DELETE_CATEGORY, {
           id: itemToDelete.id,
         });
 
-        // Handle the response as needed (e.g., update state)
         toast.success(`Đã xóa thành công: ${itemToDelete.categoryName}`);
 
-        // Close the delete confirmation dialog
         closeDeleteConfirmation();
 
-        // Fetch the latest data from the server and update the state
         fetchData();
 
-        // Finish the delete process
         setDeleting(false);
       } catch (error) {
-        // Handle any error that may occur during the deletion process
-        toast.error(`Xóa thất bại: ${itemToDelete.categoryName}`);
+        if (error.response.status === 409) {
+          toast.error(
+            `Xóa thất bại, do ${itemToDelete.categoryName} đã tồn tại trong bài viết.`
+          );
+        }
 
-        // Finish the delete process in case of an error
         setDeleting(false);
       }
     }
@@ -154,8 +151,7 @@ function CateList() {
     if (selectedCategories.length === 1) {
       setIsEditModalOpen(true);
       setEditableItemId(selectedCategories[0]);
-    }
-    if (selectedSubjects.length === 1) {
+    } else if (selectedSubjects.length === 1) {
       setIsEditModalOpen(true);
       setEditableItemId(selectedSubjects[0]);
     } else {
@@ -218,13 +214,10 @@ function CateList() {
               Chỉnh sửa danh mục
             </Button>
           )}
-          <Button
-            className="px-4 h-12 rounded-lg shadow-md bg-custom text-white text-center"
-            onClick={openAddCategoryModal}
-          >
-            <AddCircleIcon className="mr-2" />
-            Thêm danh mục mới
-          </Button>
+          <AddNewButton
+            title="Thêm danh mục mới"
+            handleClick={openAddCategoryModal}
+          />
         </div>
       </div>
 

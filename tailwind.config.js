@@ -8,7 +8,8 @@ module.exports = withMT({
         custom: "#5927E5",
         background: "#F6F7FB",
         buttonSubmit: "#5B6CE1",
-        activeStatus: "#05D34E"
+        activeStatus: "#05D34E",
+        form: "#acacac",
       },
     },
   },
