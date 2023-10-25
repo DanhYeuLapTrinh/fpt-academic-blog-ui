@@ -18,7 +18,7 @@ export const EditTag = () => {
 
   useEffect(() => {
     axiosPrivate
-      .get("/tags")
+      .get(process.env.REACT_APP_TAGS_LIST)
       .then((res) => {
         setTagList(res.data);
       })
@@ -28,7 +28,7 @@ export const EditTag = () => {
   function handleSubmit(e) {
     e.preventDefault();
     axiosPrivate
-      .post("admin/edit-tag", tag)
+      .post(process.env.REACT_APP_EDIT_TAG, tag)
       .then((res) => {
         // Cập nhật danh sách thẻ sau khi cập nhật thành công
         const updatedTagList = [...tagList];

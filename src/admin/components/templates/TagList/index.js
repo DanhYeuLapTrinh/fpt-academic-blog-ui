@@ -35,7 +35,7 @@ function TagList() {
 
   useEffect(() => {
     axiosPrivate
-      .get("/tags")
+      .get(process.env.REACT_APP_TAGS_LIST)
       .then((response) => {
         setTagData(response.data);
       })
@@ -63,7 +63,7 @@ function TagList() {
 
     // If all validations pass, add the tag
     axiosPrivate
-      .post("admin/new-tag", { tagName: newTagName })
+      .post(process.env.REACT_APP_ADD_NEW_TAG, { tagName: newTagName })
       .then((response) => {
         const newTag = response.data;
         setTagData([...tagData, newTag]);
@@ -91,7 +91,7 @@ function TagList() {
   const handleDeleteConfirmation = () => {
     // Perform delete action here
     axiosPrivate
-      .post("admin/delete-tag", {
+      .post(process.env.REACT_APP_DELETE_TAG, {
         tagId: tagToDelete.id,
         tagName: tagToDelete.name,
       })
