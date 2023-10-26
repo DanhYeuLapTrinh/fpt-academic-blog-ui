@@ -48,7 +48,7 @@
     margin-inline-end: 0px;
   }
   .tox-statusbar__right-container {
-  padding-bottom: 15px;
+    padding-bottom: 15px;
     .tox-statusbar__wordcount {
       margin: 0 !important;
       color: #5927e5;
@@ -56,5 +56,8 @@
       font-family: "Roboto";
       font-weight: 600;
     }
-  } 
+  }
+}
+.tox .tox-statusbar__path>* {
+  display: none !important;
 }

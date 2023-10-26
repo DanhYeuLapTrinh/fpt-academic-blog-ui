@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Container, Stack } from "@mui/material";
+import { Button, Container, Stack, TextField } from "@mui/material";
 import PostFilter from "../../atoms/PostFilter/PostFilter";
 import ContentField from "../../organisms/ContentField/ContentField";
 import TitleField from "../../organisms/TitleField/TitleField";
 import Dropzone from "../../organisms/Dropzone/Dropzone";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePostTag from "../../../hooks/usePostTag";
+import Text from "../../atoms/Text/Text";
 
 export default function Write() {
   const axiosPrivate = useAxiosPrivate();
@@ -81,6 +82,24 @@ export default function Write() {
         handleSemesterChange={handleSemesterChange}
       />
       <TitleField />
+      <Stack sx={{m: '0 0 20px'}} spacing={'4px'}>
+        <Text>Đoạn mô tả:</Text>
+        <TextField
+          variant="outlined"
+          spellCheck={false}
+          fullWidth
+          InputProps={{
+            disableUnderline: true,
+            sx: {
+              fontSize: "18px",
+              fontWeight: "400",
+              height: 'auto',
+              color: "text.main",
+            },
+          }}
+          multiline
+        />
+      </Stack>
       <Dropzone />
       <ContentField />
       <Stack
