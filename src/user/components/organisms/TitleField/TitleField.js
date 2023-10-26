@@ -11,10 +11,12 @@ export default function TitleField() {
         disableUnderline: "true",
         sx: {
           fontSize: "40px",
-          fontWeight: "600", // Adjust the font size as needed
+          fontWeight: "600",
           padding: "12px",
+          color: "text.main"
         },
       }}
+      multiline
     />
   );
 }
