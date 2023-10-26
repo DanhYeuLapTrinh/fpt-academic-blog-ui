@@ -48,7 +48,7 @@ export default function Dropzone() {
     maxSize: 1024 * 5000,
   });
   return (
-    <Box sx={{ padding: "10px 12px 20px " }}>
+    <Box sx={{ padding: "10px 0 20px " }}>
       {!file ? (
         <div
           {...getRootProps({
