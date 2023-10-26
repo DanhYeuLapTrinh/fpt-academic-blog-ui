@@ -16,7 +16,6 @@ export default function Dropzone() {
   const [link, setLink] = useState();
   const handleSubmit = async (file) => {
     setIsLoading(true);
-    console.log(file);
     if (!file) return;
     const formData = new FormData();
     formData.append("file[]", file);
