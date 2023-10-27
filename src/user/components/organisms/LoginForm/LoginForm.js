@@ -47,6 +47,7 @@ export default function LoginForm() {
           })
         );
         const auth = {
+          id: response?.data?.id,
           user: response?.data?.username,
           role: response?.data?.roleName,
           token: response?.data?.token,

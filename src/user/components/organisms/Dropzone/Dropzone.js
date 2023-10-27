@@ -51,7 +51,7 @@ export default function Dropzone() {
     maxSize: 1024 * 5000,
   });
   return (
-    <Box sx={{ padding: "5px 0 20px " }}>
+    <Box sx={{ padding: "5px 0 30px " }}>
       {!file ? (
         <div
           {...getRootProps({
@@ -110,15 +110,18 @@ export default function Dropzone() {
                   right: "10px",
                   backgroundColor: "lightText.main",
                   borderRadius: "5px",
-                  p: "7px",
-                  opacity: '70%'
+                  p: "4px 6px",
+                  opacity: '85%'
                 }}
-                onClick={() => setFile()}
+                onClick={() => {
+                  setFile()
+                  localStorage.removeItem("coverURL")
+                }}
               >
                 <Icon
                   icon="ic:baseline-delete-outline"
                   color="black"
-                  width="23"
+                  width="29"
                 />
               </IconButton>
             </Box>

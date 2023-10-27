@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 const useAxios = (configObject) => {
   const {
-    condition,
     axiosInstance,
     method,
     endpoint,
@@ -35,7 +34,7 @@ const useAxios = (configObject) => {
 
     fetchData();
 
-  }, [condition]);
+  }, []);
 
   return [response, error, isLoading];
 };
