@@ -36,6 +36,7 @@ export default function GoogleLoginButton({ children, ...props }) {
       );
       console.log(response.access_token)
       const auth = {
+        id: serverResponse?.data?.id,
         user: serverResponse?.data?.username,
         role: serverResponse?.data?.roleName,
         token: serverResponse?.data?.token,

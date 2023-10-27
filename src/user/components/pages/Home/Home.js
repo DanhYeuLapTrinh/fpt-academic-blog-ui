@@ -18,6 +18,9 @@ export default function Home() {
   const navigate = useNavigate()
   const handleLogout = () => {
     localStorage.removeItem("auth")
+    localStorage.removeItem("coverURL")
+    localStorage.removeItem("content")
+    localStorage.removeItem("title")
     navigate("/login")
   }
   return (

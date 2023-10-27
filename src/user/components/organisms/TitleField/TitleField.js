@@ -24,7 +24,7 @@ export default function TitleField() {
   }, []);
 
   return (
-    <Stack sx={{minHeight: '100px'}}>
+    <Stack sx={{minHeight: '105px'}}>
       <TextField
         variant="standard"
         placeholder="Nhập tiêu đề bài viết..."
@@ -33,7 +33,7 @@ export default function TitleField() {
         InputProps={{
           disableUnderline: true,
           sx: {
-            fontSize: "44px",
+            fontSize: "48px",
             fontWeight: "600",
             color: "text.main",
           },

@@ -7,9 +7,10 @@ import Dropzone from "../../organisms/Dropzone/Dropzone";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePostTag from "../../../hooks/usePostTag";
 import { useNavigate } from "react-router-dom";
+import { createSlug, getFirstPTag, toSlug } from "../../../utils/StringMethod";
 
 export default function Write() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const {
     data,
@@ -26,14 +27,19 @@ export default function Write() {
     setTag,
     setMajorID,
     setSemesterID,
+    subjectID,
+    tagID,
     setSubjectID,
     setTagID,
   } = usePostTag();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosPrivate.get("categories");
-        const tagList = await axiosPrivate.get("tags");
+        const response = await axiosPrivate.get(
+          process.env.REACT_APP_CATEGORIES_API
+        );
+        const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
 
         setData(response.data);
         setTagList(tagList.data);
@@ -41,11 +47,11 @@ export default function Write() {
         if (!error?.response) {
           console.log("No server response");
         } else if (error.response?.status === 403) {
-          navigate("/login")
+          navigate("/login");
         } else if (error.response?.status === 401) {
-          console.log(error)
+          console.log(error);
         } else {
-          console.log(error)
+          console.log(error);
         }
       }
     };
@@ -68,6 +74,30 @@ export default function Write() {
     setTag();
     setTagID();
   };
+
+  const handleSubmit = async () => {
+    try {
+      const auth = JSON.parse(localStorage.getItem("auth"))
+      const slug = toSlug(JSON.parse(localStorage.getItem("title")))
+      const description = getFirstPTag(JSON.parse(localStorage.getItem("content")))
+      const response = await axiosPrivate.post("users/request-post", {
+        accountId: auth?.id,
+        title: JSON.parse(localStorage.getItem("title")),
+        description: description,
+        content: JSON.parse(localStorage.getItem("content")),
+        allowComment: true,
+        categoryId: subjectID,
+        tagId: tagID,
+        imageURL: [],
+        videoURL: [],
+        coverURL: JSON.parse(localStorage.getItem("coverURL")),
+        slug: slug
+      })
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       <PostFilter
@@ -90,17 +120,22 @@ export default function Write() {
         handleMajorChange={handleMajorChange}
         handleSemesterChange={handleSemesterChange}
       />
-      <TitleField/>
+      <TitleField />
       <Dropzone />
       <ContentField />
+
       <Stack
         direction={"row"}
         justifyContent={"flex-end"}
         spacing={2}
         paddingTop={"30px"}
       >
-        <Button sx={{padding: '10px'}} variant="outlined">Lưu bản nháp</Button>
-        <Button sx={{padding: '10px'}} variant="contained">Gửi bài</Button>
+        <Button sx={{ padding: "10px" }} variant="outlined">
+          Lưu bản nháp
+        </Button>
+        <Button onClick={handleSubmit} sx={{ padding: "10px" }} variant="contained">
+          Gửi bài
+        </Button>
       </Stack>
     </Container>
   );
