@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@mui/base";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-
+import SearchNotFound from "../../components/atoms/SearchNotFound";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 function AddUserForm({ open, onClose, onAddUser, data }) {
-  const [duplicateUsernameError, setDuplicateUsernameError] = useState("");
-  const [duplicateEmailError, setDuplicateEmailError] = useState("");
-  const [allFieldsEmpty, setAllFieldsEmpty] = useState(true);
-  const [hasErrors, setHasErrors] = useState(false); // Biến để kiểm tra lỗi tổng thể
+  const [hasErrors, setHasErrors] = useState(false);
 
-  const nonEmptyRegex = /.+/; // Non-empty field
+  const [isValid, setIsValid] = useState(true);
+
+  const nonEmptyRegex = /.+/;
   const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  const phoneRegex = /^\d{1,10}$/;
-  const fullnameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/; // Letters with diacritics, spaces, hyphens, and apostrophes
+  const phoneRegex = /^0\d{9}$/ || /^\d{10}$/;
+  const fullnameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/;
   const usernameErrorMessage = "Tên tài khoản không được bỏ trống";
   const passwordErrorMessage = "Mật khẩu không được bỏ trống";
   const fullnameErrorMessage = "Tên đầy đủ không hợp lệ";
@@ -42,19 +48,38 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
     role: "",
   });
 
+  useEffect(() => {
+    // Check for form validity whenever formData changes
+    const isFormValid = () => {
+      if (
+        formData.username.match(nonEmptyRegex) &&
+        formData.password.match(nonEmptyRegex) &&
+        formData.fullname.match(fullnameRegex) &&
+        formData.email.match(nonEmptyRegex) &&
+        formData.email.match(emailRegex) &&
+        (!formData.phone || formData.phone.match(phoneRegex)) &&
+        formData.role.match(nonEmptyRegex)
+      ) {
+        return true;
+      }
+      return false;
+    };
+
+    setIsValid(isFormValid());
+  }, [formData]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    setFormErrors({ ...formErrors, [name]: "" });
+    setFormErrors({ ...formErrors, [name]: null });
   };
 
   const handleAddUser = () => {
-    setHasErrors(false); // Đặt lại biến hasErrors
+    setHasErrors(false);
 
-    const validationErrors = {}; // Create an object to collect validation errors
+    const validationErrors = {};
 
-    // Validate and collect errors
     if (!formData.username.match(nonEmptyRegex)) {
       validationErrors.username = usernameErrorMessage;
       setHasErrors(true);
@@ -88,53 +113,53 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
       setHasErrors(true);
     }
 
-    // Check for duplicate username and email
-    if (data.some((user) => user.username === formData.username)) {
-      validationErrors.duplicateUsername = "Tên tài khoản đã tồn tại";
-      setHasErrors(true);
-    }
-
-    if (data.some((user) => user.email === formData.email)) {
-      validationErrors.duplicateEmail = "Email đã tồn tại";
-      setHasErrors(true);
-    }
-
-    if (hasErrors) {
-      // If there are errors, set the validation errors
-      setFormErrors(validationErrors);
-    } else {
-      // If there are no errors, proceed with adding the user
-      onAddUser(formData);
-      onClose();
+    // Kiểm tra isValid và hasErrors
+    if (isValid && !hasErrors) {
+      // Kiểm tra xem có username trùng hay không
+      if (data.some((user) => user.username === formData.username)) {
+        setFormErrors({
+          ...formErrors,
+          username: "Tên tài khoản đã tồn tại",
+        });
+      } else {
+        // Không trùng thì gửi dữ liệu về backend
+        onAddUser(formData);
+        onClose();
+        setFormData(initialUser);
+        setFormErrors({});
+        setIsValid(true);
+      }
     }
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Thêm người dùng mới</DialogTitle>
+      <DialogTitle
+        sx={{ fontSize: "30px", fontWeight: "bold", textAlign: "center" }}
+      >
+        Thêm người dùng mới
+      </DialogTitle>
       <DialogContent style={{ paddingBottom: "5px" }}>
         <TextField
           margin="dense"
-          label="Tên tài khoản"
+          label="Tên tài khoản *"
           type="text"
           name="username"
           fullWidth
-          variant="standard"
+          variant="outlined"
           value={formData.username}
           onChange={handleInputChange}
-          error={
-            Boolean(formErrors.username) || Boolean(duplicateUsernameError)
-          }
-          helperText={formErrors.username || duplicateUsernameError}
+          error={Boolean(formErrors.username)}
+          helperText={formErrors.username}
         />
 
         <TextField
           margin="dense"
-          label="Nhập mật khẩu"
+          label="Nhập mật khẩu *"
           type="password"
           name="password"
           fullWidth
-          variant="standard"
+          variant="outlined"
           value={formData.password}
           onChange={handleInputChange}
           error={Boolean(formErrors.password)}
@@ -143,11 +168,11 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
 
         <TextField
           margin="dense"
-          label="Tên đầy đủ"
+          label="Tên đầy đủ *"
           type="text"
           name="fullname"
           fullWidth
-          variant="standard"
+          variant="outlined"
           value={formData.fullname}
           onChange={handleInputChange}
           error={Boolean(formErrors.fullname)}
@@ -156,51 +181,52 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
 
         <TextField
           margin="dense"
-          label="Địa chỉ email"
+          label="Địa chỉ email *"
           type="email"
           name="email"
           fullWidth
-          variant="standard"
+          variant="outlined"
           value={formData.email}
           onChange={handleInputChange}
-          error={Boolean(formErrors.email) || Boolean(duplicateEmailError)}
-          helperText={formErrors.email || duplicateEmailError}
+          error={Boolean(formErrors.email)}
+          helperText={formErrors.email}
         />
 
         <TextField
           margin="dense"
-          label="Nhập số điện thoại"
+          label="Nhập số điện thoại *"
           type="tel"
           name="phone"
           fullWidth
-          variant="standard"
+          variant="outlined"
           value={formData.phone}
           onChange={handleInputChange}
           error={Boolean(formErrors.phone)}
           helperText={formErrors.phone}
         />
-
-        <select
-          className="mt-4 border-b-2 border-solid outline-0 w-full"
-          name="role"
-          onChange={handleInputChange}
-          value={formData.role}
-          error={Boolean(formErrors.role)}
-        >
-          <option value="" className="text-form">
-            Chọn vai trò
-          </option>
-          <option value="Admin">Admin</option>
-          <option value="Mentor">Mentor</option>
-          <option value="Lecturer">Lecturer</option>
-          <option value="Student">Student</option>
-        </select>
+        <FormControl required fullWidth sx={{ paddingTop: "5px" }}>
+          <InputLabel>Vai trò</InputLabel>
+          <Select
+            name="role"
+            onChange={handleInputChange}
+            value={formData.role}
+            error={Boolean(formErrors.role)}
+          >
+            <MenuItem value="Admin">Admin</MenuItem>
+            <MenuItem value="Mentor">Lecturer</MenuItem>
+            <MenuItem value="Lecturer">Mentor</MenuItem>
+            <MenuItem value="Student">Student</MenuItem>
+          </Select>
+        </FormControl>
       </DialogContent>
       <DialogActions style={{ paddingTop: "10px" }}>
-        <Button onClick={onClose}>Hủy thêm</Button>
+        <Button onClick={onClose}>Hủy</Button>
         <Button
           onClick={handleAddUser}
-          className="bg-green-500 rounded h-8 w-20 text-white"
+          disabled={!isValid}
+          className={`bg-green-500 rounded h-8 w-24 text-white ${
+            !isValid && "opacity-50"
+          }`}
         >
           Thêm mới
         </Button>
@@ -213,7 +239,13 @@ export default AddUserForm;
 
 export const handleSearch = (event, data, setRecords) => {
   const filteredData = data.filter((item) =>
-    item.username.toLowerCase().includes(event.target.value.toLowerCase())
+    item.fullName.toLowerCase().includes(event.target.value.toLowerCase())
   );
   setRecords(filteredData);
+
+  const isNotFound = !filteredData.length;
+
+  {
+    isNotFound && <SearchNotFound filteredData={filteredData} />;
+  }
 };

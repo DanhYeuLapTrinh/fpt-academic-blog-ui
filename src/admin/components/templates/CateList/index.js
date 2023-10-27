@@ -22,6 +22,7 @@ function CateList() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSemesters, setSelectedSemesters] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
+  const [selectedSubjectId, setSelectedSubjectId] = useState(null);
 
   const [isDeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);

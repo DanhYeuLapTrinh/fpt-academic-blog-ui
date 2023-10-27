@@ -23,10 +23,10 @@ export default function Sidebar() {
   };
 
   return (
-    <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5">
+    <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 border-r-2 border-solid">
       <div className="mb-2">
         <Link>
-          <Typography className="text-custom text-4xl font-bold ml-16 cursor-pointer">
+          <Typography className="text-custom text-5xl text-center font-bold cursor-pointer pb-2">
             fblog
           </Typography>
         </Link>
