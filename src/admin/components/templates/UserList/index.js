@@ -8,37 +8,12 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { TablePagination } from "@mui/material";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Button } from "@mui/base";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/AddNewButton";
 import { handleSearch } from "../../../utils/User/userAction";
 import AddUserForm from "../../../utils/User/userAction";
 
 function UserResultList() {
-  const initialUser = {
-    username: "",
-    password: "",
-    fullname: "",
-    email: "",
-    phone: "",
-    role: "",
-  };
-  const [formData, setFormData] = useState(initialUser);
-
-  const [formErrors, setFormErrors] = useState({
-    username: "",
-    password: "",
-    fullname: "",
-    email: "",
-    phone: "",
-    role: "",
-  });
-
   const axiosPrivate = useAxiosPrivate();
 
   const [isAddUserFormOpen, setAddUserFormOpen] = useState(false);
@@ -78,37 +53,6 @@ function UserResultList() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  //Popup thêm người dùng mới
-  const [open, setOpen] = useState(false);
-
-  //Regex
-  const usernameRegex = /.+/; // Non-empty field
-  const usernameErrorMessage = "Tên tài khoản không được bỏ trống";
-
-  const passwordRegex = /.+/; // Non-empty field
-  const passwordErrorMessage = "Mật khẩu không được bỏ trống";
-
-  const fullnameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/; // Letters with diacritics, spaces, hyphens, and apostrophes
-  const fullnameErrorMessage = "Tên đầy đủ không hợp lệ";
-
-  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  const emailErrorMessage = "Địa chỉ email không hợp lệ";
-
-  const phoneRegex = /^\d{1,10}$/; // Maximum of 10 digits
-  const phoneErrorMessage = "Số điện thoại tối đa 10 số";
-
-  const roleRegex = /.+/; // Non-empty field
-  const roleErrorMessage = "Vai trò không được bỏ trống";
-
-  //All Handle
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   // Function to open the add user form modal
   const handleOpenAddUserForm = () => {
     setAddUserFormOpen(true);
@@ -119,13 +63,6 @@ function UserResultList() {
     setAddUserFormOpen(false);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-
-    setFormErrors({ ...formErrors, [name]: "" });
-  };
-
   // Function to add a new user
   const handleAddUser = (userData) => {
     // Call the API to add a new user with `userData` passed as a parameter
@@ -133,17 +70,29 @@ function UserResultList() {
       .post(process.env.REACT_APP_NEW_USER, userData)
       .then((response) => {
         // Handle the response from the server if needed
-        console.log("Thêm mới thành công!");
+        if (response.status === 200) {
+          toast.success("Thêm mới người dùng thành công", {
+            position: "top-right",
+            autoClose: 3000,
+          });
+        }
+        const newData = [...data, userData];
+
+        const newRecords = [...records, userData];
+
+        setData(newData);
+        setRecords(newRecords);
       })
       .catch((error) => {
         // Handle errors if any
         console.error("Lỗi khi thêm mới người dùng:", error);
+        if (error.response.status === 401) {
+          toast.error("Hãy điền đầy đủ thông tin", {
+            position: "top-right",
+            autoClose: 3000,
+          });
+        }
       });
-  };
-
-  const resetForm = () => {
-    setFormData(initialUser);
-    setFormData(initialUser);
   };
 
   //Call api get user list
@@ -208,7 +157,7 @@ function UserResultList() {
 
           setShowMuteModal(false);
 
-          toast.success(`Mute ${selectedUsername} thành công!`, {
+          toast.success(`Hạn chế ${selectedUsername} thành công!`, {
             position: "top-right",
             autoClose: 3000,
           });
@@ -233,7 +182,7 @@ function UserResultList() {
 
         setShowMuteModal(false);
 
-        toast.success(`Unmute ${selectedUsername} thành công!`, {
+        toast.warn(`Hủy hạn chế ${selectedUsername} thành công!`, {
           position: "top-right",
           autoClose: 3000,
         });
@@ -326,7 +275,7 @@ function UserResultList() {
     axiosPrivate
       .post(process.env.REACT_APP_UNBAN_ACCOUNT, { id })
       .then((res) => {
-        toast.success("Bỏ cấm tài khoản thành công", {
+        toast.warn("Bỏ cấm tài khoản thành công", {
           position: "top-right",
           autoClose: 3000,
         });
@@ -447,11 +396,14 @@ function UserResultList() {
                     )}
                   </td>
                   <td className="p-4">
-                    <div className="flex flex-col">
-                      <div>
-                        {banStatus[item.id] ? "Đang bị cấm" : "Bình thường"}
-                      </div>
-                      <div>{isMuted[item.id] ? "Đang bị hạn chế" : ""}</div>
+                    <div>
+                      {banStatus[item.id] && isMuted[item.id]
+                        ? "Đang bị cấm và đang bị hạn chế"
+                        : banStatus[item.id]
+                        ? "Đang bị cấm"
+                        : isMuted[item.id]
+                        ? "Đang bị hạn chế"
+                        : "Bình thường"}
                     </div>
                   </td>
                   <td className="p-4 flex items-center">
@@ -533,17 +485,27 @@ function UserResultList() {
           content: {
             maxWidth: "400px",
             margin: "auto",
-            maxHeight: "100px",
+            maxHeight: "200px",
           },
         }}
       >
-        <h3>Nhập thời gian mute (giờ)</h3>
-        <input
-          type="number"
-          value={muteDuration}
-          onChange={(e) => setMuteDuration(e.target.value)}
-        />
-        <button onClick={muteUser}>OK</button>
+        <h3 className="text-center text-2xl font-bold mb-5">
+          Nhập thời gian hạn chế (giờ)
+        </h3>
+        <div className="grid grid-cols-3 mt-10">
+          <input
+            type="number"
+            value={muteDuration}
+            onChange={(e) => setMuteDuration(e.target.value)}
+            className="col-span-2 text-center border-2 border-black border-solid rounded-lg"
+          />
+          <button
+            onClick={muteUser}
+            className="col-span-1 bg-green-500 text-white rounded-lg mx-4"
+          >
+            OK
+          </button>
+        </div>
       </Modal>
       <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>
