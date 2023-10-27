@@ -7,7 +7,7 @@ import { FormHelperText, Stack } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 export default function PostFilter(props) {
   return (
-    <Stack direction={"row"} spacing={1} sx={{ padding: "50px 0 10px" }}>
+    <Stack direction={"row"} spacing={1} sx={{ padding: "50px 0 20px" }}>
       <FormControl error={props.major === undefined && true}>
         <Select
           sx={{ height: "30px", pr: "5px" }}

@@ -12,13 +12,13 @@ import PostTagProvider from "./user/context/PostTagProvider";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={MyTheme}>
-   <PostTagProvider>
-     <AuthProvider>
-        <LoginProvider>
-          <App />
-        </LoginProvider>
-     </AuthProvider>
-   </PostTagProvider>
+     <PostTagProvider>
+       <AuthProvider>
+          <LoginProvider>
+            <App />
+          </LoginProvider>
+       </AuthProvider>
+     </PostTagProvider>
   </ThemeProvider>
 );
 reportWebVitals();

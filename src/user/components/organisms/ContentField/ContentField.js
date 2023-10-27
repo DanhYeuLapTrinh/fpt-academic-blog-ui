@@ -19,31 +19,26 @@ export default function ContentField() {
       );
       if (response.status === 200) return response?.data.link;
     } catch (error) {
-      if (error.response?.status === 401) {
-        refresh();
-      }
+      console.log(error)
     }
   };
 
   return (
-    <div style={{margin: '15px 0'}}>
+    <div style={{ margin: "15px 0" }}>
       <Editor
         apiKey="or7ndgcoxdbx9821y1j3d8oi37nqe538m257uvlwroa11wiq"
         onEditorChange={(newValue) => {
           setContent(newValue);
+          console.log(content);
         }}
-        onInit={(evt, editor) => {
+        onInit={(editor) => {
           editorRef.current = editor;
-          editor.off("paste");
         }}
         init={{
-          paste_block_drop: false,
           entity_encoding: "raw",
           images_upload_handler: handleImage,
           images_upload_url: "posts/image-upload",
-          automatic_uploads: true,
-          images_upload_url: "hello",
-          placeholder: "Nhập nội dung bài viết...",
+          placeholder: "Nhập đoạn giới thiệu để mọi người biết rõ về bài viết hơn nhé...", 
           content_style:
             "body { font-family:Roboto,sans-serif; font-size:18px; font-weight:400;color:#444746; margin: 8px !important;} img { width: 100%; border-radius: 10px; } iframe { width: 1128px !important; height: 628px !important;}",
           menubar: false,
@@ -65,8 +60,9 @@ export default function ContentField() {
           ],
           advlist_bullet_styles: "disc",
           advlist_number_styles: "number",
-          quickbars_insert_toolbar: false,
-          quickbars_image_toolbar: false
+          quickbars_insert_toolbar: "image media",
+          quickbars_image_toolbar: false,
+          min_height: 230
         }}
       />
     </div>

@@ -33,7 +33,7 @@
     font-weight: 400;
     height: 40px;
     overflow: hidden;
-    padding: 0 8px;
+    padding: 0;
     position: relative;
     text-transform: none;
   }
@@ -60,4 +60,7 @@
 }
 .tox .tox-statusbar__path>* {
   display: none !important;
+}
+.tox-statusbar__wordcount {
+  font-weight: 500 !important;
 }
