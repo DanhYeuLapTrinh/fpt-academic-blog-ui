@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Button, Container, Stack, TextField } from "@mui/material";
+import React, { useEffect } from "react";
+import { Button, Container, Stack } from "@mui/material";
 import PostFilter from "../../atoms/PostFilter/PostFilter";
 import ContentField from "../../organisms/ContentField/ContentField";
 import TitleField from "../../organisms/TitleField/TitleField";
 import Dropzone from "../../organisms/Dropzone/Dropzone";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePostTag from "../../../hooks/usePostTag";
-import Text from "../../atoms/Text/Text";
+import { useNavigate } from "react-router-dom";
 
 export default function Write() {
+  const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate();
   const {
     data,
@@ -37,7 +38,15 @@ export default function Write() {
         setData(response.data);
         setTagList(tagList.data);
       } catch (error) {
-        console.log(error);
+        if (!error?.response) {
+          console.log("No server response");
+        } else if (error.response?.status === 403) {
+          navigate("/login")
+        } else if (error.response?.status === 401) {
+          console.log(error)
+        } else {
+          console.log(error)
+        }
       }
     };
     fetchData();
@@ -81,25 +90,7 @@ export default function Write() {
         handleMajorChange={handleMajorChange}
         handleSemesterChange={handleSemesterChange}
       />
-      <TitleField />
-      <Stack sx={{m: '0 0 20px'}} spacing={'4px'}>
-        <Text>Đoạn mô tả:</Text>
-        <TextField
-          variant="outlined"
-          spellCheck={false}
-          fullWidth
-          InputProps={{
-            disableUnderline: true,
-            sx: {
-              fontSize: "18px",
-              fontWeight: "400",
-              height: 'auto',
-              color: "text.main",
-            },
-          }}
-          multiline
-        />
-      </Stack>
+      <TitleField/>
       <Dropzone />
       <ContentField />
       <Stack
@@ -108,8 +99,8 @@ export default function Write() {
         spacing={2}
         paddingTop={"30px"}
       >
-        <Button variant="outlined">Lưu bản nháp</Button>
-        <Button variant="contained">Gửi bài</Button>
+        <Button sx={{padding: '10px'}} variant="outlined">Lưu bản nháp</Button>
+        <Button sx={{padding: '10px'}} variant="contained">Gửi bài</Button>
       </Stack>
     </Container>
   );

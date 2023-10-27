@@ -1,21 +1,30 @@
 import { Box, Stack, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Text from "../../atoms/Text/Text";
 
 export default function TitleField() {
-  const [inputValue, setInputValue] = useState("");
+  const [title, setTitle] = useState("");
   const [charCount, setCharCount] = useState(0);
   const [focus, setFocus] = useState(false);
   const maxCharLimit = 100;
 
   const handleInputChange = (event) => {
-    const text = event.target.value;
-    setInputValue(text);
-    setCharCount(text.length);
+    setTitle(event.target.value);
+    setCharCount(event.target.value.length);
   };
 
+  useEffect(() => {
+    setTimeout(() => {
+      localStorage.setItem("title", JSON.stringify(title));
+    }, 5000);
+  }, [title]);
+
+  useEffect(() => {
+    setTitle(JSON.parse(localStorage.getItem("title")));
+  }, []);
+
   return (
-    <Stack>
+    <Stack sx={{minHeight: '100px'}}>
       <TextField
         variant="standard"
         placeholder="Nhập tiêu đề bài viết..."
@@ -24,7 +33,7 @@ export default function TitleField() {
         InputProps={{
           disableUnderline: true,
           sx: {
-            fontSize: "40px",
+            fontSize: "44px",
             fontWeight: "600",
             color: "text.main",
           },
@@ -32,25 +41,25 @@ export default function TitleField() {
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         multiline
-        value={inputValue}
+        value={title}
         onChange={handleInputChange}
       />
-      <Box sx={{ alignSelf: "flex-end", p: "0 15px 20px 0" }}>
+      <Box sx={{ alignSelf: "flex-end", pr: '15px'}}>
         {charCount >= maxCharLimit && (
-            <Typography
-              variant="caption"
-              color="error"
-              fontWeight="600"
-              fontSize="14px"
-            >
-              Tiêu đề không được dài hơn 100 ký tự
-            </Typography>
+          <Typography
+            variant="caption"
+            color="error"
+            fontWeight="500"
+            fontSize="14px"
+          >
+            Tiêu đề không được dài hơn 100 ký tự
+          </Typography>
         )}
         {focus && charCount < maxCharLimit ? (
           <Text
             variant="caption"
             color="primary.main"
-            fontWeight="600"
+            fontWeight="500"
             fontSize="14px"
           >
             {charCount}/{maxCharLimit} characters

@@ -31,6 +31,9 @@ export default function Dropzone() {
     const origin = response.data.link;
     setLink(origin);
     setIsLoading(false);
+    setTimeout(() => {
+      localStorage.setItem("coverURL", JSON.stringify(origin))
+    }, 5000)
   };
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     if (acceptedFiles?.[0]) {
@@ -48,7 +51,7 @@ export default function Dropzone() {
     maxSize: 1024 * 5000,
   });
   return (
-    <Box sx={{ padding: "10px 0 20px " }}>
+    <Box sx={{ padding: "5px 0 20px " }}>
       {!file ? (
         <div
           {...getRootProps({
@@ -103,18 +106,18 @@ export default function Dropzone() {
                 disableTouchRipple
                 sx={{
                   position: "absolute",
-                  top: "8px",
-                  right: "8px",
-                  backgroundColor: "primary.main",
+                  top: "10px",
+                  right: "10px",
+                  backgroundColor: "lightText.main",
                   borderRadius: "5px",
                   p: "7px",
-                  opacity: '90%'
+                  opacity: '70%'
                 }}
                 onClick={() => setFile()}
               >
                 <Icon
                   icon="ic:baseline-delete-outline"
-                  color="#ffffff"
+                  color="black"
                   width="23"
                 />
               </IconButton>
