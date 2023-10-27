@@ -54,6 +54,7 @@ export default function OTPForm() {
           }),   
         );
         setAuth({token : response?.data?.token})
+        localStorage.setItem("auth", JSON.stringify({token : response?.data?.token}))
         values.otp = ""
         navigate("/recover-password")
       } catch (error) {
