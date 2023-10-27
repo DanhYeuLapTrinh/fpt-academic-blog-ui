@@ -8,13 +8,11 @@ import Text from "../../atoms/Text/Text";
 import axios from "../../../api/axios";
 import { LoginContext } from "../../../context/LoginProvider";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 export default function RecoverPasswordForm() {
   const axiosPrivate = useAxiosPrivate()
   const { email } = useContext(LoginContext);
-  const {auth} = useAuth()
   const [showPassword, setShowPassword] = useState(false);
   const handleClick = () => {
     setShowPassword((prevData) => !prevData);
