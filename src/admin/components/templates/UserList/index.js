@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/AddNewButton";
-import { handleSearch } from "../../../utils/User/userAction";
+import { handleSearch } from "../../../utils/User/searchUser";
 import AddUserForm from "../../../utils/User/userAction";
 
 function UserResultList() {
@@ -328,8 +328,8 @@ function UserResultList() {
             <AddUserForm
               open={isAddUserFormOpen}
               onClose={handleCloseAddUserForm}
-              onAddUser={handleAddUser}
               data={data}
+              onAddUser={handleAddUser}
             />
           </form>
         </div>
@@ -409,7 +409,7 @@ function UserResultList() {
                   <td className="p-4 flex items-center">
                     <div className="flex flex-col">
                       <div className="pb-1">
-                        {banStatus[item.id] ? ( // If banStatus is true for this row, show "Bỏ cấm tài khoản" button
+                        {banStatus[item.id] ? ( //Nếu banStatus = true thì hiển thị "bỏ cấm tài khoản"
                           <button
                             className={`${
                               isBanning && isBanningId === item.id
@@ -423,7 +423,7 @@ function UserResultList() {
                               : "Bỏ cấm tài khoản"}
                           </button>
                         ) : (
-                          // If banStatus is false for this row, show "Cấm tài khoản" button
+                          // Nếu banStatus = false thì hiển thị "cấm tài khoản"
                           <button
                             className={`${
                               isBanning && isBanningId === item.id

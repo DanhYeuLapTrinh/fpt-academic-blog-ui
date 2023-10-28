@@ -53,14 +53,12 @@ function TagList() {
       return;
     }
 
-    // Check for duplicates
     const isDuplicate = tagData.some((tag) => tag.tagName === newTagName);
     if (isDuplicate) {
       setErrorMessage("Tên thẻ đã tồn tại.");
       return;
     }
 
-    // If all validations pass, add the tag
     axiosPrivate
       .post(process.env.REACT_APP_ADD_NEW_TAG, { tagName: newTagName })
       .then((response) => {
@@ -74,7 +72,6 @@ function TagList() {
       })
       .catch((error) => {
         console.error("Error adding tag: " + error);
-        // Handle the error as needed
         toast.error(`Thêm thẻ "${newTagName}" không thành công`, {
           position: "top-right",
           autoClose: 3000,
@@ -88,7 +85,6 @@ function TagList() {
   };
 
   const handleDeleteConfirmation = () => {
-    // Perform delete action here
     axiosPrivate
       .post(process.env.REACT_APP_DELETE_TAG, {
         tagId: tagToDelete.id,
