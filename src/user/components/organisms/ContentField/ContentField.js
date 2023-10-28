@@ -1,32 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "./ContentField.scss";
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-export default function ContentField() {
-  const axiosPrivate = useAxiosPrivate();
-  const [blog, setBlog] = useState("");
-  const handleImage = async (blobInfo) => {
-    try {
-      const formData = new FormData();
-      formData.append("file[]", blobInfo.blob(), blobInfo.filename());
-      const response = await axiosPrivate.post(
-        process.env.REACT_APP_IMAGE_UPLOAD,
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } }
-      );
-      if (response.status === 200) return response?.data.link;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+import useContent from "../../../hooks/useContent";
+export default function ContentField({...props}) {
+  const {setContent} = useContent()
   return (
     <div style={{ margin: "15px 0" }}>
       <Editor
         apiKey="or7ndgcoxdbx9821y1j3d8oi37nqe538m257uvlwroa11wiq"
-        onEditorChange={(newValue, editor) => {
+        onEditorChange={(newValue) => {
           setTimeout(() => {
             localStorage.setItem("content", JSON.stringify(newValue));
-          }, 5000);
+            setContent(newValue);
+          }, 1000 );
         }}
         onInit={(evt, editor) => {
           setTimeout(() => {
@@ -36,10 +22,9 @@ export default function ContentField() {
             }
           }, 100);
         }}
-        initialValue=""
         init={{
           entity_encoding: "raw",
-          images_upload_handler: handleImage,
+          images_upload_handler: props.handleImage,
           images_upload_url: "posts/image-upload",
           placeholder:
             "Nhập đoạn giới thiệu để mọi người biết rõ về bài viết hơn nhé...",

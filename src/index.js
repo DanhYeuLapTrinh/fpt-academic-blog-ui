@@ -7,15 +7,18 @@ import { ThemeProvider } from "@emotion/react";
 import { MyTheme } from "./user/theme/MyTheme";
 import { LoginProvider } from "./user/context/LoginProvider";
 import PostTagProvider from "./user/context/PostTagProvider";
+import ContentProvider from "./user/context/ContentProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={MyTheme}>
-    <PostTagProvider>
-      <LoginProvider>
-        <App />
-      </LoginProvider>
-    </PostTagProvider>
+    <ContentProvider>
+      <PostTagProvider>
+        <LoginProvider>
+          <App />
+        </LoginProvider>
+      </PostTagProvider>
+    </ContentProvider>
   </ThemeProvider>
 );
 reportWebVitals();

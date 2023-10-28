@@ -22,7 +22,6 @@ export default function PostFilter(props) {
             <MenuItem
               key={item.id}
               value={item.categoryName}
-              onClick={() => props.setMajorID(item.id)}
             >
               <Text fontSize="14px">{item.categoryName}</Text>
             </MenuItem>
@@ -47,7 +46,6 @@ export default function PostFilter(props) {
               <MenuItem
                 key={item.id}
                 value={item.categoryName}
-                onClick={() => props.setSemesterID(item.id)}
               >
                 <Text fontSize="14px">{item.categoryName}</Text>
               </MenuItem>
