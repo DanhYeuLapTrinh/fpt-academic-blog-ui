@@ -6,12 +6,14 @@ import { axiosPrivate } from "../../../api/axios";
 import ImageDrop from "../../atoms/ImagePlaceholder/ImageDrop";
 import ImageClick from "../../atoms/ImagePlaceholder/ImageClick";
 import { Icon } from "@iconify/react";
+import useContent from "../../../hooks/useContent";
 export default function Dropzone() {
   // functon onDrop chỉ chạy khi người dùng bỏ ảnh vào
   // useCallback để tránh tình trạng bị rerender khi component Dropzone rerender
   // chỉ rerender khi có ảnh thôi
   const [isLoading, setIsLoading] = useState(false);
   const [file, setFile] = useState();
+  const { setCoverURL } = useContent();
   const [rejectedFile, setRejectedFile] = useState();
   const [link, setLink] = useState();
   const handleSubmit = async (file) => {
@@ -31,9 +33,10 @@ export default function Dropzone() {
     const origin = response.data.link;
     setLink(origin);
     setIsLoading(false);
+    setCoverURL(origin);
     setTimeout(() => {
-      localStorage.setItem("coverURL", JSON.stringify(origin))
-    }, 5000)
+      localStorage.setItem("coverURL", JSON.stringify(origin));
+    }, 5000);
   };
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     if (acceptedFiles?.[0]) {
@@ -111,11 +114,12 @@ export default function Dropzone() {
                   backgroundColor: "lightText.main",
                   borderRadius: "5px",
                   p: "4px 6px",
-                  opacity: '85%'
+                  opacity: "85%",
                 }}
                 onClick={() => {
-                  setFile()
-                  localStorage.removeItem("coverURL")
+                  setFile();
+                  setCoverURL("")
+                  localStorage.removeItem("coverURL");
                 }}
               >
                 <Icon

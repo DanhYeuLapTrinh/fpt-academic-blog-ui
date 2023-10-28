@@ -1,10 +1,10 @@
 import { Box, Stack, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Text from "../../atoms/Text/Text";
+import useContent from "../../../hooks/useContent";
 
 export default function TitleField(props) {
-  const [title, setTitle] = useState("");
-  const [charCount, setCharCount] = useState(0);
+  const {title, setTitle, charCount, setCharCount} = useContent()
   const [focus, setFocus] = useState(false);
   const maxCharLimit = 100;
 
@@ -19,9 +19,6 @@ export default function TitleField(props) {
     }, 5000);
   }, [title]);
 
-  useEffect(() => {
-    setTitle(JSON.parse(localStorage.getItem("title")));
-  }, []);
 
   return (
     <Stack sx={{minHeight: '105px'}}>
