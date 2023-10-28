@@ -21,7 +21,6 @@ import useAuth from "../../../hooks/useAuth";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
     username: "",
@@ -54,12 +53,11 @@ export default function LoginForm() {
           refreshToken: response?.data?.refreshToken
         };
         localStorage.setItem("auth", JSON.stringify(auth))
-        setAuth(auth);
         values.username = "";
         values.password = "";
-        if (auth.role === "admin") {
-          navigate("/welcome");
-        } else navigate("/");
+        if(auth?.role === "admin") {
+          navigate("/welcome")
+        } else navigate("/")
       } catch (error) {
         if (!error?.response) {
           console.log("No server response");
