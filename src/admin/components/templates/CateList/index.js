@@ -22,7 +22,7 @@ function CateList() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSemesters, setSelectedSemesters] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
-  const [selectedSubjectId, setSelectedSubjectId] = useState(null);
+  const [expandedMajors, setExpandedMajors] = useState({});
 
   const [isDeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
@@ -91,6 +91,13 @@ function CateList() {
       }
       return [...prevSelected, subject.id];
     });
+  };
+
+  const toggleMajorExpansion = (major) => {
+    setExpandedMajors((prevExpanded) => ({
+      ...prevExpanded,
+      [major.id]: !prevExpanded[major.id],
+    }));
   };
 
   const openDeleteConfirmation = (item) => {
@@ -200,6 +207,10 @@ function CateList() {
     }
   };
 
+  function hasSpecializationsForMajor(major) {
+    return categories.some((c) => c.majorName === major.majorName);
+  }
+
   return (
     <div className="m-5">
       <div className="flex justify-between items-center mb-5">
@@ -227,35 +238,47 @@ function CateList() {
         {majors.map((major) => (
           <div key={major.id} className="bg-white p-6 rounded-lg shadow-md">
             <h1 className="text-2xl font-semibold mb-4">{major.majorName}</h1>
-            <h2 className="text-lg font-semibold mb-2">Chuyên ngành</h2>
-            {categories
-              .filter((c) => c.majorName === major.majorName)
-              .map((specialization) => (
-                <div
-                  key={specialization.id}
-                  className="flex items-center justify-between mb-2"
-                >
-                  <div className="flex items-center">
-                    <Checkbox
-                      checked={selectedCategories.includes(specialization.id)}
-                      onChange={() => toggleCategorySelection(specialization)}
-                      color="green"
-                    />
-                    <div
-                      className="cursor-pointer px-3 py-1 rounded bg-blue-500 text-white"
-                      onClick={() => handleMajorClick(specialization)}
-                    >
-                      {specialization.categoryName}
-                    </div>
-                  </div>
-                  {selectedCategories.includes(specialization.id) && (
-                    <DeleteForeverIcon
-                      onClick={() => openDeleteConfirmation(specialization)}
-                      className="cursor-pointer text-red-600"
-                    />
-                  )}
-                </div>
-              ))}
+            {hasSpecializationsForMajor(major) && (
+              <>
+                <h2 className="text-lg font-semibold mb-2">Chuyên ngành</h2>
+                {categories
+                  .filter((c) => c.majorName === major.majorName)
+                  .map((specialization) => (
+                    <>
+                      <div
+                        key={specialization.id}
+                        className="flex items-center justify-between mb-2"
+                      >
+                        <div className="flex items-center">
+                          <Checkbox
+                            checked={selectedCategories.includes(
+                              specialization.id
+                            )}
+                            onChange={() =>
+                              toggleCategorySelection(specialization)
+                            }
+                            color="green"
+                          />
+                          <div
+                            className="cursor-pointer px-3 py-1 rounded bg-blue-500 text-white"
+                            onClick={() => handleMajorClick(specialization)}
+                          >
+                            {specialization.categoryName}
+                          </div>
+                        </div>
+                        {selectedCategories.includes(specialization.id) && (
+                          <DeleteForeverIcon
+                            onClick={() =>
+                              openDeleteConfirmation(specialization)
+                            }
+                            className="cursor-pointer text-red-600"
+                          />
+                        )}
+                      </div>
+                    </>
+                  ))}
+              </>
+            )}
 
             {selectedMajor?.majorName === major.majorName && (
               <>

@@ -1,5 +1,3 @@
-import React from "react";
-
 export const FormInputValidation = (props) => {
   const { value, regex, errorMessage, formErrors, setFormErrors, fieldName } =
     props;

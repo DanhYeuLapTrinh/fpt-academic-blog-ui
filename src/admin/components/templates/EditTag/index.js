@@ -12,6 +12,8 @@ export const EditTag = () => {
 
   const [tagList, setTagList] = useState([]);
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleInput = (e) => {
     setTag({ ...tag, [e.target.name]: e.target.value });
   };
@@ -27,6 +29,12 @@ export const EditTag = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    const isDuplicate = tagList.some((t) => t.tagName === tag.tagName);
+    if (isDuplicate) {
+      setErrorMessage("Tên thẻ đã tồn tại.");
+      return;
+    }
     axiosPrivate
       .post(process.env.REACT_APP_EDIT_TAG, tag)
       .then((res) => {
@@ -76,7 +84,8 @@ export const EditTag = () => {
             name="tagName"
           />
         </div>
-        <button className="bg-buttonSubmit text-white py-2 px-4 rounded">
+        <p style={{ color: "red" }}>{errorMessage}</p>
+        <button className="bg-buttonSubmit text-white py-2 px-4 mt-3 rounded">
           Cập nhật thẻ
         </button>
       </form>

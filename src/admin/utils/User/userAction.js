@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@mui/base";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -6,29 +6,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import SearchNotFound from "../../components/atoms/SearchNotFound";
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { useFormik } from "formik";
+import { addUserSchema } from "../../components/atoms/AddUserValidation";
 function AddUserForm({ open, onClose, onAddUser, data }) {
-  const [hasErrors, setHasErrors] = useState(false);
-
-  const [isValid, setIsValid] = useState(true);
-
-  const nonEmptyRegex = /.+/;
-  const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-  const phoneRegex = /^0\d{9}$/ || /^\d{10}$/;
-  const fullnameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/;
-  const usernameErrorMessage = "Tên tài khoản không được bỏ trống";
-  const passwordErrorMessage = "Mật khẩu không được bỏ trống";
-  const fullnameErrorMessage = "Tên đầy đủ không hợp lệ";
-  const emailErrorMessage = "Địa chỉ email không hợp lệ";
-  const phoneErrorMessage = "Số điện thoại tối đa 10 số";
-  const roleErrorMessage = "Vai trò không được bỏ trống";
-
   const initialUser = {
     username: "",
     password: "",
@@ -37,100 +18,67 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
     phone: "",
     role: "",
   };
-  const [formData, setFormData] = useState(initialUser);
 
-  const [formErrors, setFormErrors] = useState({
-    username: "",
-    password: "",
-    fullname: "",
-    email: "",
-    phone: "",
-    role: "",
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      fullname: "",
+      email: "",
+      phone: "",
+      role: "",
+    },
+    validationSchema: addUserSchema,
+
+    handleChange: (e) => {
+      const { name, value } = e.target;
+
+      // Cập nhật giá trị vào form values
+      formik.setFieldValue(name, value);
+
+      // Set lỗi field thành null
+      formik.setFieldError(name, null);
+
+      // Cập nhật state formData
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    },
+
+    onSubmit: (values) => {
+      // Khai báo biến kiểm tra có lỗi hay không
+      let hasError = false;
+
+      // Kiểm tra trùng username
+      const usernames = data.map((user) => user.username);
+      if (usernames.includes(values.username)) {
+        formik.setFieldError("username", "Tên tài khoản đã tồn tại");
+        hasError = true;
+      }
+
+      // Kiểm tra email trùng
+      const email = data.map((user) => user.email);
+      if (email.includes(values.email)) {
+        formik.setFieldError("email", "Email đã tồn tại");
+        hasError = true;
+      }
+
+      // Nếu không có lỗi thì cho phép submit form
+      if (!hasError) {
+        // Call API submit form
+        onAddUser(values);
+
+        // Đóng dialog
+        onClose();
+
+        // Reset form
+        formik.resetForm();
+      }
+    },
   });
 
-  useEffect(() => {
-    // Check for form validity whenever formData changes
-    const isFormValid = () => {
-      if (
-        formData.username.match(nonEmptyRegex) &&
-        formData.password.match(nonEmptyRegex) &&
-        formData.fullname.match(fullnameRegex) &&
-        formData.email.match(nonEmptyRegex) &&
-        formData.email.match(emailRegex) &&
-        (!formData.phone || formData.phone.match(phoneRegex)) &&
-        formData.role.match(nonEmptyRegex)
-      ) {
-        return true;
-      }
-      return false;
-    };
-
-    setIsValid(isFormValid());
-  }, [formData]);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-
-    setFormErrors({ ...formErrors, [name]: null });
-  };
-
-  const handleAddUser = () => {
-    setHasErrors(false);
-
-    const validationErrors = {};
-
-    if (!formData.username.match(nonEmptyRegex)) {
-      validationErrors.username = usernameErrorMessage;
-      setHasErrors(true);
-    }
-
-    if (!formData.password.match(nonEmptyRegex)) {
-      validationErrors.password = passwordErrorMessage;
-      setHasErrors(true);
-    }
-
-    if (!formData.fullname.match(fullnameRegex)) {
-      validationErrors.fullname = fullnameErrorMessage;
-      setHasErrors(true);
-    }
-
-    if (
-      !formData.email.match(nonEmptyRegex) ||
-      !formData.email.match(emailRegex)
-    ) {
-      validationErrors.email = emailErrorMessage;
-      setHasErrors(true);
-    }
-
-    if (formData.phone && !formData.phone.match(phoneRegex)) {
-      validationErrors.phone = phoneErrorMessage;
-      setHasErrors(true);
-    }
-
-    if (!formData.role.match(nonEmptyRegex)) {
-      validationErrors.role = roleErrorMessage;
-      setHasErrors(true);
-    }
-
-    // Kiểm tra isValid và hasErrors
-    if (isValid && !hasErrors) {
-      // Kiểm tra xem có username trùng hay không
-      if (data.some((user) => user.username === formData.username)) {
-        setFormErrors({
-          ...formErrors,
-          username: "Tên tài khoản đã tồn tại",
-        });
-      } else {
-        // Không trùng thì gửi dữ liệu về backend
-        onAddUser(formData);
-        onClose();
-        setFormData(initialUser);
-        setFormErrors({});
-        setIsValid(true);
-      }
-    }
-  };
+  const [formData, setFormData] = useState(initialUser);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -147,10 +95,10 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
           name="username"
           fullWidth
           variant="outlined"
-          value={formData.username}
-          onChange={handleInputChange}
-          error={Boolean(formErrors.username)}
-          helperText={formErrors.username}
+          value={formik.values.username}
+          onChange={formik.handleChange}
+          error={formik.errors.username}
+          helperText={formik.errors.username}
         />
 
         <TextField
@@ -160,10 +108,10 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
           name="password"
           fullWidth
           variant="outlined"
-          value={formData.password}
-          onChange={handleInputChange}
-          error={Boolean(formErrors.password)}
-          helperText={formErrors.password}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          error={formik.errors.password}
+          helperText={formik.errors.password}
         />
 
         <TextField
@@ -173,10 +121,10 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
           name="fullname"
           fullWidth
           variant="outlined"
-          value={formData.fullname}
-          onChange={handleInputChange}
-          error={Boolean(formErrors.fullname)}
-          helperText={formErrors.fullname}
+          value={formik.values.fullname}
+          onChange={formik.handleChange}
+          error={formik.errors.fullname}
+          helperText={formik.errors.fullname}
         />
 
         <TextField
@@ -186,10 +134,10 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
           name="email"
           fullWidth
           variant="outlined"
-          value={formData.email}
-          onChange={handleInputChange}
-          error={Boolean(formErrors.email)}
-          helperText={formErrors.email}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          error={formik.errors.email}
+          helperText={formik.errors.email}
         />
 
         <TextField
@@ -199,33 +147,35 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
           name="phone"
           fullWidth
           variant="outlined"
-          value={formData.phone}
-          onChange={handleInputChange}
-          error={Boolean(formErrors.phone)}
-          helperText={formErrors.phone}
+          value={formik.values.phone}
+          onChange={formik.handleChange}
+          error={formik.errors.phone}
+          helperText={formik.errors.phone}
         />
         <FormControl required fullWidth sx={{ paddingTop: "5px" }}>
           <InputLabel>Vai trò</InputLabel>
           <Select
             name="role"
-            onChange={handleInputChange}
-            value={formData.role}
-            error={Boolean(formErrors.role)}
+            onChange={formik.handleChange}
+            value={formik.values.role}
+            error={formik.errors.role}
+            helpertext={formik.errors.role}
           >
             <MenuItem value="Admin">Admin</MenuItem>
-            <MenuItem value="Mentor">Lecturer</MenuItem>
-            <MenuItem value="Lecturer">Mentor</MenuItem>
+            <MenuItem value="Lecturer">Lecturer</MenuItem>
+            <MenuItem value="Mentor">Mentor</MenuItem>
             <MenuItem value="Student">Student</MenuItem>
           </Select>
         </FormControl>
+        
       </DialogContent>
       <DialogActions style={{ paddingTop: "10px" }}>
         <Button onClick={onClose}>Hủy</Button>
         <Button
-          onClick={handleAddUser}
-          disabled={!isValid}
+          onClick={formik.handleSubmit}
+          disabled={!formik.isValid}
           className={`bg-green-500 rounded h-8 w-24 text-white ${
-            !isValid && "opacity-50"
+            !formik.isValid && "opacity-50"
           }`}
         >
           Thêm mới
@@ -236,16 +186,3 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
 }
 
 export default AddUserForm;
-
-export const handleSearch = (event, data, setRecords) => {
-  const filteredData = data.filter((item) =>
-    item.fullName.toLowerCase().includes(event.target.value.toLowerCase())
-  );
-  setRecords(filteredData);
-
-  const isNotFound = !filteredData.length;
-
-  {
-    isNotFound && <SearchNotFound filteredData={filteredData} />;
-  }
-};

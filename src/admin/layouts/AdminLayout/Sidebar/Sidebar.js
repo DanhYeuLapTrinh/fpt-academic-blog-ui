@@ -25,7 +25,7 @@ export default function Sidebar() {
   return (
     <Card className="h-[calc(100vh-2rem)] w-full max-w-[20rem] p-4 shadow-xl shadow-blue-gray-900/5 border-r-2 border-solid">
       <div className="mb-2">
-        <Link>
+        <Link to={"/welcome"}>
           <Typography className="text-custom text-5xl text-center font-bold cursor-pointer pb-2">
             fblog
           </Typography>

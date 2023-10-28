@@ -28,8 +28,6 @@ function AddCategory({ closeAddCategoryModal }) {
 
   const [subjectError, setSubjectError] = useState("");
 
-  const [categoryError, setCategoryError] = useState("");
-
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -131,7 +129,7 @@ function AddCategory({ closeAddCategoryModal }) {
 
     return (
       <select
-        className="border p-2 rounded-lg"
+        className="border p-2 rounded-lg w-full"
         value={selectedSemester}
         onChange={handleSemesterChange}
         disabled={!selectedCategory || !selectedMajorID}
@@ -155,8 +153,8 @@ function AddCategory({ closeAddCategoryModal }) {
   };
 
   return (
-    <div className="w-full max-w-full h-full items-center bg-background">
-      <form className="h-full bg-white p-10 rounded-lg border border-gray-200">
+    <>
+      <form className="w-full h-full bg-white p-10 rounded-lg border border-gray-200">
         <h2 className="text-2xl font-bold mb-4">Thêm danh mục mới</h2>
         <button
           onClick={handleCloseModal}
@@ -164,7 +162,7 @@ function AddCategory({ closeAddCategoryModal }) {
         >
           <CancelIcon className="text-red-500" />
         </button>
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="mb-4">
           {showMajorInput ? ( // Show input when a major is selected
             <input
               className="border-2 border-solid p-2 rounded-lg"
@@ -176,7 +174,7 @@ function AddCategory({ closeAddCategoryModal }) {
             />
           ) : (
             <select
-              className="border p-2 rounded-lg"
+              className="border p-2 rounded-lg w-full"
               value={selectedCategory}
               onChange={handleCategoryChange}
             >
@@ -195,12 +193,12 @@ function AddCategory({ closeAddCategoryModal }) {
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className="mb-4 ">
           {renderSemesterSelect()}
         </div>
-        <div className="grid grid-cols-2 gap-4 mb-4">
+        <div className=" mb-4">
           <input
-            className="border p-2 rounded-lg"
+            className="border p-2 rounded-lg w-full"
             type="text"
             placeholder="Tên môn học"
             name="cateMonHoc"
@@ -249,7 +247,7 @@ function AddCategory({ closeAddCategoryModal }) {
       </Modal>
 
       <ToastContainer position="top-right" autoClose={3000} closeOnClick />
-    </div>
+    </>
   );
 }
 
