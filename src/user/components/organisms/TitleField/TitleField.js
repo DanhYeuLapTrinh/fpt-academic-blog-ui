@@ -2,7 +2,7 @@ import { Box, Stack, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Text from "../../atoms/Text/Text";
 
-export default function TitleField() {
+export default function TitleField(props) {
   const [title, setTitle] = useState("");
   const [charCount, setCharCount] = useState(0);
   const [focus, setFocus] = useState(false);
@@ -27,7 +27,7 @@ export default function TitleField() {
     <Stack sx={{minHeight: '105px'}}>
       <TextField
         variant="standard"
-        placeholder="Nhập tiêu đề bài viết..."
+        placeholder= {props.title ? "Nhập tiêu đề bài viết..." : "Nhập tiêu đề cho câu hỏi..."}
         fullWidth
         spellCheck={false}
         InputProps={{

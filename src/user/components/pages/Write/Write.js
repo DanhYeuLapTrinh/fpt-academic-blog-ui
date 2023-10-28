@@ -7,11 +7,13 @@ import Dropzone from "../../organisms/Dropzone/Dropzone";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePostTag from "../../../hooks/usePostTag";
 import { useNavigate } from "react-router-dom";
-import { createSlug, getFirstPTag, toSlug } from "../../../utils/StringMethod";
+import { getFirstPTag, toSlug } from "../../../utils/StringMethod";
+import useAuth from "../../../hooks/useAuth";
 
 export default function Write() {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
+  const auth = useAuth();
   const {
     data,
     setData,
@@ -77,9 +79,10 @@ export default function Write() {
 
   const handleSubmit = async () => {
     try {
-      const auth = JSON.parse(localStorage.getItem("auth"))
-      const slug = toSlug(JSON.parse(localStorage.getItem("title")))
-      const description = getFirstPTag(JSON.parse(localStorage.getItem("content")))
+      const slug = toSlug(JSON.parse(localStorage.getItem("title")));
+      const description = getFirstPTag(
+        JSON.parse(localStorage.getItem("content"))
+      );
       const response = await axiosPrivate.post("users/request-post", {
         accountId: auth?.id,
         title: JSON.parse(localStorage.getItem("title")),
@@ -91,12 +94,16 @@ export default function Write() {
         imageURL: [],
         videoURL: [],
         coverURL: JSON.parse(localStorage.getItem("coverURL")),
-        slug: slug
-      })
-      console.log(response)
+        slug: slug,
+      });
+      console.log(response);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
+  };
+
+  const handleQuestion = async () => {
+    
   }
   return (
     <Container sx={{ padding: "0 0 40px" }}>
@@ -120,23 +127,53 @@ export default function Write() {
         handleMajorChange={handleMajorChange}
         handleSemesterChange={handleSemesterChange}
       />
-      <TitleField />
-      <Dropzone />
-      <ContentField />
+      {tag === "Q&A" ? (
+        <>
+          <TitleField />
+          <ContentField />
+          <Stack
+            direction={"row"}
+            justifyContent={"flex-end"}
+            spacing={2}
+            paddingTop={"30px"}
+          >
+            <Button sx={{ padding: "10px" }} variant="outlined">
+              Lưu bản nháp
+            </Button>
+            <Button
+              onClick={handleQuestion}
+              sx={{ padding: "10px" }}
+              variant="contained"
+            >
+              Gửi bài
+            </Button>
+          </Stack>
+        </>
+      ) : (
+        <>
+          <TitleField title/>
+          <Dropzone />
+          <ContentField />
 
-      <Stack
-        direction={"row"}
-        justifyContent={"flex-end"}
-        spacing={2}
-        paddingTop={"30px"}
-      >
-        <Button sx={{ padding: "10px" }} variant="outlined">
-          Lưu bản nháp
-        </Button>
-        <Button onClick={handleSubmit} sx={{ padding: "10px" }} variant="contained">
-          Gửi bài
-        </Button>
-      </Stack>
+          <Stack
+            direction={"row"}
+            justifyContent={"flex-end"}
+            spacing={2}
+            paddingTop={"30px"}
+          >
+            <Button sx={{ padding: "10px" }} variant="outlined">
+              Lưu bản nháp
+            </Button>
+            <Button
+              onClick={handleSubmit}
+              sx={{ padding: "10px" }}
+              variant="contained"
+            >
+              Gửi bài
+            </Button>
+          </Stack>
+        </>
+      )}
     </Container>
   );
 }

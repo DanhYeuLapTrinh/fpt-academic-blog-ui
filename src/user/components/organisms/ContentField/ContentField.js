@@ -27,7 +27,6 @@ export default function ContentField() {
           setTimeout(() => {
             localStorage.setItem("content", JSON.stringify(newValue));
           }, 5000);
-          console.log(newValue)
         }}
         onInit={(evt, editor) => {
           setTimeout(() => {

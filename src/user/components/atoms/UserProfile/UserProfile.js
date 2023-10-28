@@ -8,6 +8,7 @@ export default function UserProfile({ ...props }) {
     sx: {
       borderRadius: "50px",
     },
+    cursor: "pointer",
     ...props,
   };
   const configPic = {
@@ -15,11 +16,12 @@ export default function UserProfile({ ...props }) {
       borderRadius: "50px",
       width: "100%",
       height: "100%",
+      cursor: "pointer",
     },
     src: props.src,
   };
   return (
-    <Box {...configContainer}>
+    <Box {...configContainer} onClick={props.onClick}>
       <img {...configPic} alt={props.alt} />
     </Box>
   );

@@ -5,7 +5,6 @@ import axios from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 export default function GoogleLoginButton({ children, ...props }) {
-  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const configGoogleBtn = {
     ...props,
@@ -42,7 +41,6 @@ export default function GoogleLoginButton({ children, ...props }) {
         token: serverResponse?.data?.token,
         refreshToken: serverResponse?.data?.refreshToken,
       };
-      setAuth(auth);
       localStorage.setItem("auth", JSON.stringify(auth))
       navigate("/");
     },
