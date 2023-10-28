@@ -5,7 +5,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import SearchNotFound from "../../components/atoms/SearchNotFound";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useFormik } from "formik";
 import { addUserSchema } from "../../components/atoms/AddUserValidation";
@@ -161,13 +160,12 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
             error={formik.errors.role}
             helpertext={formik.errors.role}
           >
-            <MenuItem value="Admin">Admin</MenuItem>
-            <MenuItem value="Lecturer">Lecturer</MenuItem>
-            <MenuItem value="Mentor">Mentor</MenuItem>
-            <MenuItem value="Student">Student</MenuItem>
+            <MenuItem value="admin">admin</MenuItem>
+            <MenuItem value="lecturer">lecturer</MenuItem>
+            <MenuItem value="mentor">mentor</MenuItem>
+            <MenuItem value="student">student</MenuItem>
           </Select>
         </FormControl>
-        
       </DialogContent>
       <DialogActions style={{ paddingTop: "10px" }}>
         <Button onClick={onClose}>Hủy</Button>
