@@ -4,11 +4,9 @@ const PostTagContext = createContext();
 
 export default function PostTagProvider({ children }) {
   const [data, setData] = useState([]);
-  const [tagList, setTagList] = useState([])
+  const [tagList, setTagList] = useState([]);
   const [major, setMajor] = useState();
-  const [majorID, setMajorID] = useState();
   const [semester, setSemester] = useState();
-  const [semesterID, setSemesterID] = useState();
   const [subject, setSubject] = useState();
   const [subjectID, setSubjectID] = useState();
   const [tag, setTag] = useState();
@@ -22,12 +20,8 @@ export default function PostTagProvider({ children }) {
         setTagList,
         major,
         setMajor,
-        majorID,
-        setMajorID,
         semester,
         setSemester,
-        semesterID,
-        setSemesterID,
         subject,
         setSubject,
         subjectID,
@@ -43,4 +37,4 @@ export default function PostTagProvider({ children }) {
   );
 }
 
-export {PostTagContext}
+export { PostTagContext };

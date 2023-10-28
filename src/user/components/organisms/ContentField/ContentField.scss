@@ -33,7 +33,7 @@
     font-weight: 400;
     height: 40px;
     overflow: hidden;
-    padding: 0 8px;
+    padding: 0;
     position: relative;
     text-transform: none;
   }
@@ -48,7 +48,7 @@
     margin-inline-end: 0px;
   }
   .tox-statusbar__right-container {
-  padding-bottom: 15px;
+    padding-bottom: 15px;
     .tox-statusbar__wordcount {
       margin: 0 !important;
       color: #5927e5;
@@ -57,4 +57,10 @@
       font-weight: 600;
     }
   }
+}
+.tox .tox-statusbar__path>* {
+  display: none !important;
+}
+.tox-statusbar__wordcount {
+  font-weight: 500 !important;
 }

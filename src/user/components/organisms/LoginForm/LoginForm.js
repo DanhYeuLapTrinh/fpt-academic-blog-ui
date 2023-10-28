@@ -21,7 +21,6 @@ import useAuth from "../../../hooks/useAuth";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
     username: "",
@@ -47,18 +46,18 @@ export default function LoginForm() {
           })
         );
         const auth = {
+          id: response?.data?.id,
           user: response?.data?.username,
           role: response?.data?.roleName,
           token: response?.data?.token,
           refreshToken: response?.data?.refreshToken
         };
         localStorage.setItem("auth", JSON.stringify(auth))
-        setAuth(auth);
         values.username = "";
         values.password = "";
-        if (auth.role === "admin") {
-          navigate("/welcome");
-        } else navigate("/");
+        if(auth?.role === "admin") {
+          navigate("/welcome")
+        } else navigate("/")
       } catch (error) {
         if (!error?.response) {
           console.log("No server response");
@@ -118,6 +117,7 @@ export default function LoginForm() {
           <Stack sx={{ mb: "32px" }}>
             <FormInput
               name="password"
+              onkeyup
               text="Mật khẩu"
               size="14px"
               type={showPassword ? "text" : "password"}
