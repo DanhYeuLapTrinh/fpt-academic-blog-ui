@@ -3,16 +3,18 @@ import { Editor } from "@tinymce/tinymce-react";
 import "./ContentField.scss";
 import useContent from "../../../hooks/useContent";
 export default function ContentField({...props}) {
-  const {setContent} = useContent()
+  const {setContent, setWordcount} = useContent()
   return (
     <div style={{ margin: "15px 0" }}>
       <Editor
         apiKey="or7ndgcoxdbx9821y1j3d8oi37nqe538m257uvlwroa11wiq"
-        onEditorChange={(newValue) => {
+        onEditorChange={(newValue, editor) => {
           setTimeout(() => {
             localStorage.setItem("content", JSON.stringify(newValue));
             setContent(newValue);
-          }, 1000 );
+            const wordcount1 = editor.plugins.wordcount
+            setWordcount(wordcount1.body.getWordCount())
+          }, 1000);
         }}
         onInit={(evt, editor) => {
           setTimeout(() => {
