@@ -1,38 +1,27 @@
 import { Icon } from "@iconify/react";
-export const UserMenuOptionsList = [
+export const UserMenuOptionsListData = [
   {
     path: "",
     label: "Thông tin tài khoản",
-    icon: (
-      <Icon
-        icon="material-symbols:info"
-        color="#444746"
-        width="22"
-        height="22"
-      />
-    ),
+    icon: <Icon icon="uil:setting" color="#444746" width="24" />,
     role: "public",
   },
   {
     path: "",
     label: "Xem tài khoản",
-    icon: (
-      <Icon icon="clarity:user-solid" color="#444746" width="22" height="22" />
-    ),
+    icon: <Icon icon="mingcute:user-2-line" color="#444746" width="24" />,
     role: "public",
   },
   {
     path: "",
     label: "Nháp",
-    icon: <Icon icon="mdi:draft" color="#444746" width="22" height="22" />,
+    icon: <Icon icon="ri:draft-line" color="#444746" width="24" />,
     role: "public",
   },
   {
     path: "",
     label: "Danh sách yêu thích",
-    icon: (
-      <Icon icon="ic:round-bookmark" color="#444746" width="22" height="22" />
-    ),
+    icon: <Icon icon="ri:bookmark-line" color="#444746" width="24" />,
     role: "public",
   },
   {
@@ -40,10 +29,9 @@ export const UserMenuOptionsList = [
     label: "Quản lý bài viết",
     icon: (
       <Icon
-        icon="material-symbols:bookmark-manager-rounded"
+        icon="material-symbols:pending-actions"
         color="#444746"
-        width="22"
-        height="22"
+        width="24"
       />
     ),
     role: "lecturer",
@@ -52,7 +40,7 @@ export const UserMenuOptionsList = [
     path: "",
     label: "Quản lý câu hỏi",
     icon: (
-      <Icon icon="ri:question-fill" color="#444746" width="22" height="22" />
+      <Icon icon="akar-icons:chat-question" color="#444746" width="24" />
     ),
     role: "mentor",
   },

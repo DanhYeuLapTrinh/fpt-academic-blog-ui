@@ -1,10 +1,9 @@
 import React from "react";
 import NavOption from "../../atoms/NavOption/NavOption";
-import { Divider, List, Stack } from "@mui/material";
-import Text from "../../atoms/Text/Text";
+import { List, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 
-export default function NavList({ options }) {
+export default function NavList() {
   return (
     <List>
       <Stack direction={"row"} spacing={1}>

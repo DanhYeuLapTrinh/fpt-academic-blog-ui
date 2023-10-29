@@ -1,30 +1,48 @@
-import { Container } from '@mui/material'
-import React, { useEffect, useState } from 'react'
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate'
+import {
+  CircularProgress,
+  Container,
+  FormControl,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import React from "react";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import Text from "../../atoms/Text/Text";
+import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
 
-export default function PendingPosts() {
-  const axiosPrivate = useAxiosPrivate()
-  const [post, setPost] = useState()
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosPrivate.get("lecturer/posts/pending")
-        setPost(response.data)
-        console.log(response.data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    fetchData()
-  }, [])
+export default function PendingPosts(props) {
   return (
-    <Container>
-      PendingPost:
-      {/* {post?.map(item => {
-        const data = JSON.stringify(item)
-        return <div style={{padding: '10px 0'}}>{data}</div>
-      })} */}
-
+    <Container sx={{ mt: "30px" }}>
+      <FormControl>
+        <Select
+          sx={{ height: "30px", pr: "5px" }}
+          IconComponent={KeyboardArrowDownIcon}
+          value={props.type}
+          onChange={(e) => props.setType(e.target.value)}
+        >
+          <MenuItem value="Bài viết đang chờ">
+            <Text fontSize="14px">Bài viết đang chờ</Text>
+          </MenuItem>
+          <MenuItem value="Bài viết đã phê duyệt">
+            <Text fontSize="14px">Bài viết đã phê duyệt</Text>
+          </MenuItem>
+        </Select>
+      </FormControl>
+      {props.type === "Bài viết đang chờ"
+        ? props?.pendingPosts?.map((item) => (
+            <RewardedPostsUnder
+              key={item.postId}
+              url={item.coverURL}
+              title={item.title}
+              description={item.description}
+              avatar={item.avatarURL}
+              label={item.accountName}
+              major={item.category[0]}
+              subject={item.category[1]}
+              tag={item.tag}
+            />
+          ))
+        : "Chưa có data"}
     </Container>
-  )
+  );
 }
