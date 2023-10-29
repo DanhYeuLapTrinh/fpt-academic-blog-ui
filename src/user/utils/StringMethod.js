@@ -5,12 +5,14 @@
  * const tag = getFirstPTag("reallyLongHtmlString")
  * @returns string - "<p>...</p>"
  * @author DanhYeuLapTrinh
- * @version 1.0.0.0
+ * @version 1.0.1.0
  */
 export const getFirstPTag = (htmlStr) => {
   if (htmlStr) {
-    const firstTag = htmlStr.match(/<p>[^<]*<\/p>/)[0];
-    return firstTag;
+    const match = htmlStr.match(/<p>([^<]*)<\/p>/);
+    if (match) {
+      return match[1]; 
+    }
   }
   return null;
 };

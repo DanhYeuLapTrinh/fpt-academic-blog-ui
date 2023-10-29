@@ -1,5 +1,5 @@
 import React from "react";
-import UserTab from "../../molecules/UserTab/UserTab";
+import UserTab from "../UserTab/UserTab";
 import { Box, Container, Divider, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";

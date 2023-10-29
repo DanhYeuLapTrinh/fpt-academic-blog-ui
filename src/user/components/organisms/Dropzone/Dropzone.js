@@ -12,7 +12,7 @@ export default function Dropzone() {
   // useCallback để tránh tình trạng bị rerender khi component Dropzone rerender
   // chỉ rerender khi có ảnh thôi
   const [isLoading, setIsLoading] = useState(false);
-  const [file, setFile] = useState();
+  const {file, setFile} = useContent()
   const { setCoverURL } = useContent();
   const [rejectedFile, setRejectedFile] = useState();
   const [link, setLink] = useState();

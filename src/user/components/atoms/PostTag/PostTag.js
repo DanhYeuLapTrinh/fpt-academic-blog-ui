@@ -11,7 +11,7 @@ export default function PostTag(props) {
   };
   return (
     <Link to="#" style={{ textDecoration: "none" }}>
-      <Text {...configTag}>#SWP391</Text>
+      <Text {...configTag}>#{props.text}</Text>
     </Link>
   );
 }

@@ -17,6 +17,7 @@ export default function WriteService() {
     content,
     setContent,
     wordcount,
+    setFile
   } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -46,33 +47,6 @@ export default function WriteService() {
     setTitle(JSON.parse(localStorage.getItem("title")) || "");
     setContent(JSON.parse(localStorage.getItem("content")) || "");
   }, []);
-
-  useEffect(() => {
-    if (
-      major &&
-      semester &&
-      subjectID &&
-      tagID &&
-      coverURL &&
-      title &&
-      charCount >= 30 &&
-      content &&
-      charCount < 100 &&
-      wordcount >= 30
-    ) {
-      setDisabled(false);
-    } else setDisabled(true);
-  }, [
-    major,
-    semester,
-    subject,
-    tag,
-    coverURL,
-    title,
-    content,
-    charCount,
-    wordcount,
-  ]);
 
   const handleMajorChange = useCallback((e) => {
     setMajor(e.target.value);
@@ -111,7 +85,9 @@ export default function WriteService() {
           length: wordcount,
         }
       );
-      console.log(response);
+      if(response) {
+        setFile()
+      }
     } catch (error) {
       console.log(error);
     }
@@ -161,7 +137,18 @@ export default function WriteService() {
       handleMajorChange={handleMajorChange}
       handleSemesterChange={handleSemesterChange}
       handleSubmit={handleSubmit}
-      disabled={disabled}
+      disabled={
+        !major ||
+        !semester ||
+        !subjectID ||
+        !tagID ||
+        !coverURL ||
+        !title ||
+        !charCount >= 30 ||
+        !content ||
+        !(charCount < 100) ||
+        !(wordcount >= 30)
+      }
     />
   );
 }

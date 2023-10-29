@@ -16,8 +16,8 @@ import ReportedProfilePage from "../admin/components/pages/Reports/ReportedProfi
 import ReportedCommentPage from "../admin/components/pages/Reports/ReportedCommentPage";
 import ActivityLogPage from "../admin/components/pages/ActivityLog/ActivityLogPage";
 import SettingPage from "../admin/components/pages/Setting/SettingPage";
-import PendingPosts from "../user/components/pages/PendingPosts/PendingPosts";
 import WriteService from "../user/components/pages/Write/WriteService";
+import PendingPostsService from "../user/components/pages/PendingPosts/PendingPostsService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -34,7 +34,7 @@ const loggedInUserRoutes = [
   { path: "/news", component: News },
   { path: "/write", component: WriteService },
 ];
-const lecturerRoutes = [{ path: "/pending-posts", component: PendingPosts }];
+const lecturerRoutes = [{ path: "/pending-posts", component: PendingPostsService }];
 
 const loggedInAdminRoutes = [
   //Welcome Page
