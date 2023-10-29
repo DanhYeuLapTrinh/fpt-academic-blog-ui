@@ -4,7 +4,6 @@ import { Box, Container, Divider, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 import NavList from "../../molecules/Navigation/NavList";
-import UserMenuContainer from "../../molecules/UserMenu/UserMenuContainer";
 
 export default function Header() {
   return (

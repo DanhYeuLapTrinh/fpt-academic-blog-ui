@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import React from "react";
 
+import React from "react";
 export default function UserProfile({ ...props }) {
   const configContainer = {
     width: "36px",
@@ -18,11 +18,12 @@ export default function UserProfile({ ...props }) {
       height: "100%",
       cursor: "pointer",
     },
-    src: props.src,
+    src: props.src ?? "../assets/img/blank.png",
+    alt: props.alt
   };
   return (
-    <Box {...configContainer} onClick={props.onClick}>
-      <img {...configPic} alt={props.alt} />
+    <Box {...configContainer}>
+      <img {...configPic} onClick={props.handleClick} />
     </Box>
   );
 }

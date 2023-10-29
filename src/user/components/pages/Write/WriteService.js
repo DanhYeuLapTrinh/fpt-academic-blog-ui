@@ -16,6 +16,7 @@ export default function WriteService() {
     setCoverURL,
     content,
     setContent,
+    wordcount,
   } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -39,6 +40,7 @@ export default function WriteService() {
     tagID,
     setTagID,
   } = usePostTag();
+
   useEffect(() => {
     setCoverURL(JSON.parse(localStorage.getItem("coverURL")) || "");
     setTitle(JSON.parse(localStorage.getItem("title")) || "");
@@ -53,12 +55,24 @@ export default function WriteService() {
       tagID &&
       coverURL &&
       title &&
+      charCount >= 30 &&
       content &&
-      charCount < 100
+      charCount < 100 &&
+      wordcount >= 30
     ) {
       setDisabled(false);
     } else setDisabled(true);
-  }, [major, semester, subject, tag, coverURL, title, content, charCount]);
+  }, [
+    major,
+    semester,
+    subject,
+    tag,
+    coverURL,
+    title,
+    content,
+    charCount,
+    wordcount,
+  ]);
 
   const handleMajorChange = useCallback((e) => {
     setMajor(e.target.value);
@@ -76,31 +90,32 @@ export default function WriteService() {
     setTag();
     setTagID();
   }, []);
-
-  const handleSubmit = useCallback(async () => {
+  const handleSubmit = async () => {
     try {
       const slug = toSlug(JSON.parse(localStorage.getItem("title")));
       const description = getFirstPTag(
         JSON.parse(localStorage.getItem("content"))
       );
-      const response = await axiosPrivate.post("users/request-post", {
-        accountId: auth?.id,
-        title: JSON.parse(localStorage.getItem("title")),
-        description: description,
-        content: JSON.parse(localStorage.getItem("content")),
-        allowComment: true,
-        categoryId: subjectID,
-        tagId: tagID,
-        imageURL: [],
-        videoURL: [],
-        coverURL: JSON.parse(localStorage.getItem("coverURL")),
-        slug: slug,
-      });
+      const response = await axiosPrivate.post(
+        process.env.REACT_APP_CREATE_POST,
+        {
+          accountId: auth?.id,
+          title: JSON.parse(localStorage.getItem("title")),
+          description: description,
+          content: JSON.parse(localStorage.getItem("content")),
+          allowComment: true,
+          categoryId: subjectID,
+          tagId: tagID,
+          coverURL: JSON.parse(localStorage.getItem("coverURL")),
+          slug: slug,
+          length: wordcount,
+        }
+      );
       console.log(response);
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
