@@ -37,7 +37,7 @@ export const UserMenuOptionsListData = [
     role: "lecturer",
   },
   {
-    path: "",
+    path: "/pending-q",
     label: "Quản lý câu hỏi",
     icon: (
       <Icon icon="akar-icons:chat-question" color="#444746" width="24" />

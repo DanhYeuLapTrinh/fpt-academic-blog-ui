@@ -37,8 +37,9 @@ export default function ContentField({...props}) {
           image_dimensions: false,
           media_dimensions: false,
           media_poster: false,
+          pagebreak_split_block: true,
           plugins:
-            "preview searchreplace autolink directionality code fullscreen image link codesample table insertdatetime advlist lists wordcount quickbars emoticons autoresize media",
+            "preview searchreplace autolink directionality code fullscreen image link codesample table insertdatetime advlist lists wordcount quickbars emoticons autoresize media pagebreak",
           quickbars_selection_toolbar:
             "styles | bold italic underline blockquote | bullist numlist | quicklink image media quicktable",
           toolbar_mode: "sliding",
@@ -51,7 +52,7 @@ export default function ContentField({...props}) {
           ],
           advlist_bullet_styles: "disc",
           advlist_number_styles: "number",
-          quickbars_insert_toolbar: "image media",
+          quickbars_insert_toolbar: "image media pagebreak",
           quickbars_image_toolbar: false,
           min_height: 230,
         }}

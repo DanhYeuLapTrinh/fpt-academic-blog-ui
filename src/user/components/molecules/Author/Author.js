@@ -2,6 +2,7 @@ import React from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import Text from "../../atoms/Text/Text";
 import { Stack } from "@mui/material";
+import { timeConverter } from "../../../utils/StringMethod";
 
 export default function Author(props) {
   return (
@@ -19,7 +20,7 @@ export default function Author(props) {
         &middot;
       </Text>
       <Text fontSize="12px" lineHeight="12px" color={props.color ? props.color : "text.main"}>
-        30 phút trước
+        {timeConverter(props.time)}
       </Text>
     </Stack>
   );

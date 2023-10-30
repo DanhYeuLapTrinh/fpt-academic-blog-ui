@@ -7,6 +7,7 @@ export default function ContentProvider({ children }) {
   const [content, setContent] = useState("");
   const [wordcount, setWordcount] = useState(0);
   const [file, setFile] = useState("");
+  const [postID, setPostID] = useState("");
   return (
     <ContentContext.Provider
       value={{
@@ -21,7 +22,9 @@ export default function ContentProvider({ children }) {
         wordcount,
         setWordcount,
         file,
-        setFile
+        setFile,
+        postID,
+        setPostID,
       }}
     >
       {children}

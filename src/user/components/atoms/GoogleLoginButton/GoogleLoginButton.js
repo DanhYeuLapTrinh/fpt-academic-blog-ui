@@ -27,13 +27,12 @@ export default function GoogleLoginButton({ children, ...props }) {
     onSuccess: async (response) => {
       try {
         const serverResponse = await axios.post(
-          "users/google-login",
+          process.env.REACT_APP_LOGIN_GOOGLE,
           JSON.stringify({ email: response.access_token }),
           {
             headers: { "Content-Type": "application/json" },
           }
         );
-        console.log(response.access_token);
         const auth = {
           id: serverResponse?.data?.id,
           user: serverResponse?.data?.username,
