@@ -104,7 +104,6 @@ function TagList() {
       })
       .catch((error) => {
         console.error("Error deleting tag: " + error);
-        // Handle the error as needed
         toast.error(`Xóa thẻ không thành công`, {
           position: "top-right",
           autoClose: 3000,

@@ -3,7 +3,6 @@ import { Checkbox } from "@material-tailwind/react";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { Button } from "@mui/base";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
@@ -22,7 +21,6 @@ function CateList() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSemesters, setSelectedSemesters] = useState([]);
   const [selectedSubjects, setSelectedSubjects] = useState([]);
-  const [expandedMajors, setExpandedMajors] = useState({});
 
   const [isDeleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
@@ -91,13 +89,6 @@ function CateList() {
       }
       return [...prevSelected, subject.id];
     });
-  };
-
-  const toggleMajorExpansion = (major) => {
-    setExpandedMajors((prevExpanded) => ({
-      ...prevExpanded,
-      [major.id]: !prevExpanded[major.id],
-    }));
   };
 
   const openDeleteConfirmation = (item) => {
