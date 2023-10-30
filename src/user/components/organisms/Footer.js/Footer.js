@@ -13,6 +13,7 @@ import FooterFblog from "../../molecules/FooterDetail/FooterFblog";
 import FooterCommunity from "../../molecules/FooterDetail/FooterCommunity";
 import FooterAddress from "../../molecules/FooterDetail/FooterAddress";
 import FooterContact from "../../molecules/FooterDetail/FooterContact";
+import './Footer.scss'
 
 export default function Footer() {
   return (

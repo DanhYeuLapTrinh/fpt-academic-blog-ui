@@ -12,6 +12,7 @@ import {
   recoverPasswordRoutes,
   loggedInAdminRoutes,
   lecturerRoutes,
+  mentorRoutes,
 } from "./master/routes";
 function App() {
   return (
@@ -55,6 +56,17 @@ function App() {
           <Route element={<HomeLayout />}>
             <Route element={<RequireAuth allowRoles={["lecturer"]} />}>
               {lecturerRoutes.map((item, index) => {
+                const Page = item.component;
+                return (
+                  <Route key={index} path={item.path} element={<Page />} />
+                );
+              })}
+            </Route>
+          </Route>
+          {/* Logged in mentor routes */}
+          <Route element={<HomeLayout />}>
+            <Route element={<RequireAuth allowRoles={["mentor"]} />}>
+              {mentorRoutes.map((item, index) => {
                 const Page = item.component;
                 return (
                   <Route key={index} path={item.path} element={<Page />} />

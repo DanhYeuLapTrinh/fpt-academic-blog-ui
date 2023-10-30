@@ -6,11 +6,11 @@ import Footer from "../components/organisms/Footer.js/Footer";
 
 export default function HomeLayout() {
   return (
-    <>
+    <div style={{minHeight: '100vh'}}>
       <Header />
       <Divider orientation="horizontal" sx={{ width: "100%" }} />
       <Outlet />
       <Footer />
-    </>
+    </div>
   );
 }

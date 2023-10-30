@@ -5,54 +5,61 @@ import Text from "../../../atoms/Text/Text";
 import Author from "../../../molecules/Author/Author";
 import PostTag from "../../../atoms/PostTag/PostTag";
 import Wrapper from "../../../atoms/Wrapper/Wrapper";
+import { Link } from "react-router-dom";
+import useContent from "../../../../hooks/useContent";
 
 export default function RewardedPostsUnder(props) {
   const isRewaded = false
+  const {setPostID} = useContent()
   return (
-    <div style={{ width: "100%", paddingTop: "20px" }}>
+    <div style={{ width: "100%" }}>
       <Stack direction={"row"}>
-        <Box
-          sx={{
-            backgroundImage:
-              `url(${props.url})`,
-            width: "265px",
-            height: "240px",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            borderRadius: "10px",
-            position: "relative",
-          }}
-        >
-          {isRewaded && <RewardBadge
-            small={true}
-            position="absolute"
-            top="15px"
-            right="15px"
-            zIndex="999"
-          />}
-        </Box>
+        <Link to={props.postPath}>
+          <Box
+            sx={{
+              backgroundImage:
+                `url(${props.url})`,
+              width: "265px",
+              height: "240px",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              borderRadius: "10px",
+              position: "relative",
+            }}
+          >
+            {isRewaded && <RewardBadge
+              small={true}
+              position="absolute"
+              top="15px"
+              right="15px"
+              zIndex="999"
+            />}
+          </Box>
+        </Link>
         <Box sx={{ width: "calc(100% - 265px)", p: "0px 20px" }}>
           <Stack height={"240px"} justifyContent={"space-evenly"}>
-            <Wrapper WebkitLineClamp="2">
-              <Text fontSize="24px" lineHeight="30px">
-                {props.title}
-              </Text>
-            </Wrapper>
-            <Box
-              sx={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                display: "-webkit-box",
-                WebkitLineClamp: 3,
-                WebkitBoxOrient: "vertical",
-                paddingTop: "5px",
-              }}
-            >
-              <Text fontWeight="400" fontSize="14px">
-                {props.description}
-              </Text>
-            </Box>
-            <Author src={props.avatar} author={true} text={props.label} />
+            <Link to={props.postPath} onClick={setPostID(props.postId)}>
+              <Wrapper WebkitLineClamp="2">
+                <Text fontSize="24px" lineHeight="30px">
+                  {props.title} {props.postId}
+                </Text>
+              </Wrapper>
+              <Box
+                sx={{
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  paddingTop: "5px",
+                }}
+              >
+                <Text fontWeight="400" fontSize="14px">
+                  {props.description}
+                </Text>
+              </Box>
+            </Link>
+            <Author time={props.time} src={props.avatar} author={true} text={props.label} />
             <Stack direction={"row"} spacing={"12px"} paddingTop={"5px"}>
               <PostTag color="primary.main" text={props.major}/>
               <PostTag color="primary.main" text={props.subject}/>
