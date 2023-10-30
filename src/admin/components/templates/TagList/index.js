@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { TablePagination } from "@mui/material";
-import { Button } from "@mui/base";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/AddNewButton";
+import DeleteConfirm from "../../organisms/DeleteConfirm";
+import DeleteTagForm from "../../organisms/DeleteTagForm";
 function TagList() {
   const [tagData, setTagData] = useState([]);
   const [page, setPage] = useState(0);
@@ -91,7 +87,6 @@ function TagList() {
         tagName: tagToDelete.name,
       })
       .then(() => {
-        // Remove the tag from the local state
         const updatedTagData = tagData.filter(
           (tag) => tag.id !== tagToDelete.id
         );
@@ -125,33 +120,14 @@ function TagList() {
         <div>
           <AddNewButton title="Thêm thẻ mới" handleClick={handleClickOpen} />
           <div className="w-100">
-            <Dialog open={open} onClose={handleClose}>
-              <DialogTitle style={{ fontWeight: "bold" }}>
-                Thêm thẻ mới
-              </DialogTitle>
-              <DialogContent style={{ paddingBottom: "5px" }}>
-                <TextField
-                  margin="dense"
-                  label="Tên thẻ mới"
-                  type="text"
-                  name="tagName"
-                  fullWidth
-                  variant="standard"
-                  value={newTagName}
-                  onChange={(e) => setNewTagName(e.target.value)}
-                />
-                <p style={{ color: "red" }}>{errorMessage}</p>
-              </DialogContent>
-              <DialogActions style={{ marginTop: "10px" }}>
-                <Button onClick={handleClose}>Hủy thêm</Button>
-                <Button
-                  className="bg-green-500 rounded h-8 w-20 text-white"
-                  onClick={handleAddTag}
-                >
-                  Thêm mới
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <DeleteTagForm
+              open={open}
+              handleClose={handleClose}
+              handleAddTag={handleAddTag}
+              errorMessage={errorMessage}
+              newTagName={newTagName}
+              data={(e) => setNewTagName(e.target.value)}
+            />
           </div>
         </div>
       </div>
@@ -194,20 +170,12 @@ function TagList() {
         />
       </div>
 
-      <Dialog open={deleteConfirmationOpen} onClose={handleCancelDelete}>
-        <DialogTitle>
-          {`Bạn có chắc chắn xóa "${tagToDelete.name}" không?`}
-        </DialogTitle>
-        <DialogActions style={{ marginTop: "10px" }}>
-          <Button onClick={handleCancelDelete}>Không</Button>
-          <Button
-            className="bg-red-500 rounded h-8 w-20 text-white"
-            onClick={handleDeleteConfirmation}
-          >
-            Có
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DeleteConfirm
+        open={deleteConfirmationOpen}
+        handleClose={handleCancelDelete}
+        deleteTag={handleDeleteConfirmation}
+        data={tagToDelete.name}
+      />
 
       <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>

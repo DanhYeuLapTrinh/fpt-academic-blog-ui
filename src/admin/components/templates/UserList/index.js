@@ -38,7 +38,7 @@ function UserResultList() {
 
   const [showRoleSuccessModal, setShowRoleSuccessModal] = useState(false);
 
-  const [originalRole, setOriginalRole] = useState(""); // Biến lưu trữ vai trò ban đầu
+  const [originalRole, setOriginalRole] = useState("");
 
   const [isBanning, setIsBanning] = useState(false);
 
@@ -48,22 +48,18 @@ function UserResultList() {
     JSON.parse(localStorage.getItem("banStatus")) || {}
   );
 
-  //Split page
   const [page, setPage] = useState(0);
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  // Function to open the add user form modal
   const handleOpenAddUserForm = () => {
     setAddUserFormOpen(true);
   };
 
-  // Function to close the add user form modal
   const handleCloseAddUserForm = () => {
     setAddUserFormOpen(false);
   };
 
-  // Function to add a new user
   const handleAddUser = (userData) => {
     axiosPrivate
       .post(process.env.REACT_APP_NEW_USER, userData)
@@ -101,12 +97,10 @@ function UserResultList() {
     });
   }, []);
 
-  //Store ban/unban state to localStorage
   useEffect(() => {
     localStorage.setItem("banStatus", JSON.stringify(banStatus));
   }, [banStatus]);
 
-  //Store mute/unmute state to localStorage
   useEffect(() => {
     const storedIsMuted = JSON.parse(localStorage.getItem("isMuted"));
     if (storedIsMuted) {
@@ -118,7 +112,6 @@ function UserResultList() {
     handleSearch(event, data, setRecords);
   };
 
-  //Popup form input time to mute
   const openMuteModal = (id) => {
     setSelectedUserId(id);
     const selectedUser = data.find((user) => user.id === id);
@@ -132,7 +125,6 @@ function UserResultList() {
     setShowMuteModal(false);
   };
 
-  //Function mute
   const muteUser = () => {
     const duration = parseInt(muteDuration, 10);
     if (selectedUserId) {
@@ -162,7 +154,6 @@ function UserResultList() {
     }
   };
 
-  //Funtion unmute
   const unmuteUser = (userId) => {
     axiosPrivate
       .post(process.env.REACT_APP_UNMUTE_ACCOUNT, { id: userId })
@@ -186,7 +177,6 @@ function UserResultList() {
       });
   };
 
-  //Set Role
   const startEditing = (userId, currentRole) => {
     setEditingUserId(userId);
     setNewRole(currentRole);
@@ -214,7 +204,6 @@ function UserResultList() {
     setEditingUserId(null);
   };
 
-  // Hàm cập nhật vai trò người dùng trong danh sách
   const updateRecordRole = (userId, newRole) => {
     setRecords((prevRecords) =>
       prevRecords.map((record) =>
@@ -225,7 +214,6 @@ function UserResultList() {
     );
   };
 
-  //Ban-Unban
   const handleBanButtonClick = (id) => {
     if (banStatus[id]) {
       unbanAccount(id);
@@ -406,7 +394,7 @@ function UserResultList() {
                   <td className="p-4 flex items-center">
                     <div className="flex flex-col">
                       <div className="pb-1">
-                        {banStatus[item.id] ? ( //Nếu banStatus = true thì hiển thị "bỏ cấm tài khoản"
+                        {banStatus[item.id] ? (
                           <button
                             className={`${
                               isBanning && isBanningId === item.id
@@ -420,7 +408,6 @@ function UserResultList() {
                               : "Bỏ cấm tài khoản"}
                           </button>
                         ) : (
-                          // Nếu banStatus = false thì hiển thị "cấm tài khoản"
                           <button
                             className={`${
                               isBanning && isBanningId === item.id
