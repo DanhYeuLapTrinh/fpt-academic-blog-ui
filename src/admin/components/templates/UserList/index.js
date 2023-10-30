@@ -10,8 +10,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/AddNewButton";
-import { handleSearch } from "../../../utils/User/searchUser";
-import AddUserForm from "../../../utils/User/userAction";
+import AddUserForm from "../../../utils/User/AddUserAction";
+import { handleSearch } from "../../../utils/User/SearchUser";
 
 function UserResultList() {
   const axiosPrivate = useAxiosPrivate();
@@ -65,11 +65,9 @@ function UserResultList() {
 
   // Function to add a new user
   const handleAddUser = (userData) => {
-    // Call the API to add a new user with `userData` passed as a parameter
     axiosPrivate
       .post(process.env.REACT_APP_NEW_USER, userData)
       .then((response) => {
-        // Handle the response from the server if needed
         if (response.status === 200) {
           toast.success("Thêm mới người dùng thành công", {
             position: "top-right",
@@ -84,7 +82,6 @@ function UserResultList() {
         setRecords(newRecords);
       })
       .catch((error) => {
-        // Handle errors if any
         console.error("Lỗi khi thêm mới người dùng:", error);
         if (error.response.status === 401) {
           toast.error("Hãy điền đầy đủ thông tin", {

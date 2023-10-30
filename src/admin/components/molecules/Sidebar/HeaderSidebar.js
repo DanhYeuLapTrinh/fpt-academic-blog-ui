@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Typography } from "@material-tailwind/react";
 import React from "react";
 import { Link } from "react-router-dom";
 

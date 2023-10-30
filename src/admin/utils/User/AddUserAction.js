@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "@mui/base";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -7,7 +6,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useFormik } from "formik";
+import { Button } from "@mui/base";
 import { addUserSchema } from "../../components/atoms/AddUserValidation";
+
 function AddUserForm({ open, onClose, onAddUser, data }) {
   const initialUser = {
     username: "",
@@ -32,13 +33,10 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
     handleChange: (e) => {
       const { name, value } = e.target;
 
-      // Cập nhật giá trị vào form values
       formik.setFieldValue(name, value);
 
-      // Set lỗi field thành null
       formik.setFieldError(name, null);
 
-      // Cập nhật state formData
       setFormData((prev) => ({
         ...prev,
         [name]: value,
@@ -46,32 +44,25 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
     },
 
     onSubmit: (values) => {
-      // Khai báo biến kiểm tra có lỗi hay không
       let hasError = false;
 
-      // Kiểm tra trùng username
       const usernames = data.map((user) => user.username);
       if (usernames.includes(values.username)) {
         formik.setFieldError("username", "Tên tài khoản đã tồn tại");
         hasError = true;
       }
 
-      // Kiểm tra email trùng
       const email = data.map((user) => user.email);
       if (email.includes(values.email)) {
         formik.setFieldError("email", "Email đã tồn tại");
         hasError = true;
       }
 
-      // Nếu không có lỗi thì cho phép submit form
       if (!hasError) {
-        // Call API submit form
         onAddUser(values);
 
-        // Đóng dialog
         onClose();
 
-        // Reset form
         formik.resetForm();
       }
     },
