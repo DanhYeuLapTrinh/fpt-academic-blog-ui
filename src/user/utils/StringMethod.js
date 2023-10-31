@@ -1,9 +1,9 @@
 /**
- * Hàm nhận chuỗi HTML tìm tag P đầu tiên
+ * Hàm nhận chuỗi HTML tìm tag P đầu tiên và lấy nội dung
  * @param text : string
  * @example
  * const tag = getFirstPTag("reallyLongHtmlString")
- * @returns string - "<p>...</p>"
+ * @returns string - "nội dung"
  * @author DanhYeuLapTrinh
  * @version 1.0.1.0
  */
@@ -21,8 +21,8 @@ export const getFirstPTag = (htmlStr) => {
  * Hàm nhận chuỗi xong tạo ra slug cho URL
  * @param text : string
  * @example
- * const slug = getFirstPTag("Em thích ăn chuối!")
- * @returns string - "em-thich-an-chuoi-356231061"
+ * const slug = getFirstPTag("Em yêu lập trình!")
+ * @returns string - "em-yeu-lap-trinh-356231061"
  * @author DanhYeuLapTrinh
  * @version 1.0.0.0
  */
@@ -109,10 +109,16 @@ export const timeConverter = (dateString) => {
   return date.toLocaleDateString("en-US");
 };
 /**
- * Hàm nhận mảng, thứ tự sort và thuộc tính gốc để sort (để order trống nếu sort theo desc)
+ * Hàm nhận mảng, thứ tự sort và thuộc tính gốc để sort
  * @param array : array
+ * @param order : string
+ * @param propertyName : string
  * @example
  * const array = sortByPropertyName(array, "asc", "id")
+ * @description
+ * Mảng phải là mảng chứa object 
+ * Order mặc định nếu rỗng thì sort theo desc
+ * Propertyname thuộc tính gốc 
  * @returns array - sort by id in ascending order
  * @author DanhYeuLapTrinh
  * @version 1.0.0.0

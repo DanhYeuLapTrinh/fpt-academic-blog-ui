@@ -9,7 +9,6 @@ import useContent from "../../../hooks/useContent";
 
 export default function WriteService() {
   const {
-    title,
     setTitle,
     charCount,
     coverURL,
@@ -17,12 +16,10 @@ export default function WriteService() {
     content,
     setContent,
     wordcount,
-    setFile
   } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const auth = useAuth();
-  const [disabled, setDisabled] = useState(true);
   const {
     data,
     setData,
@@ -64,7 +61,8 @@ export default function WriteService() {
     setTag();
     setTagID();
   }, []);
-  const handleSubmit = async () => {
+
+  const handleSubmit = useCallback(async () => {
     try {
       const slug = toSlug(JSON.parse(localStorage.getItem("title")));
       const description = getFirstPTag(
@@ -85,13 +83,11 @@ export default function WriteService() {
           length: wordcount,
         }
       );
-      if(response) {
-        setFile()
-      }
     } catch (error) {
       console.log(error);
+      // Phần này xử lý lỗi
     }
-  };
+  }, [tagID, subjectID]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,11 +102,13 @@ export default function WriteService() {
       } catch (error) {
         if (!error?.response) {
           console.log("No server response");
-        } else if (error.response?.status === 403) {
+        } else if (error?.response?.status === 403) {
           navigate("/login");
-        } else if (error.response?.status === 401) {
+        } else if (error?.response?.status === 401) {
+          // Xử lý sau
           console.log(error);
         } else {
+          // Xử lý sau
           console.log(error);
         }
       }
@@ -123,7 +121,7 @@ export default function WriteService() {
       data={data}
       setData={setData}
       tagList={tagList}
-      setTagList={tagList}
+      setTagList={setTagList}
       major={major}
       setMajor={setMajor}
       semester={semester}
@@ -143,10 +141,8 @@ export default function WriteService() {
         !subjectID ||
         !tagID ||
         !coverURL ||
-        !title ||
-        !charCount >= 30 ||
+        !(charCount >= 30) ||
         !content ||
-        !(charCount < 100) ||
         !(wordcount >= 30)
       }
     />
