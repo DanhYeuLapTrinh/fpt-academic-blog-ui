@@ -23,7 +23,7 @@ export default function UserMenuOptionsListContainer() {
     });
     if (response) {
       localStorage.removeItem("auth");
-      navigate("/login");
+      navigate("/login", { replace: true });
     }
   };
   const filteredOption = UserMenuOptionsListData.filter((item) => {

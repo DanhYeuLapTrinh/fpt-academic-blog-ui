@@ -19,9 +19,11 @@ export default function QA(props) {
         p: " 15px 15px 0px 20px",
       }}
     >
-      <Box display={"flex"} alignItems={"center"}>
-        <QAVote />
-      </Box>
+      {!props.pending && (
+        <Box display={"flex"} alignItems={"center"}>
+          <QAVote />
+        </Box>
+      )}
       <Box sx={{ p: "0 15px" }}>
         <Stack height={"100%"} justifyContent={"space-between"}>
           <Wrapper WebkitLineClamp="2">
@@ -34,8 +36,8 @@ export default function QA(props) {
           <Wrapper WebkitLineClamp="2">
             <Text fontSize="12px" fontWeight="400" lineHeight="16px">
               The question that was asked on superuser and migrated to
-              stackoverflow and then deleted on stackoverflow, cannot be undeleted
-              on stackoverflow
+              stackoverflow and then deleted on stackoverflow, cannot be
+              undeleted on stackoverflow
             </Text>
           </Wrapper>
           <Stack

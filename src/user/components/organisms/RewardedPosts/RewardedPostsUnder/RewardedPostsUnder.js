@@ -10,7 +10,6 @@ import useContent from "../../../../hooks/useContent";
 
 export default function RewardedPostsUnder(props) {
   const isRewaded = false
-  const {setPostID} = useContent()
   return (
     <div style={{ width: "100%" }}>
       <Stack direction={"row"}>
@@ -38,10 +37,10 @@ export default function RewardedPostsUnder(props) {
         </Link>
         <Box sx={{ width: "calc(100% - 265px)", p: "0px 20px" }}>
           <Stack height={"240px"} justifyContent={"space-evenly"}>
-            <Link to={props.postPath} onClick={setPostID(props.postId)}>
+            <Link to={props.postPath}>
               <Wrapper WebkitLineClamp="2">
                 <Text fontSize="24px" lineHeight="30px">
-                  {props.title} {props.postId}
+                  {props.title}
                 </Text>
               </Wrapper>
               <Box

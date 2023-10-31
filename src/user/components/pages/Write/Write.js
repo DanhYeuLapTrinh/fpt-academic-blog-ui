@@ -12,7 +12,6 @@ export default function Write({...props}) {
         data={props.data}
         setData={props.setData}
         tagList={props.tagList}
-        setTagList={props.tagList}
         major={props.major}
         setMajor={props.setMajor}
         semester={props.semester}

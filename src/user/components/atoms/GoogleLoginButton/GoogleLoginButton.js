@@ -43,7 +43,7 @@ export default function GoogleLoginButton({ children, ...props }) {
           coverURL: serverResponse?.data?.coverURL,
         };
         localStorage.setItem("auth", JSON.stringify(auth));
-        navigate("/");
+        navigate("/", { replace: true });
       } catch (error) {
         console.log(error);
       }

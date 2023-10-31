@@ -1,12 +1,10 @@
 import { Container } from "@mui/material";
 import React from "react";
 import { useParams } from "react-router-dom";
-import useContent from "../../../../hooks/useContent";
 
 export default function ViewPendingPost() {
-  const slug = useParams();
-  const {postID} = useContent()
+  const {slug} = useParams();
   return <Container>
-    {postID || "ko co"}
+    {slug || "ko co"}
   </Container>;
 }

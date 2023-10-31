@@ -17,7 +17,6 @@ import * as Yup from "yup";
 import Text from "../../atoms/Text/Text";
 import axios from "../../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../../hooks/useAuth";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,12 +53,12 @@ export default function LoginForm() {
           profileURL: response?.data?.profileURL,
           coverURL: response?.data?.coverURL,
         };
-        localStorage.setItem("auth", JSON.stringify(auth))
+        localStorage.setItem("auth", JSON.stringify(auth));
         values.username = "";
         values.password = "";
-        if(auth?.role === "admin") {
-          navigate("/welcome")
-        } else navigate("/")
+        if (auth?.role === "admin") {
+          navigate("/welcome", { replace: true });
+        } else navigate("/", { replace: true });
       } catch (error) {
         if (!error?.response) {
           console.log("No server response");
