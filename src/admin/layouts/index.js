@@ -2,7 +2,7 @@ import Sidebar from "./AdminLayout/Sidebar/Sidebar";
 import NavigationBar from "./AdminLayout/Navbar/Navbar";
 import React from "react";
 import { Outlet } from "react-router-dom";
-import "../styles/index.css";
+import "./tailwind.css";
 function AdminLayout() {
   return (
     <div className="flex h-screen">
