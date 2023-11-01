@@ -10,6 +10,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Text from "../../atoms/Text/Text";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
 import { getFirstChar } from "../../../utils/StringMethod";
+import { Link } from "react-router-dom";
 
 export default function PendingPosts(props) {
   return (
@@ -26,9 +27,12 @@ export default function PendingPosts(props) {
               <MenuItem value="Bài viết đang chờ">
                 <Text fontSize="14px">Bài viết đang chờ</Text>
               </MenuItem>
-              <MenuItem value="Bài viết đã phê duyệt">
-                <Text fontSize="14px">Bài viết đã phê duyệt</Text>
-              </MenuItem>
+              <Link to={"/"} style={{textDecoration: 'none'}}>
+                {/* Ý tưởng sửa 2 posts xem bị trùng gắn link cho 2 cái menu item ra 2 cái view là xong /pending-posts/:slug và /view/:slug */}
+                <MenuItem value="Bài viết đã phê duyệt">
+                  <Text fontSize="14px">Bài viết đã phê duyệt</Text>
+                </MenuItem>
+              </Link>
             </Select>
           </FormControl>
           <FormControl>
