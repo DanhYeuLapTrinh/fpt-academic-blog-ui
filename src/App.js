@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomeLayout from "./user/layouts/HomeLayout";
 import LoginLayout from "./user/layouts/LoginLayout";
-import AdminLayout from "./admin/layouts";
+import AdminLayout from "./admin/layouts/AdminLayout/dashboard/DashboardLayout";
 import RequireAuth from "./user/utils/RequireAuth";
 import Unauthorized from "./user/components/pages/Unauthorized/Unauthorized";
 import RequireEmail from "./user/utils/RequireEmail";
