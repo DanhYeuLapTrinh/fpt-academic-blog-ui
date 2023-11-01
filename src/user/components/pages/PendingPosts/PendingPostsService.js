@@ -28,7 +28,7 @@ export default function PendingPostsService() {
           process.env.REACT_APP_PENDING_POSTS
         );
         setPendingPosts(response?.data);
-        setAmount(response?.data.length);
+        setAmount(pendingPosts?.length);
       } catch (error) {
         console.log(error);
       }
