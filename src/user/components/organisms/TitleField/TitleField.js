@@ -15,10 +15,9 @@ export default function TitleField(props) {
 
   useEffect(() => {
     setTimeout(() => {
-      localStorage.setItem("title", JSON.stringify(title));
-    }, 5000);
+      localStorage.setItem("content", JSON.stringify({title: title}));
+    }, 3000);
   }, [title]);
-
 
   return (
     <Stack sx={{minHeight: '105px'}}>

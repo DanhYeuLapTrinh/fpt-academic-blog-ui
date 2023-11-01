@@ -2,10 +2,15 @@ import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import { axiosPrivate } from "../api/axios";
 import useAuth from "./useAuth";
+import { useNavigate } from "react-router-dom";
+import useError from "./useError";
+import { msg } from "../data/ErrorMessage";
 
 export default function useAxiosPrivate() {
   const refresh = useRefreshToken();
-  const auth = useAuth()
+  const navigate = useNavigate();
+  const { setErrorMsg } = useError();
+  const auth = useAuth();
   useEffect(() => {
     const requestInterceptor = axiosPrivate.interceptors.request.use(
       (config) => {
@@ -23,9 +28,24 @@ export default function useAxiosPrivate() {
         const prevRequest = error?.config;
         if (error?.response?.status === 403 && !prevRequest?.sent) {
           prevRequest.sent = true;
-          const newAccessToken = await refresh();
-          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          return axiosPrivate(prevRequest);
+          try {
+            const newAccessToken = await refresh();
+            prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+            return axiosPrivate(prevRequest);
+          } catch (rfError) {
+            let code = error.response.status;
+            setErrorMsg({ code, message: msg[code] });
+            navigate("/login", { replace: true });
+            return Promise.reject(rfError);
+          }
+        } else if (error?.response?.status === 401) {
+          // 401 Unauthorized
+          let code = error.response.status;
+          setErrorMsg({ code, message: msg[code] });
+          navigate("/login", { replace: true });
+        } else if (error?.response?.status === 404) {
+          navigate("/404-not-found", { replace: true });
+        } else if (error?.response?.status === 400) {
         }
         return Promise.reject(error);
       }
