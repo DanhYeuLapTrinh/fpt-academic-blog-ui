@@ -13,7 +13,7 @@ export default function RewardedPostsUnder(props) {
   return (
     <div style={{ width: "100%" }}>
       <Stack direction={"row"}>
-        <Link to={props.postPath}>
+        <Link to={props.postPath} style={{textDecoration: 'none'}}>
           <Box
             sx={{
               backgroundImage:
@@ -37,7 +37,7 @@ export default function RewardedPostsUnder(props) {
         </Link>
         <Box sx={{ width: "calc(100% - 265px)", p: "0px 20px" }}>
           <Stack height={"240px"} justifyContent={"space-evenly"}>
-            <Link to={props.postPath}>
+            <Link to={props.postPath} style={{textDecoration: 'none'}}>
               <Wrapper WebkitLineClamp="2">
                 <Text fontSize="24px" lineHeight="30px">
                   {props.title}

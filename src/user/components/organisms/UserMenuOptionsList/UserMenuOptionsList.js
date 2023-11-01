@@ -41,7 +41,7 @@ export default function UserMenuOptionsList(props) {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         {props.filteredOption?.map((item) => (
-          <Link to={item.path}>
+          <Link to={item.path} style={{textDecoration: 'none'}}>
             <UserMenuOption
               key={item.label}
               icon={item.icon}
