@@ -12,6 +12,7 @@ import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/AddNewButton";
 import AddUserForm from "../../../utils/User/AddUserAction";
 import { handleSearch } from "../../../utils/User/SearchUser";
+import BanUnbanUser from "../../../utils/User/BanUnbanAction";
 
 function UserResultList() {
   const axiosPrivate = useAxiosPrivate();
@@ -39,10 +40,6 @@ function UserResultList() {
   const [showRoleSuccessModal, setShowRoleSuccessModal] = useState(false);
 
   const [originalRole, setOriginalRole] = useState("");
-
-  const [isBanning, setIsBanning] = useState(false);
-
-  const [isBanningId, setIsBanningId] = useState(null);
 
   const [banStatus, setBanStatus] = useState(
     JSON.parse(localStorage.getItem("banStatus")) || {}
@@ -214,76 +211,12 @@ function UserResultList() {
     );
   };
 
-  const handleBanButtonClick = (id) => {
-    if (banStatus[id]) {
-      unbanAccount(id);
-    } else {
-      banAccount(id);
-    }
-  };
-
   const banAccount = (id) => {
-    setIsBanning(true);
-    setIsBanningId(id);
-    axiosPrivate
-      .post(process.env.REACT_APP_BAN_ACCOUNT, { id })
-      .then((res) => {
-        toast.success("Cấm tài khoản thành công", {
-          position: "top-right",
-          autoClose: 3000,
-        });
-        setRecords((prevRecords) => {
-          const updatedRecords = prevRecords.map((item) => {
-            if (item.id === id) {
-              return { ...item, isBan: true };
-            }
-            return item;
-          });
-          return updatedRecords;
-        });
-        setIsBanning(false);
-        setIsBanningId(null);
-        setBanStatus({ ...banStatus, [id]: true });
-      })
-      .catch((error) => {
-        toast.error("Cấm tài khoản xảy ra lỗi", {
-          position: "top-right",
-          autoClose: 3000,
-        });
-        setIsBanning(false);
-        setIsBanningId(null);
-        console.error(error);
-      });
+    return axiosPrivate.post(process.env.REACT_APP_BAN_ACCOUNT, { id });
   };
 
   const unbanAccount = (id) => {
-    axiosPrivate
-      .post(process.env.REACT_APP_UNBAN_ACCOUNT, { id })
-      .then((res) => {
-        toast.warn("Bỏ cấm tài khoản thành công", {
-          position: "top-right",
-          autoClose: 3000,
-        });
-        setRecords((prevRecords) => {
-          const updatedRecords = prevRecords.map((item) => {
-            if (item.id === id) {
-              return { ...item, isBan: false };
-            }
-            return item;
-          });
-          return updatedRecords;
-        });
-        setBanStatus({ ...banStatus, [id]: false });
-        setIsBanning(false);
-        setIsBanningId(null);
-      })
-      .catch((error) => {
-        toast.error("Bỏ cấm tài khoản không thành công", {
-          position: "top-right",
-          autoClose: 3000,
-        });
-        console.error("Lỗi khi bỏ cấm tài khoản:", error);
-      });
+    return axiosPrivate.post(process.env.REACT_APP_UNBAN_ACCOUNT, { id });
   };
 
   useEffect(() => {
@@ -393,35 +326,16 @@ function UserResultList() {
                   </td>
                   <td className="p-4 flex items-center">
                     <div className="flex flex-col">
-                      <div className="pb-1">
-                        {banStatus[item.id] ? (
-                          <button
-                            className={`${
-                              isBanning && isBanningId === item.id
-                                ? "bg-blue-500"
-                                : "bg-green-500"
-                            } text-white text-xs px-2 py-1 rounded-lg`}
-                            onClick={() => handleBanButtonClick(item.id)}
-                          >
-                            {isBanning && isBanningId === item.id
-                              ? "Đang cấm..."
-                              : "Bỏ cấm tài khoản"}
-                          </button>
-                        ) : (
-                          <button
-                            className={`${
-                              isBanning && isBanningId === item.id
-                                ? "bg-blue-500"
-                                : "bg-red-500"
-                            } text-white text-xs px-2 py-1 rounded-lg`}
-                            onClick={() => handleBanButtonClick(item.id)}
-                          >
-                            {isBanning && isBanningId === item.id
-                              ? "Đang cấm..."
-                              : "Cấm tài khoản"}
-                          </button>
-                        )}
-                      </div>
+                      <td className="p-1">
+                        <BanUnbanUser
+                          userId={item.id}
+                          isBanned={banStatus[item.id]}
+                          banUserCallback={banAccount}
+                          unbanUserCallback={unbanAccount}
+                          banStatus={banStatus}
+                          setBanStatus={setBanStatus}
+                        />
+                      </td>
                       {isMuted[item.id] ? (
                         <>
                           <button

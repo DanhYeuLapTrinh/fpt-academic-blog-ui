@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import React from "react";
 
-function DeleteTagForm({
+function AddTagForm({
   open,
   handleClose,
   handleAddTag,
@@ -43,10 +43,11 @@ function DeleteTagForm({
         </Button>
         <Button
           sx={{
-            fontSize: "10px",
+            fontSize: "9px",
+            fontWeight: "bold",
             bgcolor: "green",
             height: "30px",
-            width: "40px",
+            width: "50px",
             color: "white",
             borderRadius: "5px",
             "&:hover": { bgcolor: "green" },
@@ -60,4 +61,4 @@ function DeleteTagForm({
   );
 }
 
-export default DeleteTagForm;
+export default AddTagForm;
