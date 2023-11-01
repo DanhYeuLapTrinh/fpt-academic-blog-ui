@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/AddNewButton";
 import AddUserForm from "../../../utils/User/AddUserAction";
-import { handleSearch } from "../../../utils/User/SearchUser";
+import { handleSearch } from "../../../utils/User/SearchUserByFullname";
 import BanUnbanUser from "../../../utils/User/BanUnbanAction";
 
 function UserResultList() {
