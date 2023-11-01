@@ -1,6 +1,5 @@
 import { ListItemText, Typography } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
 
 export default function NavOption({ children }) {
   const configTypo = {

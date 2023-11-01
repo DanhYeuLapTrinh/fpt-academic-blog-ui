@@ -1,7 +1,6 @@
 import React from "react";
 import PostCardShort from "../../organisms/PostCardShort/PostCardShort";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
-import { Stack } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 export default function ShortList() {

@@ -1,26 +1,20 @@
 import useAuth from "../../../hooks/useAuth";
 import usePostTag from "../../../hooks/usePostTag";
-import { getFirstPTag, toSlug } from "../../../utils/StringMethod";
-import React, { useCallback, useEffect, useState } from "react";
+import { getFirstTagContent, toSlug } from "../../../utils/StringMethod";
+import React, { useCallback, useEffect } from "react";
 import Write from "./Write";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import useContent from "../../../hooks/useContent";
 
 export default function WriteService() {
-  const {
-    title,
-    setTitle,
-    charCount,
-    coverURL,
-    setCoverURL,
-    content,
-    setContent,
-  } = useContent();
+  const { title, contentTiny } =
+    JSON.parse(localStorage.getItem("content")) || "";
+  const { setTitle, charCount, coverURL, content, setContent, wordcount } =
+    useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const auth = useAuth();
-  const [disabled, setDisabled] = useState(true);
   const {
     data,
     setData,
@@ -39,26 +33,11 @@ export default function WriteService() {
     tagID,
     setTagID,
   } = usePostTag();
-  useEffect(() => {
-    setCoverURL(JSON.parse(localStorage.getItem("coverURL")) || "");
-    setTitle(JSON.parse(localStorage.getItem("title")) || "");
-    setContent(JSON.parse(localStorage.getItem("content")) || "");
-  }, []);
 
   useEffect(() => {
-    if (
-      major &&
-      semester &&
-      subjectID &&
-      tagID &&
-      coverURL &&
-      title &&
-      content &&
-      charCount < 100
-    ) {
-      setDisabled(false);
-    } else setDisabled(true);
-  }, [major, semester, subject, tag, coverURL, title, content, charCount]);
+    setTitle(title);
+    setContent(content);
+  }, []);
 
   const handleMajorChange = useCallback((e) => {
     setMajor(e.target.value);
@@ -79,28 +58,29 @@ export default function WriteService() {
 
   const handleSubmit = useCallback(async () => {
     try {
-      const slug = toSlug(JSON.parse(localStorage.getItem("title")));
-      const description = getFirstPTag(
-        JSON.parse(localStorage.getItem("content"))
+      const slug = toSlug(title);
+      const description = getFirstTagContent(contentTiny);
+      const response = await axiosPrivate.post(
+        process.env.REACT_APP_CREATE_POST,
+        {
+          accountId: auth?.id,
+          title: title,
+          description: description,
+          content: contentTiny,
+          allowComment: true,
+          categoryId: subjectID,
+          tagId: tagID,
+          coverURL: coverURL,
+          slug: slug,
+          length: wordcount,
+        }
       );
-      const response = await axiosPrivate.post("users/request-post", {
-        accountId: auth?.id,
-        title: JSON.parse(localStorage.getItem("title")),
-        description: description,
-        content: JSON.parse(localStorage.getItem("content")),
-        allowComment: true,
-        categoryId: subjectID,
-        tagId: tagID,
-        imageURL: [],
-        videoURL: [],
-        coverURL: JSON.parse(localStorage.getItem("coverURL")),
-        slug: slug,
-      });
-      console.log(response);
+      
     } catch (error) {
       console.log(error);
+      // Phần này xử lý lỗi
     }
-  }, []);
+  }, [tagID, subjectID, contentTiny, title, coverURL]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -115,11 +95,13 @@ export default function WriteService() {
       } catch (error) {
         if (!error?.response) {
           console.log("No server response");
-        } else if (error.response?.status === 403) {
+        } else if (error?.response?.status === 403) {
           navigate("/login");
-        } else if (error.response?.status === 401) {
+        } else if (error?.response?.status === 401) {
+          // Xử lý sau
           console.log(error);
         } else {
+          // Xử lý sau
           console.log(error);
         }
       }
@@ -132,7 +114,7 @@ export default function WriteService() {
       data={data}
       setData={setData}
       tagList={tagList}
-      setTagList={tagList}
+      setTagList={setTagList}
       major={major}
       setMajor={setMajor}
       semester={semester}
@@ -146,7 +128,17 @@ export default function WriteService() {
       handleMajorChange={handleMajorChange}
       handleSemesterChange={handleSemesterChange}
       handleSubmit={handleSubmit}
-      disabled={disabled}
+      disabled={
+        !major ||
+        !semester ||
+        !subjectID ||
+        !tagID ||
+        !coverURL ||
+        charCount < 30 ||
+        charCount >= 100 ||
+        !content ||
+        !(wordcount >= 30)
+      }
     />
   );
 }

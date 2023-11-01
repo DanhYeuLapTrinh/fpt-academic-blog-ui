@@ -16,8 +16,11 @@ import ReportedProfilePage from "../admin/components/pages/Reports/ReportedProfi
 import ReportedCommentPage from "../admin/components/pages/Reports/ReportedCommentPage";
 import ActivityLogPage from "../admin/components/pages/ActivityLog/ActivityLogPage";
 import SettingPage from "../admin/components/pages/Setting/SettingPage";
-import PendingPosts from "../user/components/pages/PendingPosts/PendingPosts";
 import WriteService from "../user/components/pages/Write/WriteService";
+import PendingPostsService from "../user/components/pages/PendingPosts/PendingPostsService";
+import ViewPendingPost from "../user/components/pages/ViewAPost/ViewPendingPost/ViewPendingPost";
+import Profile from "../user/components/pages/Profile/Profile";
+import PendingQuestionsService from "../user/components/pages/PendingQuestions/PendingQuestionsService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -33,8 +36,17 @@ const loggedInUserRoutes = [
   { path: "/feed", component: Feed },
   { path: "/news", component: News },
   { path: "/write", component: WriteService },
+  { path: "/profile/:id", component: Profile },
 ];
-const lecturerRoutes = [{ path: "/pending-posts", component: PendingPosts }];
+const lecturerRoutes = [
+  { path: "/pending-posts", component: PendingPostsService },
+  { path: "/pending-posts/:slug", component: ViewPendingPost },
+];
+
+const mentorRoutes = [
+  { path: "/pending-q", component: PendingQuestionsService },
+  { path: "/pending-q/:slug", component: "" },
+];
 
 const loggedInAdminRoutes = [
   //Welcome Page
@@ -61,5 +73,6 @@ export {
   loggedInUserRoutes,
   recoverPasswordRoutes,
   loggedInAdminRoutes,
-  lecturerRoutes
+  lecturerRoutes,
+  mentorRoutes
 };

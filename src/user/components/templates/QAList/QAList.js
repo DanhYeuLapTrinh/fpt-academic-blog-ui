@@ -3,7 +3,6 @@ import React from "react";
 import QA from "../../organisms/QA/QA";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import Text from "../../atoms/Text/Text";
-import PostTag from "../../atoms/PostTag/PostTag";
 
 export default function QAList() {
   return (

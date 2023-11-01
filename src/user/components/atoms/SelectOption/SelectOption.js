@@ -4,7 +4,7 @@ import Select from "@mui/material/Select";
 import Text from "../Text/Text";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
-export default function SelectOption(props) {
+export default function SelectOption() {
   const [type, setType] = useState("Bài viết");
   return (
     <Select

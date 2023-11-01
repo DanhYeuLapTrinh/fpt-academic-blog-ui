@@ -6,13 +6,13 @@ import Dropzone from "../../organisms/Dropzone/Dropzone";
 import ContentFiledContainer from "../../organisms/ContentField/ContentFiledContainer";
 
 export default function Write({...props}) {
+  
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       <PostFilter
         data={props.data}
         setData={props.setData}
         tagList={props.tagList}
-        setTagList={props.tagList}
         major={props.major}
         setMajor={props.setMajor}
         semester={props.semester}
@@ -29,7 +29,7 @@ export default function Write({...props}) {
       {props.tag === "Q&A" ? (
         <>
           <TitleField/>
-          <ContentFiledContainer/>
+          <ContentFiledContainer />
         </>
       ) : (
         <>

@@ -1,9 +1,10 @@
-import React from 'react'
-import ContentField from './ContentField'
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import React, { useState } from "react";
+import ContentField from "./ContentField";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 export default function ContentFiledContainer() {
   const axiosPrivate = useAxiosPrivate();
+  const [isSaving, setIsSaving] = useState("Chưa lưu");
   const handleImage = async (blobInfo) => {
     try {
       const formData = new FormData();
@@ -19,6 +20,10 @@ export default function ContentFiledContainer() {
     }
   };
   return (
-    <ContentField handleImage={handleImage}/>
-  )
+    <ContentField
+      handleImage={handleImage}
+      isSaving={isSaving}
+      setIsSaving={setIsSaving}
+    />
+  );
 }

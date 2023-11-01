@@ -1,10 +1,9 @@
 import React from "react";
-import UserTab from "../../molecules/UserTab/UserTab";
+import UserTab from "../UserTab/UserTab";
 import { Box, Container, Divider, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 import NavList from "../../molecules/Navigation/NavList";
-import UserMenuContainer from "../../molecules/UserMenu/UserMenuContainer";
 
 export default function Header() {
   return (
@@ -19,7 +18,7 @@ export default function Header() {
           alignItems={"center"}
           spacing={2}
         >
-          <Link to={"/"}>
+          <Link to={"/"} style={{textDecoration: 'none'}}>
             <Text fontFamily="Klavika" color="primary.main" fontSize="42px">
               fblog
             </Text>

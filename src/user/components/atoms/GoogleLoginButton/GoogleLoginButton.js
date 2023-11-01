@@ -25,24 +25,28 @@ export default function GoogleLoginButton({ children, ...props }) {
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
-      const serverResponse = await axios.post(
-        "users/google-login",
-        JSON.stringify({ email: response.access_token }),
-        {
-          headers: { "Content-Type": "application/json" },
-        
-        }
-      );
-      console.log(response.access_token)
-      const auth = {
-        id: serverResponse?.data?.id,
-        user: serverResponse?.data?.username,
-        role: serverResponse?.data?.roleName,
-        token: serverResponse?.data?.token,
-        refreshToken: serverResponse?.data?.refreshToken,
-      };
-      localStorage.setItem("auth", JSON.stringify(auth))
-      navigate("/");
+      try {
+        const serverResponse = await axios.post(
+          process.env.REACT_APP_LOGIN_GOOGLE,
+          JSON.stringify({ email: response.access_token }),
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const auth = {
+          id: serverResponse?.data?.id,
+          user: serverResponse?.data?.username,
+          role: serverResponse?.data?.roleName,
+          token: serverResponse?.data?.token,
+          refreshToken: serverResponse?.data?.refreshToken,
+          profileURL: serverResponse?.data?.profileURL ?? "",
+          coverURL: serverResponse?.data?.coverURL,
+        };
+        localStorage.setItem("auth", JSON.stringify(auth));
+        navigate("/", { replace: true });
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
