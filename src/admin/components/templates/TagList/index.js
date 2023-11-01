@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { TablePagination } from "@mui/material";
-import { Button } from "@mui/base";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
-
+import AddNewButton from "../../atoms/AddNewButton";
+import DeleteConfirm from "../../molecules/Tag/DeleteConfirm";
+import AddTagForm from "../../molecules/Tag/AddTagForm";
 function TagList() {
   const [tagData, setTagData] = useState([]);
   const [page, setPage] = useState(0);
@@ -54,14 +49,12 @@ function TagList() {
       return;
     }
 
-    // Check for duplicates
     const isDuplicate = tagData.some((tag) => tag.tagName === newTagName);
     if (isDuplicate) {
       setErrorMessage("Tên thẻ đã tồn tại.");
       return;
     }
 
-    // If all validations pass, add the tag
     axiosPrivate
       .post(process.env.REACT_APP_ADD_NEW_TAG, { tagName: newTagName })
       .then((response) => {
@@ -75,7 +68,6 @@ function TagList() {
       })
       .catch((error) => {
         console.error("Error adding tag: " + error);
-        // Handle the error as needed
         toast.error(`Thêm thẻ "${newTagName}" không thành công`, {
           position: "top-right",
           autoClose: 3000,
@@ -89,14 +81,12 @@ function TagList() {
   };
 
   const handleDeleteConfirmation = () => {
-    // Perform delete action here
     axiosPrivate
       .post(process.env.REACT_APP_DELETE_TAG, {
         tagId: tagToDelete.id,
         tagName: tagToDelete.name,
       })
       .then(() => {
-        // Remove the tag from the local state
         const updatedTagData = tagData.filter(
           (tag) => tag.id !== tagToDelete.id
         );
@@ -109,7 +99,6 @@ function TagList() {
       })
       .catch((error) => {
         console.error("Error deleting tag: " + error);
-        // Handle the error as needed
         toast.error(`Xóa thẻ không thành công`, {
           position: "top-right",
           autoClose: 3000,
@@ -129,41 +118,16 @@ function TagList() {
         <h2 className="text-2xl font-bold">Tất cả thẻ</h2>
 
         <div>
-          <Button
-            className="px-4 h-12 rounded-lg shadow-md bg-custom text-white text-center"
-            onClick={handleClickOpen}
-          >
-            <AddCircleIcon className="mr-2" />
-            Thêm thẻ mới
-          </Button>
+          <AddNewButton title="Thêm thẻ mới" handleClick={handleClickOpen} />
           <div className="w-100">
-            <Dialog open={open} onClose={handleClose}>
-              <DialogTitle style={{ fontWeight: "bold" }}>
-                Thêm thẻ mới
-              </DialogTitle>
-              <DialogContent style={{ paddingBottom: "5px" }}>
-                <TextField
-                  margin="dense"
-                  label="Tên thẻ mới"
-                  type="text"
-                  name="tagName"
-                  fullWidth
-                  variant="standard"
-                  value={newTagName}
-                  onChange={(e) => setNewTagName(e.target.value)}
-                />
-                <p style={{ color: "red" }}>{errorMessage}</p>
-              </DialogContent>
-              <DialogActions style={{ marginTop: "10px" }}>
-                <Button onClick={handleClose}>Hủy thêm</Button>
-                <Button
-                  className="bg-green-500 rounded h-8 w-20 text-white"
-                  onClick={handleAddTag}
-                >
-                  Thêm mới
-                </Button>
-              </DialogActions>
-            </Dialog>
+            <AddTagForm
+              open={open}
+              handleClose={handleClose}
+              handleAddTag={handleAddTag}
+              errorMessage={errorMessage}
+              newTagName={newTagName}
+              data={(e) => setNewTagName(e.target.value)}
+            />
           </div>
         </div>
       </div>
@@ -206,20 +170,12 @@ function TagList() {
         />
       </div>
 
-      <Dialog open={deleteConfirmationOpen} onClose={handleCancelDelete}>
-        <DialogTitle>
-          {`Bạn có chắc chắn xóa "${tagToDelete.name}" không?`}
-        </DialogTitle>
-        <DialogActions style={{ marginTop: "10px" }}>
-          <Button onClick={handleCancelDelete}>Không</Button>
-          <Button
-            className="bg-red-500 rounded h-8 w-20 text-white"
-            onClick={handleDeleteConfirmation}
-          >
-            Có
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DeleteConfirm
+        open={deleteConfirmationOpen}
+        handleClose={handleCancelDelete}
+        deleteTag={handleDeleteConfirmation}
+        data={tagToDelete.name}
+      />
 
       <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>

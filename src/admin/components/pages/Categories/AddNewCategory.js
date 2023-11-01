@@ -1,5 +1,5 @@
 import React from "react";
-import AddCategory from "../../templates/AddCategory";
+import AddCategory from "../../../utils/Categories/AddCategory";
 function AddNewCategory() {
   return <AddCategory />;
 }
