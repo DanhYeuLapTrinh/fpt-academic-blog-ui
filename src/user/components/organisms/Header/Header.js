@@ -18,7 +18,7 @@ export default function Header() {
           alignItems={"center"}
           spacing={2}
         >
-          <Link to={"/"}>
+          <Link to={"/"} style={{textDecoration: 'none'}}>
             <Text fontFamily="Klavika" color="primary.main" fontSize="42px">
               fblog
             </Text>

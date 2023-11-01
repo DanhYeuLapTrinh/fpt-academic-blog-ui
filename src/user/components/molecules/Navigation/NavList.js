@@ -7,7 +7,7 @@ export default function NavList() {
   return (
     <List>
       <Stack direction={"row"} spacing={1}>
-          <Link to={"/"}><NavOption>Trang chủ</NavOption></Link>
+          <Link to={"/"} style={{textDecoration: 'none'}}><NavOption>Trang chủ</NavOption></Link>
           <NavOption>Bảng tin</NavOption>
           <NavOption>Tin tức</NavOption>
           <NavOption>Về chúng tôi</NavOption>

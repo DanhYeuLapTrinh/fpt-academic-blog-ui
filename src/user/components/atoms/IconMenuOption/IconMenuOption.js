@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 export default function IconMenuOption(props) {
   return (
-    <Link to={props.path}>
+    <Link to={props.path} style={{textDecoration: 'none'}}>
       <MenuItem sx={{ p: "10px" }} onClick={props.onClick}>
         <ListItemIcon>{props.icon}</ListItemIcon>
         <ListItemText>
