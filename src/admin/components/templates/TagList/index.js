@@ -5,8 +5,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/AddNewButton";
-import DeleteConfirm from "../../organisms/DeleteConfirm";
-import DeleteTagForm from "../../organisms/DeleteTagForm";
+import DeleteConfirm from "../../molecules/Tag/DeleteConfirm";
+import AddTagForm from "../../molecules/Tag/AddTagForm";
 function TagList() {
   const [tagData, setTagData] = useState([]);
   const [page, setPage] = useState(0);
@@ -120,7 +120,7 @@ function TagList() {
         <div>
           <AddNewButton title="Thêm thẻ mới" handleClick={handleClickOpen} />
           <div className="w-100">
-            <DeleteTagForm
+            <AddTagForm
               open={open}
               handleClose={handleClose}
               handleAddTag={handleAddTag}

@@ -13,13 +13,32 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import useAuth from "../../../../user/hooks/useAuth";
 
 function BodySidebar() {
   const [open, setOpen] = React.useState(0);
 
+  const auth = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
   };
+
+  const HandleLogout = async () => {
+    const res = await axiosPrivate.post("auth/remove-token", {
+      refreshToken: auth?.refreshToken,
+    });
+
+    if (res) {
+      localStorage.removeItem("auth");
+      navigate("/login");
+    }
+  };
+
   return (
     <List>
       <Accordion
@@ -279,7 +298,7 @@ function BodySidebar() {
           Cài đặt
         </ListItem>
       </Link>
-      <ListItem>
+      <ListItem onClick={HandleLogout}>
         <ListItemPrefix>
           <LogoutIcon className="h-5 w-5" />
         </ListItemPrefix>
