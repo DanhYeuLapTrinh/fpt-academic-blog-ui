@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Input } from "@material-tailwind/react";
+import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import Modal from "react-modal";
@@ -13,6 +13,8 @@ import AddNewButton from "../../atoms/AddNewButton";
 import AddUserForm from "../../../utils/User/AddUserAction";
 import { handleSearch } from "../../../utils/User/SearchUserByFullname";
 import BanUnbanUser from "../../../utils/User/BanUnbanAction";
+import { DataGrid } from "@mui/x-data-grid";
+import "./styles.scss";
 
 function UserResultList() {
   const axiosPrivate = useAxiosPrivate();
@@ -223,25 +225,52 @@ function UserResultList() {
     Modal.setAppElement("#root");
   }, []);
 
+  const columns = [
+    { field: "id", headerName: "ID", width: 90 },
+    { field: "username", headerName: "Tài khoản", width: 150 },
+    { field: "fullName", headerName: "Tên đầy đủ", width: 150 },
+    { field: "email", headerName: "Email", width: 200 },
+    {
+      field: "role",
+      headerName: "Vai trò",
+      valueGetter: (params) => params.row.role.roleName,
+      width: 120,
+    },
+    {
+      field: "banned",
+      headerName: "Trạng thái",
+      renderCell: (params) => {
+        return params.value ? "Bị cấm" : "Hoạt động";
+      },
+    },
+  ];
+
   return (
-    <div className="m-5">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold">Danh sách người dùng</h2>
+    <>
+      <div className="header-title">
+        <h2 className="title">Danh sách người dùng</h2>
       </div>
-      <div className="flex justify-between py-4">
-        <div className="w-1/3">
-          <Input
-            icon={<SearchIcon className="h-5 w-5" />}
-            label="Tìm kiếm người dùng..."
-            type="text"
-            onChange={handleSearchUser}
-          />
+      <div className="header-actions">
+        <div className="search-box">
+          <div className="search-box">
+            <TextField
+              className="search-input"
+              placeholder="Tìm kiếm người dùng..."
+              type="text"
+              variant="outlined"
+              onChange={handleSearchUser}
+              InputProps={{
+                startAdornment: <SearchIcon className="search-icon" />,
+              }}
+            />
+          </div>
         </div>
         <div>
-          <form className="rounded-lg">
+          <form className="rounded-form">
             <AddNewButton
               title="Thêm người dùng mới"
               handleClick={handleOpenAddUserForm}
+              className="custom-add-button"
             />
             <AddUserForm
               open={isAddUserFormOpen}
@@ -252,161 +281,15 @@ function UserResultList() {
           </form>
         </div>
       </div>
-      <div className="bg-white shadow overflow-x-auto rounded-xl">
-        <table className="table-auto w-full text-left border">
-          <thead className="bg-gray-500">
-            <tr className="border-b">
-              <th className="px-4 py-2">ID</th>
-              <th className="px-4 py-2">Tài khoản</th>
-              <th className="px-4 py-2">Tên đầy đủ</th>
-              <th className="px-4 py-2">Email</th>
-              <th className="px-4 py-2">Vai trò</th>
-              <th className="px-4 py-2">Trạng thái</th>
-              <th className="px-4 py-2"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {records
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((item) => (
-                <tr key={item.id} className="border-b">
-                  <td className="p-4">{item.id}</td>
-                  <td className="p-4">{item.username}</td>
-                  <td className="p-4">{item.fullName}</td>
-                  <td className="p-4">{item.email}</td>
-                  <td className="p-4 w-100">
-                    {editingUserId === item.id ? (
-                      <div>
-                        <select
-                          value={newRole}
-                          onChange={(e) => setNewRole(e.target.value)}
-                          className="mr-4"
-                        >
-                          <option value="admin">Admin</option>
-                          <option value="mentor">Mentor</option>
-                          <option value="lecturer">Lecturer</option>
-                          <option value="student">Student</option>
-                        </select>
-                        <CheckCircleIcon
-                          className="text-green-500 cursor-pointer"
-                          onClick={() => saveRoleChanges(item.id)}
-                        />
-                        <CancelIcon
-                          className="text-red-500 cursor-pointer"
-                          onClick={cancelEditing}
-                        />
-                      </div>
-                    ) : (
-                      <div className="">
-                        {item.role.roleName}
-                        <EditIcon
-                          onClick={() =>
-                            startEditing(item.id, item.role.roleName)
-                          }
-                          sx={{
-                            width: "18px",
-                            height: "18px",
-                            paddingLeft: "1px",
-                            marginLeft: "2px",
-                          }}
-                        />
-                      </div>
-                    )}
-                  </td>
-                  <td className="p-4">
-                    <div>
-                      {banStatus[item.id] && isMuted[item.id]
-                        ? "Đang bị cấm và đang bị hạn chế"
-                        : banStatus[item.id]
-                        ? "Đang bị cấm"
-                        : isMuted[item.id]
-                        ? "Đang bị hạn chế"
-                        : "Bình thường"}
-                    </div>
-                  </td>
-                  <td className="p-4 flex items-center">
-                    <div className="flex flex-col">
-                      <td className="p-1">
-                        <BanUnbanUser
-                          userId={item.id}
-                          isBanned={banStatus[item.id]}
-                          banUserCallback={banAccount}
-                          unbanUserCallback={unbanAccount}
-                          banStatus={banStatus}
-                          setBanStatus={setBanStatus}
-                        />
-                      </td>
-                      {isMuted[item.id] ? (
-                        <>
-                          <button
-                            className="text-white text-xs px-2 py-1 rounded-lg bg-green-500"
-                            onClick={() => unmuteUser(item.id)}
-                          >
-                            Hủy hạn chế tài khoản
-                          </button>
-                        </>
-                      ) : (
-                        <>
-                          <button
-                            className="text-white text-xs px-2 py-1 rounded-lg bg-red-500"
-                            onClick={() => openMuteModal(item.id)}
-                          >
-                            Hạn chế tài khoản
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
 
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={records.length}
-          page={page}
-          onPageChange={(event, newPage) => setPage(newPage)}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={(event) => {
-            setRowsPerPage(parseInt(event.target.value, 10));
-            setPage(0);
-          }}
-        />
-      </div>
-
-      <Modal
-        isOpen={showMuteModal}
-        onRequestClose={closeMuteModal}
-        style={{
-          content: {
-            maxWidth: "400px",
-            margin: "auto",
-            maxHeight: "200px",
-          },
-        }}
-      >
-        <h3 className="text-center text-2xl font-bold mb-5">
-          Nhập thời gian hạn chế (giờ)
-        </h3>
-        <div className="grid grid-cols-3 mt-10">
-          <input
-            type="number"
-            value={muteDuration}
-            onChange={(e) => setMuteDuration(e.target.value)}
-            className="col-span-2 text-center border-2 border-black border-solid rounded-lg"
-          />
-          <button
-            onClick={muteUser}
-            className="col-span-1 bg-green-500 text-white rounded-lg mx-4"
-          >
-            OK
-          </button>
-        </div>
-      </Modal>
-      <ToastContainer position="top-right" autoClose={3000} closeOnClick />
-    </div>
+      <DataGrid
+        rows={records}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5, 10, 25]}
+        pagination
+      />
+    </>
   );
 }
 
