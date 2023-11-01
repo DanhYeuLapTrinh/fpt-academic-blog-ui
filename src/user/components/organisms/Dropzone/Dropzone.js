@@ -13,9 +13,8 @@ export default function Dropzone() {
   // chỉ rerender khi có ảnh thôi
   const [isLoading, setIsLoading] = useState(false);
   const {file, setFile} = useContent()
-  const { setCoverURL } = useContent();
+  const { setCoverURL, coverURL } = useContent();
   const [rejectedFile, setRejectedFile] = useState();
-  const [link, setLink] = useState();
   const handleSubmit = async (file) => {
     setIsLoading(true);
     if (!file) return;
@@ -30,13 +29,9 @@ export default function Dropzone() {
         },
       }
     );
-    const origin = response.data.link;
-    setLink(origin);
+    const origin = response?.data?.link;
     setIsLoading(false);
     setCoverURL(origin);
-    setTimeout(() => {
-      localStorage.setItem("coverURL", JSON.stringify(origin));
-    }, 5000);
   };
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     if (acceptedFiles?.[0]) {
@@ -100,7 +95,7 @@ export default function Dropzone() {
           ) : (
             <Box sx={{ position: "relative" }}>
               <img
-                src={link}
+                src={coverURL}
                 alt=""
                 style={{ width: "100%", borderRadius: "10px" }}
               />

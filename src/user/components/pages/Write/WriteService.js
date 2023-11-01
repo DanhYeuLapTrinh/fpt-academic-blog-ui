@@ -1,22 +1,17 @@
 import useAuth from "../../../hooks/useAuth";
 import usePostTag from "../../../hooks/usePostTag";
-import { getFirstPTag, toSlug } from "../../../utils/StringMethod";
-import React, { useCallback, useEffect, useState } from "react";
+import { getFirstTagContent, toSlug } from "../../../utils/StringMethod";
+import React, { useCallback, useEffect } from "react";
 import Write from "./Write";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import useContent from "../../../hooks/useContent";
 
 export default function WriteService() {
-  const {
-    setTitle,
-    charCount,
-    coverURL,
-    setCoverURL,
-    content,
-    setContent,
-    wordcount,
-  } = useContent();
+  const { title, contentTiny } =
+    JSON.parse(localStorage.getItem("content")) || "";
+  const { setTitle, charCount, coverURL, content, setContent, wordcount } =
+    useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const auth = useAuth();
@@ -40,9 +35,8 @@ export default function WriteService() {
   } = usePostTag();
 
   useEffect(() => {
-    setCoverURL(JSON.parse(localStorage.getItem("coverURL")) || "");
-    setTitle(JSON.parse(localStorage.getItem("title")) || "");
-    setContent(JSON.parse(localStorage.getItem("content")) || "");
+    setTitle(title);
+    setContent(content);
   }, []);
 
   const handleMajorChange = useCallback((e) => {
@@ -64,30 +58,29 @@ export default function WriteService() {
 
   const handleSubmit = useCallback(async () => {
     try {
-      const slug = toSlug(JSON.parse(localStorage.getItem("title")));
-      const description = getFirstPTag(
-        JSON.parse(localStorage.getItem("content"))
-      );
+      const slug = toSlug(title);
+      const description = getFirstTagContent(contentTiny);
       const response = await axiosPrivate.post(
         process.env.REACT_APP_CREATE_POST,
         {
           accountId: auth?.id,
-          title: JSON.parse(localStorage.getItem("title")),
+          title: title,
           description: description,
-          content: JSON.parse(localStorage.getItem("content")),
+          content: contentTiny,
           allowComment: true,
           categoryId: subjectID,
           tagId: tagID,
-          coverURL: JSON.parse(localStorage.getItem("coverURL")),
+          coverURL: coverURL,
           slug: slug,
           length: wordcount,
         }
       );
+      
     } catch (error) {
       console.log(error);
       // Phần này xử lý lỗi
     }
-  }, [tagID, subjectID]);
+  }, [tagID, subjectID, contentTiny, title, coverURL]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -141,7 +134,8 @@ export default function WriteService() {
         !subjectID ||
         !tagID ||
         !coverURL ||
-        !(charCount >= 30) ||
+        charCount < 30 ||
+        charCount >= 100 ||
         !content ||
         !(wordcount >= 30)
       }

@@ -1,18 +1,29 @@
 /**
- * Hàm nhận chuỗi HTML tìm tag P đầu tiên và lấy nội dung
+ * Hàm nhận chuỗi HTML tìm tag h2, h3, p đầu tiên và lấy nội dung
  * @param text : string
  * @example
  * const tag = getFirstPTag("reallyLongHtmlString")
  * @returns string - "nội dung"
  * @author DanhYeuLapTrinh
- * @version 1.0.1.0
+ * @version 1.0.2.0
  */
-export const getFirstPTag = (htmlStr) => {
+export const getFirstTagContent = (htmlStr) => {
   if (htmlStr) {
-    const match = htmlStr.match(/<p>([^<]*)<\/p>/);
-    if (match) {
-      return match[1];
-    }
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlStr, "text/html");
+
+    // Get first heading or paragraph
+    const tag = doc.querySelector("h2, h3, p");
+
+    if (!tag) return "";
+
+    // Get text content
+    let text = tag.textContent;
+
+    // Remove extra whitespace
+    text = text.trim();
+
+    return text;
   }
   return null;
 };
@@ -67,12 +78,15 @@ export const toSlug = (inputStr) => {
  * @version 1.0.0.0
  */
 export const getFirstChar = (inputStr) => {
-  const firstChars = inputStr
-    .split(" ")
-    .map((words) => words.charAt(0))
-    .join("")
-    .toUpperCase();
-  return firstChars;
+  if (inputStr) {
+    let firstChars = inputStr
+      .split(" ")
+      .map((words) => words.charAt(0))
+      .join("")
+      .toUpperCase();
+    return firstChars;
+  }
+  return null;
 };
 
 /**
@@ -116,9 +130,9 @@ export const timeConverter = (dateString) => {
  * @example
  * const array = sortByPropertyName(array, "asc", "id")
  * @description
- * Mảng phải là mảng chứa object 
+ * Mảng phải là mảng chứa object
  * Order mặc định nếu rỗng thì sort theo desc
- * Propertyname thuộc tính gốc 
+ * Propertyname thuộc tính gốc
  * @returns array - sort by id in ascending order
  * @author DanhYeuLapTrinh
  * @version 1.0.0.0

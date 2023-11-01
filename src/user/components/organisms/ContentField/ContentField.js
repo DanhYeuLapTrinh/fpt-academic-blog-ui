@@ -2,25 +2,49 @@ import React from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import "./ContentField.scss";
 import useContent from "../../../hooks/useContent";
-export default function ContentField({...props}) {
-  const {setContent, setWordcount} = useContent()
+import { Box } from "@mui/material";
+import Text from "../../atoms/Text/Text";
+export default function ContentField({ ...props }) {
+  const { setContent, setWordcount } = useContent();
+
   return (
-    <div style={{ margin: "15px 0" }}>
+    <div style={{ margin: "15px 0", position: "relative" }}>
+      <Box
+        sx={{
+          position: "absolute",
+          left: "800px",
+          top: "12px",
+          zIndex: 999,
+          backgroundColor: "lightText.main",
+          p: "3px 8px",
+          borderRadius: "10px",
+          opacity: "80%",
+        }}
+      >
+        <Text fontSize="13px">{props.isSaving}</Text>
+      </Box>
       <Editor
         apiKey="or7ndgcoxdbx9821y1j3d8oi37nqe538m257uvlwroa11wiq"
         onEditorChange={(newValue, editor) => {
+          props.setIsSaving("Đang lưu...");
           setTimeout(() => {
-            localStorage.setItem("content", JSON.stringify(newValue));
-            setContent(newValue);
-            const wordcount1 = editor.plugins.wordcount
-            setWordcount(wordcount1.body.getWordCount())
+            let content = JSON.parse(localStorage.getItem("content"));
+            if (content) {
+              content.contentTiny = newValue
+              localStorage.setItem("content", JSON.stringify(content));
+              setContent(newValue);
+              let wordcount1 = editor.plugins.wordcount;
+              setWordcount(wordcount1.body.getWordCount());
+              props.setIsSaving("Đã lưu");
+            }
           }, 1000);
         }}
         onInit={(evt, editor) => {
           setTimeout(() => {
-            const data = JSON.parse(localStorage.getItem("content"));
-            if(data) {
-              editor.setContent(data);
+            const { contentTiny } =
+              JSON.parse(localStorage.getItem("content")) || "";
+            if (contentTiny) {
+              editor.setContent(contentTiny);
             }
           }, 100);
         }}

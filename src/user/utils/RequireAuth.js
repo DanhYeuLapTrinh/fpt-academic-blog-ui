@@ -8,7 +8,7 @@ export default function RequireAuth({ allowRoles }) {
   return (allowRoles.find((role) => role === auth?.role) && auth?.token) ? (
     <Outlet />
   ) : auth?.user ? (
-    <Navigate to="/unauthorized" state={{ from: location }} replace />
+    <Navigate to="/404-not-found" state={{ from: location }} replace />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
   );

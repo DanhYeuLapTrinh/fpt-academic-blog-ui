@@ -69,7 +69,24 @@ export default function PendingPosts(props) {
           ))}
         </Stack>
       ) : (
-        "Chưa có data"
+        <Stack spacing={"20px"} p={"20px 0"}>
+          {props?.approvedPosts?.map((item) => (
+            <RewardedPostsUnder
+              key={item.postId}
+              url={item.coverURL}
+              postPath={item.slug}
+              title={item.title}
+              description={item.description}
+              avatar={item.avatarURL}
+              label={item.accountName}
+              major={getFirstChar(item.category[0])}
+              subject={item.category[1]}
+              tag={item.tag}
+              time={item.dateOfPost}
+              postId={item.postId}
+            />
+          ))}
+        </Stack>
       )}
     </Container>
   );

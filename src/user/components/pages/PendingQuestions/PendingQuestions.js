@@ -1,23 +1,30 @@
-import { Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import React from "react";
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import QAListService from "../../templates/QAList/QAListService";
 import QA from "../../organisms/QA/QA";
+import { Link } from "react-router-dom";
+import { getFirstChar, timeConverter } from "../../../utils/StringMethod";
 
-export default function PendingQuestions() {
-  const axiosPrivate = useAxiosPrivate();
-  const handleClick = async () => {
-    try {
-      const response = await axiosPrivate.get("mentor/q-a/view");
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+export default function PendingQuestions(props) {
   return (
-    <Container>
-      <button onClick={handleClick}>Click to fetchData</button>
-      <QA pending/>
+    <Container sx={{ p: "20px 0" }}>
+      <Stack spacing={2}>
+        {props.questions?.map((item) => (
+          <Link to={item?.slug}>
+            <QA
+              full
+              title={item?.title}
+              description={item?.description}
+              pending
+              major={getFirstChar(item?.category[0])}
+              subject={item?.category[1]}
+              tag={item?.tag}
+              time={timeConverter(item?.dateOfPost)}
+              src={item?.avatarURL}
+              label={item?.accountName}
+            />
+          </Link>
+        ))}
+      </Stack>
     </Container>
   );
 }
