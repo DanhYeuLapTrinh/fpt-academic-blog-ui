@@ -6,13 +6,16 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { useFormik } from "formik";
-import { Button } from "@mui/base";
+import Button from "@mui/material/Button";
 import { addUserSchema } from "../../components/atoms/AddUserValidation";
 import useAxiosPrivate from "../../../user/hooks/useAxiosPrivate";
 
 function AddUserForm({ open, onClose, onAddUser, data }) {
+
   const [selectedRole, setSelectedRole] = useState("");
+
   const [majors, setMajors] = useState([]);
+  
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -214,13 +217,35 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
         )}
       </DialogContent>
       <DialogActions style={{ paddingTop: "10px" }}>
-        <Button onClick={onClose}>Hủy</Button>
         <Button
+          sx={{
+            bgcolor: "red",
+            borderRadius: "2rem",
+            height: "2rem",
+            width: "6rem",
+            color: "white",
+            "&:hover": {
+              bgcolor: "red",
+            },
+          }}
+          onClick={onClose}
+        >
+          Hủy
+        </Button>
+        <Button
+          sx={{
+            bgcolor: "#34D399",
+            borderRadius: "2rem",
+            height: "2rem",
+            width: "6rem",
+            color: "white",
+            "&:hover": {
+              bgcolor: "#34D399",
+              opacity: !formik.isValid ? 0.5 : 1,
+            },
+          }}
           onClick={formik.handleSubmit}
           disabled={!formik.isValid}
-          className={`bg-green-500 rounded h-8 w-24 text-white ${
-            !formik.isValid && "opacity-50"
-          }`}
         >
           Thêm mới
         </Button>

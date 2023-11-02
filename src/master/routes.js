@@ -9,7 +9,6 @@ import News from "../user/components/pages/News/News";
 import Welcome from "../admin/components/pages/Welcome/Welcome";
 import UserList from "../admin/components/pages/Users/UserList";
 import CategoriesListPage from "../admin/components/pages/Categories/CategoriesListPage";
-import AddNewCategory from "../admin/components/pages/Categories/AddNewCategory";
 import TagListPage from "../admin/components/pages/Tags/TagListPage";
 import EditTagPage from "../admin/components/pages/Tags/EditTagPage";
 import ReportedProfilePage from "../admin/components/pages/Reports/ReportedProfilePage";

@@ -1,28 +1,29 @@
 import React from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
-function DeleteSpecPopup({ handleDeleteCategory, closeDeleteModal }) {
+function DeleteSpecPopup({ open, handleDeleteCategory, closeDeleteModal }) {
   return (
-    <div className="fixed top-0 left-0 h-screen w-screen flex items-center justify-center bg-gray-800 bg-opacity-50">
-      <div className="bg-white p-4 rounded shadow-md">
-        <p className="text-lg font-semibold mb-4 text-center">
-          Bạn có chắc chắn xóa chuyên ngành này?
-        </p>
-        <div className="text-center">
-          <button
-            className="bg-red-500 text-white px-4 py-2 rounded mr-2"
-            onClick={handleDeleteCategory}
-          >
-            Đồng ý
-          </button>
-          <button
-            className="bg-gray-500 text-white px-4 py-2 rounded"
-            onClick={closeDeleteModal}
-          >
-            Hủy
-          </button>
-        </div>
-      </div>
-    </div>
+    <Dialog open={open} onClose={closeDeleteModal}>
+      <DialogTitle>Bạn có chắc chắn xóa chuyên ngành này?</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Thao tác này sẽ xóa chuyên ngành và không thể hoàn tác.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDeleteModal} color="primary">
+          Hủy
+        </Button>
+        <Button onClick={handleDeleteCategory} color="primary">
+          Đồng ý
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 

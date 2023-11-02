@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
+
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
+import AddUserForm from "../../../utils/User/AddUserAction";
+import { handleSearch } from "../../../utils/User/SearchUserByFullname";
+import BanUnbanUser from "../../../utils/User/BanUnbanAction/BanUnbanAction";
+import { ToastContainer, toast } from "react-toastify";
+
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import Modal from "react-modal";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { TablePagination } from "@mui/material";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
-import AddNewButton from "../../atoms/AddNewButton";
-import AddUserForm from "../../../utils/User/AddUserAction";
-import { handleSearch } from "../../../utils/User/SearchUserByFullname";
-import BanUnbanUser from "../../../utils/User/BanUnbanAction";
 import { DataGrid } from "@mui/x-data-grid";
+import Button from "@mui/material/Button";
+import { Typography, Grid } from "@mui/material";
+
 import "./styles.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 function UserResultList() {
   const axiosPrivate = useAxiosPrivate();
@@ -39,17 +43,34 @@ function UserResultList() {
 
   const [newRole, setNewRole] = useState("");
 
-  const [showRoleSuccessModal, setShowRoleSuccessModal] = useState(false);
-
   const [originalRole, setOriginalRole] = useState("");
 
   const [banStatus, setBanStatus] = useState(
     JSON.parse(localStorage.getItem("banStatus")) || {}
   );
 
-  const [page, setPage] = useState(0);
+  useEffect(() => {
+    localStorage.setItem("banStatus", JSON.stringify(banStatus));
+  }, [banStatus]);
 
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  useEffect(() => {
+    const storedIsMuted = JSON.parse(localStorage.getItem("isMuted"));
+    if (storedIsMuted) {
+      setIsMuted(storedIsMuted);
+    }
+  }, []);
+
+  useEffect(() => {
+    axiosPrivate.get(process.env.REACT_APP_USER_LIST).then((res) => {
+      setData(res.data);
+      setRecords(res.data);
+      console.log(res.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    Modal.setAppElement("#root");
+  }, []);
 
   const handleOpenAddUserForm = () => {
     setAddUserFormOpen(true);
@@ -87,99 +108,14 @@ function UserResultList() {
       });
   };
 
-  //Call api get user list
-  useEffect(() => {
-    axiosPrivate.get(process.env.REACT_APP_USER_LIST).then((res) => {
-      setData(res.data);
-      setRecords(res.data);
-      console.log(res.data);
-    });
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("banStatus", JSON.stringify(banStatus));
-  }, [banStatus]);
-
-  useEffect(() => {
-    const storedIsMuted = JSON.parse(localStorage.getItem("isMuted"));
-    if (storedIsMuted) {
-      setIsMuted(storedIsMuted);
-    }
-  }, []);
-
   const handleSearchUser = (event) => {
     handleSearch(event, data, setRecords);
-  };
-
-  const openMuteModal = (id) => {
-    setSelectedUserId(id);
-    const selectedUser = data.find((user) => user.id === id);
-    if (selectedUser) {
-      setSelectedUsername(selectedUser.username);
-    }
-    setShowMuteModal(true);
-  };
-
-  const closeMuteModal = () => {
-    setShowMuteModal(false);
-  };
-
-  const muteUser = () => {
-    const duration = parseInt(muteDuration, 10);
-    if (selectedUserId) {
-      axiosPrivate
-        .post(process.env.REACT_APP_MUTE_ACCOUNT, {
-          id: selectedUserId,
-          muteDuration: duration,
-        })
-        .then((res) => {
-          // Tạo một bản sao của đối tượng isMuted
-          const updatedIsMuted = { ...isMuted };
-          updatedIsMuted[selectedUserId] = true;
-
-          // Lưu updatedIsMuted vào localStorage
-          localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
-
-          // Cập nhật state
-          setIsMuted(updatedIsMuted);
-
-          setShowMuteModal(false);
-
-          toast.success(`Hạn chế ${selectedUsername} thành công!`, {
-            position: "top-right",
-            autoClose: 3000,
-          });
-        });
-    }
-  };
-
-  const unmuteUser = (userId) => {
-    axiosPrivate
-      .post(process.env.REACT_APP_UNMUTE_ACCOUNT, { id: userId })
-      .then((res) => {
-        // Tạo một bản sao của đối tượng isMuted
-        const updatedIsMuted = { ...isMuted };
-        updatedIsMuted[userId] = false;
-
-        // Lưu updatedIsMuted vào localStorage
-        localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
-
-        // Cập nhật state
-        setIsMuted(updatedIsMuted);
-
-        setShowMuteModal(false);
-
-        toast.warn(`Hủy hạn chế ${selectedUsername} thành công!`, {
-          position: "top-right",
-          autoClose: 3000,
-        });
-      });
   };
 
   const startEditing = (userId, currentRole) => {
     setEditingUserId(userId);
     setNewRole(currentRole);
-    setOriginalRole(currentRole); // Lưu vai trò ban đầu
+    setOriginalRole(currentRole);
   };
 
   const saveRoleChanges = (userId) => {
@@ -187,12 +123,8 @@ function UserResultList() {
       .post(process.env.REACT_APP_SET_ROLE, { id: userId, role: newRole })
       .then((res) => {
         setEditingUserId(null);
-        setShowRoleSuccessModal(true);
         updateRecordRole(userId, newRole);
-        toast.success("Sửa vai trò thành công", {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.success("Sửa vai trò thành công");
       })
       .catch((error) => {
         console.error("Lỗi khi cập nhật vai trò:", error);
@@ -221,27 +153,168 @@ function UserResultList() {
     return axiosPrivate.post(process.env.REACT_APP_UNBAN_ACCOUNT, { id });
   };
 
-  useEffect(() => {
-    Modal.setAppElement("#root");
-  }, []);
+  const openMuteModal = (id) => {
+    setSelectedUserId(id);
+    const selectedUser = data.find((user) => user.id === id);
+    if (selectedUser) {
+      setSelectedUsername(selectedUser.username);
+    }
+    setShowMuteModal(true);
+  };
+
+  const closeMuteModal = () => {
+    setShowMuteModal(false);
+  };
+
+  const muteUser = () => {
+    const duration = parseInt(muteDuration, 10);
+    if (selectedUserId) {
+      axiosPrivate
+        .post(process.env.REACT_APP_MUTE_ACCOUNT, {
+          id: selectedUserId,
+          muteDuration: duration,
+        })
+        .then((res) => {
+          const updatedIsMuted = { ...isMuted };
+          updatedIsMuted[selectedUserId] = true;
+
+          localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
+
+          setIsMuted(updatedIsMuted);
+
+          setShowMuteModal(false);
+
+          toast.success(`Hạn chế ${selectedUsername} thành công!`, {
+            position: "top-right",
+            autoClose: 3000,
+          });
+        });
+    }
+  };
+
+  const unmuteUser = (userId) => {
+    axiosPrivate
+      .post(process.env.REACT_APP_UNMUTE_ACCOUNT, { id: userId })
+      .then((res) => {
+        const updatedIsMuted = { ...isMuted };
+        updatedIsMuted[userId] = false;
+
+        localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
+
+        setIsMuted(updatedIsMuted);
+
+        setShowMuteModal(false);
+
+        toast.warn(`Hủy hạn chế ${selectedUsername} thành công!`, {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      });
+  };
+
+  const buttonSx = {
+    width: "auto",
+    fontSize: "0.75rem",
+    padding: "2px 4px",
+    borderRadius: "8px",
+  };
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+    { field: "id", headerName: "ID", width: 25 },
     { field: "username", headerName: "Tài khoản", width: 150 },
     { field: "fullName", headerName: "Tên đầy đủ", width: 150 },
-    { field: "email", headerName: "Email", width: 200 },
+    { field: "email", headerName: "Email", width: 300 },
     {
       field: "role",
       headerName: "Vai trò",
       valueGetter: (params) => params.row.role.roleName,
-      width: 120,
+      width: 150,
+      renderCell: (params) => {
+        return (
+          <>
+            {editingUserId === params.row.id ? (
+              <>
+                <select
+                  className="select-role"
+                  value={newRole}
+                  onChange={(e) => setNewRole(e.target.value)}
+                >
+                  <option value="admin">Admin</option>
+                  <option value="lecturer">Lecturer</option>
+                  <option value="mentor">Mentor</option>
+                  <option value="student">Student</option>
+                </select>
+
+                <CheckCircleIcon
+                  sx={{ color: "green", marginLeft: "5px" }}
+                  onClick={() => saveRoleChanges(params.row.id)}
+                />
+                <CancelIcon sx={{ color: "red" }} onClick={cancelEditing} />
+              </>
+            ) : (
+              <div className="role-col">
+                {params.row.role.roleName}
+
+                <EditIcon
+                  sx={{ marginLeft: "10px", float: "right", padding: "3px" }}
+                  onClick={() =>
+                    startEditing(params.row.id, params.row.role.roleName)
+                  }
+                />
+              </div>
+            )}
+          </>
+        );
+      },
     },
     {
       field: "banned",
       headerName: "Trạng thái",
-      renderCell: (params) => {
-        return params.value ? "Bị cấm" : "Hoạt động";
-      },
+      width: 200,
+      renderCell: (params) =>
+        banStatus[params.row.id] && isMuted[params.row.id]
+          ? "Đang bị cấm và đang bị hạn chế"
+          : banStatus[params.row.id]
+          ? "Đang bị cấm"
+          : isMuted[params.row.id]
+          ? "Đang bị hạn chế"
+          : "Bình thường",
+    },
+    {
+      field: "action",
+      headerName: "Hành động",
+      width: 200,
+      renderCell: (params) => (
+        <div>
+          <BanUnbanUser
+            userId={params.row.id}
+            isBanned={banStatus[params.row.id]}
+            banUserCallback={banAccount}
+            unbanUserCallback={unbanAccount}
+            banStatus={banStatus}
+            setBanStatus={setBanStatus}
+          />
+          {isMuted[params.row.id] ? (
+            <>
+              <Button
+                sx={{ ...buttonSx, backgroundColor: "#4CAF50" }}
+                onClick={() => unmuteUser(params.row.id)}
+              >
+                Hủy hạn chế tài khoản
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                sx={{ ...buttonSx, backgroundColor: "#F44336" }}
+                onClick={() => openMuteModal(params.row.id)}
+              >
+                Hạn chế tài khoản
+              </Button>
+            </>
+          )}
+        </div>
+      ),
     },
   ];
 
@@ -251,7 +324,7 @@ function UserResultList() {
         <h2 className="title">Danh sách người dùng</h2>
       </div>
       <div className="header-actions">
-        <div className="search-box">
+        <div className="container-search-box">
           <div className="search-box">
             <TextField
               className="search-input"
@@ -265,12 +338,11 @@ function UserResultList() {
             />
           </div>
         </div>
-        <div>
-          <form className="rounded-form">
+        <div className="header-action">
+          <form>
             <AddNewButton
               title="Thêm người dùng mới"
               handleClick={handleOpenAddUserForm}
-              className="custom-add-button"
             />
             <AddUserForm
               open={isAddUserFormOpen}
@@ -284,11 +356,62 @@ function UserResultList() {
 
       <DataGrid
         rows={records}
+        rowHeight={75}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5, 10, 25]}
-        pagination
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
+        pageSizeOptions={[5, 10, 25]}
+        disableRowSelectionOnClick
       />
+
+      <Modal
+        isOpen={showMuteModal}
+        onRequestClose={closeMuteModal}
+        style={{
+          content: {
+            maxWidth: "400px",
+            margin: "auto",
+            maxHeight: "200px",
+          },
+        }}
+      >
+        <Grid container direction="column" alignItems="center">
+          <Typography
+            variant="h4"
+            sx={{
+              textAlign: "center",
+              fontSize: "1.5rem",
+              fontWeight: "bold",
+              marginBottom: "5px",
+            }}
+          >
+            Nhập thời gian hạn chế (giờ)
+          </Typography>
+          <Grid container item direction="row" spacing={2}>
+            <Grid item xs={8}>
+              <TextField
+                type="number"
+                value={muteDuration}
+                onChange={(e) => setMuteDuration(e.target.value)}
+                variant="outlined"
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <Button onClick={muteUser} variant="contained" color="primary">
+                OK
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Modal>
+
+      <ToastContainer position="top-right" autoClose="3000" />
     </>
   );
 }
