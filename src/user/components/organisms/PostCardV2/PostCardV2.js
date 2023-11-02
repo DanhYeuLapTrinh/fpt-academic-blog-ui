@@ -4,6 +4,7 @@ import Author from "../../molecules/Author/Author";
 import Text from "../../atoms/Text/Text";
 import PostTag from "../../atoms/PostTag/PostTag";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
+import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
 
 export default function PostCardV2(props) {
   return (
@@ -36,7 +37,17 @@ export default function PostCardV2(props) {
           zIndex: -1,
           borderRadius: "10px",
         }}
-      />
+      >
+        {props.isRewarded && (
+          <RewardBadge
+            small={props.small}
+            position="absolute"
+            top="15px"
+            right="15px"
+            zIndex="999"
+          />
+        )}
+      </Box>
       <Author
         src={props.src}
         author={true}

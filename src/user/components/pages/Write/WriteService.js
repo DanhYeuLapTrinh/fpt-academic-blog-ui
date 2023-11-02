@@ -19,7 +19,7 @@ export default function WriteService() {
     setCoverURL,
     wordcount,
     setCharCount,
-    setFile
+    setFile,
   } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -44,6 +44,7 @@ export default function WriteService() {
   } = usePostTag();
 
   useEffect(() => {
+    localStorage.setItem("content", JSON.stringify({}));
     setTitle(title);
     setContent(content);
     setCharCount(title?.length);
@@ -86,11 +87,11 @@ export default function WriteService() {
         }
       );
       localStorage.removeItem("content");
-      setTitle("")
-      setFile("")
-      setCoverURL("")
+      setTitle("");
+      setFile("");
+      setCoverURL("");
       window.scrollTo(0, 0);
-      navigate("/", {replace: true})
+      navigate("/", { replace: true });
     } catch (error) {
       console.log(error);
       // Phần này xử lý lỗi

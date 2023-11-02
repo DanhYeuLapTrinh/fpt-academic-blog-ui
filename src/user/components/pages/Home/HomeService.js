@@ -5,15 +5,20 @@ import useHome from "../../../hooks/useHome";
 
 export default function HomeService() {
   const axiosPrivate = useAxiosPrivate();
-  const {trendingPosts, setTrendingPosts} = useHome()
+  const { trendingPosts, setTrendingPosts, rewardedPosts, setRewardedPosts } =
+    useHome();
   useEffect(() => {
     const fetchData = async () => {
-      let response = await axiosPrivate.get(
+      let trendingPosts = await axiosPrivate.get(
         process.env.REACT_APP_TRENDING_POSTS
       );
-      setTrendingPosts(response?.data?.slice(0,4))
+      setTrendingPosts(trendingPosts?.data?.slice(0, 4));
+      let rewardedPosts = await axiosPrivate.get(
+        process.env.REACT_APP_REWARDED_POSTS
+      );
+      setRewardedPosts(rewardedPosts?.data)
     };
     fetchData();
   }, []);
-  return <Home trendingPosts={trendingPosts}/>;
+  return <Home trendingPosts={trendingPosts} rewardedPosts={rewardedPosts}/>;
 }

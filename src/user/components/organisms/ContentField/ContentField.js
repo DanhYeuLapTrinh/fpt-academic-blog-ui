@@ -29,6 +29,7 @@ export default function ContentField({ ...props }) {
           props.setIsSaving("Đang lưu...");
           setTimeout(() => {
             let content = JSON.parse(localStorage.getItem("content"));
+            console.log(content)
             if (content) {
               content.contentTiny = newValue
               localStorage.setItem("content", JSON.stringify(content));

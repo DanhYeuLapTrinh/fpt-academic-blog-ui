@@ -4,6 +4,7 @@ import PostTag from "../../atoms/PostTag/PostTag";
 import Text from "../../atoms/Text/Text";
 import { Box, Stack } from "@mui/material";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
+import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
 export default function PostCardV1(props) {
   return (
     <Stack
@@ -18,8 +19,20 @@ export default function PostCardV1(props) {
           backgroundSize: "cover",
           backgroundPosition: "center",
           borderRadius: "10px",
+          position: "relative",
         }}
-      />
+      >
+        {props.isRewarded && (
+          <RewardBadge
+            small={props.small}
+            position="absolute"
+            top="15px"
+            right="15px"
+            zIndex="999"
+          />
+        )}
+      </Box>
+
       <Author
         src={props.src}
         author={true}
