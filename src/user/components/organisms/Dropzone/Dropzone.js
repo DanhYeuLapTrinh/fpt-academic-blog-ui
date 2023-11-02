@@ -50,7 +50,7 @@ export default function Dropzone() {
   });
   return (
     <Box sx={{ padding: "5px 0 30px " }}>
-      {!file ? (
+      {(!file && !coverURL) ? (
         <div
           {...getRootProps({
             //styling

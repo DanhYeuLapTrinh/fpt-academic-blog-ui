@@ -5,8 +5,7 @@ import TitleField from "../../organisms/TitleField/TitleField";
 import Dropzone from "../../organisms/Dropzone/Dropzone";
 import ContentFiledContainer from "../../organisms/ContentField/ContentFiledContainer";
 
-export default function Write({...props}) {
-  
+export default function Write({ ...props }) {
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       <PostFilter
@@ -28,14 +27,14 @@ export default function Write({...props}) {
       />
       {props.tag === "Q&A" ? (
         <>
-          <TitleField/>
+          <TitleField />
           <ContentFiledContainer />
         </>
       ) : (
         <>
           <TitleField title />
           <Dropzone />
-          <ContentFiledContainer/>
+          <ContentFiledContainer />
         </>
       )}
       <Stack
@@ -44,10 +43,11 @@ export default function Write({...props}) {
         spacing={2}
         paddingTop={"30px"}
       >
-        <Button sx={{ padding: "10px" }} variant="outlined">
+        <Button fullWidth sx={{ padding: "10px" }} variant="outlined">
           Lưu bản nháp
         </Button>
         <Button
+          fullWidth
           onClick={props.handleSubmit}
           sx={{ padding: "10px" }}
           variant="contained"

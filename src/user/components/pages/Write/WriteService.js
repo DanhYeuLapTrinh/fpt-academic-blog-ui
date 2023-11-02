@@ -10,8 +10,17 @@ import useContent from "../../../hooks/useContent";
 export default function WriteService() {
   const { title, contentTiny } =
     JSON.parse(localStorage.getItem("content")) || "";
-  const { setTitle, charCount, coverURL, content, setContent, wordcount, setCharCount } =
-    useContent();
+  const {
+    setTitle,
+    charCount,
+    coverURL,
+    content,
+    setContent,
+    setCoverURL,
+    wordcount,
+    setCharCount,
+    setFile
+  } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const auth = useAuth();
@@ -37,7 +46,7 @@ export default function WriteService() {
   useEffect(() => {
     setTitle(title);
     setContent(content);
-    setCharCount(title?.length)
+    setCharCount(title?.length);
   }, []);
 
   const handleMajorChange = useCallback((e) => {
@@ -76,7 +85,12 @@ export default function WriteService() {
           length: wordcount,
         }
       );
-      
+      localStorage.removeItem("content");
+      setTitle("")
+      setFile("")
+      setCoverURL("")
+      window.scrollTo(0, 0);
+      navigate("/", {replace: true})
     } catch (error) {
       console.log(error);
       // Phần này xử lý lỗi
