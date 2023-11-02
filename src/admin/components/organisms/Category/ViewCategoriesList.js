@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import Radio from "@mui/material/Radio";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+
 function ViewCategoriesList({
   categories,
   selectedCategory,
   selectedSemester,
   selectedSubject,
-  selectedCategoryObj,
   selectedRadioCategory,
   selectedRadioSubject,
   handleSelectCategory,
@@ -15,96 +22,169 @@ function ViewCategoriesList({
   openDeleteModal,
   openDeleteSubjectModal,
 }) {
+  const [isSemesterVisible, setSemesterVisible] = useState(false);
+  const [isSubjectVisible, setSubjectVisible] = useState(false);
+
+  const handleCategoryClick = (category) => {
+    if (selectedCategory === category) {
+      handleSelectCategory(null);
+      setSemesterVisible(false);
+      setSubjectVisible(false);
+    } else {
+      handleSelectCategory(category);
+      setSemesterVisible(true);
+    }
+  };
+
+  const handleSemesterClick = (semester) => {
+    if (selectedSemester === semester) {
+      handleSelectSemester(null);
+      setSubjectVisible(false);
+    } else {
+      handleSelectSemester(semester);
+      setSubjectVisible(true);
+    }
+  };
+
   return (
-    <div className="grid grid-cols-3 gap-4">
-      <div className="col-span-1">
-        <h3 className="font-semibold text-lg mb-2">Chuyên ngành</h3>
-        <ul>
+    <Grid container spacing={2}>
+      <Grid
+        item
+        xs={12}
+        md={4}
+        sx={{
+          boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
+          border: "1px solid #ccc",
+          margin: 2,
+          borderRadius: 8,
+        }}
+      >
+        <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+          Chuyên ngành
+        </Typography>
+        <List>
           {categories.map((category) => (
-            <div
+            <ListItem
               key={category.id}
-              className="flex items-center justify-between"
+              onClick={() => handleCategoryClick(category)}
+              button
+              sx={{
+                cursor: "pointer",
+                backgroundColor:
+                  selectedCategory === category ? "primary.light" : "inherit",
+              }}
             >
-              <div className="flex items-center">
-                <input
-                  className="mr-3"
-                  type="radio"
-                  name="categoryRadio"
-                  disabled={!selectedCategory}
+              <ListItemIcon>
+                <Radio
                   checked={selectedRadioCategory === category.id}
-                  onChange={() => handleRadioCategoryChange(category)}
+                  onChange={() => {
+                    if (selectedRadioCategory !== category.id) {
+                      handleRadioCategoryChange(category);
+                    }
+                  }}
                 />
-                <li
-                  key={category.id}
-                  onClick={() => handleSelectCategory(category)}
-                  className={`cursor-pointer text-lg ${
-                    selectedCategory && selectedCategory.id === category.id
-                      ? "bg-blue-300 rounded-lg text-center"
-                      : "text-black"
-                  }`}
-                >
-                  {category.categoryName}
-                </li>
-              </div>
+              </ListItemIcon>
+              <ListItemText primary={category.categoryName} />
               {selectedRadioCategory === category.id && (
                 <DeleteIcon
                   onClick={() => openDeleteModal(category)}
-                  className="cursor-pointer text-red-600"
+                  sx={{ cursor: "pointer", color: "error.main" }}
                 />
               )}
-            </div>
+            </ListItem>
           ))}
-        </ul>
-      </div>
+        </List>
+      </Grid>
 
-      <div className="col-span-1">
-        <h3 className="font-semibold text-lg mb-2">Học kỳ</h3>
-        <ul>
-          {selectedCategory &&
-            selectedCategory.childCategories.map((semester) => (
-              <li
-                key={semester.id}
-                onClick={() => handleSelectSemester(semester)}
-                className={`cursor-pointer text-lg ${
-                  selectedSemester && selectedSemester.id === semester.id
-                    ? "bg-blue-300 w-1/6 rounded-lg text-center"
-                    : "text-black"
-                }`}
-              >
-                {semester.categoryName}
-              </li>
-            ))}
-        </ul>
-      </div>
+      {isSemesterVisible && (
+        <Grid
+          item
+          xs={12}
+          md={3}
+          sx={{
+            boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
+            border: "1px solid #ccc",
+            margin: 2,
+            borderRadius: 8,
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+            Học kỳ
+          </Typography>
+          <List>
+            {selectedCategory &&
+              selectedCategory.childCategories.map((semester) => (
+                <ListItem
+                  key={semester.id}
+                  onClick={() => handleSemesterClick(semester)}
+                  button
+                  sx={{
+                    cursor: "pointer",
+                    backgroundColor:
+                      selectedSemester === semester
+                        ? "primary.light"
+                        : "inherit",
+                  }}
+                >
+                  <ListItemText primary={semester.categoryName} />
+                </ListItem>
+              ))}
+          </List>
+        </Grid>
+      )}
 
-      <div className="col-span-1">
-        <h3 className="font-semibold text-lg mb-2">Môn học</h3>
-        <ul>
-          {selectedSemester &&
-            selectedSemester.childCategories.map((subject) => (
-              <div key={subject.id} className="flex items-center mb-2">
-                <input
-                  className="mr-3"
-                  type="radio"
-                  name="subjectRadio"
-                  disabled={!selectedSemester}
-                  checked={selectedRadioSubject === subject.id}
-                  onChange={() => handleRadioSubjectChange(subject)}
-                />
-                <li className="text-lg text-black flex-grow">
-                  {subject.categoryName}
-                </li>
-                {selectedRadioSubject === subject.id && (
-                  <DeleteIcon
-                    onClick={() => openDeleteSubjectModal(subject)}
-                    className="cursor-pointer text-red-600"
+      {isSubjectVisible && (
+        <Grid
+          item
+          xs={12}
+          md={4}
+          sx={{
+            boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
+            border: "1px solid #ccc",
+            margin: 2,
+            borderRadius: 8,
+          }}
+        >
+          <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
+            Môn học
+          </Typography>
+          <List>
+            {selectedSemester &&
+              selectedSemester.childCategories.map((subject) => (
+                <ListItem
+                  key={subject.id}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: 2,
+                  }}
+                >
+                  <ListItemIcon>
+                    <Radio
+                      checked={selectedRadioSubject === subject.id}
+                      onChange={() => {
+                        if (selectedRadioSubject !== subject.id) {
+                          handleRadioSubjectChange(subject);
+                        }
+                      }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={subject.categoryName}
+                    sx={{ flexGrow: 1 }}
                   />
-                )}
-              </div>
-            ))}
-        </ul>
-      </div>
-    </div>
+                  {selectedRadioSubject === subject.id && (
+                    <DeleteIcon
+                      onClick={() => openDeleteSubjectModal(subject)}
+                      sx={{ cursor: "pointer", color: "error.main" }}
+                    />
+                  )}
+                </ListItem>
+              ))}
+          </List>
+        </Grid>
+      )}
+    </Grid>
   );
 }
 

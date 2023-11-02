@@ -1,22 +1,13 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-
+import { Link } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
-import {
-  Box,
-  Link,
-  Button,
-  Drawer,
-  Typography,
-  Avatar,
-  Stack,
-} from "@mui/material";
+import { Box, Button, Drawer, Typography, Avatar, Stack } from "@mui/material";
 
 import useResponsive from "../../../../components/hooks/useResponsivee";
 
 import Logo from "../../../../components/atoms/LogoNav";
-// import ScrollBar from "../../../../components/molecules/ScrollBar/ScrollBar";
 import NavSection from "../../../../components/organisms/NavSection/NavSection";
 
 import navConfig from "./config";
@@ -53,8 +44,21 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const renderContent = (
     <>
-      <Box sx={{ px: 2.5, py: 3, display: "inline-flex" }}>
-        <Logo />
+      <Box sx={{ px: 2.5, py: 3, textAlign: "center" }}>
+        {/* <Logo /> */}
+        <Link to={"/welcome"}>
+          <Typography
+            variant="h3"
+            sx={{
+              color: "#5927e5",
+              fontWeight: "bold",
+              fontFamily: "sans-serif",
+              cursor: "pointer",
+            }}
+          >
+            Fblog
+          </Typography>
+        </Link>
       </Box>
 
       <NavSection data={navConfig} />

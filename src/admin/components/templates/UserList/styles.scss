@@ -11,41 +11,36 @@
   padding-top: 1rem;
   padding-bottom: 1rem;
 
-  .w-1-3 {
-    width: 33.33333%;
+  .search-input {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 
-    .search-input {
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
+    .search-textbox {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.75rem;
 
-      .search-textbox {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 0.75rem;
-
-        .search-icon {
-          position: absolute;
-          left: 0.5rem;
-          top: 0.5rem;
-          color: #080808;
-        }
+      .search-icon {
+        position: absolute;
+        left: 0.5rem;
+        top: 0.5rem;
+        color: #080808;
       }
     }
   }
-
-  .rounded-lg {
-    border-radius: 0.75rem;
-  }
-
-  .custom-add-button {
-    padding: 1rem 2rem;
-    background-color: #2563eb;
-    color: #fff;
-    border-radius: 0.75rem;
-
-    &:hover {
-      background-color: #1a4db2;
-    }
-  }
 }
+
+.role-col {
+  display: flex;
+}
+
+.select-role {
+  width: 100%;
+  text-align: center;
+  height: 2.5rem;
+  outline: 2px solid transparent;
+  border-radius: 0.75rem;
+  background-color: transparent;
+}
+

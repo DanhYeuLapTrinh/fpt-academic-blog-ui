@@ -1,0 +1,19 @@
+.container-tag {
+  margin: 5px;
+
+  .content-tag {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+
+    .tag-title {
+      font-size: 35px;
+      font-weight: bold;
+    }
+  }
+}
+
+.add-tag-form {
+  width: 100px;
+}

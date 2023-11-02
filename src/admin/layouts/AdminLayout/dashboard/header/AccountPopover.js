@@ -1,5 +1,7 @@
 import { useState } from "react";
-// @mui
+import useAuth from "../../../../../user/hooks/useAuth";
+import useAxiosPrivate from "../../../../../user/hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
 import { alpha } from "@mui/material/styles";
 import {
   Box,
@@ -34,12 +36,28 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
 
+  const auth = useAuth();
+
+  const axiosPrivate = useAxiosPrivate();
+
+  const navigate = useNavigate();
+
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleLogout = async () => {
+    const res = await axiosPrivate.post("auth/remove-token", {
+      refreshToken: auth?.refreshToken,
+    });
+    if (res) {
+      localStorage.removeItem("auth");
+      navigate("/login");
+    }
   };
 
   return (
@@ -84,12 +102,12 @@ export default function AccountPopover() {
         }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
-         
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-         
-          </Typography>
+          <Typography variant="subtitle2" noWrap></Typography>
+          <Typography
+            variant="body2"
+            sx={{ color: "text.secondary" }}
+            noWrap
+          ></Typography>
         </Box>
 
         <Divider sx={{ borderStyle: "dashed" }} />
@@ -104,8 +122,8 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: "dashed" }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
-          Logout
+        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
+          Đăng xuất
         </MenuItem>
       </Popover>
     </>
