@@ -4,24 +4,22 @@ import { useField, useFormikContext } from "formik";
 
 export default function FormInput({ name, children, ...props }) {
   const [field, mata] = useField(name);
-  const {submitForm} = useFormikContext()
+  const { submitForm } = useFormikContext();
 
   const handleKeyUp = (e) => {
-    if(e.keyCode == 13) {
-      submitForm()
+    if (e.keyCode == 13) {
+      submitForm();
     }
-  }
-  // bị double phần gửi mail vì 1 ô nên mặc định là enter rồi
+  };
 
   const configTextField = {
     ...field,
-    ...props,
-    ...(props.onkeyup && {onKeyUp: handleKeyUp}),
+    ...(props.onkeyup && { onKeyUp: handleKeyUp }),
     spellCheck: false,
     autoFocus: props.autoFocus,
     sx: {
-      height: "60px",
-      width: "360px",
+      height: props.height ? props.height : "60px",
+      width: props.width ? props.width : "360px",
       fontSize: props.size,
       marginBottom: props.mb,
     },
@@ -31,6 +29,7 @@ export default function FormInput({ name, children, ...props }) {
       startAdornment: props.startAdornment,
       endAdornment: props.endAdornment,
     },
+    ...props,
   };
 
   if (mata && mata.touched && mata.error) {

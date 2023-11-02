@@ -11,6 +11,7 @@ export default function PendingPostsService() {
   const [isLoading, setIsLoading] = useState(false);
   const [sort, setSort] = useState("Mới nhất");
   const [amount, setAmount] = useState(0)
+  const [approvedAmount, setApprovedAmount] = useState(0)
   let sortedPending
   let sortedApproved
   if (sort !== "Mới nhất") {
@@ -28,7 +29,7 @@ export default function PendingPostsService() {
           process.env.REACT_APP_PENDING_POSTS
         );
         setPendingPosts(response?.data);
-        setAmount(pendingPosts?.length);
+        setAmount(response?.data?.length);
       } catch (error) {
         console.log(error);
       }
@@ -44,7 +45,7 @@ export default function PendingPostsService() {
           "lecturer/posts/approved"
         );
         setApprovedPosts(response?.data);
-        setAmount(response?.data.length);
+        setApprovedAmount(response?.data?.length)
       } catch (error) {
         console.log(error);
       }
@@ -62,6 +63,7 @@ export default function PendingPostsService() {
       sort={sort}
       setSort={setSort}
       amount={amount}
+      approvedAmount={approvedAmount}
     />
   );
 }
