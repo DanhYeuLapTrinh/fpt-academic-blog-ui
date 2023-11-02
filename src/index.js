@@ -9,19 +9,22 @@ import { LoginProvider } from "./user/context/LoginProvider";
 import PostTagProvider from "./user/context/PostTagProvider";
 import ContentProvider from "./user/context/ContentProvider";
 import ErrorProvider from "./user/context/ErrorProvider";
+import HomeProvider from "./user/context/HomeProvider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={MyTheme}>
-    <ErrorProvider>
-      <ContentProvider>
-        <PostTagProvider>
-          <LoginProvider>
-            <App />
-          </LoginProvider>
-        </PostTagProvider>
-      </ContentProvider>
-    </ErrorProvider>
+    <HomeProvider>
+      <ErrorProvider>
+        <ContentProvider>
+          <PostTagProvider>
+            <LoginProvider>
+              <App />
+            </LoginProvider>
+          </PostTagProvider>
+        </ContentProvider>
+      </ErrorProvider>
+    </HomeProvider>
   </ThemeProvider>
 );
 reportWebVitals();

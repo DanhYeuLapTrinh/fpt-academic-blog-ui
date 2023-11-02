@@ -1,4 +1,3 @@
-import Home from "../user/components/pages/Home/Home";
 import LoginForm from "../user/components/organisms/LoginForm/LoginForm";
 import EmailEntryForm from "../user/components/organisms/EmailEntryForm/EmailEntryForm";
 import OTPForm from "../user/components/organisms/OTPForm/OTPForm";
@@ -21,6 +20,7 @@ import PendingPostsService from "../user/components/pages/PendingPosts/PendingPo
 import Profile from "../user/components/pages/Profile/Profile";
 import PendingQuestionsService from "../user/components/pages/PendingQuestions/PendingQuestionsService";
 import ViewPendingPostService from "../user/components/pages/ViewAPost/ViewPendingPost/ViewPendingPostService";
+import HomeService from "../user/components/pages/Home/HomeService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -32,7 +32,7 @@ const recoverPasswordRoutes = [
 ];
 
 const loggedInUserRoutes = [
-  { path: "/", component: Home },
+  { path: "/", component: HomeService },
   { path: "/feed", component: Feed },
   { path: "/news", component: News },
   { path: "/write", component: WriteService },

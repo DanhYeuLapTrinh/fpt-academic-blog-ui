@@ -10,11 +10,11 @@ import TrendingTagSection from "../../organisms/TrendingTagSection/TrendingTagSe
 import ShortList from "../../templates/ShortList/ShortList";
 import PostList from "../../templates/PostList/PostList";
 
-export default function Home() {
+export default function Home(props) {
   return (
     <div>
       <Container>
-        <TrendingList />
+        <TrendingList trendingPosts={props.trendingPosts}/>
         <SearchSection />
       </Container>
       <LatestPostSection />

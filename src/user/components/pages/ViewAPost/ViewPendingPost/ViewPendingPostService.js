@@ -47,6 +47,7 @@ export default function ViewPendingPostService() {
       await axiosPrivate.post(process.env.REACT_APP_APPROVE_POST, {
         postId: data?.postId,
       });
+      window.scrollTo(0, 0);
       navigate("/pending-posts", { replace: true });
       if (isRewaded) {
         await axiosPrivate.post(process.env.REACT_APP_GIVE_REWARD, {
@@ -64,6 +65,7 @@ export default function ViewPendingPostService() {
         postId: data?.postId,
         reasonOfDecline: reason,
       });
+      window.scrollTo(0, 0);
       navigate("/pending-posts", { replace: true });
     } catch (error) {
       console.log(error);

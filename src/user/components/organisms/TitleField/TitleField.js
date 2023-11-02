@@ -4,7 +4,7 @@ import Text from "../../atoms/Text/Text";
 import useContent from "../../../hooks/useContent";
 
 export default function TitleField(props) {
-  const {title, setTitle, charCount, setCharCount} = useContent()
+  const { title, setTitle, charCount, setCharCount } = useContent();
   const [focus, setFocus] = useState(false);
   const maxCharLimit = 100;
 
@@ -15,15 +15,20 @@ export default function TitleField(props) {
 
   useEffect(() => {
     setTimeout(() => {
-      localStorage.setItem("content", JSON.stringify({title: title}));
+      localStorage.setItem("content", JSON.stringify({ title: title }));
     }, 3000);
   }, [title]);
 
   return (
-    <Stack sx={{minHeight: '105px'}}>
+    <Stack sx={{ minHeight: "105px" }}>
       <TextField
+        autoFocus
         variant="standard"
-        placeholder= {props.title ? "Nhập tiêu đề bài viết..." : "Nhập tiêu đề cho câu hỏi..."}
+        placeholder={
+          props.title
+            ? "Nhập tiêu đề bài viết..."
+            : "Nhập tiêu đề cho câu hỏi..."
+        }
         fullWidth
         spellCheck={false}
         InputProps={{
@@ -40,7 +45,7 @@ export default function TitleField(props) {
         value={title}
         onChange={handleInputChange}
       />
-      <Box sx={{ alignSelf: "flex-end", pr: '15px'}}>
+      <Box sx={{ alignSelf: "flex-end", pr: "15px" }}>
         {charCount >= maxCharLimit && (
           <Typography
             variant="caption"
