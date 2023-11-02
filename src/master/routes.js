@@ -18,9 +18,9 @@ import ActivityLogPage from "../admin/components/pages/ActivityLog/ActivityLogPa
 import SettingPage from "../admin/components/pages/Setting/SettingPage";
 import WriteService from "../user/components/pages/Write/WriteService";
 import PendingPostsService from "../user/components/pages/PendingPosts/PendingPostsService";
-import ViewPendingPost from "../user/components/pages/ViewAPost/ViewPendingPost/ViewPendingPost";
 import Profile from "../user/components/pages/Profile/Profile";
 import PendingQuestionsService from "../user/components/pages/PendingQuestions/PendingQuestionsService";
+import ViewPendingPostService from "../user/components/pages/ViewAPost/ViewPendingPost/ViewPendingPostService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -40,7 +40,7 @@ const loggedInUserRoutes = [
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },
-  { path: "/pending-posts/:slug", component: ViewPendingPost },
+  { path: "/pending-posts/:slug", component: ViewPendingPostService },
 ];
 
 const mentorRoutes = [

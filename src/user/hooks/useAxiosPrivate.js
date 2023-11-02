@@ -38,15 +38,22 @@ export default function useAxiosPrivate() {
             navigate("/login", { replace: true });
             return Promise.reject(rfError);
           }
-        } else if (error?.response?.status === 401) {
-          // 401 Unauthorized
-          let code = error.response.status;
-          setErrorMsg({ code, message: msg[code] });
-          navigate("/login", { replace: true });
-        } else if (error?.response?.status === 404) {
-          navigate("/404-not-found", { replace: true });
-        } else if (error?.response?.status === 400) {
         }
+        // try {
+        //   if (error?.response?.status === 401) {
+        //     // 401 Unauthorized
+        //     let code = error.response.status;
+        //     setErrorMsg({ code, message: msg[code] });
+        //     navigate("/login", { replace: true });
+        //   }
+        // } catch (error) {
+        //   console.log("reject")
+        //   return Promise.reject(error);
+        // }
+        // else if (error?.response?.status === 404) {
+        //   navigate("/404-not-found", { replace: true });
+        // } else if (error?.response?.status === 400) {
+        // }
         return Promise.reject(error);
       }
     );

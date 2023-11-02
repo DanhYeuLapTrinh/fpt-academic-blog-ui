@@ -10,7 +10,7 @@ import useContent from "../../../hooks/useContent";
 export default function WriteService() {
   const { title, contentTiny } =
     JSON.parse(localStorage.getItem("content")) || "";
-  const { setTitle, charCount, coverURL, content, setContent, wordcount } =
+  const { setTitle, charCount, coverURL, content, setContent, wordcount, setCharCount } =
     useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -37,6 +37,7 @@ export default function WriteService() {
   useEffect(() => {
     setTitle(title);
     setContent(content);
+    setCharCount(title?.length)
   }, []);
 
   const handleMajorChange = useCallback((e) => {

@@ -1,10 +1,4 @@
-import {
-  Container,
-  FormControl,
-  MenuItem,
-  Select,
-  Stack,
-} from "@mui/material";
+import { Container, FormControl, MenuItem, Select, Stack } from "@mui/material";
 import React from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Text from "../../atoms/Text/Text";
@@ -15,7 +9,12 @@ import { Link } from "react-router-dom";
 export default function PendingPosts(props) {
   return (
     <Container sx={{ mt: "30px", minHeight: "calc(100vh - 93px)" }}>
-      <Stack spacing={1} direction={"row"} alignItems={'center'} justifyContent={'space-between'}>
+      <Stack
+        spacing={1}
+        direction={"row"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+      >
         <Stack spacing={1} direction={"row"}>
           <FormControl>
             <Select
@@ -27,12 +26,12 @@ export default function PendingPosts(props) {
               <MenuItem value="Bài viết đang chờ">
                 <Text fontSize="14px">Bài viết đang chờ</Text>
               </MenuItem>
-              <Link to={"/"} style={{textDecoration: 'none'}}>
-                {/* Ý tưởng sửa 2 posts xem bị trùng gắn link cho 2 cái menu item ra 2 cái view là xong /pending-posts/:slug và /view/:slug */}
-                <MenuItem value="Bài viết đã phê duyệt">
-                  <Text fontSize="14px">Bài viết đã phê duyệt</Text>
-                </MenuItem>
-              </Link>
+              {/* <Link to={"/"} style={{textDecoration: 'none'}}> */}
+              {/* Ý tưởng sửa 2 posts xem bị trùng gắn link cho 2 cái menu item ra 2 cái view là xong /pending-posts/:slug và /view/:slug */}
+              <MenuItem value="Bài viết đã phê duyệt">
+                <Text fontSize="14px">Bài viết đã phê duyệt</Text>
+              </MenuItem>
+              {/* </Link> */}
             </Select>
           </FormControl>
           <FormControl>
@@ -51,7 +50,15 @@ export default function PendingPosts(props) {
             </Select>
           </FormControl>
         </Stack>
-        <Text paddingLeft="10px" fontSize="14px" fontWeight="500">Đang chờ: {props.amount}</Text>
+        {props.type === "Bài viết đang chờ" ? (
+          <Text paddingLeft="10px" fontSize="14px" fontWeight="500">
+            Đang chờ: {props.amount}
+          </Text>
+        ) : (
+          <Text paddingLeft="10px" fontSize="14px" fontWeight="500">
+            Đã duyệt: {props.approvedAmount}
+          </Text>
+        )}
       </Stack>
       {props.type === "Bài viết đang chờ" ? (
         <Stack spacing={"20px"} p={"20px 0"}>
