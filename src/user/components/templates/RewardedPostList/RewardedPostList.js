@@ -3,14 +3,40 @@ import React from "react";
 import RewardedPostTop from "../../organisms/RewardedPosts/RewardedPostTop/RewardedPostTop";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
+import useHome from "../../../hooks/useHome";
+import { getFirstChar } from "../../../utils/StringMethod";
 
 export default function RewardedPostList() {
+  const { rewardedPosts } = useHome();
   return (
     <Container sx={{ marginBottom: "59px" }}>
-      <SectionTitle title="Lựa chọn bởi giảng viên"/>
-      <RewardedPostTop />
-      <RewardedPostsUnder />
-      <Divider
+      <SectionTitle title="Lựa chọn bởi giảng viên" />
+      <RewardedPostTop rewardedPosts={rewardedPosts} />
+      {rewardedPosts &&
+        rewardedPosts?.map((item, index) => {
+          if (index >= 1 && index <= 4) {
+            return (
+              <>
+                <RewardedPostsUnder
+                  url={item?.coverURL}
+                  title={item?.title}
+                  description={item?.description}
+                  time={item?.dateOfPost}
+                  avatar={item?.avatarURL}
+                  label={item?.accountName}
+                  major={getFirstChar(item?.category[0])}
+                  subject={item?.category[1]}
+                  tag={item?.tag}
+                  isRewarded={item?.is_rewarded}
+                />
+                {index < 4 && (
+                  <Divider sx={{ width: "100%" }} orientation="horizontal" />
+                )}
+              </>
+            );
+          }
+        })}
+      {/* <Divider
         sx={{ width: "100%", paddingTop: "20px" }}
         orientation="horizontal"
       />
@@ -24,7 +50,7 @@ export default function RewardedPostList() {
         sx={{ width: "100%", paddingTop: "20px" }}
         orientation="horizontal"
       />
-      <RewardedPostsUnder />
+      <RewardedPostsUnder /> */}
     </Container>
   );
 }

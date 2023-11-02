@@ -61,7 +61,7 @@ export default function PendingPosts(props) {
         )}
       </Stack>
       {props.type === "Bài viết đang chờ" ? (
-        <Stack spacing={"20px"} p={"20px 0"}>
+        <Stack p={"20px 0"}>
           {props?.pendingPosts?.map((item) => (
             <RewardedPostsUnder
               key={item.postId}
@@ -80,7 +80,7 @@ export default function PendingPosts(props) {
           ))}
         </Stack>
       ) : (
-        <Stack spacing={"20px"} p={"20px 0"}>
+        <Stack p={"20px 0"}>
           {props?.approvedPosts?.map((item) => (
             <RewardedPostsUnder
               key={item.postId}
@@ -95,6 +95,7 @@ export default function PendingPosts(props) {
               tag={item.tag}
               time={item.dateOfPost}
               postId={item.postId}
+              isRewarded={item.is_rewarded}
             />
           ))}
         </Stack>

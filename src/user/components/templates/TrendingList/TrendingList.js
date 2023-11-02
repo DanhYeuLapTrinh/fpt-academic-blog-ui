@@ -24,6 +24,8 @@ export default function TrendingList(props) {
               major={getFirstChar(props?.trendingPosts[1]?.category[0])}
               subject={props?.trendingPosts[1]?.category[1]}
               tag={props?.trendingPosts[1]?.tag}
+              isRewarded={props?.trendingPosts[1]?.is_rewarded}
+              small={true}
               boxHeight="492px"
               hasDescription={true}
               title="21px"
@@ -40,6 +42,8 @@ export default function TrendingList(props) {
               major={getFirstChar(props?.trendingPosts[0]?.category[0])}
               subject={props?.trendingPosts[0]?.category[1]}
               tag={props?.trendingPosts[0]?.tag}
+              isRewarded={props?.trendingPosts[0]?.is_rewarded}
+              small={true}
               height="492px"
               clamp="4"
               title="30px"
