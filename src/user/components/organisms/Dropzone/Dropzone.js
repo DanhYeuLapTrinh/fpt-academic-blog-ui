@@ -12,7 +12,7 @@ export default function Dropzone() {
   // useCallback để tránh tình trạng bị rerender khi component Dropzone rerender
   // chỉ rerender khi có ảnh thôi
   const [isLoading, setIsLoading] = useState(false);
-  const {file, setFile} = useContent()
+  const { file, setFile } = useContent();
   const { setCoverURL, coverURL } = useContent();
   const [rejectedFile, setRejectedFile] = useState();
   const handleSubmit = async (file) => {
@@ -45,12 +45,12 @@ export default function Dropzone() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [] },
+    accept: { "image/*": [".jpg", ".jpeg", ".png", ".gif"] },
     maxSize: 1024 * 5000,
   });
   return (
     <Box sx={{ padding: "5px 0 30px " }}>
-      {(!file && !coverURL) ? (
+      {!file && !coverURL ? (
         <div
           {...getRootProps({
             //styling
@@ -113,7 +113,7 @@ export default function Dropzone() {
                 }}
                 onClick={() => {
                   setFile();
-                  setCoverURL("")
+                  setCoverURL("");
                   localStorage.removeItem("coverURL");
                 }}
               >
