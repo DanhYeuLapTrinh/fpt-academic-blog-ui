@@ -1,9 +1,7 @@
-import React from 'react'
-
+import React from "react";
+import ReportedProfile from "../../templates/ReportedProfile/ReportedProfile";
 function ReportedProfilePage() {
-  return (
-    <div>ReportedProfilePage</div>
-  )
+  return <ReportedProfile />;
 }
 
-export default ReportedProfilePage
+export default ReportedProfilePage;

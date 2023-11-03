@@ -1,16 +1,9 @@
 import { useState } from "react";
-// @mui
+import useAuth from "../../../../../user/hooks/useAuth";
+import useAxiosPrivate from "../../../../../user/hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
 import { alpha } from "@mui/material/styles";
-import {
-  Box,
-  Divider,
-  Typography,
-  Stack,
-  MenuItem,
-  Avatar,
-  IconButton,
-  Popover,
-} from "@mui/material";
+import { MenuItem, Avatar, IconButton, Popover } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -34,12 +27,28 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
 
+  const auth = useAuth();
+
+  const axiosPrivate = useAxiosPrivate();
+
+  const navigate = useNavigate();
+
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleLogout = async () => {
+    const res = await axiosPrivate.post("auth/remove-token", {
+      refreshToken: auth?.refreshToken,
+    });
+    if (res) {
+      localStorage.removeItem("auth");
+      navigate("/login");
+    }
   };
 
   return (
@@ -83,29 +92,8 @@ export default function AccountPopover() {
           },
         }}
       >
-        <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
-         
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
-         
-          </Typography>
-        </Box>
-
-        <Divider sx={{ borderStyle: "dashed" }} />
-
-        <Stack sx={{ p: 1 }}>
-          {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
-              {option.label}
-            </MenuItem>
-          ))}
-        </Stack>
-
-        <Divider sx={{ borderStyle: "dashed" }} />
-
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
-          Logout
+        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
+          Đăng xuất
         </MenuItem>
       </Popover>
     </>

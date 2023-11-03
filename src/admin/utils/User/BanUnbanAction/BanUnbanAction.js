@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Button } from "@mui/base";
+import Button from "@mui/material/Button";
 
 const BanUnbanUser = ({
   userId,
@@ -57,22 +57,32 @@ const BanUnbanUser = ({
       });
   };
 
+  const buttonSx = {
+    width: "auto",
+    fontSize: "0.7rem",
+    padding: "2px 4px",
+    borderRadius: "8px",
+    color: "black",
+  };
+
   return (
     <div>
       {isBanned ? (
         <Button
-          className={`${
-            isBanning ? "bg-blue-500" : "bg-green-500"
-          } text-white text-xs px-2 py-1 rounded-lg`}
+          sx={{
+            ...buttonSx,
+            backgroundColor: isBanning ? "#2196F3" : "#4CAF50",
+          }}
           onClick={handleUnbanClick}
         >
           {isBanning ? "Đang xử lý..." : "Bỏ cấm tài khoản"}
         </Button>
       ) : (
         <Button
-          className={`${
-            isBanning ? "bg-blue-500" : "bg-red-500"
-          } text-white text-xs px-2 py-1 rounded-lg`}
+          sx={{
+            ...buttonSx,
+            backgroundColor: isBanning ? "#2196F3" : "#F44336",
+          }}
           onClick={handleBanClick}
         >
           {isBanning ? "Đang xử lý..." : "Cấm tài khoản"}

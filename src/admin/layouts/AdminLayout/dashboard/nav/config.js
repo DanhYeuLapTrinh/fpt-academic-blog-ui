@@ -5,44 +5,62 @@ import CategoryIcon from "@mui/icons-material/Category";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import DescriptionIcon from "@mui/icons-material/Description";
-import BlockIcon from "@mui/icons-material/Block";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // ----------------------------------------------------------------------
 
 const navConfig = [
   {
-    title: "dashboard",
+    title: "Dashboard",
     path: "/welcome",
-    icon: <DashboardIcon sx={{ width: 1, height: 1 }} />,
+    icon: <DashboardIcon />,
   },
   {
-    title: "Danh sách người dùng",
+    title: "Danh sách tài khoản",
     path: "/users",
-    icon: <PeopleIcon sx={{ width: 1, height: 1 }} />,
+    icon: <PeopleIcon />,
   },
   {
     title: "Danh sách danh mục",
-    path: "/dashboard/products",
-    icon: <CategoryIcon sx={{ width: 1, height: 1 }} />,
+    path: "/categories-list",
+    icon: <CategoryIcon />,
   },
   {
     title: "Thẻ",
-    path: "/",
-    icon: <LocalOfferIcon sx={{ width: 1, height: 1 }} />,
+    icon: <LocalOfferIcon />,
+    items: [
+      {
+        title: "Danh sách thẻ",
+        path: "/tags-list",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+      {
+        title: "Chỉnh sửa thẻ",
+        path: "/edit-tag",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+    ],
   },
   {
     title: "Báo cáo",
     path: "/",
-    icon: <ReportProblemIcon sx={{ width: 1, height: 1 }} />,
+    icon: <ReportProblemIcon />,
+    items: [
+      {
+        title: "Danh sách hồ sơ bị báo cáo",
+        path: "/reported-profile",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+      {
+        title: "Danh sách bình luận bị báo cáo",
+        path: "/reported-comment",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+    ],
   },
   {
     title: "Nhật ký hoạt động",
-    path: "/",
-    icon: <DescriptionIcon sx={{ width: 1, height: 1 }} />,
-  },
-  {
-    title: "Not found",
-    path: "/404",
-    icon: <BlockIcon sx={{ width: 1, height: 1 }} />,
+    path: "/activity-log",
+    icon: <DescriptionIcon />,
   },
 ];
 

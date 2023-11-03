@@ -1,9 +1,11 @@
-import React from 'react'
-
+import React from "react";
+import DashboardPage from "../../templates/DashboardPage/DashboardPage";
 function Welcome() {
   return (
-    <div>Welcome</div>
-  )
+    <>
+      <DashboardPage />
+    </>
+  );
 }
 
-export default Welcome
+export default Welcome;

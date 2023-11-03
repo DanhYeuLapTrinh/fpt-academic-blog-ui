@@ -4,13 +4,13 @@ import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
-import AddNewButton from "../../atoms/AddNewButton";
+import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import DeleteConfirm from "../../molecules/Tag/DeleteConfirm";
 import AddTagForm from "../../molecules/Tag/AddTagForm";
+import { DataGrid } from "@mui/x-data-grid";
+import "./styles.scss";
 function TagList() {
   const [tagData, setTagData] = useState([]);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [newTagName, setNewTagName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -112,14 +112,32 @@ function TagList() {
     setDeleteConfirmationOpen(false);
   };
 
+  const columns = [
+    { field: "tagName", headerName: "Tên thẻ", width: 200 },
+    {
+      field: "action",
+      headerName: "",
+      width: 200,
+      renderCell: (params) => (
+        console.log(params),
+        (
+          <DeleteForeverIcon
+            style={{ color: "red", cursor: "pointer" }}
+            onClick={() => handleDeleteClick(params.row.id, params.row.tagName)}
+          />
+        )
+      ),
+    },
+  ];
+
   return (
-    <div className="m-5">
-      <div className="flex justify-between items-center mb-5">
-        <h2 className="text-2xl font-bold">Tất cả thẻ</h2>
+    <div className="container-tag">
+      <div className="content-tag">
+        <h2 className="tag-title">Tất cả thẻ</h2>
 
         <div>
           <AddNewButton title="Thêm thẻ mới" handleClick={handleClickOpen} />
-          <div className="w-100">
+          <div className="add-tag-form">
             <AddTagForm
               open={open}
               handleClose={handleClose}
@@ -132,43 +150,24 @@ function TagList() {
         </div>
       </div>
 
-      <div className="bg-white shadow overflow-x-auto rounded-xl">
-        <table className="table-auto w-full text-left border">
-          <thead className="bg-gray-500">
-            <tr className="border-b">
-              <th className="px-4 py-2">Tag Name</th>
-              <th className="px-4 py-2"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {tagData
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((tag) => (
-                <tr key={tag.id} className="border-b">
-                  <td className="px-4 py-2">{tag.tagName}</td>
-                  <td className="px-4 py-2">
-                    <DeleteForeverIcon
-                      style={{ color: "red", cursor: "pointer" }}
-                      onClick={() => handleDeleteClick(tag.id, tag.tagName)}
-                    />
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={tagData.length}
-          page={page}
-          onPageChange={(event, newPage) => setPage(newPage)}
-          rowsPerPage={rowsPerPage}
-          onRowsPerPageChange={(event) => {
-            setRowsPerPage(parseInt(event.target.value, 10));
-            setPage(0);
-          }}
-        />
-      </div>
+      <DataGrid
+        sx={{
+          "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+            outline: "none !important",
+          },
+        }}
+        rows={tagData}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
+        pageSizeOptions={[5, 10, 25]}
+        disableRowSelectionOnClick
+      />
 
       <DeleteConfirm
         open={deleteConfirmationOpen}
