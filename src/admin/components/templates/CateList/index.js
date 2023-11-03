@@ -6,6 +6,7 @@ import ViewCategoriesList from "../../organisms/Category/ViewCategoriesList";
 import DeleteSpecPopup from "../../molecules/Category/DeleteSpecPopup";
 import DeleteSubjectPopup from "../../molecules/Category/DeleteSubjectPopup";
 import { ToastContainer, toast } from "react-toastify";
+import EditCategoryModal from "../../../utils/Categories/EditCategory/EditCategory";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -33,13 +34,10 @@ function CateList() {
   const [selectedRadioCategory, setSelectedRadioCategory] = useState(null);
   const [selectedRadioSubject, setSelectedRadioSubject] = useState(null);
 
-  const openAddCategoryModal = () => {
-    setIsAddCategoryModalOpen(true);
-  };
+  const [isEditCategoryModalOpen, setIsEditCategoryModalOpen] = useState(false);
+  const [categoryToEdit, setCategoryToEdit] = useState(null);
 
-  const closeAddCategoryModal = () => {
-    setIsAddCategoryModalOpen(false);
-  };
+  //-----------------------------------------------------------------------------------
 
   const fetchData = async () => {
     const categoriesRes = await axiosPrivate.get(
@@ -51,6 +49,16 @@ function CateList() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  //-----------------------------------------------------------------------------------
+
+  const openAddCategoryModal = () => {
+    setIsAddCategoryModalOpen(true);
+  };
+
+  const closeAddCategoryModal = () => {
+    setIsAddCategoryModalOpen(false);
+  };
 
   const handleSelectCategory = (category) => {
     setSelectedCategory(category);
@@ -73,6 +81,19 @@ function CateList() {
     setCategoryToDelete(null);
   };
 
+  const openEditCategoryModal = (category) => {
+    setIsEditCategoryModalOpen(true);
+    if (selectedRadioCategory) {
+      setCategoryToEdit(selectedCategory);
+    } else if (selectedRadioSubject) {
+      setCategoryToEdit(selectedSubject);
+    }
+  };
+
+  const closeEditCategoryModal = () => {
+    setIsEditCategoryModalOpen(false);
+  };
+
   const openDeleteSubjectModal = (subject) => {
     setIsDeleteSubjectModalOpen(true);
     setSubjectToDelete(subject);
@@ -83,17 +104,18 @@ function CateList() {
     setSubjectToDelete(null);
   };
 
+  //-----------------------------------------------------------------------------------
+
   const handleDeleteCategory = async () => {
     if (categoryToDelete) {
       try {
         await axiosPrivate.post(process.env.REACT_APP_DELETE_CATEGORY, {
           id: categoryToDelete.id,
         });
-
-        fetchData();
         toast.success(
           `Xóa chuyên ngành "${categoryToDelete.categoryName}" thành công`
         );
+        fetchData();
         closeDeleteModal();
       } catch (error) {
         if (error.response.status === 409) {
@@ -112,11 +134,10 @@ function CateList() {
         await axiosPrivate.post(process.env.REACT_APP_DELETE_CATEGORY, {
           id: subjectToDelete.id,
         });
-
-        fetchData();
         toast.success(
           `Xóa môn học "${subjectToDelete.categoryName}" thành công`
         );
+        fetchData();
         closeDeleteSubjectModal();
       } catch (error) {
         if (error.response.status === 409) {
@@ -134,6 +155,8 @@ function CateList() {
       setSelectedRadioCategory(null);
     } else {
       setSelectedRadioCategory(category.id);
+      setSelectedCategory(category);
+      setSelectedRadioSubject(null);
     }
   };
 
@@ -142,6 +165,8 @@ function CateList() {
       setSelectedRadioSubject(null);
     } else {
       setSelectedRadioSubject(subject.id);
+      setSelectedSubject(subject);
+      setSelectedRadioCategory(null);
     }
   };
 
@@ -164,10 +189,7 @@ function CateList() {
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <AddCategory
-            closeAddCategoryModal={closeAddCategoryModal}
-            fetchData={fetchData}
-          />
+          <AddCategory closeAddCategoryModal={closeAddCategoryModal} />
         </Box>
       </Modal>
     );
@@ -178,6 +200,15 @@ function CateList() {
       <div className="content-category">
         <h2 className="category-title">Danh sách các danh mục</h2>
         <div className="add-new-button">
+          {(selectedRadioCategory || selectedRadioSubject) && (
+            <div className="edit-cate-button">
+              <AddNewButton
+                title="Chỉnh sửa danh mục"
+                data={selectedRadioCategory || selectedRadioSubject}
+                handleClick={openEditCategoryModal}
+              />
+            </div>
+          )}
           <AddNewButton
             title="Thêm danh mục mới"
             handleClick={openAddCategoryModal}
@@ -197,9 +228,9 @@ function CateList() {
           handleRadioSubjectChange,
           openDeleteModal,
           openDeleteSubjectModal,
+          selectedRadioCategory,
+          selectedRadioSubject,
         }}
-        selectedRadioCategory={selectedRadioCategory}
-        selectedRadioSubject={selectedRadioSubject}
       />
 
       {isDeleteModalOpen && (
@@ -215,6 +246,16 @@ function CateList() {
           open={isDeleteSubjectModalOpen}
           handleDeleteSubject={handleDeleteSubject}
           closeDeleteSubjectModal={closeDeleteSubjectModal}
+        />
+      )}
+
+      {isEditCategoryModalOpen && (
+        <EditCategoryModal
+          category={categoryToEdit}
+          closeModal={closeEditCategoryModal}
+          open={isEditCategoryModalOpen}
+          categories={categories}
+          fetchData={fetchData}
         />
       )}
       <ToastContainer position="top-right" autoClose="3000" />

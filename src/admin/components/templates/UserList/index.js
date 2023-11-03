@@ -214,9 +214,10 @@ function UserResultList() {
 
   const buttonSx = {
     width: "auto",
-    fontSize: "0.75rem",
+    fontSize: "0.7rem",
     padding: "2px 4px",
     borderRadius: "8px",
+    color: "black",
   };
 
   const columns = [
@@ -285,35 +286,35 @@ function UserResultList() {
       headerName: "Hành động",
       width: 200,
       renderCell: (params) => (
-        <div>
-          <BanUnbanUser
-            userId={params.row.id}
-            isBanned={banStatus[params.row.id]}
-            banUserCallback={banAccount}
-            unbanUserCallback={unbanAccount}
-            banStatus={banStatus}
-            setBanStatus={setBanStatus}
-          />
-          {isMuted[params.row.id] ? (
-            <>
+        <Grid container direction="row" spacing={1}>
+          <Grid item xs={12}>
+            <BanUnbanUser
+              userId={params.row.id}
+              isBanned={banStatus[params.row.id]}
+              banUserCallback={banAccount}
+              unbanUserCallback={unbanAccount}
+              banStatus={banStatus}
+              setBanStatus={setBanStatus}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            {isMuted[params.row.id] ? (
               <Button
                 sx={{ ...buttonSx, backgroundColor: "#4CAF50" }}
                 onClick={() => unmuteUser(params.row.id)}
               >
                 Hủy hạn chế tài khoản
               </Button>
-            </>
-          ) : (
-            <>
+            ) : (
               <Button
                 sx={{ ...buttonSx, backgroundColor: "#F44336" }}
                 onClick={() => openMuteModal(params.row.id)}
               >
                 Hạn chế tài khoản
               </Button>
-            </>
-          )}
-        </div>
+            )}
+          </Grid>
+        </Grid>
       ),
     },
   ];
@@ -321,14 +322,14 @@ function UserResultList() {
   return (
     <>
       <div className="header-title">
-        <h2 className="title">Danh sách người dùng</h2>
+        <h2 className="title">Danh sách tài khoản</h2>
       </div>
       <div className="header-actions">
         <div className="container-search-box">
           <div className="search-box">
             <TextField
               className="search-input"
-              placeholder="Tìm kiếm người dùng..."
+              placeholder="Tìm kiếm tài khoản..."
               type="text"
               variant="outlined"
               onChange={handleSearchUser}
@@ -355,6 +356,11 @@ function UserResultList() {
       </div>
 
       <DataGrid
+        sx={{
+          "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+            outline: "none !important",
+          },
+        }}
         rows={records}
         rowHeight={75}
         columns={columns}
@@ -366,6 +372,7 @@ function UserResultList() {
           },
         }}
         pageSizeOptions={[5, 10, 25]}
+        autoHeight
         disableRowSelectionOnClick
       />
 

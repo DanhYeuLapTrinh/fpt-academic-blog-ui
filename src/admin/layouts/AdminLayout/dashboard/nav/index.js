@@ -45,19 +45,18 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderContent = (
     <>
       <Box sx={{ px: 2.5, py: 3, textAlign: "center" }}>
-        {/* <Logo /> */}
         <Link to={"/welcome"}>
           <Typography
             variant="h3"
             sx={{
               color: "#5927e5",
               fontWeight: "bold",
-              fontFamily: "sans-serif",
               cursor: "pointer",
             }}
           >
             Fblog
           </Typography>
+          {/* <Logo /> */}
         </Link>
       </Box>
 

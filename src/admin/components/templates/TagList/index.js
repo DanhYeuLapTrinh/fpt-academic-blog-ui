@@ -151,6 +151,11 @@ function TagList() {
       </div>
 
       <DataGrid
+        sx={{
+          "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+            outline: "none !important",
+          },
+        }}
         rows={tagData}
         columns={columns}
         initialState={{
