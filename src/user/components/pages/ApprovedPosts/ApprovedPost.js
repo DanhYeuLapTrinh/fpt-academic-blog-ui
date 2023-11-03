@@ -1,13 +1,12 @@
-import { Stack } from "@mui/material";
-import React from "react";
-import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
-import { getFirstChar } from "../../../utils/StringMethod";
+import { Stack } from '@mui/material'
+import React from 'react'
+import RewardedPostsUnder from '../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder'
+import { getFirstChar } from '../../../utils/StringMethod'
 
-
-export default function PendingPosts(props) {
+export default function ApprovedPost(props) {
   return (
     <Stack p={"20px 0"}>
-      {props?.pendingPosts?.map((item) => (
+      {props?.approvedPosts?.map((item) => (
         <RewardedPostsUnder
           key={item.postId}
           url={item.coverURL}
@@ -24,5 +23,5 @@ export default function PendingPosts(props) {
         />
       ))}
     </Stack>
-  );
+  )
 }

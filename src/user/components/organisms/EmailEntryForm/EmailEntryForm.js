@@ -8,9 +8,10 @@ import MyButton from "../../atoms/MyButton/MyButton";
 import axios from "../../../api/axios";
 import { LoginContext } from "../../../context/LoginProvider";
 import { useNavigate } from "react-router-dom";
+import useHome from "../../../hooks/useHome";
 export default function EmailEntryForm() {
   const { setEmail } = useContext(LoginContext);
-  const [isLoading, setIsLoading] = useState(false);
+  const {isLoading, setIsLoading} = useHome()
   const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
     email: "",

@@ -10,11 +10,11 @@ import TrendingTagSection from "../../organisms/TrendingTagSection/TrendingTagSe
 import ShortList from "../../templates/ShortList/ShortList";
 import PostList from "../../templates/PostList/PostList";
 
-export default function Home() {
+export default function Home(props) {
   return (
     <div>
       <Container>
-        <TrendingList />
+        <TrendingList trendingPosts={props.trendingPosts} />
         <SearchSection />
       </Container>
       <LatestPostSection />
@@ -23,12 +23,12 @@ export default function Home() {
         <Grid2 container xs={12} columnGap={"20px"}>
           <Grid2 item xs={8} sx={{ marginBottom: "59px" }}>
             <QAList />
-            <PostList/>
+            <PostList />
           </Grid2>
           <Grid2 item xs>
             <Stack spacing={12}>
               <TrendingTagSection />
-              <ShortList/>
+              <ShortList />
             </Stack>
           </Grid2>
         </Grid2>

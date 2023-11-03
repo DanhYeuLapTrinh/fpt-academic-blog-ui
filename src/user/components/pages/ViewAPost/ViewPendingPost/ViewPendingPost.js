@@ -1,87 +1,68 @@
-import { Button, Container, Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
+import {
+  Button,
+  Container,
+  FormControlLabel,
+  Stack,
+  Switch,
+} from "@mui/material";
+import React from "react";
 import Text from "../../../atoms/Text/Text";
 import styles from "./Styles.module.scss";
 import AccountInfoBar from "../../../organisms/AccountInfoBar/AccountInfoBar";
 import { getFirstChar } from "../../../../utils/StringMethod";
-export default function ViewPendingPost() {
-  const { slug } = useParams();
-  const navigate = useNavigate();
-  const axiosPrivate = useAxiosPrivate();
-  const [data, setData] = useState();
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await axiosPrivate.post("users/view-post", {
-        slug: slug,
-      });
-      setData(response.data);
-    };
-    fetchData();
-  }, []);
-  const handleSubmit = async () => {
-    try {
-      await axiosPrivate.post("lecturer/posts/approve", {
-        postId: data?.postId,
-      });
-      navigate("/pending-posts", { replace: true });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const handleDecline = async () => {
-    try {
-      await axiosPrivate.post("lecturer/posts/decline", {
-        postId: data?.postId,
-        reasonOfDecline: "Post ko hay",
-      });
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      navigate("/pending-posts", { replace: true });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+import PopUpDialog from "../../../organisms/PopUpDialog/PopUpDialog";
+export default function ViewPendingPost(props) {
   return (
     <Container>
       <AccountInfoBar
-        src={data?.avatarURL}
+        src={props.data?.avatarURL}
         color="secondary.main"
-        text={data?.accountName}
-        time={data?.dateOfPost}
-        major={getFirstChar(data?.category[0])}
-        subject={data?.category[1]}
-        tag={data?.tag}
+        text={props.data?.accountName}
+        time={props.data?.dateOfPost}
+        major={getFirstChar(props.data?.category[0])}
+        subject={props.data?.category[1]}
+        tag={props.data?.tag}
       />
       <div className={styles.contentWrapper}>
         <Text>
           <h1 style={{ fontSize: "40px", lineHeight: "50px" }}>
-            {data?.title}
+            {props.data?.title}
           </h1>
         </Text>
-        <img style={{ margin: "20px 0 40px" }} src={data?.coverURL} />
-        <div dangerouslySetInnerHTML={{ __html: data?.content }} />
+        <img style={{ margin: "10px 0 40px" }} src={props.data?.coverURL} />
+        <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
+
+      <FormControlLabel control={<Switch color="warning" onChange={props.handleGiveReward}/>} label={
+        <Text>Trao thưởng</Text>
+      }/>
+      
       <Stack
         direction={"row"}
         justifyContent={"flex-end"}
-        spacing={2}
-        paddingTop={"30px"}
+        spacing={1}
+        padding={"0 0 30px"}
       >
         <Button
-          onClick={handleDecline}
-          sx={{ padding: "10px" }}
+          onClick={props.handleClickOpen}
+          sx={{ padding: "10px", textTransform: "none" }}
+          fullWidth
           variant="outlined"
         >
           Từ chối
         </Button>
+        <PopUpDialog
+          handleClickOpen={props.handleClickOpen}
+          handleClose={props.handleClose}
+          handleDecline={props.handleDecline}
+          open={props.open}
+          declinedReason={props.declinedReason}
+        />
         <Button
-          onClick={handleSubmit}
-          sx={{ padding: "10px" }}
+          onClick={props.handleSubmit}
+          sx={{ padding: "10px", textTransform: "none" }}
           variant="contained"
+          fullWidth
         >
           Phê duyệt
         </Button>

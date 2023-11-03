@@ -17,9 +17,10 @@ import * as Yup from "yup";
 import Text from "../../atoms/Text/Text";
 import axios from "../../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
+import useHome from "../../../hooks/useHome";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const {isLoading, setIsLoading} = useHome()
   const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
     username: "",
@@ -33,6 +34,7 @@ export default function LoginForm() {
   const handleClick = () => {
     setShowPassword((prevData) => !prevData);
   };
+  
   const handleSubmit = async (values, { setFieldError }) => {
     if (values.username && values.password) {
       try {
@@ -169,7 +171,7 @@ export default function LoginForm() {
               </Text>
             </Link>
           </Stack>
-          <MyButton variant="contained">
+          <MyButton variant="contained" disabled={isLoading}>
             {!isLoading ? (
               <Text
                 p="5px 0"

@@ -22,9 +22,9 @@ export default function Unauthorized() {
         height: "100vh",
       }}
     >
-      <Stack alignItems={"center"} sx={{ width: "460px" }} spacing={3}>
+      <Stack alignItems={"center"} sx={{ width: "450px" }} spacing={3}>
         <Stack alignItems={"center"}>
-          <img src="../assets/img/404-not-found.png" alt="404-not-found" />
+          <img src="../assets/img/404-not-found.png" alt="404-not-found" width={'100%'}/>
           <Text fontSize="20px" fontWeight="600">
             Bạn hiện không xem được nội dung này
           </Text>

@@ -4,68 +4,75 @@ import Author from "../../molecules/Author/Author";
 import Text from "../../atoms/Text/Text";
 import PostTag from "../../atoms/PostTag/PostTag";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
+import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
+import { Link } from "react-router-dom";
 
 export default function PostCardV2(props) {
   return (
-    <Box
-      sx={{
-        width: "100%",
-        height: props.height,
-        backgroundImage:
-          'url("https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2008&q=80")',
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        borderRadius: "10px",
-        padding: "25px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        justifyContent: "flex-end",
-        position: "relative",
-        zIndex: 1,
-      }}
-    >
+    <Link to={`/view/${props.slug}`} style={{textDecoration: "none"}}>
       <Box
         sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
           width: "100%",
-          height: "100%",
-          background:
-            "linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, 0.7))",
-          zIndex: -1,
+          height: props.height,
+          backgroundImage: `url(${props.url})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
           borderRadius: "10px",
+          padding: "25px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "flex-end",
+          position: "relative",
+          zIndex: 1,
         }}
-      />
-      <Author author={true} text="bởi Chat GPT" color="secondary.main" />
-      <Wrapper WebkitLineClamp="2" paddingTop="10px">
-        <Text fontSize={props.title} color="secondary.main" lineHeight="36px">
-          Những khoảnh khắc đáng nhớ trong cuộc hành trình đời
-        </Text>
-      </Wrapper>
-      <Wrapper WebkitLineClamp={props.clamp} paddingTop="10px">
-        <Text fontWeight="400" fontSize="14px" color="secondary.main">
-          Dưới trái tim của thành phố náo nhiệt, nơi ánh đèn neon làm cho bầu
-          trời đêm sáng bóng với những màu sắc rực rỡ, một cảm giác vô tận của
-          những khả năng không ngừng tràn ngập không khí. Mọi người vội vã đi
-          dọc theo những con phố đông đúc, mỗi người một câu chuyện riêng, tạo
-          nên một bức tranh động lực của cuộc sống. Các quán cà phê tràn ra
-          tiếng cười vào không khí khi bạn bè tụ tập qua những cốc cà phê nóng
-          hổi, chia sẻ những giấc mơ và ước mơ. Trong khi đó, một nghệ sĩ độc
-          tấu chơi một giai điệu êm dịu trên một cây đàn guitar cũ, hòa nhạc
-          những nốt hồn nhiên đến qua những người qua đường. Mùi thơm của thức
-          ăn đường phố lan tỏa từ những quán nổi loạn, kích thích vị giác với
-          một đồng diễn của hương vị. Phía trên, các tòa nhà chọc trời chạm tới
-          thiên đàng, bề mặt phản chiếu của chúng bắt chước múa ánh sáng thành
-          phố.
-        </Text>
-      </Wrapper>
-      <Stack direction={"row"} spacing={"12px"} paddingTop={"15px"}>
-        <PostTag color="secondary.main" />
-        <PostTag color="secondary.main" />
-        <PostTag color="secondary.main" />
-      </Stack>
-    </Box>
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background:
+              "linear-gradient(rgba(255, 255, 255, 0), rgba(0, 0, 0, .9))",
+            zIndex: -1,
+            borderRadius: "10px",
+          }}
+        >
+          {props.isRewarded && (
+            <RewardBadge
+              small={props.small}
+              position="absolute"
+              top="15px"
+              right="15px"
+              zIndex="999"
+            />
+          )}
+        </Box>
+        <Author
+          src={props.src}
+          author={true}
+          text={props.label}
+          color="secondary.main"
+          time={props.time}
+        />
+        <Wrapper WebkitLineClamp="2" paddingTop="10px">
+          <Text fontSize={props.title} color="secondary.main" lineHeight="36px">
+            {props.postTitle}
+          </Text>
+        </Wrapper>
+        <Wrapper WebkitLineClamp={props.clamp} paddingTop="10px">
+          <Text fontWeight="400" fontSize="14px" color="secondary.main">
+            {props.description}
+          </Text>
+        </Wrapper>
+        <Stack direction={"row"} spacing={"12px"} paddingTop={"15px"}>
+          <PostTag text={props.major} color="secondary.main" />
+          <PostTag text={props.subject} color="secondary.main" />
+          <PostTag text={props.tag} color="secondary.main" />
+        </Stack>
+      </Box>
+    </Link>
   );
 }

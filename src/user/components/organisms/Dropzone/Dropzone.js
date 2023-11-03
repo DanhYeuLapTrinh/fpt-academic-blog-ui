@@ -7,12 +7,13 @@ import ImageDrop from "../../atoms/ImagePlaceholder/ImageDrop";
 import ImageClick from "../../atoms/ImagePlaceholder/ImageClick";
 import { Icon } from "@iconify/react";
 import useContent from "../../../hooks/useContent";
+import useHome from "../../../hooks/useHome";
 export default function Dropzone() {
   // functon onDrop chỉ chạy khi người dùng bỏ ảnh vào
   // useCallback để tránh tình trạng bị rerender khi component Dropzone rerender
   // chỉ rerender khi có ảnh thôi
-  const [isLoading, setIsLoading] = useState(false);
-  const {file, setFile} = useContent()
+  const {isLoading, setIsLoading} = useHome()
+  const { file, setFile } = useContent();
   const { setCoverURL, coverURL } = useContent();
   const [rejectedFile, setRejectedFile] = useState();
   const handleSubmit = async (file) => {
@@ -45,12 +46,12 @@ export default function Dropzone() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [] },
+    accept: { "image/*": [".jpg", ".jpeg", ".png", ".gif"] },
     maxSize: 1024 * 5000,
   });
   return (
     <Box sx={{ padding: "5px 0 30px " }}>
-      {!file ? (
+      {!file && !coverURL ? (
         <div
           {...getRootProps({
             //styling
@@ -113,7 +114,7 @@ export default function Dropzone() {
                 }}
                 onClick={() => {
                   setFile();
-                  setCoverURL("")
+                  setCoverURL("");
                   localStorage.removeItem("coverURL");
                 }}
               >

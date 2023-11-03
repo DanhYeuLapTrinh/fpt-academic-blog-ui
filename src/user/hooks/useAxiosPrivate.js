@@ -28,24 +28,9 @@ export default function useAxiosPrivate() {
         const prevRequest = error?.config;
         if (error?.response?.status === 403 && !prevRequest?.sent) {
           prevRequest.sent = true;
-          try {
-            const newAccessToken = await refresh();
-            prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-            return axiosPrivate(prevRequest);
-          } catch (rfError) {
-            let code = error.response.status;
-            setErrorMsg({ code, message: msg[code] });
-            navigate("/login", { replace: true });
-            return Promise.reject(rfError);
-          }
-        } else if (error?.response?.status === 401) {
-          // 401 Unauthorized
-          let code = error.response.status;
-          setErrorMsg({ code, message: msg[code] });
-          navigate("/login", { replace: true });
-        } else if (error?.response?.status === 404) {
-          navigate("/404-not-found", { replace: true });
-        } else if (error?.response?.status === 400) {
+          const newAccessToken = await refresh();
+          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          return axiosPrivate(prevRequest);
         }
         return Promise.reject(error);
       }
