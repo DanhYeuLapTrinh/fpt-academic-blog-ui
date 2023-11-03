@@ -26,10 +26,22 @@ export const UserMenuOptionsListData = [
   },
   {
     path: "/pending-posts",
-    label: "Quản lý bài viết",
+    label: "Bài viết đang chờ",
     icon: (
       <Icon
         icon="material-symbols:pending-actions"
+        color="#444746"
+        width="24"
+      />
+    ),
+    role: "lecturer",
+  },
+  {
+    path: "/view",
+    label: "Bài viết đã duyệt",
+    icon: (
+      <Icon
+        icon="material-symbols:order-approve-outline-rounded" 
         color="#444746"
         width="24"
       />

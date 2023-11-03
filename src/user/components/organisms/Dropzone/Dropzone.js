@@ -7,11 +7,12 @@ import ImageDrop from "../../atoms/ImagePlaceholder/ImageDrop";
 import ImageClick from "../../atoms/ImagePlaceholder/ImageClick";
 import { Icon } from "@iconify/react";
 import useContent from "../../../hooks/useContent";
+import useHome from "../../../hooks/useHome";
 export default function Dropzone() {
   // functon onDrop chỉ chạy khi người dùng bỏ ảnh vào
   // useCallback để tránh tình trạng bị rerender khi component Dropzone rerender
   // chỉ rerender khi có ảnh thôi
-  const [isLoading, setIsLoading] = useState(false);
+  const {isLoading, setIsLoading} = useHome()
   const { file, setFile } = useContent();
   const { setCoverURL, coverURL } = useContent();
   const [rejectedFile, setRejectedFile] = useState();

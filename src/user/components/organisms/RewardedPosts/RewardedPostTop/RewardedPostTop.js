@@ -2,12 +2,14 @@ import React from "react";
 import PostCardV2 from "../../PostCardV2/PostCardV2";
 import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
 import { getFirstChar } from "../../../../utils/StringMethod";
+import PostCardV2Skeleton from "../../Skeleton/PostCardV2Skeleton/PostCardV2Skeleton";
 
 export default function RewardedPostTop(props) {
-
   return (
     <div>
-      {props.rewardedPosts && (
+      {!props.rewardedPosts ? (
+        <PostCardV2Skeleton height={430} />
+      ) : (
         <PostCardV2
           url={props.rewardedPosts[0]?.coverURL}
           src={props.rewardedPosts[0]?.avatarURL}

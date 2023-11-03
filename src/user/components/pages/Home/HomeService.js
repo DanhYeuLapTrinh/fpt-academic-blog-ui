@@ -4,21 +4,29 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useHome from "../../../hooks/useHome";
 
 export default function HomeService() {
+  const { isLoading, setIsLoading } = useHome();
   const axiosPrivate = useAxiosPrivate();
   const { trendingPosts, setTrendingPosts, rewardedPosts, setRewardedPosts } =
     useHome();
   useEffect(() => {
     const fetchData = async () => {
-      let trendingPosts = await axiosPrivate.get(
-        process.env.REACT_APP_TRENDING_POSTS
-      );
-      setTrendingPosts(trendingPosts?.data?.slice(0, 4));
-      let rewardedPosts = await axiosPrivate.get(
-        process.env.REACT_APP_REWARDED_POSTS
-      );
-      setRewardedPosts(rewardedPosts?.data)
+      try {
+        setIsLoading(true);
+        let trendingPosts = await axiosPrivate.get(
+          process.env.REACT_APP_TRENDING_POSTS
+        );
+        setTrendingPosts(trendingPosts?.data?.slice(0, 4));
+        let rewardedPosts = await axiosPrivate.get(
+          process.env.REACT_APP_REWARDED_POSTS
+        );
+        setRewardedPosts(rewardedPosts?.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchData();
   }, []);
-  return <Home trendingPosts={trendingPosts} rewardedPosts={rewardedPosts}/>;
+  return <Home trendingPosts={trendingPosts} rewardedPosts={rewardedPosts} />;
 }

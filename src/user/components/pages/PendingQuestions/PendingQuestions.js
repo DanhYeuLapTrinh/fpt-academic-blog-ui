@@ -9,20 +9,19 @@ export default function PendingQuestions(props) {
     <Container sx={{ p: "20px 0" }}>
       <Stack spacing={2}>
         {props.questions?.map((item) => (
-          <Link to={item?.slug}>
-            <QA
-              full
-              title={item?.title}
-              description={item?.description}
-              pending
-              major={getFirstChar(item?.category[0])}
-              subject={item?.category[1]}
-              tag={item?.tag}
-              time={timeConverter(item?.dateOfPost)}
-              src={item?.avatarURL}
-              label={item?.accountName}
-            />
-          </Link>
+          <QA
+            full
+            title={item?.title}
+            description={item?.description}
+            pending
+            major={getFirstChar(item?.category[0])}
+            subject={item?.category[1]}
+            tag={item?.tag}
+            time={timeConverter(item?.dateOfPost)}
+            src={item?.avatarURL}
+            label={item?.accountName}
+            slug={item?.slug}
+          />
         ))}
       </Stack>
     </Container>

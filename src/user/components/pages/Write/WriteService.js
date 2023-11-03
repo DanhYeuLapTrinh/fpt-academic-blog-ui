@@ -42,7 +42,6 @@ export default function WriteService() {
     tagID,
     setTagID,
   } = usePostTag();
-
   useEffect(() => {
     localStorage.setItem("content", JSON.stringify({}));
     setTitle(title);
@@ -69,9 +68,10 @@ export default function WriteService() {
 
   const handleSubmit = useCallback(async () => {
     try {
-      const slug = toSlug(title);
-      const description = getFirstTagContent(contentTiny);
-      const response = await axiosPrivate.post(
+      let slug = toSlug(title);
+      let description = getFirstTagContent(contentTiny);
+      let postCoverURL = tag !== "Q&A" ? coverURL : "";
+      let response = await axiosPrivate.post(
         process.env.REACT_APP_CREATE_POST,
         {
           accountId: auth?.id,
@@ -81,7 +81,7 @@ export default function WriteService() {
           allowComment: true,
           categoryId: subjectID,
           tagId: tagID,
-          coverURL: coverURL,
+          coverURL: postCoverURL,
           slug: slug,
           length: wordcount,
         }
@@ -96,7 +96,7 @@ export default function WriteService() {
       console.log(error);
       // Phần này xử lý lỗi
     }
-  }, [tagID, subjectID, contentTiny, title, coverURL]);
+  }, [tagID, subjectID, contentTiny, title, coverURL, tag]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -149,7 +149,7 @@ export default function WriteService() {
         !semester ||
         !subjectID ||
         !tagID ||
-        !coverURL ||
+        (!coverURL && tag !== "Q&A") ||
         charCount < 30 ||
         charCount >= 100 ||
         !content ||
