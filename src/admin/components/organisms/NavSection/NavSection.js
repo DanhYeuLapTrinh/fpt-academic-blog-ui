@@ -2,8 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { NavLink as RouterLink } from "react-router-dom";
 
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import {
   Box,
   List,

@@ -13,15 +13,17 @@ import {
 } from "@mui/material";
 
 function AddCategory({ closeAddCategoryModal }) {
+  const axiosPrivate = useAxiosPrivate();
   const [cateList, setCateList] = useState([]);
+  const [majorList, setMajorList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSemester, setSelectedSemester] = useState("");
   const [selectedMajorID, setSelectedMajorID] = useState("");
-  const [majorList, setMajorList] = useState([]);
   const [selectedSubject, setSelectedSubject] = useState("");
   const [subjectError, setSubjectError] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const axiosPrivate = useAxiosPrivate();
+
+  //--------------------------------------------------------------
 
   useEffect(() => {
     axiosPrivate.get(process.env.REACT_APP_CATEGORIES_LIST).then((res) => {
@@ -33,6 +35,8 @@ function AddCategory({ closeAddCategoryModal }) {
       setMajorList(res.data);
     });
   }, []);
+
+  //--------------------------------------------------------------
 
   const handleAddCategory = (e) => {
     e.preventDefault();
@@ -66,6 +70,7 @@ function AddCategory({ closeAddCategoryModal }) {
     axiosPrivate
       .post(process.env.REACT_APP_ADD_NEW_CATEGORY, data)
       .then((response) => {
+        const newCategory = response.data;
         toast.success("Thêm danh mục thành công!");
       })
       .catch((error) => {
@@ -84,11 +89,20 @@ function AddCategory({ closeAddCategoryModal }) {
       if (matchedMajor) {
         setSelectedMajorID(matchedMajor.id);
       }
-    } else if (e.target.value === "addNew") {
     }
 
     setSelectedCategory(e.target.value);
   };
+
+  const handleSemesterChange = (e) => {
+    setSelectedSemester(e.target.value);
+  };
+
+  const handleCloseModal = () => {
+    closeAddCategoryModal();
+  };
+
+  //--------------------------------------------------------------
 
   const renderSemesterSelect = () => {
     const semesters = Array.from({ length: 9 }, (_, i) => i + 1);
@@ -114,14 +128,6 @@ function AddCategory({ closeAddCategoryModal }) {
     );
   };
 
-  const handleSemesterChange = (e) => {
-    setSelectedSemester(e.target.value);
-  };
-
-  const handleCloseModal = () => {
-    closeAddCategoryModal();
-  };
-
   const toggleForm = () => {
     setIsFormOpen(!isFormOpen);
   };
@@ -140,6 +146,7 @@ function AddCategory({ closeAddCategoryModal }) {
         borderRadius: 2,
         boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
         position: "relative",
+        opacity: isFormOpen ? 0.5 : 1,
         zIndex: isFormOpen ? 1 : "auto",
       }}
     >
@@ -160,8 +167,6 @@ function AddCategory({ closeAddCategoryModal }) {
               {cate.categoryName}
             </option>
           ))}
-
-          <option value="addNew">Thêm chuyên ngành</option>
         </Select>
       </FormControl>
       {renderSemesterSelect()}

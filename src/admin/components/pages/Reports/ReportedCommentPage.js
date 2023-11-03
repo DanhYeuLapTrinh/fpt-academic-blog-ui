@@ -1,9 +1,7 @@
-import React from 'react'
-
+import React from "react";
+import ReportedComment from "../../templates/ReportedComment/ReportedComment";
 function ReportedCommentPage() {
-  return (
-    <div>ReportedCommentPage</div>
-  )
+  return <ReportedComment />;
 }
 
-export default ReportedCommentPage
+export default ReportedCommentPage;

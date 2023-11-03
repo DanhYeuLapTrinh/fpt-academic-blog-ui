@@ -5,7 +5,6 @@ import CategoryIcon from "@mui/icons-material/Category";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import DescriptionIcon from "@mui/icons-material/Description";
-import BlockIcon from "@mui/icons-material/Block";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 // ----------------------------------------------------------------------
 
@@ -16,7 +15,7 @@ const navConfig = [
     icon: <DashboardIcon />,
   },
   {
-    title: "Danh sách người dùng",
+    title: "Danh sách tài khoản",
     path: "/users",
     icon: <PeopleIcon />,
   },
@@ -45,10 +44,22 @@ const navConfig = [
     title: "Báo cáo",
     path: "/",
     icon: <ReportProblemIcon />,
+    items: [
+      {
+        title: "Danh sách hồ sơ bị báo cáo",
+        path: "/reported-profile",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+      {
+        title: "Danh sách bình luận bị báo cáo",
+        path: "/reported-comment",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+    ],
   },
   {
     title: "Nhật ký hoạt động",
-    path: "/",
+    path: "/activity-log",
     icon: <DescriptionIcon />,
   },
 ];

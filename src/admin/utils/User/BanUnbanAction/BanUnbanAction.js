@@ -59,9 +59,10 @@ const BanUnbanUser = ({
 
   const buttonSx = {
     width: "auto",
-    fontSize: "0.75rem",
+    fontSize: "0.7rem",
     padding: "2px 4px",
     borderRadius: "8px",
+    color: "black",
   };
 
   return (
