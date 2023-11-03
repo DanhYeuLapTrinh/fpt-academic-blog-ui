@@ -2,24 +2,23 @@ import React, { useEffect, useState } from "react";
 import PendingPosts from "./PendingPosts";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { sortByPropertyName } from "../../../utils/StringMethod";
+import useHome from "../../../hooks/useHome";
+import useManagePost from "../../../hooks/useManagePost";
 
 export default function PendingPostsService() {
   const axiosPrivate = useAxiosPrivate();
-  const [pendingPosts, setPendingPosts] = useState();
-  const [approvedPosts, setApprovedPosts] = useState()
-  const [type, setType] = useState("Bài viết đang chờ");
-  const [isLoading, setIsLoading] = useState(false);
-  const [sort, setSort] = useState("Mới nhất");
-  const [amount, setAmount] = useState(0)
-  const [approvedAmount, setApprovedAmount] = useState(0)
-  let sortedPending
-  let sortedApproved
+  const {
+    pendingPosts,
+    setPendingPosts,
+    sort,
+    setSort,
+    amount,
+    setAmount,
+  } = useManagePost();
+  const { isLoading, setIsLoading } = useHome();
+  let sortedPending = sortByPropertyName(pendingPosts, "", "postId");
   if (sort !== "Mới nhất") {
     sortedPending = sortByPropertyName(pendingPosts, "asc", "postId");
-    sortedApproved = sortByPropertyName(approvedPosts, "asc", "postId");
-  } else {
-    sortedPending = sortByPropertyName(pendingPosts, "", "postId");
-    sortedApproved = sortByPropertyName(approvedPosts, "", "postId");
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -37,33 +36,12 @@ export default function PendingPostsService() {
     fetchData();
     setIsLoading(false);
   }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axiosPrivate.get(
-          "lecturer/posts/approved"
-        );
-        setApprovedPosts(response?.data);
-        setApprovedAmount(response?.data?.length)
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-    setIsLoading(false);
-  }, []);
   return (
     <PendingPosts
       pendingPosts={sortedPending}
-      approvedPosts={sortedApproved}
-      setType={setType}
-      type={type}
-      isLoading={isLoading}
       sort={sort}
       setSort={setSort}
       amount={amount}
-      approvedAmount={approvedAmount}
     />
   );
 }

@@ -21,6 +21,8 @@ import Profile from "../user/components/pages/Profile/Profile";
 import PendingQuestionsService from "../user/components/pages/PendingQuestions/PendingQuestionsService";
 import ViewPendingPostService from "../user/components/pages/ViewAPost/ViewPendingPost/ViewPendingPostService";
 import HomeService from "../user/components/pages/Home/HomeService";
+import ViewAPostService from "../user/components/pages/ViewAPost/ViewAPost/ViewAPostService";
+import ApprovedPostService from "../user/components/pages/ApprovedPosts/ApprovedPostService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -37,10 +39,12 @@ const loggedInUserRoutes = [
   { path: "/news", component: News },
   { path: "/write", component: WriteService },
   { path: "/profile/:id", component: Profile },
+  { path: "/view/:slug", component: ViewAPostService },
 ];
 const lecturerRoutes = [
-  { path: "/pending-posts", component: PendingPostsService },
+  { path: "/pending-posts", component: PendingPostsService},
   { path: "/pending-posts/:slug", component: ViewPendingPostService },
+  { path: "/view", component: ApprovedPostService },
 ];
 
 const mentorRoutes = [
