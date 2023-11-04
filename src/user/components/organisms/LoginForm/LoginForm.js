@@ -20,7 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useHome from "../../../hooks/useHome";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const {isLoading, setIsLoading} = useHome()
+  const { isLoading, setIsLoading } = useHome();
   const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
     username: "",
@@ -34,49 +34,47 @@ export default function LoginForm() {
   const handleClick = () => {
     setShowPassword((prevData) => !prevData);
   };
-  
+
   const handleSubmit = async (values, { setFieldError }) => {
-    if (values.username && values.password) {
-      try {
-        setIsLoading(true);
-        const response = await axios.post(
-          process.env.REACT_APP_LOGIN_API,
-          JSON.stringify({
-            username: values.username.trim(),
-            password: values.password,
-          })
-        );
-        const auth = {
-          id: response?.data?.id,
-          user: response?.data?.username,
-          role: response?.data?.roleName,
-          token: response?.data?.token,
-          refreshToken: response?.data?.refreshToken,
-          profileURL: response?.data?.profileURL,
-          coverURL: response?.data?.coverURL,
-        };
-        localStorage.setItem("auth", JSON.stringify(auth));
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        process.env.REACT_APP_LOGIN_API,
+        JSON.stringify({
+          username: values.username,
+          password: values.password,
+        })
+      );
+      const auth = {
+        id: response?.data?.id,
+        user: response?.data?.username,
+        role: response?.data?.roleName,
+        token: response?.data?.token,
+        refreshToken: response?.data?.refreshToken,
+        profileURL: response?.data?.profileURL,
+        coverURL: response?.data?.coverURL,
+      };
+      localStorage.setItem("auth", JSON.stringify(auth));
+      values.username = "";
+      values.password = "";
+      if (auth?.role === "admin") {
+        navigate("/welcome", { replace: true });
+      } else navigate("/", { replace: true });
+    } catch (error) {
+      if (!error?.response) {
+        console.log("No server response");
+      } else if (error.response?.status === 400) {
+        console.log("Im not understand");
+      } else if (error.response?.status === 401) {
+        setFieldError("password", "Sai thông tin tài khoản");
+        values.password = "";
+      } else {
+        setFieldError("password", "Đăng nhập thất bại");
         values.username = "";
         values.password = "";
-        if (auth?.role === "admin") {
-          navigate("/welcome", { replace: true });
-        } else navigate("/", { replace: true });
-      } catch (error) {
-        if (!error?.response) {
-          console.log("No server response");
-        } else if (error.response?.status === 400) {
-          console.log("Im not understand");
-        } else if (error.response?.status === 401) {
-          setFieldError("password", "Sai thông tin tài khoản");
-          values.password = "";
-        } else {
-          setFieldError("password", "Đăng nhập thất bại");
-          values.username = "";
-          values.password = "";
-        }
-      } finally {
-        setIsLoading(false);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
