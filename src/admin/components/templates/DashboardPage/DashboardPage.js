@@ -4,11 +4,12 @@ import AppWidgetSummary from "../../molecules/GetSummary/GetSummary";
 
 import { Grid, Container, Typography } from "@mui/material";
 
-import { useTheme } from "@mui/material/styles";
-
 import useAuth from "../../../../user/hooks/useAuth";
 
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+
+import SimpleCharts from "../../molecules/BarChart/SimpleBarChart";
+import BasicPie from "../../molecules/PieChart/PieChart";
 function DashboardPage() {
   const auth = useAuth();
   const username = auth?.user;
@@ -68,6 +69,9 @@ function DashboardPage() {
             </Grid>
           </>
         )}
+
+        <SimpleCharts />
+        <BasicPie />
       </Grid>
     </Container>
   );
