@@ -21,6 +21,7 @@ export default function RewardedPostTop(props) {
           subject={props.rewardedPosts[0]?.category[1]}
           tag={props.rewardedPosts[0]?.tag}
           isRewarded={props.rewardedPosts[0]?.is_rewarded}
+          slug={props.rewardedPosts[0]?.slug}
           height="430px"
           clamp="3"
           title="32px"

@@ -9,9 +9,9 @@ import { Link } from "react-router-dom";
 
 export default function RewardedPostsUnder(props) {
   return (
-    <div style={{ width: "100%", padding: '20px 0' }}>
-      <Stack direction={"row"}>
-        <Link to={props.postPath} style={{ textDecoration: "none" }}>
+    <Link to={`/view/${props?.slug}`} style={{ textDecoration: "none" }}>
+      <div style={{ width: "100%", padding: "20px 0" }}>
+        <Stack direction={"row"}>
           <Box
             sx={{
               backgroundImage: `url(${props.url})`,
@@ -33,10 +33,8 @@ export default function RewardedPostsUnder(props) {
               />
             )}
           </Box>
-        </Link>
-        <Box sx={{ width: "calc(100% - 265px)", p: "0px 20px" }}>
-          <Stack height={"240px"} justifyContent={"space-evenly"}>
-            <Link to={props.postPath} style={{ textDecoration: "none" }}>
+          <Box sx={{ width: "calc(100% - 265px)", p: "0px 20px" }}>
+            <Stack height={"240px"} justifyContent={"space-evenly"}>
               <Wrapper WebkitLineClamp="2">
                 <Text fontSize="24px" lineHeight="30px">
                   {props.title}
@@ -56,21 +54,21 @@ export default function RewardedPostsUnder(props) {
                   {props.description}
                 </Text>
               </Box>
-            </Link>
-            <Author
-              time={props.time}
-              src={props.avatar}
-              author={true}
-              text={props.label}
-            />
-            <Stack direction={"row"} spacing={"12px"} paddingTop={"5px"}>
-              <PostTag color="primary.main" text={props.major} />
-              <PostTag color="primary.main" text={props.subject} />
-              <PostTag color="primary.main" text={props.tag} />
+              <Author
+                time={props.time}
+                src={props.avatar}
+                author={true}
+                text={props.label}
+              />
+              <Stack direction={"row"} spacing={"12px"} paddingTop={"5px"}>
+                <PostTag color="primary.main" text={props.major} />
+                <PostTag color="primary.main" text={props.subject} />
+                <PostTag color="primary.main" text={props.tag} />
+              </Stack>
             </Stack>
-          </Stack>
-        </Box>
-      </Stack>
-    </div>
+          </Box>
+        </Stack>
+      </div>
+    </Link>
   );
 }
