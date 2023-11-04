@@ -3,7 +3,9 @@ const HomeContext = createContext();
 export default function HomeProvider({ children }) {
   const [trendingPosts, setTrendingPosts] = useState();
   const [rewardedPosts, setRewardedPosts] = useState();
-  const [isLoading, setIsLoading] = useState(false)
+  const [latestPosts, setLatestPosts] = useState();
+  const [allPosts, setAllPosts] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <HomeContext.Provider
       value={{
@@ -12,7 +14,11 @@ export default function HomeProvider({ children }) {
         rewardedPosts,
         setRewardedPosts,
         isLoading,
-        setIsLoading
+        setIsLoading,
+        latestPosts,
+        setLatestPosts,
+        allPosts,
+        setAllPosts,
       }}
     >
       {children}

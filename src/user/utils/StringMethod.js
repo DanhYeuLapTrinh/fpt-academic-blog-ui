@@ -37,7 +37,7 @@ export const getFirstTagContent = (htmlStr) => {
  * @author DanhYeuLapTrinh
  * @version 1.0.0.0
  */
-export const toSlug = (inputStr) => {
+export const toSlug = (inputStr, noNumber) => {
   // Chuyển hết sang chữ thường
   inputStr = inputStr.toLowerCase();
 
@@ -61,11 +61,13 @@ export const toSlug = (inputStr) => {
   // xóa phần dư - ở đầu & cuối
   inputStr = inputStr.replace(/^-+|-+$/g, "");
 
-  // thêm random 9 số ở đuôi
-  const randomNumber = Math.floor(Math.random() * 1000000000);
-  inputStr = `${inputStr}-${randomNumber}`;
-
-  return inputStr;
+  if (noNumber) {
+    return inputStr;
+  } else {
+    const randomNumber = Math.floor(Math.random() * 1000000000);
+    inputStr = `${inputStr}-${randomNumber}`;
+    return inputStr
+  }
 };
 
 /**
