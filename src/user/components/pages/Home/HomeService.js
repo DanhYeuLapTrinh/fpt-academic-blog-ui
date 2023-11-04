@@ -6,8 +6,16 @@ import useHome from "../../../hooks/useHome";
 export default function HomeService() {
   const { isLoading, setIsLoading } = useHome();
   const axiosPrivate = useAxiosPrivate();
-  const { trendingPosts, setTrendingPosts, rewardedPosts, setRewardedPosts } =
-    useHome();
+  const {
+    latestPosts,
+    setLatestPosts,
+    trendingPosts,
+    setTrendingPosts,
+    rewardedPosts,
+    setRewardedPosts,
+    allPosts,
+    setAllPosts,
+  } = useHome();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,6 +28,12 @@ export default function HomeService() {
           process.env.REACT_APP_REWARDED_POSTS
         );
         setRewardedPosts(rewardedPosts?.data);
+        let latestPosts = await axiosPrivate.get(
+          process.env.REACT_APP_LATEST_POSTS
+        );
+        setLatestPosts(latestPosts?.data?.slice(0, 4));
+        let allPosts = await axiosPrivate.get(process.env.REACT_APP_ALL_POSTS);
+        setAllPosts(allPosts?.data);
       } catch (error) {
         console.log(error);
       } finally {
@@ -28,5 +42,12 @@ export default function HomeService() {
     };
     fetchData();
   }, []);
-  return <Home trendingPosts={trendingPosts} rewardedPosts={rewardedPosts} />;
+  return (
+    <Home
+      trendingPosts={trendingPosts}
+      rewardedPosts={rewardedPosts}
+      latestPosts={latestPosts}
+      allPosts={allPosts}
+    />
+  );
 }

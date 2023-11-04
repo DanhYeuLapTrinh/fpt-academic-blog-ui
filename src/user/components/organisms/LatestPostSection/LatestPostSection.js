@@ -4,11 +4,12 @@ import PostCardV1 from "../PostCardV1/PostCardV1";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
-export default function LatestPostSection() {
+import { getFirstChar } from "../../../utils/StringMethod";
+export default function LatestPostSection(props) {
   return (
     <Box sx={{ marginBottom: "59px" }}>
       <Container>
-        <SectionTitle title="Mới đăng gần đây"/>
+        <SectionTitle title="Mới đăng gần đây" />
       </Container>
       <Box
         sx={{
@@ -39,42 +40,26 @@ export default function LatestPostSection() {
               sx={{ fontSize: "40px", color: "secondary.main" }}
             />
           </IconButton>
-          <PostCardV1
-            authorColor="secondary.main"
-            color="secondary.main"
-            tagColor="secondary.main"
-            small={true}
-            h="155px"
-            boxHeight="275px"
-            boxWidth="265px"
-          />
-          <PostCardV1
-            authorColor="secondary.main"
-            color="secondary.main"
-            tagColor="secondary.main"
-            small={true}
-            h="155px"
-            boxHeight="275px"
-            boxWidth="265px"
-          />
-          <PostCardV1
-            authorColor="secondary.main"
-            color="secondary.main"
-            tagColor="secondary.main"
-            small={true}
-            h="155px"
-            boxHeight="275px"
-            boxWidth="265px"
-          />
-          <PostCardV1
-            authorColor="secondary.main"
-            color="secondary.main"
-            tagColor="secondary.main"
-            small={true}
-            h="155px"
-            boxHeight="275px"
-            boxWidth="265px"
-          />
+          {props?.latestPosts?.map((item) => (
+            <PostCardV1
+              url={item?.coverURL}
+              src={item?.avatarURL}
+              label={item?.accountName}
+              time={item?.dateOfPost}
+              postTitle={item?.title}
+              color="secondary.main"
+              authorColor="secondary.main"
+              tagColor="secondary.main"
+              major={getFirstChar(item?.category[0])}
+              subject={item?.category[1]}
+              tag={item?.tag}
+              slug={item?.slug}
+              small={true}
+              h="155px"
+              boxHeight="275px"
+              boxWidth="265px"
+            />
+          ))}
           <IconButton
             sx={{
               position: "absolute",
