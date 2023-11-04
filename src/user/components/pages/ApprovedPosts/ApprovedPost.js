@@ -49,6 +49,7 @@ export default function ApprovedPost(props) {
             tag={item.tag}
             time={item.dateOfPost}
             postId={item.postId}
+            slug={"/view/" + item.slug}
           />
         ))}
       </Stack>

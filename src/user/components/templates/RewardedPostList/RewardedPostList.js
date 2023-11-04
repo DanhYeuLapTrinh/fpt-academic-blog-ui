@@ -39,7 +39,7 @@ export default function RewardedPostList() {
                     subject={item?.category[1]}
                     tag={item?.tag}
                     isRewarded={item?.is_rewarded}
-                    slug={item?.slug}
+                    slug={"/view/" + item.slug}
                   />
                   {index < 4 && (
                     <Divider sx={{ width: "100%" }} orientation="horizontal" />

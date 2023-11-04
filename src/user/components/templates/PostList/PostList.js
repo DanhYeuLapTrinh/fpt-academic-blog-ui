@@ -10,6 +10,7 @@ export default function PostList(props) {
       <SectionTitle title="Bài viết" filter post />
       {props.allPosts?.map((item, index) => (
         <Post
+          key={index}
           url={item?.coverURL}
           title={item?.title}
           description={item?.description}

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 export default function RewardedPostsUnder(props) {
   return (
-    <Link to={`/view/${props?.slug}`} style={{ textDecoration: "none" }}>
+    // <Link to={`${props?.slug}`} style={{ textDecoration: "none" }}>
       <div style={{ width: "100%", padding: "20px 0" }}>
         <Stack direction={"row"}>
           <Box
@@ -59,6 +59,7 @@ export default function RewardedPostsUnder(props) {
                 src={props.avatar}
                 author={true}
                 text={props.label}
+                onClick={() => console.log('àd')}
               />
               <Stack direction={"row"} spacing={"12px"} paddingTop={"5px"}>
                 <PostTag color="primary.main" text={props.major} />
@@ -69,6 +70,6 @@ export default function RewardedPostsUnder(props) {
           </Box>
         </Stack>
       </div>
-    </Link>
+    // </Link>
   );
 }

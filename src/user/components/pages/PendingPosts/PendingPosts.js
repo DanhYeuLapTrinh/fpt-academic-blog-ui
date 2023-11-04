@@ -6,8 +6,7 @@ import useManagePost from "../../../hooks/useManagePost";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Text from "../../atoms/Text/Text";
 export default function PendingPosts(props) {
-  const { pendingPosts, sort, setSort, amount } =
-    useManagePost();
+  const { pendingPosts, sort, setSort, amount } = useManagePost();
   return (
     <Container sx={{ mt: "30px", minHeight: "calc(100vh - 93px)" }}>
       <Stack
@@ -48,6 +47,7 @@ export default function PendingPosts(props) {
             tag={item.tag}
             time={item.dateOfPost}
             postId={item.postId}
+            slug={"/pending-posts/" + item.slug}
           />
         ))}
       </Stack>

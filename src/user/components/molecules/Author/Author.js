@@ -3,6 +3,7 @@ import UserProfile from "../../atoms/UserProfile/UserProfile";
 import Text from "../../atoms/Text/Text";
 import { Button, IconButton, Stack } from "@mui/material";
 import { timeConverter } from "../../../utils/StringMethod";
+import { Link } from "react-router-dom";
 
 export default function Author(props) {
   return (
@@ -14,7 +15,7 @@ export default function Author(props) {
         alt="User"
       />
       <Stack>
-        <Stack direction={'row'} sx={{ alignItems: "center" }} spacing={"10px"}>
+        <Stack direction={"row"} sx={{ alignItems: "center" }} spacing={"10px"}>
           <Text
             fontSize={props.authorSize ? props.authorSize : "12px"}
             color={props.color ? props.color : "text.main"}
