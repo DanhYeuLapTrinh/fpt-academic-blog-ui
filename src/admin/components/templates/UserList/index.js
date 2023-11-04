@@ -357,6 +357,12 @@ function UserResultList() {
 
       <DataGrid
         sx={{
+          "& .MuiDataGrid-cell": {
+            display: "flex",
+            padding: "8px",
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+          },
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
             outline: "none !important",
           },
