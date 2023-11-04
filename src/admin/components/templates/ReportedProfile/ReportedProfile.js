@@ -5,21 +5,22 @@ function ReportedProfile() {
 
   const [reportedProfiles, setReportedProfiles] = useState([]);
 
-  const fetchData = async () => {
-    const body = {
-      userId: "",
-    };
-    const reportedProfilesRes = await axiosPrivate.get("/profile/view", {
-      body,
-    });
-    setReportedProfiles(reportedProfilesRes.data);
-    console.log(reportedProfilesRes.data);
-  };
+  // const fetchData = async () => {
+  //   const body = {
+  //     userId: "",
+  //   };
+  //   const reportedProfilesRes = await axiosPrivate.get("/profile/view", {
+  //     body,
+  //   });
+  //   setReportedProfiles(reportedProfilesRes.data);
+  //   console.log(reportedProfilesRes.data);
+  // };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-  return <div>Hello</div>;
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  return <div>This is Report Profile</div>;
 }
 
 export default ReportedProfile;
