@@ -14,7 +14,6 @@ import {
   lecturerRoutes,
   mentorRoutes,
 } from "./master/routes";
-import ManagePostLayout from "./user/layouts/ManagePostLayout";
 function App() {
   return (
     <div>
@@ -55,15 +54,13 @@ function App() {
           </Route>
           {/* Logged in lecturer routes */}
           <Route element={<HomeLayout />}>
-            <Route element={<ManagePostLayout/>}>
-              <Route element={<RequireAuth allowRoles={["lecturer"]} />}>
-                {lecturerRoutes.map((item, index) => {
-                  const Page = item.component;
-                  return (
-                    <Route key={index} path={item.path} element={<Page />} />
-                  );
-                })}
-              </Route>
+            <Route element={<RequireAuth allowRoles={["lecturer"]} />}>
+              {lecturerRoutes.map((item, index) => {
+                const Page = item.component;
+                return (
+                  <Route key={index} path={item.path} element={<Page />} />
+                );
+              })}
             </Route>
           </Route>
           {/* Logged in mentor routes */}
