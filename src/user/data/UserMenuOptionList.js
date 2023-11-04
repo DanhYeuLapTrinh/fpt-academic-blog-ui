@@ -1,4 +1,7 @@
 import { Icon } from "@iconify/react";
+import useAuth from "../hooks/useAuth";
+import React from 'react'
+const auth = JSON.parse(localStorage.getItem("auth"))
 export const UserMenuOptionsListData = [
   {
     path: "",
@@ -7,7 +10,7 @@ export const UserMenuOptionsListData = [
     role: "public",
   },
   {
-    path: "",
+    path: `/profile/${auth?.id}`,
     label: "Xem tài khoản",
     icon: <Icon icon="mingcute:user-2-line" color="#444746" width="24" />,
     role: "public",

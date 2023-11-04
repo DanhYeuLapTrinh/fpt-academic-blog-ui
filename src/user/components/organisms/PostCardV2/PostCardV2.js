@@ -6,10 +6,11 @@ import PostTag from "../../atoms/PostTag/PostTag";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
 import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
 import { Link } from "react-router-dom";
+import { getFirstChar, toSlug } from "../../../utils/StringMethod";
 
 export default function PostCardV2(props) {
   return (
-    <Link to={`/view/${props.slug}`} style={{textDecoration: "none"}}>
+    <Link to={`/view/${props.slug}`} style={{ textDecoration: "none" }}>
       <Box
         sx={{
           width: "100%",
@@ -56,6 +57,7 @@ export default function PostCardV2(props) {
           text={props.label}
           color="secondary.main"
           time={props.time}
+          profile={props.userId}
         />
         <Wrapper WebkitLineClamp="2" paddingTop="10px">
           <Text fontSize={props.title} color="secondary.main" lineHeight="36px">
@@ -68,9 +70,21 @@ export default function PostCardV2(props) {
           </Text>
         </Wrapper>
         <Stack direction={"row"} spacing={"12px"} paddingTop={"15px"}>
-          <PostTag text={props.major} color="secondary.main" />
-          <PostTag text={props.subject} color="secondary.main" />
-          <PostTag text={props.tag} color="secondary.main" />
+          <PostTag
+            text={getFirstChar(props.major)}
+            color={props.tagColor ? props.tagColor : "secondary.main"}
+            link={toSlug(props.major, true)}
+          />
+          <PostTag
+            text={props.subject}
+            color={props.tagColor ? props.tagColor : "secondary.main"}
+            link={toSlug(props.subject, true)}
+          />
+          <PostTag
+            text={props.tag}
+            color={props.tagColor ? props.tagColor : "secondary.main"}
+            link={toSlug(props.tag, true)}
+          />
         </Stack>
       </Box>
     </Link>

@@ -2,7 +2,7 @@ import { Box, Chip, Stack } from "@mui/material";
 import React from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import Text from "../../atoms/Text/Text";
-import { timeConverter } from "../../../utils/StringMethod";
+import { getFirstChar, timeConverter, toSlug } from "../../../utils/StringMethod";
 import { Link } from "react-router-dom";
 
 export default function AccountInfoBar(props) {
@@ -16,22 +16,24 @@ export default function AccountInfoBar(props) {
       height={"60px"}
     >
       <Stack direction={"row"} alignItems={"center"} spacing={1}>
-        <Link to={""} style={{textDecoration: 'none'}}>
-          <Stack direction={"row"} alignItems={"center"} spacing={1}>
-            <UserProfile
-              width="28px"
-              height="28px"
-              src={props.src}
-              alt="User"
-            />
-            <Text
-              fontSize="14px"
-              lineHeight="12px"
-              color={props.color ? props.color : "text.main"}
-            >
-              bởi {props.text}
-            </Text>
-          </Stack>
+        <Link to={""} style={{ textDecoration: "none" }}>
+          <Link to={`/profile/${props.userId}`} style={{textDecoration: "none"}}>
+            <Stack direction={"row"} alignItems={"center"} spacing={1}>
+              <UserProfile
+                width="28px"
+                height="28px"
+                src={props.src}
+                alt="User"
+              />
+              <Text
+                fontSize="14px"
+                lineHeight="12px"
+                color={props.color ? props.color : "text.main"}
+              >
+                bởi {props.text}
+              </Text>
+            </Stack>
+          </Link>
         </Link>
         <Text
           fontSize="20px"
@@ -49,24 +51,30 @@ export default function AccountInfoBar(props) {
         </Text>
       </Stack>
       <Stack direction={"row"} spacing={1}>
-        <Link to={""}>
-          <Chip
-            sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
-            label={props.major}
-          />
-        </Link>
-        <Link to={""}>
-          <Chip
-            sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
-            label={props.subject}
-          />
-        </Link>
-        <Link to={""}>
-          <Chip
-            sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
-            label={props.tag}
-          />
-        </Link>
+        {props.major && (
+          <Link to={`/${toSlug(props.major, true)}`}>
+            <Chip
+              sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
+              label={getFirstChar(props.major)}
+            />
+          </Link>
+        )}
+        {props.subject && (
+          <Link to={`/${toSlug(props.subject, true)}`}>
+            <Chip
+              sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
+              label={props.subject}
+            />
+          </Link>
+        )}
+        {props.tag && (
+          <Link to={`/${toSlug(props.tag, true)}`}>
+            <Chip
+              sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
+              label={props.tag}
+            />
+          </Link>
+        )}
       </Stack>
     </Stack>
   );

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 
 import React from "react";
 export default function UserProfile({ ...props }) {
@@ -19,7 +19,7 @@ export default function UserProfile({ ...props }) {
       cursor: "pointer",
     },
     src: props.src ?? "../assets/img/blank.png",
-    alt: props.alt
+    alt: props.alt,
   };
   return (
     <Box {...configContainer}>
