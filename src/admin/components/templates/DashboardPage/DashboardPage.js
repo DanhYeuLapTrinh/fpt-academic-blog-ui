@@ -4,23 +4,22 @@ import AppWidgetSummary from "../../molecules/GetSummary/GetSummary";
 
 import { Grid, Container, Typography } from "@mui/material";
 
-import axios from "axios";
+import { useTheme } from "@mui/material/styles";
 
 import useAuth from "../../../../user/hooks/useAuth";
 
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 function DashboardPage() {
-  const [dataDashboard, setDataDashboard] = useState(null);
-
   const auth = useAuth();
-
   const username = auth?.user;
+  const axiosPrivate = useAxiosPrivate();
+  const [data, setData] = useState(null);
 
   useEffect(() => {
-    axios
+    axiosPrivate
       .get("https://6545c4e4fe036a2fa954c60c.mockapi.io/dashboard")
       .then((res) => {
-        setDataDashboard(res.data);
-        console.log(res.data);
+        setData(res.data);
       });
   }, []);
 
@@ -31,12 +30,12 @@ function DashboardPage() {
       </Typography>
 
       <Grid container spacing={3}>
-        {dataDashboard !== null && (
+        {data !== null && data.length > 0 && (
           <>
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
                 title="Số lượng bài viết"
-                total={dataDashboard[0].totalPost}
+                total={data[0].totalPost}
                 icon={"iconoir:post-solid"}
               />
             </Grid>
@@ -44,7 +43,7 @@ function DashboardPage() {
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
                 title="Số lượng người dùng"
-                total={dataDashboard[0].totalUser}
+                total={data[0].totalUser}
                 color="info"
                 icon={"mdi:user"}
               />
@@ -53,7 +52,7 @@ function DashboardPage() {
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
                 title="Tổng số truy cập"
-                total={dataDashboard[0].totalAccess}
+                total={data[0].totalAccess}
                 color="success"
                 icon={"icon-park-solid:connect"}
               />
@@ -62,7 +61,7 @@ function DashboardPage() {
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
                 title="Số lượng báo cáo"
-                total={dataDashboard[0].totalReport}
+                total={data[0].totalReport}
                 color="error"
                 icon={"ic:round-report"}
               />
