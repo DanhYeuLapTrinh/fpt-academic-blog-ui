@@ -18,7 +18,7 @@ export default function ViewAPost(props) {
   const [clicked, setClicked] = useState(false);
   return (
     <Container>
-      <MyBread input={props.data?.category} separator={<KeyboardDoubleArrowRightIcon sx={{width: "16px"}}/>}/>
+      <MyBread input={props.data?.category} tag= {props.data?.tag}separator={<KeyboardDoubleArrowRightIcon sx={{width: "16px"}}/>}/>
       <Text m="5px 0 20px">
         <p style={{ fontSize: "40px", lineHeight: "50px", fontWeight: "500" }}>
           {props.data?.title}

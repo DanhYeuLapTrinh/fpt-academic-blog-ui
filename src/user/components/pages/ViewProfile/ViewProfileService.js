@@ -5,24 +5,32 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 export default function ViewProfileService() {
   const { id } = useParams();
+  const profileID = Number(id);
   const axiosPrivate = useAxiosPrivate();
   const [user, setUser] = useState({});
+  window.scrollTo(0, 0);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await axiosPrivate.get(
+        let response = await axiosPrivate.post(
           process.env.REACT_APP_VIEW_PROFILE,
           {
-            userId: id,
+            userId: profileID,
           }
         );
-        if(response?.status === 200) {
+        if (response?.status === 200) {
           setUser(response?.data);
-          console.log(response?.data)
         }
       } catch (error) {}
     };
     fetchData();
   }, []);
-  return <ViewProfile />;
+  return (
+    <ViewProfile
+      url={user?.coverURL}
+      height="218px"
+      avatarURL={user?.profileUrl}
+      accountName={user?.fullname}
+    />
+  );
 }

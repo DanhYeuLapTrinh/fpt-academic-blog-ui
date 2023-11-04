@@ -50,10 +50,11 @@ export default function LatestPostSection(props) {
               color="secondary.main"
               authorColor="secondary.main"
               tagColor="secondary.main"
-              major={getFirstChar(item?.category[0])}
+              major={item?.category[0]}
               subject={item?.category[1]}
               tag={item?.tag}
               slug={item?.slug}
+              userId={item?.userId}
               small={true}
               h="155px"
               boxHeight="275px"

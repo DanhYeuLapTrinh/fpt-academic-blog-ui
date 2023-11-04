@@ -35,11 +35,12 @@ export default function RewardedPostList() {
                     time={item?.dateOfPost}
                     avatar={item?.avatarURL}
                     label={item?.accountName}
-                    major={getFirstChar(item?.category[0])}
+                    major={item?.category[0]}
                     subject={item?.category[1]}
                     tag={item?.tag}
                     isRewarded={item?.is_rewarded}
                     slug={"/view/" + item.slug}
+                    userId={item?.userId}
                   />
                   {index < 4 && (
                     <Divider sx={{ width: "100%" }} orientation="horizontal" />

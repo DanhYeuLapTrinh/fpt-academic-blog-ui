@@ -19,9 +19,10 @@ export default function ViewPendingPost(props) {
         color="secondary.main"
         text={props.data?.accountName}
         time={props.data?.dateOfPost}
-        major={getFirstChar(props.data?.category[0])}
+        major={props.data?.category[0]}
         subject={props.data?.category[1]}
         tag={props.data?.tag}
+        userId={props.data?.userId}
       />
       <div className={styles.contentWrapper}>
         <Text>

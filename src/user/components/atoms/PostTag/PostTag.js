@@ -7,10 +7,10 @@ export default function PostTag(props) {
     fontSize: props.fontSize ? props.fontSize : "12px",
     color: props.color,
     fontWeight: "600",
-    ...props
+    ...props,
   };
   return (
-    <Link to="#" style={{ textDecoration: "none" }}>
+    <Link to={`/${props.link}`} style={{ textDecoration: "none" }}>
       <Text {...configTag}>#{props.text}</Text>
     </Link>
   );

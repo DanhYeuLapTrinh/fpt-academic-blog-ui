@@ -17,11 +17,12 @@ export default function RewardedPostTop(props) {
           time={props.rewardedPosts[0]?.dateOfPost}
           postTitle={props.rewardedPosts[0]?.title}
           description={props.rewardedPosts[0]?.description}
-          major={getFirstChar(props.rewardedPosts[0]?.category[0])}
+          major={props.rewardedPosts[0]?.category[0]}
           subject={props.rewardedPosts[0]?.category[1]}
           tag={props.rewardedPosts[0]?.tag}
           isRewarded={props.rewardedPosts[0]?.is_rewarded}
           slug={props.rewardedPosts[0]?.slug}
+          userId={props.rewardedPosts[0]?.userId}
           height="430px"
           clamp="3"
           title="32px"

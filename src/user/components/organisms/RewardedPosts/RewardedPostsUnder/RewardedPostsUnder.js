@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, IconButton, Stack } from "@mui/material";
 import React from "react";
 import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
 import Text from "../../../atoms/Text/Text";
@@ -6,12 +6,15 @@ import Author from "../../../molecules/Author/Author";
 import PostTag from "../../../atoms/PostTag/PostTag";
 import Wrapper from "../../../atoms/Wrapper/Wrapper";
 import { Link } from "react-router-dom";
-
+import { Icon } from "@iconify/react";
+import LecturerMenuService from "../../LecturerMenu/LecturerMenuService";
+import { getFirstChar, toSlug } from "../../../../utils/StringMethod";
+import useManagePost from "../../../../hooks/useManagePost";
 export default function RewardedPostsUnder(props) {
   return (
-    // <Link to={`${props?.slug}`} style={{ textDecoration: "none" }}>
-      <div style={{ width: "100%", padding: "20px 0" }}>
-        <Stack direction={"row"}>
+    <div style={{ width: "100%", padding: "20px 0" }}>
+      <Stack direction={"row"}>
+        <Link to={`${props?.slug}`} style={{ textDecoration: "none" }}>
           <Box
             sx={{
               backgroundImage: `url(${props.url})`,
@@ -33,13 +36,18 @@ export default function RewardedPostsUnder(props) {
               />
             )}
           </Box>
-          <Box sx={{ width: "calc(100% - 265px)", p: "0px 20px" }}>
-            <Stack height={"240px"} justifyContent={"space-evenly"}>
+        </Link>
+        <Box sx={{ width: "calc(100% - 265px)", p: "0px 20px" }}>
+          <Stack height={"240px"} justifyContent={"space-evenly"}>
+            <Link to={`${props?.slug}`} style={{ textDecoration: "none" }}>
               <Wrapper WebkitLineClamp="2">
                 <Text fontSize="24px" lineHeight="30px">
                   {props.title}
                 </Text>
               </Wrapper>
+            </Link>
+            {props.approve && <LecturerMenuService isRewarded={props.isRewarded} postId={props.postId}/>}
+            <Link to={`${props?.slug}`} style={{ textDecoration: "none" }}>
               <Box
                 sx={{
                   overflow: "hidden",
@@ -54,22 +62,34 @@ export default function RewardedPostsUnder(props) {
                   {props.description}
                 </Text>
               </Box>
-              <Author
-                time={props.time}
-                src={props.avatar}
-                author={true}
-                text={props.label}
-                onClick={() => console.log('àd')}
+            </Link>
+            <Author
+              time={props.time}
+              src={props.avatar}
+              author={true}
+              text={props.label}
+              profile={props.userId}
+            />
+            <Stack direction={"row"} spacing={"12px"} paddingTop={"5px"}>
+              <PostTag
+                color="primary.main"
+                text={getFirstChar(props.major)}
+                link={toSlug(props.major, true)}
               />
-              <Stack direction={"row"} spacing={"12px"} paddingTop={"5px"}>
-                <PostTag color="primary.main" text={props.major} />
-                <PostTag color="primary.main" text={props.subject} />
-                <PostTag color="primary.main" text={props.tag} />
-              </Stack>
+              <PostTag
+                color="primary.main"
+                text={props.subject}
+                link={toSlug(props.subject, true)}
+              />
+              <PostTag
+                color="primary.main"
+                text={props.tag}
+                link={toSlug(props.tag, true)}
+              />
             </Stack>
-          </Box>
-        </Stack>
-      </div>
-    // </Link>
+          </Stack>
+        </Box>
+      </Stack>
+    </div>
   );
 }

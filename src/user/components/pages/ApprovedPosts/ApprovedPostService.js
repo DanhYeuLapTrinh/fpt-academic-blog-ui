@@ -14,6 +14,8 @@ export default function ApprovedPostService() {
     setSort,
     approvedAmount,
     setApprovedAmount,
+    isRewarded,
+    setIsRewarded,
   } = useManagePost();
   const { isLoading, setIsLoading } = useHome();
   let sortedApprove = sortByPropertyName(approvedPosts, "", "postId");
@@ -42,6 +44,7 @@ export default function ApprovedPostService() {
       sort={sort}
       setSort={setSort}
       approvedAmount={approvedAmount}
+      setIsRewarded={setIsRewarded}
     />
   );
 }

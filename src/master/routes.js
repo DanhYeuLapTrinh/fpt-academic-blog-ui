@@ -22,6 +22,7 @@ import HomeService from "../user/components/pages/Home/HomeService";
 import ViewAPostService from "../user/components/pages/ViewAPost/ViewAPost/ViewAPostService";
 import ApprovedPostService from "../user/components/pages/ApprovedPosts/ApprovedPostService";
 import ViewProfileService from "../user/components/pages/ViewProfile/ViewProfileService";
+import TagsPageService from "../user/components/pages/TagsPage/TagsPageService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -39,6 +40,8 @@ const loggedInUserRoutes = [
   { path: "/write", component: WriteService },
   { path: "/view/:slug", component: ViewAPostService },
   { path: "/profile/:id", component: ViewProfileService },
+  { path: "/:tag", component: TagsPageService },
+
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },

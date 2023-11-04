@@ -38,13 +38,10 @@ export default function LoginForm() {
   const handleSubmit = async (values, { setFieldError }) => {
     try {
       setIsLoading(true);
-      const response = await axios.post(
-        process.env.REACT_APP_LOGIN_API,
-        JSON.stringify({
-          username: values.username,
-          password: values.password,
-        })
-      );
+      const response = await axios.post(process.env.REACT_APP_LOGIN_API, {
+        username: values.username,
+        password: values.password,
+      });
       const auth = {
         id: response?.data?.id,
         user: response?.data?.username,

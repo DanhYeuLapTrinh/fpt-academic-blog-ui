@@ -13,7 +13,7 @@ export default function ContentField({ ...props }) {
         sx={{
           position: "absolute",
           left: "800px",
-          top: "12px",
+          top: "40px",
           zIndex: 999,
           backgroundColor: "lightText.main",
           p: "3px 8px",
