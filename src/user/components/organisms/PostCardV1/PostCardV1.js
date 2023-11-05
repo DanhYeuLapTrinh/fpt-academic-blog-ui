@@ -6,6 +6,7 @@ import { Box, Stack } from "@mui/material";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
 import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
 import { Link } from "react-router-dom";
+import { getFirstChar, toSlug } from "../../../utils/StringMethod";
 export default function PostCardV1(props) {
   return (
     <Link to={`/view/${props.slug}`} style={{textDecoration: "none"}}>
@@ -42,6 +43,7 @@ export default function PostCardV1(props) {
             text={props.label}
             color={props.authorColor}
             time={props.time}
+            profile={props.userId}
           />
         </Link>
         <Wrapper WebkitLineClamp="2">
@@ -62,16 +64,19 @@ export default function PostCardV1(props) {
         )}
         <Stack direction={"row"} spacing={"12px"}>
           <PostTag
-            text={props.major}
+            text={getFirstChar(props.major)}
             color={props.tagColor ? props.tagColor : "primary.main"}
+            link={toSlug(props.major, true)}
           />
           <PostTag
             text={props.subject}
             color={props.tagColor ? props.tagColor : "primary.main"}
+            link={toSlug(props.subject, true)}
           />
           <PostTag
             text={props.tag}
             color={props.tagColor ? props.tagColor : "primary.main"}
+            link={toSlug(props.tag, true)}
           />
         </Stack>
       </Stack>

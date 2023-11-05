@@ -24,12 +24,13 @@ export default function TrendingList(props) {
             time={props?.trendingPosts[1]?.dateOfPost}
             postTitle={props?.trendingPosts[1]?.title}
             description={props?.trendingPosts[1]?.description}
-            major={getFirstChar(props?.trendingPosts[1]?.category[0])}
+            major={props?.trendingPosts[1]?.category[0]}
             subject={props?.trendingPosts[1]?.category[1]}
             tag={props?.trendingPosts[1]?.tag}
             isRewarded={props?.trendingPosts[1]?.is_rewarded}
             small={true}
             slug={props?.trendingPosts[1]?.slug}
+            userId={props?.trendingPosts[1]?.userId}
             boxHeight="492px"
             hasDescription={true}
             title="21px"
@@ -38,7 +39,7 @@ export default function TrendingList(props) {
       </Grid2>
       <Grid2 item xs={5}>
         {!props.trendingPosts ? (
-          <PostCardV2Skeleton height={492}/>
+          <PostCardV2Skeleton height={492} />
         ) : (
           <PostCardV2
             url={props?.trendingPosts[0]?.coverURL}
@@ -47,11 +48,12 @@ export default function TrendingList(props) {
             time={props?.trendingPosts[0]?.dateOfPost}
             postTitle={props?.trendingPosts[0]?.title}
             description={props?.trendingPosts[0]?.description}
-            major={getFirstChar(props?.trendingPosts[0]?.category[0])}
+            major={props?.trendingPosts[0]?.category[0]}
             subject={props?.trendingPosts[0]?.category[1]}
             tag={props?.trendingPosts[0]?.tag}
             isRewarded={props?.trendingPosts[0]?.is_rewarded}
             slug={props?.trendingPosts[0]?.slug}
+            userId={props?.trendingPosts[0]?.userId}
             small={true}
             height="492px"
             clamp="4"
@@ -72,10 +74,12 @@ export default function TrendingList(props) {
                 time={props?.trendingPosts[2]?.dateOfPost}
                 postTitle={props?.trendingPosts[2]?.title}
                 description={props?.trendingPosts[2]?.description}
-                major={getFirstChar(props?.trendingPosts[2]?.category[0])}
+                major={props?.trendingPosts[2]?.category[0]}
                 subject={props?.trendingPosts[2]?.category[1]}
+                isRewarded={props?.trendingPosts[2]?.is_rewarded}
                 tag={props?.trendingPosts[2]?.tag}
                 slug={props?.trendingPosts[2]?.slug}
+                userId={props?.trendingPosts[2]?.userId}
                 h="130px"
                 boxHeight="236px"
                 title="16px"
@@ -94,10 +98,12 @@ export default function TrendingList(props) {
                 time={props?.trendingPosts[3]?.dateOfPost}
                 postTitle={props?.trendingPosts[3]?.title}
                 description={props?.trendingPosts[3]?.description}
-                major={getFirstChar(props?.trendingPosts[3]?.category[0])}
+                major={props?.trendingPosts[3]?.category[0]}
                 subject={props?.trendingPosts[3]?.category[1]}
+                isRewarded={props?.trendingPosts[3]?.is_rewarded}
                 tag={props?.trendingPosts[3]?.tag}
                 slug={props?.trendingPosts[3]?.slug}
+                userId={props?.trendingPosts[3]?.userId}
                 h="130px"
                 boxHeight="236px"
                 title="16px"

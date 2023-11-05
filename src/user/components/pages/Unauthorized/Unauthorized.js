@@ -24,13 +24,17 @@ export default function Unauthorized() {
     >
       <Stack alignItems={"center"} sx={{ width: "450px" }} spacing={3}>
         <Stack alignItems={"center"}>
-          <img src="../assets/img/404-not-found.png" alt="404-not-found" width={'100%'}/>
+          <img
+            src="../assets/img/404-not-found.png"
+            alt="404-not-found"
+            width={"100%"}
+          />
           <Text fontSize="20px" fontWeight="600">
             Bạn hiện không xem được nội dung này
           </Text>
           <Text align="center" fontSize="16px" fontWeight="400">
-            Lỗi này thường do người sở hữu chỉ cho phép người có thẩm quyền để
-            truy cập hoặc nội dung đã bị xóa.
+            Lỗi này thường do người sở hữu chỉ cho phép người có thẩm quyền truy
+            cập hoặc nội dung đã bị xóa.
           </Text>
         </Stack>
         <Stack alignItems={"center"} spacing={1}>
