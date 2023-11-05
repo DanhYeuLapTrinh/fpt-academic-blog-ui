@@ -70,6 +70,7 @@ function ViewCategoriesList({
               button
               sx={{
                 cursor: "pointer",
+                borderRadius: "10px 0 0 10px",
                 backgroundColor:
                   selectedCategory === category ? "primary.light" : "inherit",
               }}
@@ -120,6 +121,7 @@ function ViewCategoriesList({
                   button
                   sx={{
                     cursor: "pointer",
+                    borderRadius: "10px 0 0 10px",
                     backgroundColor:
                       selectedSemester === semester
                         ? "primary.light"
@@ -154,6 +156,7 @@ function ViewCategoriesList({
                 <ListItem
                   key={subject.id}
                   sx={{
+                    borderRadius: "10px 0 0 10px",
                     display: "flex",
                     alignItems: "center",
                     marginBottom: 2,

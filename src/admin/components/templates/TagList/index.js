@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { TablePagination } from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import DeleteConfirm from "../../molecules/Tag/DeleteConfirm";
 import AddTagForm from "../../molecules/Tag/AddTagForm";
+import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
+
 import { DataGrid } from "@mui/x-data-grid";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import "./styles.scss";
 function TagList() {
   const [tagData, setTagData] = useState([]);
@@ -156,6 +158,9 @@ function TagList() {
             outline: "none !important",
           },
         }}
+        slots={{
+          noRowsOverlay: CustomNoRowsOverlay,
+        }}
         rows={tagData}
         columns={columns}
         initialState={{
@@ -166,6 +171,7 @@ function TagList() {
           },
         }}
         pageSizeOptions={[5, 10, 25]}
+        autoHeight
         disableRowSelectionOnClick
       />
 

@@ -41,8 +41,8 @@ export default function AppWidgetSummary({
         py: 5,
         boxShadow: 0,
         textAlign: "center",
-        color: (theme) => theme.palette[color].darker,
         bgcolor: (theme) => theme.palette[color].lighter,
+        color: (theme) => theme.palette[color].darker,
         ...sx,
       }}
       {...other}

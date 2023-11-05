@@ -70,8 +70,12 @@ function DashboardPage() {
           </>
         )}
 
-        <SimpleCharts />
-        <BasicPie />
+        <Grid item xs={12} md={6} lg={8}>
+          <SimpleCharts title="Lượng truy cập trang theo tuần" />
+        </Grid>
+        <Grid item xs={12} md={6} lg={4}>
+          <BasicPie title="Trình duyệt truy cập" />
+        </Grid>
       </Grid>
     </Container>
   );

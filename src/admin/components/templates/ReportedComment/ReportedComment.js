@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import ConfirmDialog from "../../molecules/ReportedComment/ConfirmDialog";
+import DismissDialog from "../../molecules/ReportedComment/DismissDialog";
 
 import { DataGrid } from "@mui/x-data-grid";
 import { Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ReportedComment() {
   const axiosPrivate = useAxiosPrivate();
 
   const [reportedComments, setReportedComments] = useState([]);
 
-  const [open, setOpen] = useState(false);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [dismissDialogOpen, setDismissDialogOpen] = useState(false);
 
   const [selectedId, setSelectedId] = useState(null);
 
@@ -33,29 +36,51 @@ function ReportedComment() {
 
   //-------------------------------------------------------------------------
 
-  const openConfirm = (id) => {
+  const openConfirm = async (id) => {
     setSelectedId(id);
-    setOpen(true);
+    setConfirmDialogOpen(true);
+  };
+
+  const openDismiss = async (id) => {
+    setSelectedId(id);
+    setDismissDialogOpen(true);
   };
 
   //-------------------------------------------------------------------------
 
   const handleConfirm = async () => {
     await axiosPrivate
-      .post(process.env.REACT_APP_CONFIRM_REPORT_COMMENT, {
+      .post(process.env.REACT_APP_DELETE_REPORTED_COMMENT, {
         reportedCommentId: selectedId,
       })
       .then((res) => {
-        toast.success("Xóa bình luận thành công");
         fetchData();
+        toast.success("Xóa bình luận thành công");
+        setConfirmDialogOpen(false);
       })
       .catch((err) => {
         toast.error("Xóa bình luận thất thất bại");
       });
   };
 
+  const handleDismiss = async () => {
+    await axiosPrivate
+      .post("admin/dismiss-reported-comment", {
+        reportedCommentId: selectedId,
+      })
+      .then((res) => {
+        fetchData();
+        toast.success("Hủy báo cáo bình luận thành công");
+        setDismissDialogOpen(false);
+      })
+      .catch((err) => {
+        toast.error("Hủy báo cáo bình luận thất thất bại");
+      });
+  };
+
   const handleCancel = () => {
-    setOpen(false);
+    setConfirmDialogOpen(false);
+    setDismissDialogOpen(false);
   };
 
   const columns = [
@@ -82,6 +107,7 @@ function ReportedComment() {
                 color: "#f44336",
                 cursor: "pointer",
               }}
+              onClick={() => openDismiss(params.row.reportedCommentId)}
             />
           </>
         );
@@ -131,12 +157,31 @@ function ReportedComment() {
       />
 
       <ConfirmDialog
-        open={open}
+        open={confirmDialogOpen}
         onConfirm={handleConfirm}
         onCancel={handleCancel}
         title="Xác nhận"
-        content="Bạn có chắc chắn muốn xóa bình luận này?"
+        content={
+          <span>
+            Bạn có chắc chắn <span style={{ fontWeight: "bolder" }}>XÓA</span>{" "}
+            bình luận này?
+          </span>
+        }
       />
+
+      <ConfirmDialog
+        open={dismissDialogOpen}
+        onConfirm={handleDismiss}
+        onCancel={handleCancel}
+        title="Xác nhận"
+        content={
+          <span>
+            Bạn có chắc chắn <span style={{ fontWeight: "bolder" }}>HỦY</span>{" "}
+            báo cáo bình luận này?
+          </span>
+        }
+      />
+      <ToastContainer position="top-right" autoClose="3000" />
     </>
   );
 }
