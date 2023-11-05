@@ -21,7 +21,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import { Grid } from "@mui/material";
+import { Grid, LinearProgress } from "@mui/material";
 
 import "./styles.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -51,11 +51,32 @@ function UserResultList() {
 
   const [originalRole, setOriginalRole] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
+  const [noRows, setNoRows] = useState(false);
+
   const [banStatus, setBanStatus] = useState(
     JSON.parse(localStorage.getItem("banStatus")) || {}
   );
 
   //----------------------------------------------------------------------------
+
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await axiosPrivate.get(process.env.REACT_APP_USER_LIST);
+    if (!records.length) {
+      setNoRows(true);
+    }
+
+    setData(res.data);
+    setRecords(res.data);
+    setLoading(false);
+    console.log(res.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("banStatus", JSON.stringify(banStatus));
@@ -66,14 +87,6 @@ function UserResultList() {
     if (storedIsMuted) {
       setIsMuted(storedIsMuted);
     }
-  }, []);
-
-  useEffect(() => {
-    axiosPrivate.get(process.env.REACT_APP_USER_LIST).then((res) => {
-      setData(res.data);
-      setRecords(res.data);
-      console.log(res.data);
-    });
   }, []);
 
   useEffect(() => {
@@ -362,6 +375,7 @@ function UserResultList() {
       </div>
 
       <DataGrid
+        loading={loading}
         sx={{
           "& .MuiDataGrid-cell": {
             display: "flex",
@@ -374,7 +388,8 @@ function UserResultList() {
           },
         }}
         slots={{
-          noRowsOverlay: CustomNoRowsOverlay,
+          noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+          loadingOverlay: () => loading && <LinearProgress />,
         }}
         rows={records}
         rowHeight={75}
