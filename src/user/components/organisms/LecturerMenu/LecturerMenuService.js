@@ -22,15 +22,32 @@ export default function LecturerMenuService(props) {
             postId: props.postId,
           });
           if (response) {
-            
+            setApprovedPosts((prev) => {
+              let newPosts = [...prev];
+              let index = newPosts.findIndex(
+                (item) => item.postId === props.postId
+              );
+              newPosts[index].is_rewarded = false;
+              return newPosts;
+            });
           }
         };
         removeReward();
       } else {
         const addReward = async () => {
-          await axiosPrivate.post("lecturer/reward/add", {
+          let response = await axiosPrivate.post("lecturer/reward/add", {
             postId: props.postId,
           });
+          if (response) {
+            setApprovedPosts((prev) => {
+              let newPosts = [...prev];
+              let index = newPosts.findIndex(
+                (item) => item.postId === props.postId
+              );
+              newPosts[index].is_rewarded = true;
+              return newPosts;
+            });
+          }
         };
         addReward();
       }

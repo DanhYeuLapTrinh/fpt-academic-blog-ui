@@ -46,22 +46,18 @@ export default function RewardedPostsUnder(props) {
                 </Text>
               </Wrapper>
             </Link>
-            {props.approve && <LecturerMenuService isRewarded={props.isRewarded} postId={props.postId}/>}
+            {props.approve && (
+              <LecturerMenuService
+                isRewarded={props.isRewarded}
+                postId={props.postId}
+              />
+            )}
             <Link to={`${props?.slug}`} style={{ textDecoration: "none" }}>
-              <Box
-                sx={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  display: "-webkit-box",
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: "vertical",
-                  paddingTop: "5px",
-                }}
-              >
+              <Wrapper WebkitLineClamp="3">
                 <Text fontWeight="400" fontSize="14px">
                   {props.description}
                 </Text>
-              </Box>
+              </Wrapper>
             </Link>
             <Author
               time={props.time}

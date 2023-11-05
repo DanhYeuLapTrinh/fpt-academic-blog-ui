@@ -14,8 +14,8 @@ export default function RewardBadge(props) {
         display: "flex",
         alignItems: "center",
         justifyContent: props.small ? "center" : "space-between",
-        width: props.small ? "40px" : "140px",
-        height: props.small ? "40px" : "42px",
+        width: props.small ? "34px" : "140px",
+        height: props.small ? "34px" : "42px",
         p: "8px 10px",
         ...configBadge,
       }}

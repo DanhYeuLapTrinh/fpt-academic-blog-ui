@@ -51,7 +51,6 @@ export default function Write({ ...props }) {
           onClick={props.handleSubmit}
           sx={{ padding: "10px" }}
           variant="contained"
-          disabled={props.disabled}
         >
           Gửi bài
         </Button>

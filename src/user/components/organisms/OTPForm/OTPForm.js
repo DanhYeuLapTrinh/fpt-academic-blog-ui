@@ -13,7 +13,7 @@ export default function OTPForm() {
   const { email } = useContext(LoginContext);
   const [timer, setTimer] = useState(30);
   const [disabled, setDisabled] = useState(true);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     let interval = setInterval(() => {
       setTimer((lastTimerCount) => {
@@ -37,35 +37,36 @@ export default function OTPForm() {
         })
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
   const handleSubmit = async (values, { setFieldError }) => {
-    if (values.otp) {
-      try {
-        const response = await axios.post(
-          process.env.REACT_APP_VERIFY_CODE,
-          JSON.stringify({
-            email: email,
-            code: values.otp,
-          }),   
-        );
-        localStorage.setItem("auth", JSON.stringify({token : response?.data?.token}))
-        values.otp = ""
-        navigate("/recover-password")
-      } catch (error) {
-        if (!error?.response) {
-          console.log("No server response");
-        } else if (error.response?.status === 400) {
-          console.log("Im not understand");
-        } else if (error.response?.status === 401) {
-          setFieldError("otp", "Sai mã xác nhận");
-          values.otp = "";
-        } else {
-          setFieldError("otp", "Có lỗi trong quá trình xử lý");
-          values.otp = "";
-        }
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_VERIFY_CODE,
+        JSON.stringify({
+          email: email,
+          code: values.otp,
+        })
+      );
+      localStorage.setItem(
+        "auth",
+        JSON.stringify({ token: response?.data?.token })
+      );
+      values.otp = "";
+      navigate("/recover-password");
+    } catch (error) {
+      if (!error?.response) {
+        console.log("No server response");
+      } else if (error.response?.status === 400) {
+        console.log("Im not understand");
+      } else if (error.response?.status === 401) {
+        setFieldError("otp", "Sai mã xác nhận");
+        values.otp = "";
+      } else {
+        setFieldError("otp", "Có lỗi trong quá trình xử lý");
+        values.otp = "";
       }
     }
   };
@@ -79,27 +80,24 @@ export default function OTPForm() {
   });
   return (
     <Box sx={{ maxWidth: "360px" }}>
-      <Box sx={{marginBottom: '38px'}}>
+      <Box sx={{ marginBottom: "38px" }}>
         <Text
           fontWeight="500"
           fontSize="32px"
           color="text.main"
-          marginBottom='5px'
+          marginBottom="5px"
         >
           Nhập mã xác nhận
         </Text>
-        <Text
-          fontWeight="400"
-          fontSize="13px"
-          color="text.main"
-        >
-          Mã xác nhận đã được gửi đến <span style={{fontWeight: '600'}}>{email}</span>
+        <Text fontWeight="400" fontSize="13px" color="text.main">
+          Mã xác nhận đã được gửi đến{" "}
+          <span style={{ fontWeight: "600" }}>{email}</span>
         </Text>
       </Box>
       <Formik
         initialValues={{ ...INITIAL_FORM_STATE }}
         validationSchema={FORM_VALIDATION}
-        onSubmit={ handleSubmit}
+        onSubmit={handleSubmit}
       >
         <Form>
           <FormInput

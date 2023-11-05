@@ -20,7 +20,6 @@ export default function ViewPendingPostService() {
   };
   const handleGiveReward = (e) => {
     setIsRewarded(e.target.checked);
-    console.log(isRewaded);
   };
   const handleClickOpen = () => {
     setOpen(true);

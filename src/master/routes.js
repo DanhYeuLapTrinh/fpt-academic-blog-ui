@@ -46,7 +46,7 @@ const loggedInUserRoutes = [
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },
   { path: "/pending-posts/:slug", component: ViewPendingPostService },
-  { path: "/view", component: ApprovedPostService },
+  { path: "/approved-posts", component: ApprovedPostService },
 ];
 
 const mentorRoutes = [

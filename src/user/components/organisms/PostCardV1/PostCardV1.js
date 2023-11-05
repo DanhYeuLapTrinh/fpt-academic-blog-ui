@@ -35,8 +35,6 @@ export default function PostCardV1(props) {
             />
           )}
         </Box>
-  
-        <Link to={""} style={{textDecoration: "none"}}>
           <Author
             src={props.src}
             author={true}
@@ -45,7 +43,6 @@ export default function PostCardV1(props) {
             time={props.time}
             profile={props.userId}
           />
-        </Link>
         <Wrapper WebkitLineClamp="2">
           <Text
             fontSize={props.title}

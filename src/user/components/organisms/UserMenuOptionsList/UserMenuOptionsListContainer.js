@@ -18,12 +18,17 @@ export default function UserMenuOptionsListContainer() {
     setAnchorEl(null);
   };
   const handleLogout = async () => {
-    const response = await axios.post(process.env.REACT_APP_LOGOUT_API, {
-      refreshToken: auth?.refreshToken,
-    });
-    if (response) {
-      localStorage.removeItem("auth");
-      navigate("/login", { replace: true });
+    try {
+      const response = await axios.post(process.env.REACT_APP_LOGOUT_API, {
+        refreshToken: auth?.refreshToken,
+      });
+      if (response) {
+        localStorage.removeItem("auth");
+        navigate("/login", { replace: true });
+      }
+    } catch (error) {
+      console.log(error);
+      navigate("/login", { replace: true })
     }
   };
   const filteredOption = UserMenuOptionsListData.filter((item) => {

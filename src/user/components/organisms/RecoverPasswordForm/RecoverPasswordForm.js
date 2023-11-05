@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 export default function RecoverPasswordForm() {
-  const axiosPrivate = useAxiosPrivate()
+  const axiosPrivate = useAxiosPrivate();
   const { email } = useContext(LoginContext);
   const [showPassword, setShowPassword] = useState(false);
   const handleClick = () => {
@@ -29,37 +29,34 @@ export default function RecoverPasswordForm() {
   });
 
   const handleSubmit = async (values, { setFieldError }) => {
-      if (values.password && values.confirm) {
-        try {
-          if (values.password !== values.confirm) throw new Error();
-          await axiosPrivate.post(
-            process.env.REACT_APP_RESET_PASSWORD,
-            JSON.stringify({
-              email: email,
-              password: values.password,
-            }),
-          );
-          values.password = "";
-          values.confirm = "";
-          navigate("/login");
-        } catch (error) {
-          if (values.password !== values.confirm) {
-            setFieldError("confirm", "Mật khẩu không trùng nhau");
-            values.confirm = "";
-          } else if (!error?.response) {
-            setFieldError("confirm", "Không thể kết nối với sever");
-            values.password = "";
-            values.confirm = "";
-          } else if (error.response?.status === 401) {
-            setFieldError("confirm", "Bạn chưa nhập email");
-            
-          } else {
-            setFieldError("confirm", "Có lỗi trong quá trình xử lý");
-            values.password = "";
-            values.confirm = "";
-          }
-        }
+    try {
+      if (values.password !== values.confirm) throw new Error();
+      await axiosPrivate.post(
+        process.env.REACT_APP_RESET_PASSWORD,
+        JSON.stringify({
+          email: email,
+          password: values.password,
+        })
+      );
+      values.password = "";
+      values.confirm = "";
+      navigate("/login");
+    } catch (error) {
+      if (values.password !== values.confirm) {
+        setFieldError("confirm", "Mật khẩu không trùng nhau");
+        values.confirm = "";
+      } else if (!error?.response) {
+        setFieldError("confirm", "Không thể kết nối với sever");
+        values.password = "";
+        values.confirm = "";
+      } else if (error.response?.status === 401) {
+        setFieldError("confirm", "Bạn chưa nhập email");
+      } else {
+        setFieldError("confirm", "Có lỗi trong quá trình xử lý");
+        values.password = "";
+        values.confirm = "";
       }
+    }
   };
 
   return (
