@@ -7,10 +7,12 @@ export default function NavList() {
   return (
     <List>
       <Stack direction={"row"} spacing={1}>
-          <Link to={"/"} style={{textDecoration: 'none'}}><NavOption>Trang chủ</NavOption></Link>
-          <NavOption>Bảng tin</NavOption>
-          <NavOption>Tin tức</NavOption>
-          <NavOption>Về chúng tôi</NavOption>
+        <Link to={"/"} style={{ textDecoration: "none" }}>
+          <NavOption padding="10px">Trang chủ</NavOption>
+        </Link>
+        <NavOption padding="10px">Bảng tin</NavOption>
+        <NavOption padding="10px">Tin tức</NavOption>
+        <NavOption padding="10px">Về chúng tôi</NavOption>
       </Stack>
     </List>
   );

@@ -122,7 +122,7 @@ export const timeConverter = (dateString) => {
     return `${Math.floor(secondsPast / 86400)} ngày trước`;
   }
 
-  return date.toLocaleDateString("en-US");
+  return date.toLocaleDateString("en-GB");
 };
 /**
  * Hàm nhận mảng, thứ tự sort và thuộc tính gốc để sort

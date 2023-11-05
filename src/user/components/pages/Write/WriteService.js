@@ -6,7 +6,8 @@ import Write from "./Write";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import useContent from "../../../hooks/useContent";
-
+import { toast } from "react-toastify";
+import { setIn } from "formik";
 export default function WriteService() {
   const { title, contentTiny } =
     JSON.parse(localStorage.getItem("content")) || "";
@@ -43,12 +44,18 @@ export default function WriteService() {
     setTagID,
   } = usePostTag();
   useEffect(() => {
-    localStorage.setItem("content", JSON.stringify({}));
     setTitle(title);
     setContent(content);
     setCharCount(title?.length);
   }, []);
-
+  useEffect(() => {
+    let interval = setInterval(() => {
+      if (!title) {
+        toast.error("Vui lòng nhập tiêu đề hợp lệ");
+      }
+    }, 1000 * 30);
+    return () => clearInterval(interval);
+  }, [title]);
   const handleMajorChange = useCallback((e) => {
     setMajor(e.target.value);
     setSemester();
@@ -68,6 +75,16 @@ export default function WriteService() {
 
   const handleSubmit = useCallback(async () => {
     try {
+      if (!title || !coverURL || !contentTiny || !tagID || !subjectID) {
+        toast.error("Vui lòng điền đầy đủ thông tin");
+        return;
+      } else if (charCount >= 100) {
+        toast.error("Tiêu đề không được dài hơn 100 ký tự");
+        return;
+      } else if (charCount < 30) {
+        toast.error("Tiêu đề quá ngắn");
+        return;
+      }
       let slug = toSlug(title);
       let description = getFirstTagContent(contentTiny);
       let postCoverURL = tag !== "Q&A" ? coverURL : "";
@@ -86,15 +103,18 @@ export default function WriteService() {
           length: wordcount,
         }
       );
-      localStorage.removeItem("content");
-      setTitle("");
-      setFile("");
-      setCoverURL("");
-      window.scrollTo(0, 0);
-      navigate("/", { replace: true });
+      if (response.status === 200) {
+        localStorage.removeItem("content");
+        setTitle("");
+        setFile("");
+        setCoverURL("");
+        window.scrollTo(0, 0);
+        toast.success("Đăng bài thành công");
+        navigate("/", { replace: true });
+      }
     } catch (error) {
       console.log(error);
-      // Phần này xử lý lỗi
+      toast.error("Có lỗi trong quá trình xử lý");
     }
   }, [tagID, subjectID, contentTiny, title, coverURL, tag]);
 
@@ -144,17 +164,6 @@ export default function WriteService() {
       handleMajorChange={handleMajorChange}
       handleSemesterChange={handleSemesterChange}
       handleSubmit={handleSubmit}
-      disabled={
-        !major ||
-        !semester ||
-        !subjectID ||
-        !tagID ||
-        (!coverURL && tag !== "Q&A") ||
-        charCount < 30 ||
-        charCount >= 100 ||
-        !content ||
-        !(wordcount >= 30)
-      }
     />
   );
 }

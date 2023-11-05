@@ -24,13 +24,18 @@ export default function ViewProfileService() {
       } catch (error) {}
     };
     fetchData();
-  }, []);
+  }, [id]);
   return (
     <ViewProfile
       url={user?.coverURL}
       height="218px"
       avatarURL={user?.profileUrl}
       accountName={user?.fullname}
+      numOfPost={user?.numOfPost}
+      numOfFollower={user?.numOfFollower}
+      userStory={user?.userStory}
+      postList={user?.postList}
+      slug={id}
     />
   );
 }

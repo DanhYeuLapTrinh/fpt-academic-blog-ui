@@ -14,13 +14,10 @@ export default function TitleField(props) {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      let content = JSON.parse(localStorage.getItem("content"));
-      if (content) {
-        content.title = title;
-        localStorage.setItem("content", JSON.stringify(content));
-      }
-    }, 3000);
+    let content = JSON.parse(localStorage.getItem("content"));
+    if (!content) content = {};
+    content.title = title;
+    localStorage.setItem("content", JSON.stringify(content));
   }, [title]);
 
   return (
