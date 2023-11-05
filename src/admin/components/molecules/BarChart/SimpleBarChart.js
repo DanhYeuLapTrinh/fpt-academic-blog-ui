@@ -1,23 +1,36 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
-
-export default function SimpleCharts() {
+import { Box, Card, CardHeader } from "@mui/material";
+export default function SimpleCharts(title) {
   return (
-    <BarChart
-      xAxis={[
-        {
-          id: "barCategories",
-          data: ["bar A", "bar B", "bar C"],
-          scaleType: "band",
-        },
-      ]}
-      series={[
-        {
-          data: [2, 5, 3],
-        },
-      ]}
-      width={500}
-      height={300}
-    />
+    <Card>
+      <CardHeader title={title.title} />
+      <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+        <BarChart
+          xAxis={[
+            {
+              id: "barCategories",
+              data: [
+                "Chủ nhật",
+                "Thứ 2",
+                "Thứ 3",
+                "Thứ 4",
+                "Thứ 5",
+                "Thứ 6",
+                "Thứ 7",
+              ],
+              scaleType: "band",
+            },
+          ]}
+          series={[
+            {
+              data: [100, 200, 300, 250, 50, 300, 400],
+            },
+          ]}
+          width={500}
+          height={300}
+        />
+      </Box>
+    </Card>
   );
 }

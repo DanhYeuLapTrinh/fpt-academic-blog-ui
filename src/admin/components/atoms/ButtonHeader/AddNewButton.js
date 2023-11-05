@@ -8,7 +8,7 @@ const AddNewButton = ({ title, data, handleClick }) => {
     <Button
       sx={{
         bgcolor: sharedBgColor,
-        borderRadius: "10px",
+        borderRadius: "20px",
         color: "white",
         height: "55px",
         "&:hover": {

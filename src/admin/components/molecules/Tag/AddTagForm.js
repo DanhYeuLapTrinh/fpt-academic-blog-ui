@@ -26,7 +26,7 @@ function AddTagForm({
           type="text"
           name="tagName"
           fullWidth
-          variant="standard"
+          variant="outlined"
           value={newTagName}
           onChange={data}
         />
@@ -34,6 +34,16 @@ function AddTagForm({
       </DialogContent>
       <DialogActions sx={{ marginTop: "10px" }}>
         <Button
+          sx={{
+            bgcolor: "red",
+            borderRadius: "2rem",
+            height: "2rem",
+            width: "6rem",
+            color: "white",
+            "&:hover": {
+              bgcolor: "red",
+            },
+          }}
           disableFocusRipple
           disableTouchRipple
           disableRipple
@@ -43,14 +53,15 @@ function AddTagForm({
         </Button>
         <Button
           sx={{
-            fontSize: "9px",
-            fontWeight: "bold",
-            bgcolor: "green",
-            height: "30px",
-            width: "50px",
+            bgcolor: "#34D399",
+            borderRadius: "2rem",
+            height: "2rem",
+            width: "6rem",
             color: "white",
-            borderRadius: "5px",
-            "&:hover": { bgcolor: "green" },
+            "&:hover": {
+              bgcolor: "#34D399",
+              opacity: 1,
+            },
           }}
           onClick={handleAddTag}
         >
