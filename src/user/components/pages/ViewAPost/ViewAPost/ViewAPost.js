@@ -40,6 +40,9 @@ export default function ViewAPost(props) {
           time={props.data?.dateOfPost}
           id={props.data?.userId}
           comments={props?.data?.comments.length}
+          isFollowing={props.isFollowing}
+          unfollowAccount={props.unfollowAccount}
+          followAccount={props.followAccount}
           avatarWidth="40px"
           avatarHeight="40px"
           authorSize="16px"

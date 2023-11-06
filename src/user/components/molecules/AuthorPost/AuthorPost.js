@@ -29,11 +29,23 @@ export default function AuthorPost(props) {
             <Button
               sx={{ textTransform: "none", borderRadius: "20px" }}
               size="small"
-              startIcon={<Icon icon="vaadin:plus" width={"14px"} />}
-              variant="contained"
+              onClick={
+                props.isFollowing ? props.unfollowAccount : props.followAccount
+              }
+              startIcon={
+                props.isFollowing ? (
+                  <Icon icon="mingcute:check-fill" width="14" />
+                ) : (
+                  <Icon icon="vaadin:plus" width={"14px"} />
+                )
+              }
+              variant={props.isFollowing ? "contained" : "outlined"}
             >
-              <Text fontSize="12px" color={"secondary.main"}>
-                Theo dõi
+              <Text
+                fontSize="12px"
+                color={props.isFollowing ? "secondary.main" : "primary.main"}
+              >
+                {props.isFollowing ? "Đang theo dõi" : "Theo dõi"}
               </Text>
             </Button>
           ) : (

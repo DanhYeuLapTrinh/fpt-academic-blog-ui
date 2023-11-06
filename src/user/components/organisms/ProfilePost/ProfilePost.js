@@ -49,13 +49,23 @@ export default function ProfilePost(props) {
           <Stack direction={"row"} justifyContent={"space-between"}>
             <Stack direction={"row"} spacing={1}>
               <Text fontSize="12px">Nằm trong: </Text>
-              <PostTag color="primary.main" text={getFirstChar(props.major)} />
-              <PostTag color="primary.main" text={props.subject} />
-              <PostTag color="primary.main" text={props.tag} />
+              <PostTag
+                color="primary.main"
+                text={getFirstChar(props.majorName)}
+                link={`/topic/${props.majorID}`}
+              />
+              <PostTag
+                color="primary.main"
+                text={props.subjectName}
+                link={`/topic/${props.subjectID}`}
+              />
+              <PostTag
+                color="primary.main"
+                text={props.tagName}
+                link={`/tags/${props.tagID}`}
+              />
             </Stack>
-            <Text fontSize="12px">
-              {timeConverter(props.time)}
-            </Text>
+            <Text fontSize="12px">{timeConverter(props.time)}</Text>
           </Stack>
         </Stack>
       </Box>

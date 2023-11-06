@@ -14,6 +14,7 @@ export default function ViewProfile(props) {
   let avatarURL = props.avatarURL ?? "/assets/img/blank.png";
   const { selected } = useProfile();
   const auth = useAuth();
+  console.log(props.isFollowing);
   return (
     <Box>
       <Box sx={{ bgcolor: "secondary.alt" }}>
@@ -86,7 +87,11 @@ export default function ViewProfile(props) {
               {auth.id !== props.userId && (
                 <Stack direction={"row"} justifyContent={"space-between"}>
                   <Button
-                    onClick={props.followAccount}
+                    onClick={
+                      !props.isFollowing
+                        ? props.followAccount
+                        : props.unfollowAccount
+                    }
                     disableFocusRipple
                     disableRipple
                     disableTouchRipple
@@ -95,22 +100,38 @@ export default function ViewProfile(props) {
                       textTransform: "none",
                       borderRadius: "5px",
                       flex: 1,
-                      bgcolor: "lightText.main",
-                      opacity: "0.7",
+                      bgcolor: props.isFollowing
+                        ? "primary.main"
+                        : "lightText.main",
+                      opacity: props.isFollowing ? "1" : "0.7",
                       "&:hover": {
-                        backgroundColor: "lightText.main",
+                        backgroundColor: props.isFollowing
+                          ? "primary.main"
+                          : "lightText.main",
                       },
                     }}
                     startIcon={
-                      <Icon
-                        icon="fa-solid:user-plus"
-                        color="#444746"
-                        width="18"
-                      />
+                      props.isFollowing ? (
+                        <Icon
+                          icon="fa-solid:user-check"
+                          color="white"
+                          width="18"
+                        />
+                      ) : (
+                        <Icon
+                          icon="fa-solid:user-plus"
+                          color="#444746"
+                          width="18"
+                        />
+                      )
                     }
                   >
-                    <Text fontSize="12px" fontWeight="400">
-                      Theo dõi
+                    <Text
+                      fontSize="12px"
+                      fontWeight={props.isFollowing ? "500" : "400"}
+                      color={props.isFollowing && "secondary.main"}
+                    >
+                      {props.isFollowing ? "Đang theo dõi" : "Theo dõi"}
                     </Text>
                   </Button>
                   <MyMenuOptionListService userId={props.userId} />
@@ -151,9 +172,12 @@ export default function ViewProfile(props) {
                       isRewarded={item.is_rewarded}
                       postTitle={item.title}
                       description={item.description}
-                      major={item.category[0]}
-                      subject={item.category[1]}
-                      tag={item.tag}
+                      majorName={item?.category[0]?.categoryName}
+                      majorID={item?.category[0]?.categoryId}
+                      subjectName={item?.category[2]?.categoryName}
+                      subjectID={item?.category[2]?.categoryId}
+                      tagName={item?.tag.tagName}
+                      tagID={item?.tag.tagId}
                       time={item.dateOfPost}
                       title="22px"
                       small
