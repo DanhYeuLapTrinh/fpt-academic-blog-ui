@@ -4,6 +4,8 @@ import PostCardV1 from "../PostCardV1/PostCardV1";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
+import { getFirstChar } from "../../../utils/StringMethod";
+import LatestPostSkeleton from "../Skeleton/LatestPostSkeleton/LatestPostSkeleton";
 
 export default function LatestPostSection(props) {
   return (
@@ -40,27 +42,31 @@ export default function LatestPostSection(props) {
               sx={{ fontSize: "40px", color: "secondary.main" }}
             />
           </IconButton>
-          {props?.latestPosts?.map((item) => (
-            <PostCardV1
-              url={item?.coverURL}
-              src={item?.avatarURL}
-              label={item?.accountName}
-              time={item?.dateOfPost}
-              postTitle={item?.title}
-              color="secondary.main"
-              authorColor="secondary.main"
-              tagColor="secondary.main"
-              major={item?.category[0]}
-              subject={item?.category[1]}
-              tag={item?.tag}
-              slug={item?.slug}
-              userId={item?.userId}
-              small={true}
-              h="155px"
-              boxHeight="275px"
-              boxWidth="265px"
-            />
-          ))}
+          {!props.latestPosts
+            ? Array(4)
+                .fill(null)
+                .map((_, i) => <LatestPostSkeleton key={i} />)
+            : props?.latestPosts?.map((item) => (
+                <PostCardV1
+                  url={item?.coverURL}
+                  src={item?.avatarURL}
+                  label={item?.accountName}
+                  time={item?.dateOfPost}
+                  postTitle={item?.title}
+                  color="secondary.main"
+                  authorColor="secondary.main"
+                  tagColor="secondary.main"
+                  major={item?.category[0]}
+                  subject={item?.category[1]}
+                  tag={item?.tag}
+                  slug={item?.slug}
+                  userId={item?.userId}
+                  small={true}
+                  h="155px"
+                  boxHeight="275px"
+                  boxWidth="265px"
+                />
+              ))}
           <IconButton
             sx={{
               position: "absolute",

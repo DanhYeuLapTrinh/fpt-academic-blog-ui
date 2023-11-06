@@ -25,7 +25,7 @@ export default function Unauthorized() {
       <Stack alignItems={"center"} sx={{ width: "450px" }} spacing={3}>
         <Stack alignItems={"center"}>
           <img
-            src="../assets/img/404-not-found.png"
+            src="/assets/img/404-not-found.png"
             alt="404-not-found"
             width={"100%"}
           />

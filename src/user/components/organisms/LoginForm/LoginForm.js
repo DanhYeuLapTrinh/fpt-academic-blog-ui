@@ -18,6 +18,7 @@ import Text from "../../atoms/Text/Text";
 import axios from "../../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import useHome from "../../../hooks/useHome";
+import { toast } from "react-toastify";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const { isLoading, setIsLoading } = useHome();
@@ -59,14 +60,16 @@ export default function LoginForm() {
       } else navigate("/", { replace: true });
     } catch (error) {
       if (!error?.response) {
-        console.log("No server response");
+        toast.error("Có lỗi trong quá trình xử lý");
+        values.username = "";
+        values.password = "";
       } else if (error.response?.status === 400) {
         console.log("Im not understand");
       } else if (error.response?.status === 401) {
         setFieldError("password", "Sai thông tin tài khoản");
         values.password = "";
       } else {
-        setFieldError("password", "Đăng nhập thất bại");
+        toast.error("Đăng nhập thất bại");
         values.username = "";
         values.password = "";
       }

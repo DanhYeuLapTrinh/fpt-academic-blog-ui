@@ -6,10 +6,8 @@ import Author from "../../../molecules/Author/Author";
 import PostTag from "../../../atoms/PostTag/PostTag";
 import Wrapper from "../../../atoms/Wrapper/Wrapper";
 import { Link } from "react-router-dom";
-import { Icon } from "@iconify/react";
 import LecturerMenuService from "../../LecturerMenu/LecturerMenuService";
 import { getFirstChar, toSlug } from "../../../../utils/StringMethod";
-import useManagePost from "../../../../hooks/useManagePost";
 export default function RewardedPostsUnder(props) {
   return (
     <div style={{ width: "100%", padding: "20px 0" }}>

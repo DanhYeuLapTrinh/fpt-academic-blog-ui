@@ -14,7 +14,6 @@ export default function ApprovedPostService() {
     setSort,
     approvedAmount,
     setApprovedAmount,
-    isRewarded,
     setIsRewarded,
   } = useManagePost();
   const { isLoading, setIsLoading } = useHome();
@@ -26,7 +25,7 @@ export default function ApprovedPostService() {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await axiosPrivate.get(
+        let response = await axiosPrivate.get(
           process.env.REACT_APP_APPROVED_POSTS
         );
         setApprovedPosts(response?.data);
