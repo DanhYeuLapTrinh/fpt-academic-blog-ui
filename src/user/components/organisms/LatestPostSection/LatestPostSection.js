@@ -6,6 +6,7 @@ import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import { getFirstChar } from "../../../utils/StringMethod";
 import LatestPostSkeleton from "../Skeleton/LatestPostSkeleton/LatestPostSkeleton";
+
 export default function LatestPostSection(props) {
   return (
     <Box sx={{ marginBottom: "59px" }}>

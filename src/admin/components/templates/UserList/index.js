@@ -6,6 +6,12 @@ import AddUserForm from "../../../utils/User/AddUserAction";
 import { handleSearch } from "../../../utils/User/SearchUserByFullname";
 import BanUnbanUser from "../../../utils/User/BanUnbanAction/BanUnbanAction";
 import { ToastContainer, toast } from "react-toastify";
+import MuteModal from "../../atoms/MuteModal/MuteModal";
+import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
+import {
+  muteButtonSx,
+  unmuteButtonSx,
+} from "../../atoms/MuteUnmuteButtonColor";
 
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
@@ -15,7 +21,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import { Typography, Grid } from "@mui/material";
+import { Grid, LinearProgress } from "@mui/material";
 
 import "./styles.scss";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,9 +51,32 @@ function UserResultList() {
 
   const [originalRole, setOriginalRole] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
+  const [noRows, setNoRows] = useState(false);
+
   const [banStatus, setBanStatus] = useState(
     JSON.parse(localStorage.getItem("banStatus")) || {}
   );
+
+  //----------------------------------------------------------------------------
+
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await axiosPrivate.get(process.env.REACT_APP_USER_LIST);
+    if (!records.length) {
+      setNoRows(true);
+    }
+
+    setData(res.data);
+    setRecords(res.data);
+    setLoading(false);
+    console.log(res.data);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("banStatus", JSON.stringify(banStatus));
@@ -61,16 +90,10 @@ function UserResultList() {
   }, []);
 
   useEffect(() => {
-    axiosPrivate.get(process.env.REACT_APP_USER_LIST).then((res) => {
-      setData(res.data);
-      setRecords(res.data);
-      console.log(res.data);
-    });
-  }, []);
-
-  useEffect(() => {
     Modal.setAppElement("#root");
   }, []);
+
+  //----------------------------------------------------------------------------
 
   const handleOpenAddUserForm = () => {
     setAddUserFormOpen(true);
@@ -112,6 +135,21 @@ function UserResultList() {
     handleSearch(event, data, setRecords);
   };
 
+  const openMuteModal = (id) => {
+    setSelectedUserId(id);
+    const selectedUser = data.find((user) => user.id === id);
+    if (selectedUser) {
+      setSelectedUsername(selectedUser.username);
+    }
+    setShowMuteModal(true);
+  };
+
+  const closeMuteModal = () => {
+    setShowMuteModal(false);
+  };
+
+  //----------------------------------------------------------------------------
+
   const startEditing = (userId, currentRole) => {
     setEditingUserId(userId);
     setNewRole(currentRole);
@@ -151,19 +189,6 @@ function UserResultList() {
 
   const unbanAccount = (id) => {
     return axiosPrivate.post(process.env.REACT_APP_UNBAN_ACCOUNT, { id });
-  };
-
-  const openMuteModal = (id) => {
-    setSelectedUserId(id);
-    const selectedUser = data.find((user) => user.id === id);
-    if (selectedUser) {
-      setSelectedUsername(selectedUser.username);
-    }
-    setShowMuteModal(true);
-  };
-
-  const closeMuteModal = () => {
-    setShowMuteModal(false);
   };
 
   const muteUser = () => {
@@ -212,13 +237,7 @@ function UserResultList() {
       });
   };
 
-  const buttonSx = {
-    width: "auto",
-    fontSize: "0.7rem",
-    padding: "2px 4px",
-    borderRadius: "8px",
-    color: "black",
-  };
+  //----------------------------------------------------------------------------
 
   const columns = [
     { field: "id", headerName: "ID", width: 25 },
@@ -300,14 +319,14 @@ function UserResultList() {
           <Grid item xs={12}>
             {isMuted[params.row.id] ? (
               <Button
-                sx={{ ...buttonSx, backgroundColor: "#4CAF50" }}
+                sx={unmuteButtonSx}
                 onClick={() => unmuteUser(params.row.id)}
               >
                 Hủy hạn chế tài khoản
               </Button>
             ) : (
               <Button
-                sx={{ ...buttonSx, backgroundColor: "#F44336" }}
+                sx={muteButtonSx}
                 onClick={() => openMuteModal(params.row.id)}
               >
                 Hạn chế tài khoản
@@ -356,6 +375,7 @@ function UserResultList() {
       </div>
 
       <DataGrid
+        loading={loading}
         sx={{
           "& .MuiDataGrid-cell": {
             display: "flex",
@@ -366,6 +386,10 @@ function UserResultList() {
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
             outline: "none !important",
           },
+        }}
+        slots={{
+          noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+          loadingOverlay: () => loading && <LinearProgress />,
         }}
         rows={records}
         rowHeight={75}
@@ -382,47 +406,13 @@ function UserResultList() {
         disableRowSelectionOnClick
       />
 
-      <Modal
+      <MuteModal
         isOpen={showMuteModal}
         onRequestClose={closeMuteModal}
-        style={{
-          content: {
-            maxWidth: "400px",
-            margin: "auto",
-            maxHeight: "200px",
-          },
-        }}
-      >
-        <Grid container direction="column" alignItems="center">
-          <Typography
-            variant="h4"
-            sx={{
-              textAlign: "center",
-              fontSize: "1.5rem",
-              fontWeight: "bold",
-              marginBottom: "5px",
-            }}
-          >
-            Nhập thời gian hạn chế (giờ)
-          </Typography>
-          <Grid container item direction="row" spacing={2}>
-            <Grid item xs={8}>
-              <TextField
-                type="number"
-                value={muteDuration}
-                onChange={(e) => setMuteDuration(e.target.value)}
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <Button onClick={muteUser} variant="contained" color="primary">
-                OK
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Modal>
+        muteDuration={muteDuration}
+        onMuteDurationChange={setMuteDuration}
+        onMuteUser={muteUser}
+      />
 
       <ToastContainer position="top-right" autoClose="3000" />
     </>

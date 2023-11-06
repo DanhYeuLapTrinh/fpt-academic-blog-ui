@@ -65,6 +65,11 @@ export default function EditCategoryModal({
       onClose={closeModal}
       aria-labelledby="edit-category-modal"
       aria-describedby="edit-category-description"
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
     >
       <FormControl
         sx={{
