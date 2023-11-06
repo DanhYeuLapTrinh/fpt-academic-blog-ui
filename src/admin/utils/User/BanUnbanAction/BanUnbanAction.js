@@ -65,7 +65,7 @@ const BanUnbanUser = ({
     <div>
       {isBanned ? (
         <Button sx={banButtonSx} onClick={handleUnbanClick}>
-          {isBanning ? "Đang xử lý..." : "Bỏ cấm tài khoản"}
+          {isBanning ? "Đang xử lý..." : "Gỡ cấm tài khoản"}
         </Button>
       ) : (
         <Button sx={unbanButtonSx} onClick={handleBanClick}>

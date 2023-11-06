@@ -6,6 +6,8 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import DescriptionIcon from "@mui/icons-material/Description";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import FiberNewIcon from "@mui/icons-material/FiberNew";
+import SettingsIcon from "@mui/icons-material/Settings";
 // ----------------------------------------------------------------------
 
 const navConfig = [
@@ -58,9 +60,30 @@ const navConfig = [
     ],
   },
   {
+    title: "Tin tức mới nhất",
+    icon: <FiberNewIcon />,
+    items: [
+      {
+        title: "Danh sách tin tức",
+        path: "/news-admin",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+      {
+        title: "Thêm tin tức",
+        path: "/add-news",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+    ],
+  },
+  {
     title: "Nhật ký hoạt động",
     path: "/activity-log",
     icon: <DescriptionIcon />,
+  },
+  {
+    title: "Cài đặt",
+    path: "/setting",
+    icon: <SettingsIcon />,
   },
 ];
 

@@ -52,8 +52,8 @@ function DashboardPage() {
               <AppWidgetSummary
                 title="Hồ sơ bị báo cáo"
                 total={data.total_reported_profile}
-                color="success"
-                icon={"icon-park-solid:connect"}
+                color="warning"
+                icon={"carbon:report"}
               />
             </Grid>
 
