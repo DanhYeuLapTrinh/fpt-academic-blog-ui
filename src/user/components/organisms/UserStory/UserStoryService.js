@@ -41,6 +41,7 @@ export default function UserStoryService(props) {
       editedStory={editedStory}
       handleSave={handleSave}
       handleCancel={handleCancel}
+      userId={props.userId}
     />
   );
 }

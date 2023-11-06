@@ -13,23 +13,26 @@ import HomeProvider from "./user/context/HomeProvider";
 import ManagePostProvider from "./user/context/ManagePostProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProfileProvider from "./user/context/ProfileProvider";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={MyTheme}>
-    <ManagePostProvider>
-      <HomeProvider>
-        <ErrorProvider>
-          <ContentProvider>
-            <PostTagProvider>
-              <LoginProvider>
-                <App />
-                <ToastContainer theme="colored"/>
-              </LoginProvider>
-            </PostTagProvider>
-          </ContentProvider>
-        </ErrorProvider>
-      </HomeProvider>
-    </ManagePostProvider>
+    <ProfileProvider>
+      <ManagePostProvider>
+        <HomeProvider>
+          <ErrorProvider>
+            <ContentProvider>
+              <PostTagProvider>
+                <LoginProvider>
+                  <App />
+                  <ToastContainer theme="colored"/>
+                </LoginProvider>
+              </PostTagProvider>
+            </ContentProvider>
+          </ErrorProvider>
+        </HomeProvider>
+      </ManagePostProvider>
+    </ProfileProvider>
   </ThemeProvider>
 );
 reportWebVitals();

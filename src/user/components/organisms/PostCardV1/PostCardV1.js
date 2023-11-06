@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { getFirstChar, toSlug } from "../../../utils/StringMethod";
 export default function PostCardV1(props) {
   return (
-    <Link to={`/view/${props.slug}`} style={{textDecoration: "none"}}>
+    <Link to={`/view/${props.slug}`} style={{ textDecoration: "none" }}>
       <Stack
         sx={{ width: props.boxWidth, height: props.boxHeight }}
         justifyContent={"space-between"}
@@ -29,20 +29,20 @@ export default function PostCardV1(props) {
             <RewardBadge
               small={props.small}
               position="absolute"
-              top="15px"
-              right="15px"
+              top="10px"
+              right="10px"
               zIndex="999"
             />
           )}
         </Box>
-          <Author
-            src={props.src}
-            author={true}
-            text={props.label}
-            color={props.authorColor}
-            time={props.time}
-            profile={props.userId}
-          />
+        <Author
+          src={props.src}
+          author={true}
+          text={props.label}
+          color={props.authorColor}
+          time={props.time}
+          profile={props.userId}
+        />
         <Wrapper WebkitLineClamp="2">
           <Text
             fontSize={props.title}
@@ -61,19 +61,19 @@ export default function PostCardV1(props) {
         )}
         <Stack direction={"row"} spacing={"12px"}>
           <PostTag
-            text={getFirstChar(props.major)}
+            text={getFirstChar(props.majorName)}
             color={props.tagColor ? props.tagColor : "primary.main"}
-            link={toSlug(props.major, true)}
+            link={`/topic/${props.majorID}`}
           />
           <PostTag
-            text={props.subject}
+            text={props.subjectName}
             color={props.tagColor ? props.tagColor : "primary.main"}
-            link={toSlug(props.subject, true)}
+            link={`/topic/${props.subjectID}`}
           />
           <PostTag
-            text={props.tag}
+            text={props.tagName}
             color={props.tagColor ? props.tagColor : "primary.main"}
-            link={toSlug(props.tag, true)}
+            link={`/tags/${props.tagID}`}
           />
         </Stack>
       </Stack>

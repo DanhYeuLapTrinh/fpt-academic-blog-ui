@@ -6,10 +6,8 @@ import Author from "../../../molecules/Author/Author";
 import PostTag from "../../../atoms/PostTag/PostTag";
 import Wrapper from "../../../atoms/Wrapper/Wrapper";
 import { Link } from "react-router-dom";
-import { Icon } from "@iconify/react";
 import LecturerMenuService from "../../LecturerMenu/LecturerMenuService";
 import { getFirstChar, toSlug } from "../../../../utils/StringMethod";
-import useManagePost from "../../../../hooks/useManagePost";
 export default function RewardedPostsUnder(props) {
   return (
     <div style={{ width: "100%", padding: "20px 0" }}>
@@ -30,8 +28,8 @@ export default function RewardedPostsUnder(props) {
               <RewardBadge
                 small={true}
                 position="absolute"
-                top="15px"
-                right="15px"
+                top="10px"
+                right="10px"
                 zIndex="999"
               />
             )}
@@ -68,19 +66,19 @@ export default function RewardedPostsUnder(props) {
             />
             <Stack direction={"row"} spacing={"12px"} paddingTop={"5px"}>
               <PostTag
-                color="primary.main"
-                text={getFirstChar(props.major)}
-                link={toSlug(props.major, true)}
+                text={getFirstChar(props.majorName)}
+                color={props.tagColor ? props.tagColor : "primary.main"}
+                link={`/topic/${props.majorID}`}
               />
               <PostTag
-                color="primary.main"
-                text={props.subject}
-                link={toSlug(props.subject, true)}
+                text={props.subjectName}
+                color={props.tagColor ? props.tagColor : "primary.main"}
+                link={`/topic/${props.subjectID}`}
               />
               <PostTag
-                color="primary.main"
-                text={props.tag}
-                link={toSlug(props.tag, true)}
+                text={props.tagName}
+                color={props.tagColor ? props.tagColor : "primary.main"}
+                link={`/tags/${props.tagID}`}
               />
             </Stack>
           </Stack>

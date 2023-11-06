@@ -23,6 +23,7 @@ import ViewAPostService from "../user/components/pages/ViewAPost/ViewAPost/ViewA
 import ApprovedPostService from "../user/components/pages/ApprovedPosts/ApprovedPostService";
 import ViewProfileService from "../user/components/pages/ViewProfile/ViewProfileService";
 import TagsPageService from "../user/components/pages/TagsPage/TagsPageService";
+import ApprovedQuestionsService from "../user/components/pages/ApprovedQuestions/ApprovedQuestionsService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -40,17 +41,20 @@ const loggedInUserRoutes = [
   { path: "/write", component: WriteService },
   { path: "/view/:slug", component: ViewAPostService },
   { path: "/profile/:id", component: ViewProfileService },
-  { path: "/:tag", component: TagsPageService },
-
+  { path: "/profile/:id/question", component: ViewProfileService },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },
-  { path: "/pending-posts/:slug", component: ViewPendingPostService },
   { path: "/approved-posts", component: ApprovedPostService },
 ];
 
+const lecturerRoutesOther = [
+  { path: "/pending-posts/:slug", component: ViewPendingPostService },
+];
+
 const mentorRoutes = [
-  { path: "/pending-q", component: PendingQuestionsService },
+  { path: "/pending-questions", component: PendingQuestionsService },
+  { path: "/approved-questions", component: ApprovedQuestionsService },
   { path: "/pending-q/:slug", component: "" },
 ];
 
@@ -81,4 +85,5 @@ export {
   loggedInAdminRoutes,
   lecturerRoutes,
   mentorRoutes,
+  lecturerRoutesOther
 };

@@ -10,7 +10,7 @@ export default function PostTag(props) {
     ...props,
   };
   return (
-    <Link to={`/${props.link}`} style={{ textDecoration: "none" }}>
+    <Link to={`${props.link}`} style={{ textDecoration: "none" }}>
       <Text {...configTag}>#{props.text}</Text>
     </Link>
   );
