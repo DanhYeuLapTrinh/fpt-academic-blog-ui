@@ -1,14 +1,19 @@
-import { Box, Divider, Stack } from "@mui/material";
+import { Box, Button, Divider, IconButton, Stack } from "@mui/material";
 import { Container } from "@mui/system";
 import React from "react";
 import Text from "../../atoms/Text/Text";
 import ProfileNavList from "../../molecules/ProfileNavList/ProfileNavList";
 import UserStoryService from "../../organisms/UserStory/UserStoryService";
 import ProfilePost from "../../organisms/ProfilePost/ProfilePost";
-
+import useProfile from "../../../hooks/useProfile";
+import { Icon } from "@iconify/react";
+import MyMenuOptionListService from "../../organisms/MyMenuOptionList/MyMenuOptionListService";
+import useAuth from "../../../hooks/useAuth";
 export default function ViewProfile(props) {
   let imgURL = props.url ?? "/assets/img/blank-cover.jpg";
   let avatarURL = props.avatarURL ?? "/assets/img/blank.png";
+  const { selected } = useProfile();
+  const auth = useAuth();
   return (
     <Box>
       <Box sx={{ bgcolor: "secondary.alt" }}>
@@ -57,23 +62,60 @@ export default function ViewProfile(props) {
             <Text fontSize="24px" fontWeight="600">
               {props.accountName}
             </Text>
-            <Stack
-              direction={"row"}
-              alignItems={"center"}
-              spacing={1}
-              sx={{ mt: "4px" }}
-            >
-              <Text fontSize="12px" fontWeight="400">
-                Bài đã đăng:{" "}
-                <span style={{ fontWeight: "600" }}>{props.numOfPost}</span>
-              </Text>
-              <Text fontSize="24px" lineHeight="20px" color="text.main">
-                &middot;
-              </Text>
-              <Text fontSize="12px" fontWeight="400">
-                Người theo dõi:{" "}
-                <span style={{ fontWeight: "600" }}>{props.numOfFollower}</span>
-              </Text>
+            <Stack spacing={"4px"}>
+              <Stack
+                direction={"row"}
+                alignItems={"center"}
+                spacing={1}
+                sx={{ mt: "4px" }}
+              >
+                <Text fontSize="12px" fontWeight="400">
+                  Bài đã đăng:{" "}
+                  <span style={{ fontWeight: "600" }}>{props.numOfPost}</span>
+                </Text>
+                <Text fontSize="24px" lineHeight="20px" color="text.main">
+                  &middot;
+                </Text>
+                <Text fontSize="12px" fontWeight="400">
+                  Người theo dõi:{" "}
+                  <span style={{ fontWeight: "600" }}>
+                    {props.numOfFollower}
+                  </span>
+                </Text>
+              </Stack>
+              {auth.id !== props.userId && (
+                <Stack direction={"row"} justifyContent={"space-between"}>
+                  <Button
+                    onClick={props.followAccount}
+                    disableFocusRipple
+                    disableRipple
+                    disableTouchRipple
+                    size="small"
+                    sx={{
+                      textTransform: "none",
+                      borderRadius: "5px",
+                      flex: 1,
+                      bgcolor: "lightText.main",
+                      opacity: "0.7",
+                      "&:hover": {
+                        backgroundColor: "lightText.main",
+                      },
+                    }}
+                    startIcon={
+                      <Icon
+                        icon="fa-solid:user-plus"
+                        color="#444746"
+                        width="18"
+                      />
+                    }
+                  >
+                    <Text fontSize="12px" fontWeight="400">
+                      Theo dõi
+                    </Text>
+                  </Button>
+                  <MyMenuOptionListService userId={props.userId} />
+                </Stack>
+              )}
             </Stack>
             <Divider sx={{ width: "100%", mt: "30px " }} />
           </Stack>
@@ -84,9 +126,12 @@ export default function ViewProfile(props) {
         <Container>
           <Stack direction={"row"} gap={"20px"}>
             <Box width={"320px"}>
-              <UserStoryService userStory={props.userStory} />
+              <UserStoryService
+                userId={props.userId}
+                userStory={props.userStory}
+              />
             </Box>
-            <Box
+            <Stack
               width={"calc(100% - 320px)"}
               sx={{
                 bgcolor: "secondary.alt",
@@ -94,22 +139,29 @@ export default function ViewProfile(props) {
                 minHeight: "calc(100vh - 573px)",
                 padding: "20px",
               }}
+              spacing={"20px"}
             >
-              {props.postList && (
-                <ProfilePost
-                  url={props.postList[3].coverURL}
-                  isRewarded={props.postList[3].is_rewarded}
-                  postTitle={props.postList[3].title}
-                  description={props.postList[3].description}
-                  major={props.postList[3].category[0]} 
-                  subject={props.postList[3].category[1]} 
-                  tag={props.postList[3].tag}
-                  time={props.postList[3].dateOfPost}
-                  title="22px"
-                  small
-                />
+              {selected === "Bài viết" && (
+                <>
+                  <Text fontSize="23px">Bài viết</Text>
+                  {props?.postList?.map((item, index) => (
+                    <ProfilePost
+                      key={index}
+                      url={item.coverURL}
+                      isRewarded={item.is_rewarded}
+                      postTitle={item.title}
+                      description={item.description}
+                      major={item.category[0]}
+                      subject={item.category[1]}
+                      tag={item.tag}
+                      time={item.dateOfPost}
+                      title="22px"
+                      small
+                    />
+                  ))}
+                </>
               )}
-            </Box>
+            </Stack>
           </Stack>
         </Container>
       </Box>

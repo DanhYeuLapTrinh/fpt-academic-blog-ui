@@ -1,12 +1,15 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
 import React, { useState } from "react";
 import Text from "../../atoms/Text/Text";
+import useAuth from "../../../hooks/useAuth";
 
 export default function UserStory(props) {
+  const auth = useAuth();
   return (
     <Box
       sx={{
         width: "100%",
+        minHeight: "120px",
         bgcolor: "secondary.alt",
         borderRadius: "10px",
         padding: "15px",
@@ -22,7 +25,11 @@ export default function UserStory(props) {
         disabled={!props.isEditing}
         value={props.editedStory}
         onChange={(e) => props.setEditedStory(e.target.value)}
-        placeholder="Nhập mô tả về bạn"
+        placeholder={
+          props.userId === auth.id
+            ? "Nhập miêu tả về bạn"
+            : "Người dùng chưa có tiểu sử"
+        }
         variant={props.isEditing ? "outlined" : "standard"}
         autoFocus
         InputProps={{ disableUnderline: true }}
@@ -38,7 +45,7 @@ export default function UserStory(props) {
           },
         }}
       />
-      {!props.isEditing && (
+      {!props.isEditing && props.userId === auth.id && (
         <Stack sx={{ border: "1px solid #c3c3c3", borderRadius: "5px" }}>
           <Button
             sx={{ textTransform: "none" }}

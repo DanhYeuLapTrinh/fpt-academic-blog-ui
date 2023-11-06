@@ -75,7 +75,7 @@ export default function WriteService() {
 
   const handleSubmit = useCallback(async () => {
     try {
-      if (!title || !coverURL || !contentTiny || !tagID || !subjectID) {
+      if (!title || (!coverURL && tag !== "Q&A") || !contentTiny || !tagID || !subjectID) {
         toast.error("Vui lòng điền đầy đủ thông tin");
         return;
       } else if (charCount >= 100) {

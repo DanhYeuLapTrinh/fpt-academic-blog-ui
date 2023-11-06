@@ -12,7 +12,6 @@ export default function PendingPostsService() {
     setPendingPosts,
     sort,
     setSort,
-    amount,
     setAmount,
   } = useManagePost();
   const { isLoading, setIsLoading } = useHome();
@@ -36,12 +35,5 @@ export default function PendingPostsService() {
     fetchData();
     setIsLoading(false);
   }, []);
-  return (
-    <PendingPosts
-      pendingPosts={sortedPending}
-      sort={sort}
-      setSort={setSort}
-      amount={amount}
-    />
-  );
+  return <PendingPosts pendingPosts={sortedPending} />;
 }

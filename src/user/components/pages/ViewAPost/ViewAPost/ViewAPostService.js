@@ -23,5 +23,5 @@ export default function ViewAPostService() {
       console.log(error);
     }
   }, []);
-  return <ViewAPost data={data}/>;
+  return <>{data && <ViewAPost data={data}/>}</>
 }

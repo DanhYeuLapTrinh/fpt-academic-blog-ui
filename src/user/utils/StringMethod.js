@@ -38,7 +38,8 @@ export const getFirstTagContent = (htmlStr) => {
  * @version 1.0.0.0
  */
 export const toSlug = (inputStr, noNumber) => {
-  // Chuyển hết sang chữ thường
+  if(inputStr) {
+    // Chuyển hết sang chữ thường
   inputStr = inputStr.toLowerCase();
 
   // xóa dấu
@@ -67,6 +68,7 @@ export const toSlug = (inputStr, noNumber) => {
     const randomNumber = Math.floor(Math.random() * 1000000000);
     inputStr = `${inputStr}-${randomNumber}`;
     return inputStr
+  }
   }
 };
 
