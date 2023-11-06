@@ -24,7 +24,6 @@ import ApprovedPostService from "../user/components/pages/ApprovedPosts/Approved
 import ViewProfileService from "../user/components/pages/ViewProfile/ViewProfileService";
 import TagsPageService from "../user/components/pages/TagsPage/TagsPageService";
 import ApprovedQuestionsService from "../user/components/pages/ApprovedQuestions/ApprovedQuestionsService";
-import HomeLayout from "../user/layouts/HomeLayout";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },

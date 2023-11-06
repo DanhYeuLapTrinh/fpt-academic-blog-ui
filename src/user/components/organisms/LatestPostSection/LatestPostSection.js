@@ -4,6 +4,8 @@ import PostCardV1 from "../PostCardV1/PostCardV1";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
+import { getFirstChar } from "../../../utils/StringMethod";
+import LatestPostSkeleton from "../Skeleton/LatestPostSkeleton/LatestPostSkeleton";
 import LatestPostSkeleton from "../Skeleton/LatestPostSkeleton/LatestPostSkeleton";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -27,7 +29,6 @@ const responsive = {
     items: 1,
   },
 };
-
 export default function LatestPostSection(props) {
   return (
     <>

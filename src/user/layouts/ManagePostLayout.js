@@ -5,7 +5,7 @@ import Text from "../components/atoms/Text/Text";
 import { Container, FormControl, MenuItem, Select, Stack } from "@mui/material";
 import useManagePost from "../hooks/useManagePost";
 export default function ManagePostLayout() {
-  const { sort, setSort, type, setType, amount, approvedAmount } =
+  const { sort, setSort, type, setType, amount, approvedAmount, questionType } =
     useManagePost();
   const navigate = useNavigate();
   useEffect(() => {

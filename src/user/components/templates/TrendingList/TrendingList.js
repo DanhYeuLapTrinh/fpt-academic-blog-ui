@@ -8,6 +8,7 @@ import PostCardV1Skeleton from "../../organisms/Skeleton/PostCardV1Skeleton/Post
 import PostCardV2Skeleton from "../../organisms/Skeleton/PostCardV2Skeleton/PostCardV2Skeleton";
 
 export default function TrendingList(props) {
+  // console.log(props.trendingPosts[0].category);
   return (
     <Grid2 container xs={12} columnGap={"20px"} paddingTop={"37px"}>
       <Grid2 item xs={12}>
@@ -107,7 +108,6 @@ export default function TrendingList(props) {
                 time={props?.trendingPosts[3]?.dateOfPost}
                 postTitle={props?.trendingPosts[3]?.title}
                 description={props?.trendingPosts[3]?.description}
-                majorId={props?.trendingPosts[3]?.category[0].categoryId}
                 majorName={props?.trendingPosts[3]?.category[0]?.categoryName}
                 majorID={props?.trendingPosts[3].category[0]?.categoryId}
                 subjectName={props?.trendingPosts[3]?.category[2]?.categoryName}

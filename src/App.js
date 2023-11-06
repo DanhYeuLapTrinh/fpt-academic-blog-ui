@@ -74,7 +74,7 @@ function App() {
           </Route>
           {/* Logged in mentor routes */}
           <Route element={<HomeLayout />}>
-            <Route element={<ManageQuestionLayout />}>
+            <Route element={<ManageQuestionLayout/>}>
               <Route element={<RequireAuth allowRoles={["mentor"]} />}>
                 {mentorRoutes.map((item, index) => {
                   const Page = item.component;
