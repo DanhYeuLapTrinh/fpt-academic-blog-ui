@@ -29,8 +29,8 @@ export default function PostCardV1(props) {
             <RewardBadge
               small={props.small}
               position="absolute"
-              top="15px"
-              right="15px"
+              top="10px"
+              right="10px"
               zIndex="999"
             />
           )}
@@ -63,17 +63,17 @@ export default function PostCardV1(props) {
           <PostTag
             text={getFirstChar(props.majorName)}
             color={props.tagColor ? props.tagColor : "primary.main"}
-            link={`/topics/${props.major}`}
+            link={`/topic/${props.majorID}`}
           />
           <PostTag
-            text={props.subject}
+            text={props.subjectName}
             color={props.tagColor ? props.tagColor : "primary.main"}
-            link={toSlug(props.subject, true)}
+            link={`/topic/${props.subjectID}`}
           />
           <PostTag
-            text={props.tag}
+            text={props.tagName}
             color={props.tagColor ? props.tagColor : "primary.main"}
-            link={toSlug(props.tag, true)}
+            link={`/tags/${props.tagID}`}
           />
         </Stack>
       </Stack>

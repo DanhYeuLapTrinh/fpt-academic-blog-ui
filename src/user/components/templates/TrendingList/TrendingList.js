@@ -8,7 +8,6 @@ import PostCardV1Skeleton from "../../organisms/Skeleton/PostCardV1Skeleton/Post
 import PostCardV2Skeleton from "../../organisms/Skeleton/PostCardV2Skeleton/PostCardV2Skeleton";
 
 export default function TrendingList(props) {
-  // console.log(props.trendingPosts[0].category);
   return (
     <Grid2 container xs={12} columnGap={"20px"} paddingTop={"37px"}>
       <Grid2 item xs={12}>
@@ -25,9 +24,12 @@ export default function TrendingList(props) {
             time={props?.trendingPosts[1]?.dateOfPost}
             postTitle={props?.trendingPosts[1]?.title}
             description={props?.trendingPosts[1]?.description}
-            major={props?.trendingPosts[1]?.category[0]}
-            subject={props?.trendingPosts[1]?.category[1]}
-            tag={props?.trendingPosts[1]?.tag}
+            majorName={props?.trendingPosts[1]?.category[0]?.categoryName}
+            majorID={props?.trendingPosts[1].category[0]?.categoryId}
+            subjectName={props?.trendingPosts[1]?.category[2]?.categoryName}
+            subjectID={props?.trendingPosts[1].category[2]?.categoryId}
+            tagName={props?.trendingPosts[1]?.tag.tagName}
+            tagID={props?.trendingPosts[1]?.tag.tagId}
             isRewarded={props?.trendingPosts[1]?.is_rewarded}
             small={true}
             slug={props?.trendingPosts[1]?.slug}
@@ -49,9 +51,12 @@ export default function TrendingList(props) {
             time={props?.trendingPosts[0]?.dateOfPost}
             postTitle={props?.trendingPosts[0]?.title}
             description={props?.trendingPosts[0]?.description}
-            major={props?.trendingPosts[0]?.category[0]}
-            subject={props?.trendingPosts[0]?.category[1]}
-            tag={props?.trendingPosts[0]?.tag}
+            majorName={props?.trendingPosts[0]?.category[0]?.categoryName}
+            majorID={props?.trendingPosts[0].category[0]?.categoryId}
+            subjectName={props?.trendingPosts[0]?.category[2]?.categoryName}
+            subjectID={props?.trendingPosts[0].category[2]?.categoryId}
+            tagName={props?.trendingPosts[0]?.tag.tagName}
+            tagID={props?.trendingPosts[0]?.tag.tagId}
             isRewarded={props?.trendingPosts[0]?.is_rewarded}
             slug={props?.trendingPosts[0]?.slug}
             userId={props?.trendingPosts[0]?.userId}
@@ -75,10 +80,13 @@ export default function TrendingList(props) {
                 time={props?.trendingPosts[2]?.dateOfPost}
                 postTitle={props?.trendingPosts[2]?.title}
                 description={props?.trendingPosts[2]?.description}
-                major={props?.trendingPosts[2]?.category[0]}
-                subject={props?.trendingPosts[2]?.category[1]}
+                majorName={props?.trendingPosts[2]?.category[0]?.categoryName}
+                majorID={props?.trendingPosts[2].category[0]?.categoryId}
+                subjectName={props?.trendingPosts[2]?.category[2]?.categoryName}
+                subjectID={props?.trendingPosts[2].category[2]?.categoryId}
                 isRewarded={props?.trendingPosts[2]?.is_rewarded}
-                tag={props?.trendingPosts[2]?.tag}
+                tagName={props?.trendingPosts[2]?.tag.tagName}
+                tagID={props?.trendingPosts[2]?.tag.tagId}
                 slug={props?.trendingPosts[2]?.slug}
                 userId={props?.trendingPosts[2]?.userId}
                 h="130px"
@@ -100,10 +108,13 @@ export default function TrendingList(props) {
                 postTitle={props?.trendingPosts[3]?.title}
                 description={props?.trendingPosts[3]?.description}
                 majorId={props?.trendingPosts[3]?.category[0].categoryId}
-                majorName={props?.trendingPosts[3]?.category[0].categoryName}
-                subject={props?.trendingPosts[3]?.category[1]}
+                majorName={props?.trendingPosts[3]?.category[0]?.categoryName}
+                majorID={props?.trendingPosts[3].category[0]?.categoryId}
+                subjectName={props?.trendingPosts[3]?.category[2]?.categoryName}
+                subjectID={props?.trendingPosts[3].category[2]?.categoryId}
                 isRewarded={props?.trendingPosts[3]?.is_rewarded}
-                tag={props?.trendingPosts[3]?.tag}
+                tagName={props?.trendingPosts[3]?.tag.tagName}
+                tagID={props?.trendingPosts[3]?.tag.tagId}
                 slug={props?.trendingPosts[3]?.slug}
                 userId={props?.trendingPosts[3]?.userId}
                 h="130px"

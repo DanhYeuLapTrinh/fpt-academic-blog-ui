@@ -4,83 +4,88 @@ import PostCardV1 from "../PostCardV1/PostCardV1";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
-import { getFirstChar } from "../../../utils/StringMethod";
 import LatestPostSkeleton from "../Skeleton/LatestPostSkeleton/LatestPostSkeleton";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import "./stylecaro.scss";
+const responsive = {
+  superLargeDesktop: {
+    // the naming can be any, depends on you.
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5,
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1150 },
+    items: 4,
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+  },
+};
 
 export default function LatestPostSection(props) {
   return (
-    <Box sx={{ marginBottom: "59px" }}>
+    <>
       <Container>
         <SectionTitle title="Mới đăng gần đây" />
       </Container>
       <Box
         sx={{
+          marginBottom: "59px",
           width: "100%",
           height: "340px",
           bgcolor: "primary.main",
           display: "flex",
         }}
       >
-        <Container
-          sx={{
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            position: "relative",
-          }}
-        >
-          <IconButton
-            sx={{
-              position: "absolute",
-              top: "50%",
-              transform: "translate(-50%, -50%)",
-              left: "-5%",
-            }}
+        <Container>
+          <Carousel
+            responsive={responsive}
+            autoPlay={true}
+            autoPlaySpeed={5000}
+            className="hello"
+            arrows
+            centerMode={false}
+            slidesToSlide={4}
+            renderButtonGroupOutside={true}
           >
-            <ArrowBackIosRoundedIcon
-              sx={{ fontSize: "40px", color: "secondary.main" }}
-            />
-          </IconButton>
-          {!props.latestPosts
-            ? Array(4)
-                .fill(null)
-                .map((_, i) => <LatestPostSkeleton key={i} />)
-            : props?.latestPosts?.map((item) => (
-                <PostCardV1
-                  url={item?.coverURL}
-                  src={item?.avatarURL}
-                  label={item?.accountName}
-                  time={item?.dateOfPost}
-                  postTitle={item?.title}
-                  color="secondary.main"
-                  authorColor="secondary.main"
-                  tagColor="secondary.main"
-                  major={item?.category[0]}
-                  subject={item?.category[1]}
-                  tag={item?.tag}
-                  slug={item?.slug}
-                  userId={item?.userId}
-                  small={true}
-                  h="155px"
-                  boxHeight="275px"
-                  boxWidth="265px"
-                />
-              ))}
-          <IconButton
-            sx={{
-              position: "absolute",
-              top: "50%",
-              transform: "translate(50%, -50%)",
-              right: "-5%",
-            }}
-          >
-            <ArrowForwardIosRoundedIcon
-              sx={{ fontSize: "40px", color: "secondary.main" }}
-            />
-          </IconButton>
+            {!props.latestPosts
+              ? Array(4)
+                  .fill(null)
+                  .map((_, i) => <LatestPostSkeleton key={i} />)
+              : props.latestPosts.map((item) => (
+                  <PostCardV1
+                    url={item?.coverURL}
+                    src={item?.avatarURL}
+                    label={item?.accountName}
+                    time={item?.dateOfPost}
+                    postTitle={item?.title}
+                    majorName={item?.category[0]?.categoryName}
+                    majorID={item?.category[0]?.categoryId}
+                    subjectName={item?.category[2]?.categoryName}
+                    subjectID={item?.category[2]?.categoryId}
+                    tagName={item?.tag.tagName}
+                    tagID={item?.tag.tagId}
+                    slug={item?.slug}
+                    userId={item?.userId}
+                    isRewarded={item?.is_rewarded}
+                    small={true}
+                    color="secondary.main"
+                    authorColor="secondary.main"
+                    tagColor="secondary.main"
+                    h="155px"
+                    boxHeight="275px"
+                    boxWidth="265px"
+                  />
+                ))}
+          </Carousel>
         </Container>
       </Box>
-    </Box>
+    </>
   );
 }

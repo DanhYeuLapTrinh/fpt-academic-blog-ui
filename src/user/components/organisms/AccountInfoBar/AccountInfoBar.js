@@ -51,27 +51,27 @@ export default function AccountInfoBar(props) {
         </Text>
       </Stack>
       <Stack direction={"row"} spacing={1}>
-        {props.major && (
-          <Link to={`/${toSlug(props.major, true)}`}>
+        {props.majorName && (
+          <Link to={`/topic/${props.majorID}`}>
             <Chip
               sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
-              label={getFirstChar(props.major)}
+              label={getFirstChar(props.majorName)}
             />
           </Link>
         )}
-        {props.subject && (
-          <Link to={`/${toSlug(props.subject, true)}`}>
+        {props.subjectName && (
+          <Link to={`/topic/${props.subjectID}`}>
             <Chip
               sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
-              label={props.subject}
+              label={props.subjectName}
             />
           </Link>
         )}
-        {props.tag && (
-          <Link to={`/${toSlug(props.tag, true)}`}>
+        {props.tagName && (
+          <Link to={`/tag/${props.tagID}`}>
             <Chip
               sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
-              label={props.tag}
+              label={props.tagName}
             />
           </Link>
         )}

@@ -1,9 +1,4 @@
-import {
-  Button,
-  FormControlLabel,
-  Stack,
-  Switch,
-} from "@mui/material";
+import { Button, Container, FormControlLabel, Stack, Switch } from "@mui/material";
 import React from "react";
 import Text from "../../../atoms/Text/Text";
 import styles from "./Styles.module.scss";
@@ -11,15 +6,18 @@ import AccountInfoBar from "../../../organisms/AccountInfoBar/AccountInfoBar";
 import PopUpDialog from "../../../organisms/PopUpDialog/PopUpDialog";
 export default function ViewPendingPost(props) {
   return (
-    <>
+    <Container>
       <AccountInfoBar
         src={props.data?.avatarURL}
         color="secondary.main"
         text={props.data?.accountName}
         time={props.data?.dateOfPost}
-        major={props.data?.category[0]}
-        subject={props.data?.category[1]}
-        tag={props.data?.tag}
+        majorName={props.data?.category[0]?.categoryName}
+        majorID={props.data?.category[0]?.categoryId}
+        subjectName={props.data?.category[2]?.categoryName}
+        subjectID={props.data?.category[2]?.categoryId}
+        tagName={props.data?.tag?.tagName}
+        tagID={props.data?.tag?.tagId}
         userId={props.data?.userId}
       />
       <div className={styles.contentWrapper}>
@@ -67,6 +65,6 @@ export default function ViewPendingPost(props) {
           Phê duyệt
         </Button>
       </Stack>
-    </>
+    </Container>
   );
 }

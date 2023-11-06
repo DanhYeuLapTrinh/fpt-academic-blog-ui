@@ -31,7 +31,7 @@ export default function HomeService() {
         let latestPosts = await axiosPrivate.get(
           process.env.REACT_APP_LATEST_POSTS
         );
-        setLatestPosts(latestPosts?.data?.slice(0, 4));
+        setLatestPosts(latestPosts?.data);
         let allPosts = await axiosPrivate.get(process.env.REACT_APP_ALL_POSTS);
         setAllPosts(allPosts?.data);
       } catch (error) {
