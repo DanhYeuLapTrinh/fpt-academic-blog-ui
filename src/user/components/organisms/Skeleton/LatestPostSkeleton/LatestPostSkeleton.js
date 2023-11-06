@@ -20,7 +20,7 @@ export default function LatestPostSkeleton() {
         />
         <Skeleton variant="h1" width="70%" animation="wave" height={"18px"} sx={{borderRadius: "5px"}}/>
       </Stack>
-      <Skeleton variant="h1" width="100%" animation="wave" height={"40px"} sx={{borderRadius: "5px"}}/>
+      <Skeleton variant="h1" width="90%" animation="wave" height={"40px"} sx={{borderRadius: "5px"}}/>
       <Skeleton variant="h1" width="60%" animation="wave" height={"20px"} sx={{borderRadius: "5px"}}/>
     </Stack>
   );

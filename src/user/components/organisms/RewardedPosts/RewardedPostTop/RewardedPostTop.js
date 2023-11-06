@@ -17,9 +17,12 @@ export default function RewardedPostTop(props) {
           time={props.rewardedPosts[0]?.dateOfPost}
           postTitle={props.rewardedPosts[0]?.title}
           description={props.rewardedPosts[0]?.description}
-          major={props.rewardedPosts[0]?.category[0]}
-          subject={props.rewardedPosts[0]?.category[1]}
-          tag={props.rewardedPosts[0]?.tag}
+          majorName={props?.rewardedPosts[0]?.category[0]?.categoryName}
+          majorID={props?.rewardedPosts[0].category[0]?.categoryId}
+          subjectName={props?.rewardedPosts[0]?.category[2]?.categoryName}
+          subjectID={props?.rewardedPosts[0].category[2]?.categoryId}
+          tagName={props?.rewardedPosts[0]?.tag.tagName}
+          tagID={props?.rewardedPosts[0]?.tag.tagId}
           isRewarded={props.rewardedPosts[0]?.is_rewarded}
           slug={props.rewardedPosts[0]?.slug}
           userId={props.rewardedPosts[0]?.userId}

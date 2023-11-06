@@ -14,9 +14,12 @@ export default function PendingPosts(props) {
           description={item.description}
           avatar={item.avatarURL}
           label={item.accountName}
-          major={item.category[0]}
-          subject={item.category[1]}
-          tag={item.tag}
+          majorName={item?.category[0]?.categoryName}
+          majorID={item?.category[0]?.categoryId}
+          subjectName={item?.category[2]?.categoryName}
+          subjectID={item?.category[2]?.categoryId}
+          tagName={item?.tag.tagName}
+          tagID={item?.tag.tagId}
           time={item.dateOfPost}
           postId={item.postId}
           slug={"/pending-posts/" + item.slug}
