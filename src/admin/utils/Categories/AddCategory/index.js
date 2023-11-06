@@ -41,18 +41,6 @@ function AddCategory({ closeAddCategoryModal }) {
   const handleAddCategory = (e) => {
     e.preventDefault();
 
-    if (
-      cateList.some(
-        (cate) =>
-          cate.subject === selectedSubject && cate.semester === selectedSemester
-      )
-    ) {
-      setSubjectError("Môn học đã tồn tại ở học kỳ này");
-      return;
-    } else {
-      setSubjectError("");
-    }
-
     if (!selectedSubject) {
       setSubjectError("Danh mục không được để trống");
       return;
@@ -70,8 +58,9 @@ function AddCategory({ closeAddCategoryModal }) {
     axiosPrivate
       .post(process.env.REACT_APP_ADD_NEW_CATEGORY, data)
       .then((response) => {
-        const newCategory = response.data;
         toast.success("Thêm danh mục thành công!");
+
+        closeAddCategoryModal();
       })
       .catch((error) => {
         toast.error("Lỗi khi thêm danh mục.");

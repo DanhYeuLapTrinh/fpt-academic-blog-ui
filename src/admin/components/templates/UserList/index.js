@@ -67,8 +67,8 @@ function UserResultList() {
     if (!records.length) {
       setNoRows(true);
     }
-
     setData(res.data);
+    // setData(res.data.map((user) => ({ ...user, id: user._id })));
     setRecords(res.data);
     setLoading(false);
     console.log(res.data);
@@ -375,6 +375,7 @@ function UserResultList() {
       </div>
 
       <DataGrid
+        getRowId={(row) => row.id || row.username}
         loading={loading}
         sx={{
           "& .MuiDataGrid-cell": {

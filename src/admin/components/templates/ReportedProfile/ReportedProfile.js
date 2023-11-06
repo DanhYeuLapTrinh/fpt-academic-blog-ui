@@ -3,6 +3,7 @@ import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, LinearProgress, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function ReportedProfile() {
   const axiosPrivate = useAxiosPrivate();
@@ -13,7 +14,7 @@ function ReportedProfile() {
 
   const fetchData = async () => {
     const reportedProfilesRes = await axiosPrivate.get(
-      "admin/reported-profile"
+      process.env.REACT_APP_VIEW_REPORT_PROFILES
     );
     setReportedProfiles(reportedProfilesRes.data);
     console.log(reportedProfilesRes.data);
@@ -45,7 +46,7 @@ function ReportedProfile() {
       headerName: "",
       width: 150,
       renderCell: (params) => (
-        <div>
+        <Link to={`report-profile/${params.row.reportedUserId}`}>
           <Button
             sx={{
               backgroundColor: "#4caf50",
@@ -62,7 +63,7 @@ function ReportedProfile() {
           >
             Xem hồ sơ
           </Button>
-        </div>
+        </Link>
       ),
     },
   ];
