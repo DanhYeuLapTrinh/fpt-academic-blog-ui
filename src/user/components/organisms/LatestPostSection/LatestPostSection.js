@@ -6,7 +6,6 @@ import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import { getFirstChar } from "../../../utils/StringMethod";
 import LatestPostSkeleton from "../Skeleton/LatestPostSkeleton/LatestPostSkeleton";
-import LatestPostSkeleton from "../Skeleton/LatestPostSkeleton/LatestPostSkeleton";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import "./stylecaro.scss";
