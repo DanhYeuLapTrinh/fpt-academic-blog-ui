@@ -4,7 +4,7 @@ import PostCardV1 from "../PostCardV1/PostCardV1";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
-import { getFirstChar } from "../../../utils/StringMethod";
+
 export default function LatestPostSection(props) {
   return (
     <Box sx={{ marginBottom: "59px" }}>
