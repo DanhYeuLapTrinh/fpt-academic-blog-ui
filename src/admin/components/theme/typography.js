@@ -29,8 +29,8 @@ const FONT_PRIMARY = "Public Sans, sans-serif";
 const typography = {
   fontFamily: FONT_PRIMARY,
   fontWeightRegular: 400,
-  fontWeightMedium: 600,
-  fontWeightBold: 700,
+  fontWeightMedium: 500,
+  fontWeightBold: 600,
   h1: {
     fontWeight: 800,
     lineHeight: 80 / 64,
@@ -96,7 +96,7 @@ const typography = {
     textTransform: "uppercase",
   },
   button: {
-    fontWeight: 700,
+    fontWeight: 500,
     lineHeight: 24 / 14,
     fontSize: pxToRem(14),
     textTransform: "capitalize",

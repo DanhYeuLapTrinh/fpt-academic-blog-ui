@@ -14,6 +14,11 @@ function DeleteConfirm({ open, handleClose, deleteTag, data }) {
             width: "20px",
             color: "white",
             borderRadius: "5px",
+            "&:hover": {
+              bgcolor: "red",
+              transform: "scale(1.1)",
+            },
+            
           }}
           onClick={deleteTag}
         >

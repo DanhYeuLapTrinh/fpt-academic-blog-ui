@@ -322,7 +322,7 @@ function UserResultList() {
                 sx={unmuteButtonSx}
                 onClick={() => unmuteUser(params.row.id)}
               >
-                Hủy hạn chế tài khoản
+                Gỡ hạn chế tài khoản
               </Button>
             ) : (
               <Button
