@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import ConfirmDialog from "../../molecules/ReportedComment/ConfirmDialog";
 import DismissDialog from "../../molecules/ReportedComment/DismissDialog";
+import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
 
 import { DataGrid } from "@mui/x-data-grid";
-import { Typography } from "@mui/material";
+import { LinearProgress, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,7 +17,12 @@ function ReportedComment() {
   const [reportedComments, setReportedComments] = useState([]);
 
   const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+
   const [dismissDialogOpen, setDismissDialogOpen] = useState(false);
+
+  const [loading, setLoading] = useState(false);
+
+  const [noRows, setNoRows] = useState(false);
 
   const [selectedId, setSelectedId] = useState(null);
 
@@ -26,7 +32,12 @@ function ReportedComment() {
     const reportedCommentsRes = await axiosPrivate.get(
       process.env.REACT_APP_VIEW_REPORT_COMMENTS
     );
+
+    if (!reportedCommentsRes.length) {
+      setNoRows(true);
+    }
     setReportedComments(reportedCommentsRes.data);
+    setLoading(false);
     console.log(reportedCommentsRes.data);
   };
 
@@ -141,6 +152,10 @@ function ReportedComment() {
             outline: "none !important",
           },
         }}
+        slots={{
+          noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+          loadingOverlay: () => loading && <LinearProgress />,
+        }}
         getRowId={(row) => row.reportId}
         rows={reportedComments}
         columns={columns}
@@ -169,7 +184,7 @@ function ReportedComment() {
         }
       />
 
-      <ConfirmDialog
+      <DismissDialog
         open={dismissDialogOpen}
         onConfirm={handleDismiss}
         onCancel={handleCancel}

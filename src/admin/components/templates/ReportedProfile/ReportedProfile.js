@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 import { DataGrid } from "@mui/x-data-grid";
-import { Button, Typography } from "@mui/material";
+import { Button, LinearProgress, Typography } from "@mui/material";
 
 function ReportedProfile() {
   const axiosPrivate = useAxiosPrivate();
@@ -46,7 +46,22 @@ function ReportedProfile() {
       width: 150,
       renderCell: (params) => (
         <div>
-          <Button>Xem hồ sơ</Button>
+          <Button
+            sx={{
+              backgroundColor: "#4caf50",
+              color: "#fff",
+              border: "none",
+              padding: "5px 10px",
+              borderRadius: "5px",
+              cursor: "pointer",
+              marginRight: "10px",
+              "&:hover": {
+                backgroundColor: "#357a38",
+              },
+            }}
+          >
+            Xem hồ sơ
+          </Button>
         </div>
       ),
     },
@@ -67,6 +82,7 @@ function ReportedProfile() {
         Danh sách các hồ sơ bị báo cáo
       </Typography>
       <DataGrid
+        loading={reportedProfiles.length === 0}
         getRowId={(row) => row.reportedUserId}
         rows={reportedProfiles}
         columns={columns}
@@ -76,6 +92,14 @@ function ReportedProfile() {
               pageSize: 5,
             },
           },
+        }}
+        sx={{
+          "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+            outline: "none !important",
+          },
+        }}
+        slots={{
+          loadingOverlay: LinearProgress,
         }}
         pageSizeOptions={[5, 10, 25]}
         autoHeight

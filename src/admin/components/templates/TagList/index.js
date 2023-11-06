@@ -9,15 +9,24 @@ import AddTagForm from "../../molecules/Tag/AddTagForm";
 import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
 
 import { DataGrid } from "@mui/x-data-grid";
+import { LinearProgress } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
 import "./styles.scss";
+
 function TagList() {
   const [tagData, setTagData] = useState([]);
+
   const [open, setOpen] = useState(false);
+
   const [newTagName, setNewTagName] = useState("");
+
   const [errorMessage, setErrorMessage] = useState("");
+
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
+
   const [tagToDelete, setTagToDelete] = useState({ id: null, name: null });
+
   const axiosPrivate = useAxiosPrivate();
 
   const handleClickOpen = () => {
@@ -30,15 +39,14 @@ function TagList() {
     setErrorMessage("");
   };
 
+  const fetchData = async () => {
+    const res = await axiosPrivate.get(process.env.REACT_APP_TAGS_LIST);
+
+    setTagData(res.data);
+  };
+
   useEffect(() => {
-    axiosPrivate
-      .get(process.env.REACT_APP_TAGS_LIST)
-      .then((response) => {
-        setTagData(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data: " + error);
-      });
+    fetchData();
   }, []);
 
   const handleAddTag = () => {
@@ -153,13 +161,14 @@ function TagList() {
       </div>
 
       <DataGrid
+        loading={tagData.length === 0}
         sx={{
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
             outline: "none !important",
           },
         }}
         slots={{
-          noRowsOverlay: CustomNoRowsOverlay,
+          loadingOverlay: LinearProgress,
         }}
         rows={tagData}
         columns={columns}
