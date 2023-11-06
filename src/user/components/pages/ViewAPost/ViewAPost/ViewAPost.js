@@ -20,8 +20,8 @@ export default function ViewAPost(props) {
   return (
     <Container>
       <MyBread
-        input={props.data?.category}
-        tag={props.data?.tag}
+        input={props?.data?.category}
+        tag={props?.data?.tag}
         separator={<KeyboardDoubleArrowRightIcon sx={{ width: "16px" }} />}
       />
       <Text m="5px 0 20px">

@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { getFirstChar, toSlug } from "../../../utils/StringMethod";
 export default function PostCardV1(props) {
   return (
-    <Link to={`/view/${props.slug}`} style={{textDecoration: "none"}}>
+    <Link to={`/view/${props.slug}`} style={{ textDecoration: "none" }}>
       <Stack
         sx={{ width: props.boxWidth, height: props.boxHeight }}
         justifyContent={"space-between"}
@@ -35,14 +35,14 @@ export default function PostCardV1(props) {
             />
           )}
         </Box>
-          <Author
-            src={props.src}
-            author={true}
-            text={props.label}
-            color={props.authorColor}
-            time={props.time}
-            profile={props.userId}
-          />
+        <Author
+          src={props.src}
+          author={true}
+          text={props.label}
+          color={props.authorColor}
+          time={props.time}
+          profile={props.userId}
+        />
         <Wrapper WebkitLineClamp="2">
           <Text
             fontSize={props.title}
@@ -61,9 +61,9 @@ export default function PostCardV1(props) {
         )}
         <Stack direction={"row"} spacing={"12px"}>
           <PostTag
-            text={getFirstChar(props.major)}
+            text={getFirstChar(props.majorName)}
             color={props.tagColor ? props.tagColor : "primary.main"}
-            link={toSlug(props.major, true)}
+            link={`/topics/${props.major}`}
           />
           <PostTag
             text={props.subject}

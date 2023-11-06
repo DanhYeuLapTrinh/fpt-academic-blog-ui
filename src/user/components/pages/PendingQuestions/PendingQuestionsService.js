@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import PendingQuestions from './PendingQuestions'
+import React, { useEffect, useState } from "react";
+import PendingQuestions from "./PendingQuestions";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import useManagePost from "../../../hooks/useManagePost";
+import { sortByPropertyName } from "../../../utils/StringMethod";
 
 export default function PendingQuestionsService() {
-  const [questions, setQuestions] = useState()
+  const { sort, pendingQ, setPendingQ, setQAmount, } = useManagePost();
+
   const axiosPrivate = useAxiosPrivate();
+  let sortedPending = sortByPropertyName(pendingQ, "", "postId");
+  if (sort !== "Mới nhất") {
+    sortedPending = sortByPropertyName(pendingQ, "asc", "postId");
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosPrivate.get("mentor/q-a/view");
-        setQuestions(response.data)
+        let response = await axiosPrivate.get("mentor/q-a/view");
+        setPendingQ(response?.data);
+        setQAmount(response?.data?.length);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchData()
-  }, [])
-  return (
-    <PendingQuestions questions={questions}/>
-  )
+    fetchData();
+  }, []);
+  return <PendingQuestions questions={sortedPending}/>;
 }
