@@ -12,27 +12,31 @@ export default function Dropzone() {
   // functon onDrop chỉ chạy khi người dùng bỏ ảnh vào
   // useCallback để tránh tình trạng bị rerender khi component Dropzone rerender
   // chỉ rerender khi có ảnh thôi
-  const {isLoading, setIsLoading} = useHome()
+  const { isLoading, setIsLoading } = useHome();
   const { file, setFile } = useContent();
   const { setCoverURL, coverURL } = useContent();
   const [rejectedFile, setRejectedFile] = useState();
   const handleSubmit = async (file) => {
-    setIsLoading(true);
-    if (!file) return;
-    const formData = new FormData();
-    formData.append("file[]", file);
-    const response = await axiosPrivate.post(
-      process.env.REACT_APP_IMAGE_UPLOAD,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-    const origin = response?.data?.link;
-    setIsLoading(false);
-    setCoverURL(origin);
+    try {
+      setIsLoading(true);
+      if (!file) return;
+      const formData = new FormData();
+      formData.append("file[]", file);
+      const response = await axiosPrivate.post(
+        process.env.REACT_APP_IMAGE_UPLOAD,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      const origin = response?.data?.link;
+      setIsLoading(false);
+      setCoverURL(origin);
+    } catch (error) {
+      console.log(error)
+    }
   };
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
     if (acceptedFiles?.[0]) {

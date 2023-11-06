@@ -1,6 +1,5 @@
 import {
   Button,
-  Container,
   FormControlLabel,
   Stack,
   Switch,
@@ -9,11 +8,10 @@ import React from "react";
 import Text from "../../../atoms/Text/Text";
 import styles from "./Styles.module.scss";
 import AccountInfoBar from "../../../organisms/AccountInfoBar/AccountInfoBar";
-import { getFirstChar } from "../../../../utils/StringMethod";
 import PopUpDialog from "../../../organisms/PopUpDialog/PopUpDialog";
 export default function ViewPendingPost(props) {
   return (
-    <Container>
+    <>
       <AccountInfoBar
         src={props.data?.avatarURL}
         color="secondary.main"
@@ -34,10 +32,11 @@ export default function ViewPendingPost(props) {
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
 
-      <FormControlLabel control={<Switch color="warning" onChange={props.handleGiveReward}/>} label={
-        <Text>Trao thưởng</Text>
-      }/>
-      
+      <FormControlLabel
+        control={<Switch color="warning" onChange={props.handleGiveReward} />}
+        label={<Text>Trao thưởng</Text>}
+      />
+
       <Stack
         direction={"row"}
         justifyContent={"flex-end"}
@@ -68,6 +67,6 @@ export default function ViewPendingPost(props) {
           Phê duyệt
         </Button>
       </Stack>
-    </Container>
+    </>
   );
 }

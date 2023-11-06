@@ -11,7 +11,8 @@ import ContentProvider from "./user/context/ContentProvider";
 import ErrorProvider from "./user/context/ErrorProvider";
 import HomeProvider from "./user/context/HomeProvider";
 import ManagePostProvider from "./user/context/ManagePostProvider";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={MyTheme}>
@@ -22,6 +23,7 @@ root.render(
             <PostTagProvider>
               <LoginProvider>
                 <App />
+                <ToastContainer theme="colored"/>
               </LoginProvider>
             </PostTagProvider>
           </ContentProvider>

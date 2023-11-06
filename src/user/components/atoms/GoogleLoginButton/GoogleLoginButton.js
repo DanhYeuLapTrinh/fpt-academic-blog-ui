@@ -3,7 +3,7 @@ import { Button, IconButton } from "@mui/material";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
-import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
 export default function GoogleLoginButton({ children, ...props }) {
   const navigate = useNavigate();
   const configGoogleBtn = {
@@ -45,7 +45,7 @@ export default function GoogleLoginButton({ children, ...props }) {
         localStorage.setItem("auth", JSON.stringify(auth));
         navigate("/", { replace: true });
       } catch (error) {
-        console.log(error);
+        toast.error("Đăng nhập thất bại");
       }
     },
   });

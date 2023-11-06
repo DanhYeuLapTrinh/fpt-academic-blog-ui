@@ -1,13 +1,13 @@
-import { ListItemText, Typography } from "@mui/material";
+import {Typography } from "@mui/material";
 import React from "react";
 
-export default function NavOption({ children }) {
+export default function NavOption({ children, ...props }) {
   const configTypo = {
     color: "text.main",
     sx: {
-      fontWeight: "500",
-      padding: "10px",
+      fontWeight: props.fontWeight ? props.fontWeight : "500",
     },
+    ...props,
   };
   return <Typography {...configTypo}>{children}</Typography>;
 }
