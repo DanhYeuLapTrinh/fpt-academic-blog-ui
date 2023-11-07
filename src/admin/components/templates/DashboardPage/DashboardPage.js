@@ -25,7 +25,7 @@ function DashboardPage() {
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" fontWeight={"bold"} sx={{ mb: 5 }}>
-        Hi, {username}
+        Hi, {username} 👋
       </Typography>
 
       <Grid container spacing={3}>

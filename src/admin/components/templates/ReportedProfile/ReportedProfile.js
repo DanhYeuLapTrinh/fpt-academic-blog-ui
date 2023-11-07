@@ -46,7 +46,7 @@ function ReportedProfile() {
       headerName: "",
       width: 150,
       renderCell: (params) => (
-        <Link to={`report-profile/${params.row.reportedUserId}`}>
+        <Link to={`/reported-profile/view/${params.row.reportedUserId}`}>
           <Button
             sx={{
               backgroundColor: "#4caf50",

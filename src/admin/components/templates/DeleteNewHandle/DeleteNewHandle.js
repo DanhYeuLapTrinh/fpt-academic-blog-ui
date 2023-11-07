@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
-function DeleteNewHandle({ id }) {
+function DeleteNewHandle({ id, fetchData }) {
   const [open, setOpen] = useState(false);
 
   const axiosPrivate = useAxiosPrivate();
@@ -18,10 +18,11 @@ function DeleteNewHandle({ id }) {
     setOpen(false);
   };
 
-  const handleDelete = () => {
-    axiosPrivate
+  const handleDelete = async () => {
+    await axiosPrivate
       .post(process.env.REACT_APP_DELETE_NEWS, { newsId: id })
       .then((response) => {
+        fetchData();
         toast.success("Xóa tin tức thành công");
         console.log(response.data);
         handleClose();

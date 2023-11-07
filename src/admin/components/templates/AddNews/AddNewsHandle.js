@@ -70,7 +70,7 @@ export default function App() {
       <Editor
         apiKey="jyymcsj2533984fe0lwdenxx5exsesynmz7lbatgw0cnnre9"
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue="<p>Vui lòng nhập nội dung tin tức!</p>"
+        initialValue="Vui lòng nhập nội dung tin tức!"
         init={{
           height: 500,
           menubar: false,

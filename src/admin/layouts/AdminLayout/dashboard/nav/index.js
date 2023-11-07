@@ -45,9 +45,9 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderContent = (
     <>
       <Box sx={{ px: 2.5, py: 3, textAlign: "center" }}>
-        <Link to={"/welcome"}>
+        <Link to={"/welcome"} style={{ textDecoration: "none" }}>
           <Typography
-            variant="h3"
+            variant="h2"
             sx={{
               color: "#5927e5",
               fontWeight: "bold",

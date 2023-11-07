@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 import Header from "./header";
 import Nav from "./nav";
 import ThemeProvider from "../../../components/theme";
+import { NewsProvider } from "../../../context/NewsContext";
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
 
@@ -32,16 +33,19 @@ export default function AdminLayout() {
   const [open, setOpen] = useState(false);
 
   return (
-    <ThemeProvider>
-      <StyledRoot>
-        <Header onOpenNav={() => setOpen(true)} />
+    <NewsProvider>
+      {" "}
+      <ThemeProvider>
+        <StyledRoot>
+          <Header onOpenNav={() => setOpen(true)} />
 
-        <Nav openNav={open} onCloseNav={() => setOpen(false)} />
+          <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
-        <Main>
-          <Outlet />
-        </Main>
-      </StyledRoot>
-    </ThemeProvider>
+          <Main>
+            <Outlet />
+          </Main>
+        </StyledRoot>
+      </ThemeProvider>
+    </NewsProvider>
   );
 }
