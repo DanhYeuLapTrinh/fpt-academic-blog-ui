@@ -40,6 +40,7 @@ export default function UserMenuOptionsList(props) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
+        {/* sửa cái này ghi tay ko in ra từ list */}
         {props.filteredOption?.map((item) => (
           <Link to={item.path} style={{textDecoration: 'none'}}>
             <UserMenuOption

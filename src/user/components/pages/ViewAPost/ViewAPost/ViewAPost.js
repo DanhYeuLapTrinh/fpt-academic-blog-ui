@@ -49,7 +49,7 @@ export default function ViewAPost(props) {
         />
         <Stack direction={"row"} alignItems={"center"}>
           {!clicked ? (
-            <Tooltip title="Thêm danh sách yêu thích" placement="right">
+            <Tooltip title="Thêm danh sách yêu thích" placement="top">
               <IconButton onClick={() => setClicked(true)}>
                 <Icon
                   icon="ion:bookmark-outline"
@@ -59,7 +59,7 @@ export default function ViewAPost(props) {
               </IconButton>
             </Tooltip>
           ) : (
-            <Tooltip title="Xóa khỏi danh sách yêu thích" placement="right">
+            <Tooltip title="Xóa khỏi danh sách yêu thích" placement="top">
               <IconButton onClick={() => setClicked(false)}>
                 <Icon icon="ion:bookmark" width={"24px"} color="#5927e5" />
               </IconButton>

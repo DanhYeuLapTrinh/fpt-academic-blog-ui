@@ -75,7 +75,14 @@ export default function WriteService() {
 
   const handleSubmit = useCallback(async () => {
     try {
-      if (!title || (!coverURL && tag !== "Q&A") || !contentTiny || !tagID || !subjectID) {
+      if (
+        !title ||
+        wordcount < 30 ||
+        (!coverURL && tag !== "Q&A") ||
+        !contentTiny ||
+        !tagID ||
+        !subjectID
+      ) {
         toast.error("Vui lòng điền đầy đủ thông tin");
         return;
       } else if (charCount >= 100) {
@@ -124,23 +131,17 @@ export default function WriteService() {
         const response = await axiosPrivate.get(
           process.env.REACT_APP_CATEGORIES_API
         );
-        const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
-
         setData(response.data);
+      } catch (error) {}
+    };
+    fetchData();
+  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
         setTagList(tagList.data);
-      } catch (error) {
-        if (!error?.response) {
-          console.log("No server response");
-        } else if (error?.response?.status === 403) {
-          navigate("/login");
-        } else if (error?.response?.status === 401) {
-          // Xử lý sau
-          console.log(error);
-        } else {
-          // Xử lý sau
-          console.log(error);
-        }
-      }
+      } catch (error) {}
     };
     fetchData();
   }, []);

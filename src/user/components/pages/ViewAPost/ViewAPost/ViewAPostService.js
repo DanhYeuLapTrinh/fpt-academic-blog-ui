@@ -21,11 +21,20 @@ export default function ViewAPostService() {
           }
         );
         setData(response.data);
-        
+      };
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [slug]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         let followersList = await axiosPrivate.post(
           process.env.REACT_APP_VIEW_FOLLOWERS,
           {
-            userId: response?.data.userId,
+            userId: data?.userId,
           }
         );
 
@@ -35,12 +44,27 @@ export default function ViewAPostService() {
           );
           setIsFollowing(isFollowingUser);
         }
-      };
-      fetchData();
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if(data && auth.id !== data?.userId) fetchData();
+  }, [data]);
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let favorList = await axiosPrivate.get(
+          "favorite/posts",
+        );
+
+        console.log(favorList)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if(data) fetchData();
+  }, [data]);
 
   const followAccount = async () => {
     try {
@@ -71,5 +95,16 @@ export default function ViewAPostService() {
       }
     } catch (error) {}
   };
-  return <>{data && <ViewAPost data={data} isFollowing={isFollowing} followAccount={followAccount} unfollowAccount={unfollowAccount}/>}</>;
+  return (
+    <>
+      {data && (
+        <ViewAPost
+          data={data}
+          isFollowing={isFollowing}
+          followAccount={followAccount}
+          unfollowAccount={unfollowAccount}
+        />
+      )}
+    </>
+  );
 }

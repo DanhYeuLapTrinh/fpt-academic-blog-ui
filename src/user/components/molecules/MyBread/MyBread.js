@@ -5,9 +5,6 @@ import { toSlug } from "../../../utils/StringMethod";
 import Text from "../../atoms/Text/Text";
 
 export default function MyBread(props) {
-  console.log(props.input[0].categoryId);
-  console.log(props.input[0].categoryName);
-  console.log(props.tag.tagName);
   return (
     <>
       {props.input && (

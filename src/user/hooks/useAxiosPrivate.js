@@ -8,9 +8,8 @@ import { msg } from "../data/ErrorMessage";
 
 export default function useAxiosPrivate() {
   const refresh = useRefreshToken();
-  const navigate = useNavigate();
   const { setErrorMsg } = useError();
-  const auth = useAuth();
+  let auth = JSON.parse(localStorage.getItem("auth"))
   useEffect(() => {
     const requestInterceptor = axiosPrivate.interceptors.request.use(
       (config) => {

@@ -10,7 +10,7 @@ export default function UserStoryService(props) {
   useEffect(() => {
     setUserStory(props.userStory);
     setEditedStory(props.userStory);
-  }, [props]);
+  }, [props.userStory]);
   const handleSave = async () => {
     try {
       let response = await axiosPrivate.post(
