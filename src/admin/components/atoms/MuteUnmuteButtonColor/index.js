@@ -1,7 +1,7 @@
 const buttonSx = {
   width: "auto",
   borderRadius: "20px",
-  fontSize: "0.5rem",
+  fontSize: "0.6rem",
   padding: "2px 4py",
   color: "#fff",
 };

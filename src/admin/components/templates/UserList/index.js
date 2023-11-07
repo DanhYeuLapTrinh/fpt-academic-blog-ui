@@ -274,13 +274,14 @@ function UserResultList() {
             ) : (
               <div className="role-col">
                 {params.row.role.roleName}
-
-                <EditIcon
-                  sx={{ marginLeft: "10px", float: "right", padding: "3px" }}
-                  onClick={() =>
-                    startEditing(params.row.id, params.row.role.roleName)
-                  }
-                />
+                {banStatus[params.row.id] === true ? null : (
+                  <EditIcon
+                    sx={{ marginLeft: "10px", float: "right", padding: "3px" }}
+                    onClick={() =>
+                      startEditing(params.row.id, params.row.role.roleName)
+                    }
+                  />
+                )}
               </div>
             )}
           </>
@@ -293,7 +294,7 @@ function UserResultList() {
       width: 200,
       renderCell: (params) =>
         banStatus[params.row.id] && isMuted[params.row.id]
-          ? "Đang bị cấm và đang bị hạn chế"
+          ? "Đang bị cấm và hạn chế"
           : banStatus[params.row.id]
           ? "Đang bị cấm"
           : isMuted[params.row.id]
@@ -317,7 +318,9 @@ function UserResultList() {
             />
           </Grid>
           <Grid item xs={12}>
-            {isMuted[params.row.id] ? (
+            {banStatus[params.row.id] === true ? null : isMuted[
+                params.row.id
+              ] ? (
               <Button
                 sx={unmuteButtonSx}
                 onClick={() => unmuteUser(params.row.id)}

@@ -4,11 +4,12 @@ import { DataGrid } from "@mui/x-data-grid";
 import { LinearProgress, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import DeleteNewHandle from "../DeleteNewHandle/DeleteNewHandle";
+import { useNewsContext } from "../../../context/NewsContext";
 function NewsHandle() {
   const axiosPrivate = useAxiosPrivate();
 
-  const [news, setNews] = useState([]);
-
+  const { news, setNews } = useNewsContext();
+  
   const fetchData = async () => {
     const newsRes = await axiosPrivate.get("news/list");
     setNews(newsRes.data);
@@ -20,13 +21,13 @@ function NewsHandle() {
   }, []);
 
   const columns = [
-    { field: "newsId", headerName: "ID", width: 150 },
+    { field: "newsAt", headerName: "Thời gian", width: 160 },
     {
       field: "title",
       headerName: "Tiêu đề",
       flex: 1,
       renderCell: (params) => (
-        <Link to={`/news/view?id=${params.row.newsId}`}>
+        <Link to={`/news/view/${params.row.newsId}`}>
           <Typography sx={{ color: "#333", fontSize: "16px" }}>
             {params.value}
           </Typography>
@@ -37,8 +38,9 @@ function NewsHandle() {
       field: "",
       headrName: "",
       width: 100,
-      renderCell: (params) => <DeleteNewHandle 
-      id={params.row.newsId}/>,
+      renderCell: (params) => (
+        <DeleteNewHandle id={params.row.newsId} fetchData={fetchData} />
+      ),
     },
   ];
 

@@ -14,6 +14,8 @@ import ReportedProfilePage from "../admin/components/pages/Reports/ReportedProfi
 import ReportedCommentPage from "../admin/components/pages/Reports/ReportedCommentPage";
 import NewsPage from "../admin/components/pages/NewsPage/NewsPage";
 import AddNews from "../admin/components/pages/AddNews/AddNews";
+import DetailNew from "../admin/components/pages/DetailNew/DetailNew";
+import ReportedProfileDetail from "../admin/components/pages/ReportedProfileDetail/ReportedProfileDetail";
 import ActivityLogPage from "../admin/components/pages/ActivityLog/ActivityLogPage";
 import SettingPage from "../admin/components/pages/Setting/SettingPage";
 
@@ -74,11 +76,13 @@ const loggedInAdminRoutes = [
   { path: "/edit-tag", component: EditTagPage },
   //Reports Page
   { path: "/reported-profile", component: ReportedProfilePage },
+  { path: "/reported-profile/view/:id", component: ReportedProfileDetail },
   { path: "/reported-comment", component: ReportedCommentPage },
   //Activity Log Page
   { path: "/activity-log", component: ActivityLogPage },
   //News Page
   { path: "/news-admin", component: NewsPage },
+  { path: "news/view/:id", component: DetailNew },
   { path: "/add-news", component: AddNews },
   //Setting Page
   { path: "/setting", component: SettingPage },

@@ -75,6 +75,7 @@ export default function NavSection({ data = [], ...other }) {
                     color: "text.primary",
                     bgcolor: "action.selected",
                     fontWeight: "fontWeightBold",
+                    borderRadius: "15px",
                   },
                 }}
               >
