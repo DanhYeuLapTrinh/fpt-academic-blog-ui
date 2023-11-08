@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const NewsContext = createContext();
 
@@ -7,7 +7,13 @@ export const useNewsContext = () => {
 };
 
 export const NewsProvider = ({ children }) => {
-  const [news, setNews] = useState([]);
+  const [news, setNews] = useState(
+    JSON.parse(localStorage.getItem("news")) || {}
+  );
+
+  useEffect(() => {
+    localStorage.setItem("news", JSON.stringify(news));
+  }, [news]);
 
   return (
     <NewsContext.Provider value={{ news, setNews }}>

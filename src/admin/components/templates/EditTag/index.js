@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import { toast } from "react-toastify";
 
 export const EditTag = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -66,18 +67,13 @@ export const EditTag = () => {
         }
         setTagList(updatedTagList);
         setTag({ tagId: "", tagName: "" });
-
-        setSnackbarOpen(true);
+        toast.success("Chỉnh sửa thẻ thành công");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        toast.success("Chỉnh sửa thẻ thất bại");
+      });
   }
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
   const handleTagSelect = () => {
     if (errorMessage === "Vui lòng chọn một thẻ trước khi cập nhật.") {
       setErrorMessage("");
@@ -159,16 +155,6 @@ export const EditTag = () => {
           Cập nhật thẻ
         </Button>
       </Paper>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert severity="success" sx={{ width: "100%" }}>
-          Chỉnh sửa thẻ thành công
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };
