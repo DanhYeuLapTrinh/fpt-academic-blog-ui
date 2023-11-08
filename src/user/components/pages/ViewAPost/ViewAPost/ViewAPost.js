@@ -16,7 +16,6 @@ import MyBread from "../../../molecules/MyBread/MyBread";
 import PostInteraction from "../../../organisms/PostInteraction/PostInteraction";
 import PostMenuOptionListService from "../../../organisms/PostMenuOptiopList/PostMenuOptionListService";
 export default function ViewAPost(props) {
-  const [clicked, setClicked] = useState(false);
   return (
     <Container>
       <MyBread
@@ -48,9 +47,9 @@ export default function ViewAPost(props) {
           authorSize="16px"
         />
         <Stack direction={"row"} alignItems={"center"}>
-          {!clicked ? (
+          {!props.isFavored ? (
             <Tooltip title="Thêm danh sách yêu thích" placement="top">
-              <IconButton onClick={() => setClicked(true)}>
+              <IconButton onClick={props.addToFavorite}>
                 <Icon
                   icon="ion:bookmark-outline"
                   width={"24px"}
@@ -60,7 +59,7 @@ export default function ViewAPost(props) {
             </Tooltip>
           ) : (
             <Tooltip title="Xóa khỏi danh sách yêu thích" placement="top">
-              <IconButton onClick={() => setClicked(false)}>
+              <IconButton onClick={props.removeFromFavorite}>
                 <Icon icon="ion:bookmark" width={"24px"} color="#5927e5" />
               </IconButton>
             </Tooltip>

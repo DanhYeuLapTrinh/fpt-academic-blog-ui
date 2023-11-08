@@ -6,10 +6,11 @@ import useAuth from "../../../../hooks/useAuth";
 
 export default function ViewAPostService() {
   const { slug } = useParams();
-  const axiosPrivate = useAxiosPrivate();
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [data, setData] = useState();
   const auth = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  const [data, setData] = useState();
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFavored, setIsFavored] = useState(false)
 
   useEffect(() => {
     try {
@@ -54,9 +55,14 @@ export default function ViewAPostService() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let favorList = await axiosPrivate.get("favorite/posts");
+        let favorList = await axiosPrivate.get(process.env.REACT_APP_VIEW_FAVORITE);
 
-        console.log(favorList);
+        if (favorList) {
+          let isFavored = favorList?.data?.some(
+            (favor) => favor?.postListDto?.postId === data.postId
+          );
+          setIsFavored(isFavored);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -93,6 +99,35 @@ export default function ViewAPostService() {
       }
     } catch (error) {}
   };
+
+  const addToFavorite = async () => {
+    try {
+      let response = await axiosPrivate.post(
+        process.env.REACT_APP_ADD_TO_FAVORITE,
+        {
+          postId: data?.postId,
+        }
+      );
+      if (response) {
+        setIsFavored(true);
+      }
+    } catch (error) {}
+  };
+
+  const removeFromFavorite = async () => {
+    try {
+      let response = await axiosPrivate.post(
+        process.env.REACT_APP_REMOVE_FROM_FAVORITE,
+        {
+          postId: data?.postId,
+        }
+      );
+      if (response) {
+        setIsFavored(false);
+      }
+    } catch (error) {}
+  };
+
   return (
     <>
       {data && (
@@ -101,6 +136,9 @@ export default function ViewAPostService() {
           isFollowing={isFollowing}
           followAccount={followAccount}
           unfollowAccount={unfollowAccount}
+          isFavored={isFavored}
+          addToFavorite={addToFavorite}
+          removeFromFavorite={removeFromFavorite}
         />
       )}
     </>
