@@ -1,12 +1,7 @@
 import React from "react";
 import styles from "./Styles.module.scss";
 import Text from "../../../atoms/Text/Text";
-import {
-  Container,
-  IconButton,
-  Stack,
-  Tooltip,
-} from "@mui/material";
+import { Container, IconButton, Skeleton, Stack, Tooltip } from "@mui/material";
 import { Icon } from "@iconify/react";
 import AuthorPost from "../../../molecules/AuthorPost/AuthorPost";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
