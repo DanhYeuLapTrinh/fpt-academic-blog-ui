@@ -29,7 +29,7 @@ export default function AuthorPost(props) {
               {props.text}
             </Text>
           </Link>
-          {auth?.id !== props.id ? (
+          {auth?.id !== props.userId ? (
             <Button
               sx={{ textTransform: "none", borderRadius: "20px" }}
               size="small"

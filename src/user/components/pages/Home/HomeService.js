@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Home from "./Home";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useHome from "../../../hooks/useHome";
@@ -9,13 +9,16 @@ export default function HomeService() {
     latestPosts,
     setLatestPosts,
     trendingPosts,
-    setTrendingPosts,
     rewardedPosts,
     setRewardedPosts,
     allPosts,
-    setAllPosts,
-    isRefreshProgress,
+    shortPosts,
+    setShortPosts,
+    userAccounts,
+    setUserAccounts,
   } = useHome();
+
+  const [trendingPostsHome, setTrendingPostsHome] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +26,7 @@ export default function HomeService() {
         let trendingPosts = await axiosPrivate.get(
           process.env.REACT_APP_TRENDING_POSTS
         );
-        setTrendingPosts(trendingPosts?.data?.slice(0, 4));
+        setTrendingPostsHome(trendingPosts?.data?.slice(0, 4));
       } catch (error) {}
     };
     fetchData();
@@ -53,6 +56,30 @@ export default function HomeService() {
     if (latestPosts) fetchData();
   }, [latestPosts]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let shortPosts = await axiosPrivate.get(
+          process.env.REACT_APP_SHORT_POSTS
+        );
+        setShortPosts(shortPosts?.data);
+      } catch (error) {}
+    };
+    if (rewardedPosts) fetchData();
+  }, [rewardedPosts]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let userAccounts = await axiosPrivate.get(
+          process.env.REACT_APP_ACCOUNTS_LIST
+        );
+        setUserAccounts(userAccounts?.data);
+      } catch (error) {}
+    };
+    if (shortPosts) fetchData();
+  }, [shortPosts]);
+
   // useEffect(() => {
   //   const fetchData = async () => {
   //     try {
@@ -67,10 +94,11 @@ export default function HomeService() {
 
   return (
     <Home
-      trendingPosts={trendingPosts}
+    trendingPostsHome={trendingPostsHome}
       rewardedPosts={rewardedPosts}
       latestPosts={latestPosts}
       allPosts={allPosts}
+      shortPosts={shortPosts}
     />
   );
 }

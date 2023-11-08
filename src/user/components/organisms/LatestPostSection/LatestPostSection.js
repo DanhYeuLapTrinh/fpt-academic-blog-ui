@@ -32,7 +32,7 @@ export default function LatestPostSection(props) {
   return (
     <>
       <Container>
-        <SectionTitle title="Mới đăng gần đây" />
+        <SectionTitle title="Mới đăng gần đây" see link="/latest"/>
       </Container>
       <Box
         sx={{

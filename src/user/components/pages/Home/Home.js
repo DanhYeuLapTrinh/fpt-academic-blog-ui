@@ -14,21 +14,21 @@ export default function Home(props) {
   return (
     <div>
       <Container>
-        <TrendingList trendingPosts={props.trendingPosts} />
+        <TrendingList trendingPostsHome={props.trendingPostsHome} />
         <SearchSection />
       </Container>
-      <LatestPostSection latestPosts={props.latestPosts}/>
+      <LatestPostSection latestPosts={props.latestPosts} />
       <RewardedPostList />
       <Container>
         <Grid2 container xs={12} columnGap={"20px"}>
           <Grid2 item xs={8} sx={{ marginBottom: "59px" }}>
             <QAList />
-            <PostList allPosts={props.allPosts}/>
+            <PostList allPosts={props.allPosts} />
           </Grid2>
           <Grid2 item xs>
             <Stack spacing={12}>
               <TrendingTagSection />
-              <ShortList />
+              <ShortList shortPosts={props.shortPosts} />
             </Stack>
           </Grid2>
         </Grid2>

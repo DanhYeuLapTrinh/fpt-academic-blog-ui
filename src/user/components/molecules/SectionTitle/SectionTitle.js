@@ -18,7 +18,8 @@ export default function SectionTitle(props) {
       <Text fontSize={props.fontSize ? props.fontSize : "28px"}>
         {props.title}
       </Text>
-      {props.filter ? <Filter post={props.post}/> : <SeeAllButton />}
+      {props.filter && <Filter post={props.post} />}
+      {props.see && <SeeAllButton link={props.link}/>}
     </Stack>
   );
 }
