@@ -10,9 +10,11 @@ import {
   Button,
   Paper,
   Snackbar,
+  InputLabel,
 } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import { toast } from "react-toastify";
 
 export const EditTag = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -65,18 +67,13 @@ export const EditTag = () => {
         }
         setTagList(updatedTagList);
         setTag({ tagId: "", tagName: "" });
-
-        setSnackbarOpen(true);
+        toast.success("Chỉnh sửa thẻ thành công");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        toast.success("Chỉnh sửa thẻ thất bại");
+      });
   }
-
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
   const handleTagSelect = () => {
     if (errorMessage === "Vui lòng chọn một thẻ trước khi cập nhật.") {
       setErrorMessage("");
@@ -109,6 +106,7 @@ export const EditTag = () => {
 
         <Grid container spacing={3}>
           <Grid item xs={6}>
+            <InputLabel>Danh sách thẻ đã có: </InputLabel>
             <Select
               fullWidth
               variant="outlined"
@@ -117,7 +115,9 @@ export const EditTag = () => {
               onChange={handleInput}
               onFocus={handleTagSelect}
             >
-              <MenuItem value="">Chọn một thẻ</MenuItem>
+              <MenuItem disabled value="">
+                Chọn một thẻ
+              </MenuItem>
               {tagList.map((t) => (
                 <MenuItem key={t.id} value={t.id}>
                   {t.tagName}
@@ -127,6 +127,7 @@ export const EditTag = () => {
           </Grid>
 
           <Grid item xs={6}>
+            <InputLabel>Nội dung thẻ mới: </InputLabel>
             <TextField
               fullWidth
               variant="outlined"
@@ -149,21 +150,11 @@ export const EditTag = () => {
           color="primary"
           size="large"
           onClick={handleSubmit}
-          sx={{ mt: 3 }}
+          sx={{ mt: 3, borderRadius: 20 }}
         >
           Cập nhật thẻ
         </Button>
       </Paper>
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-      >
-        <Alert severity="success" sx={{ width: "100%" }}>
-          Chỉnh sửa thẻ thành công
-        </Alert>
-      </Snackbar>
     </Container>
   );
 };

@@ -5,7 +5,7 @@ import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import AddUserForm from "../../../utils/User/AddUserAction";
 import { handleSearch } from "../../../utils/User/SearchUserByFullname";
 import BanUnbanUser from "../../../utils/User/BanUnbanAction/BanUnbanAction";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import MuteModal from "../../atoms/MuteModal/MuteModal";
 import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
 import {
@@ -24,7 +24,6 @@ import Button from "@mui/material/Button";
 import { Grid, LinearProgress } from "@mui/material";
 
 import "./styles.scss";
-import "react-toastify/dist/ReactToastify.css";
 
 function UserResultList() {
   const axiosPrivate = useAxiosPrivate();
@@ -67,8 +66,8 @@ function UserResultList() {
     if (!records.length) {
       setNoRows(true);
     }
-
     setData(res.data);
+    // setData(res.data.map((user) => ({ ...user, id: user._id })));
     setRecords(res.data);
     setLoading(false);
     console.log(res.data);
@@ -108,10 +107,7 @@ function UserResultList() {
       .post(process.env.REACT_APP_NEW_USER, userData)
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Thêm mới người dùng thành công", {
-            position: "top-right",
-            autoClose: 3000,
-          });
+          toast.success("Thêm mới người dùng thành công");
         }
         const newData = [...data, userData];
 
@@ -123,10 +119,7 @@ function UserResultList() {
       .catch((error) => {
         console.error("Lỗi khi thêm mới người dùng:", error);
         if (error.response.status === 401) {
-          toast.error("Hãy điền đầy đủ thông tin", {
-            position: "top-right",
-            autoClose: 3000,
-          });
+          toast.error("Hãy điền đầy đủ thông tin");
         }
       });
   };
@@ -209,10 +202,7 @@ function UserResultList() {
 
           setShowMuteModal(false);
 
-          toast.success(`Hạn chế ${selectedUsername} thành công!`, {
-            position: "top-right",
-            autoClose: 3000,
-          });
+          toast.success(`Hạn chế ${selectedUsername} thành công!`);
         });
     }
   };
@@ -230,10 +220,7 @@ function UserResultList() {
 
         setShowMuteModal(false);
 
-        toast.warn(`Hủy hạn chế ${selectedUsername} thành công!`, {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.warn(`Hủy hạn chế ${selectedUsername} thành công!`);
       });
   };
 
@@ -274,13 +261,14 @@ function UserResultList() {
             ) : (
               <div className="role-col">
                 {params.row.role.roleName}
-
-                <EditIcon
-                  sx={{ marginLeft: "10px", float: "right", padding: "3px" }}
-                  onClick={() =>
-                    startEditing(params.row.id, params.row.role.roleName)
-                  }
-                />
+                {banStatus[params.row.id] === true ? null : (
+                  <EditIcon
+                    sx={{ marginLeft: "10px", float: "right", padding: "3px" }}
+                    onClick={() =>
+                      startEditing(params.row.id, params.row.role.roleName)
+                    }
+                  />
+                )}
               </div>
             )}
           </>
@@ -293,7 +281,7 @@ function UserResultList() {
       width: 200,
       renderCell: (params) =>
         banStatus[params.row.id] && isMuted[params.row.id]
-          ? "Đang bị cấm và đang bị hạn chế"
+          ? "Đang bị cấm và hạn chế"
           : banStatus[params.row.id]
           ? "Đang bị cấm"
           : isMuted[params.row.id]
@@ -317,12 +305,14 @@ function UserResultList() {
             />
           </Grid>
           <Grid item xs={12}>
-            {isMuted[params.row.id] ? (
+            {banStatus[params.row.id] === true ? null : isMuted[
+                params.row.id
+              ] ? (
               <Button
                 sx={unmuteButtonSx}
                 onClick={() => unmuteUser(params.row.id)}
               >
-                Hủy hạn chế tài khoản
+                Gỡ hạn chế tài khoản
               </Button>
             ) : (
               <Button
@@ -375,6 +365,7 @@ function UserResultList() {
       </div>
 
       <DataGrid
+        getRowId={(row) => row.id || row.username}
         loading={loading}
         sx={{
           "& .MuiDataGrid-cell": {
@@ -413,8 +404,6 @@ function UserResultList() {
         onMuteDurationChange={setMuteDuration}
         onMuteUser={muteUser}
       />
-
-      <ToastContainer position="top-right" autoClose="3000" />
     </>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Button from "@mui/material/Button";
 import {
   banButtonSx,
@@ -21,17 +20,11 @@ const BanUnbanUser = ({
     setIsBanning(true);
     banUserCallback(userId)
       .then(() => {
-        toast.success("Cấm tài khoản thành công", {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.success("Cấm tài khoản thành công");
         setBanStatus({ ...banStatus, [userId]: true });
       })
       .catch((error) => {
-        toast.error("Cấm tài khoản xảy ra lỗi", {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.error("Cấm tài khoản xảy ra lỗi");
         console.error(error);
       })
       .finally(() => {
@@ -43,17 +36,11 @@ const BanUnbanUser = ({
     setIsBanning(true);
     unbanUserCallback(userId)
       .then(() => {
-        toast.warn("Bỏ cấm tài khoản thành công", {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.warn("Bỏ cấm tài khoản thành công");
         setBanStatus({ ...banStatus, [userId]: false });
       })
       .catch((error) => {
-        toast.error("Bỏ cấm tài khoản không thành công", {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.error("Bỏ cấm tài khoản không thành công");
         console.error("Lỗi khi bỏ cấm tài khoản:", error);
       })
       .finally(() => {
@@ -65,7 +52,7 @@ const BanUnbanUser = ({
     <div>
       {isBanned ? (
         <Button sx={banButtonSx} onClick={handleUnbanClick}>
-          {isBanning ? "Đang xử lý..." : "Bỏ cấm tài khoản"}
+          {isBanning ? "Đang xử lý..." : "Gỡ cấm tài khoản"}
         </Button>
       ) : (
         <Button sx={unbanButtonSx} onClick={handleBanClick}>

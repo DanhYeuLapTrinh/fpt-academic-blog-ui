@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import {
   Button,
   Modal,

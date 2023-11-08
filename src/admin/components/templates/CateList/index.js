@@ -5,14 +5,13 @@ import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import ViewCategoriesList from "../../organisms/Category/ViewCategoriesList";
 import DeleteSpecPopup from "../../molecules/Category/DeleteSpecPopup";
 import DeleteSubjectPopup from "../../molecules/Category/DeleteSubjectPopup";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import EditCategoryModal from "../../../utils/Categories/EditCategory/EditCategory";
 
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
 
-import "react-toastify/dist/ReactToastify.css";
 import "./styles.scss";
 
 function CateList() {
@@ -258,7 +257,6 @@ function CateList() {
           fetchData={fetchData}
         />
       )}
-      <ToastContainer position="top-right" autoClose="3000" />
     </div>
   );
 }

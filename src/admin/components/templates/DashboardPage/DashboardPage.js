@@ -14,29 +14,27 @@ function DashboardPage() {
   const auth = useAuth();
   const username = auth?.user;
   const axiosPrivate = useAxiosPrivate();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    axiosPrivate
-      .get("https://6545c4e4fe036a2fa954c60c.mockapi.io/dashboard")
-      .then((res) => {
-        setData(res.data);
-      });
+    axiosPrivate.get("admin/dashboard").then((res) => {
+      setData(res.data);
+    });
   }, []);
 
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" fontWeight={"bold"} sx={{ mb: 5 }}>
-        Hi, {username}
+        Hi, {username} 👋
       </Typography>
 
       <Grid container spacing={3}>
-        {data !== null && data.length > 0 && (
+        {data && (
           <>
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
                 title="Số lượng bài viết"
-                total={data[0].totalPost}
+                total={data.total_post}
                 icon={"iconoir:post-solid"}
               />
             </Grid>
@@ -44,7 +42,7 @@ function DashboardPage() {
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
                 title="Số lượng người dùng"
-                total={data[0].totalUser}
+                total={data.total_user}
                 color="info"
                 icon={"mdi:user"}
               />
@@ -52,17 +50,17 @@ function DashboardPage() {
 
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
-                title="Tổng số truy cập"
-                total={data[0].totalAccess}
+                title="Số lượng truy cập theo ngày"
+                total={data.total_visit}
                 color="success"
-                icon={"icon-park-solid:connect"}
+                icon={"carbon:report"}
               />
             </Grid>
 
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
                 title="Số lượng báo cáo"
-                total={data[0].totalReport}
+                total={data.total_reported_profile}
                 color="error"
                 icon={"ic:round-report"}
               />
