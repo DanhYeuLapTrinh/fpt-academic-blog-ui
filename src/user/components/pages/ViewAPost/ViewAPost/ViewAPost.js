@@ -35,7 +35,7 @@ export default function ViewAPost(props) {
           src={props.data?.avatarURL}
           text={props.data?.accountName}
           time={props.data?.dateOfPost}
-          id={props.data?.userId}
+          userId={props.data?.userId}
           comments={props?.data?.comments.length}
           isFollowing={props.isFollowing}
           unfollowAccount={props.unfollowAccount}

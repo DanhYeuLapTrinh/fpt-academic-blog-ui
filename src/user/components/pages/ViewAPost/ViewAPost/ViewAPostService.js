@@ -32,6 +32,24 @@ export default function ViewAPostService() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        let favorList = await axiosPrivate.get(process.env.REACT_APP_VIEW_FAVORITE);
+
+        if (favorList) {
+          let isFavored = favorList?.data?.some(
+            (favor) => favor?.postListDto?.postId === data.postId
+          );
+          setIsFavored(isFavored);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (data) fetchData();
+  }, [data]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         let followersList = await axiosPrivate.post(
           process.env.REACT_APP_VIEW_FOLLOWERS,
           {
@@ -51,24 +69,6 @@ export default function ViewAPostService() {
     };
     if (data && auth.id !== data?.userId) fetchData();
   }, [data]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let favorList = await axiosPrivate.get(process.env.REACT_APP_VIEW_FAVORITE);
-
-        if (favorList) {
-          let isFavored = favorList?.data?.some(
-            (favor) => favor?.postListDto?.postId === data.postId
-          );
-          setIsFavored(isFavored);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    if (isFollowing) fetchData();
-  }, [isFollowing]);
 
   const followAccount = async () => {
     try {

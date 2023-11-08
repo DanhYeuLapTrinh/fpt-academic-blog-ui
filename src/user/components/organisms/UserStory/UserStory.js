@@ -1,4 +1,4 @@
-import { Box, Button, Stack, TextField } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import Text from "../../atoms/Text/Text";
 import useAuth from "../../../hooks/useAuth";
@@ -15,16 +15,19 @@ export default function UserStory(props) {
         padding: "15px",
         display: "flex",
         flexDirection: "column",
-        gap: "10px",
       }}
     >
-      <Text fontSize="23px">Giới thiệu</Text>
+      <Text fontSize="23px" mb={2}>
+        Giới thiệu
+      </Text>
       <TextField
         fullWidth
         multiline
         disabled={!props.isEditing}
         value={props.editedStory}
-        onChange={(e) => props.setEditedStory(e.target.value)}
+        onChange={props.handleInputChange}
+        onFocus={() => props.setFocus(true)}
+        onBlur={() => props.setFocus(false)}
         placeholder={
           props.userId === auth.id
             ? "Nhập miêu tả về bạn"
@@ -45,6 +48,23 @@ export default function UserStory(props) {
           },
         }}
       />
+      <Box sx={{ p: "5px 10px 0 0", mb: 2, alignSelf: "flex-end" }}>
+        {props.charCount >= props.maxCharLimit && (
+          <Typography
+            variant="caption"
+            fontWeight="400"
+            fontSize="12px"
+            color="error"
+          >
+            100/100 ký tự
+          </Typography>
+        )}
+        {props.charCount < props.maxCharLimit && props.isEditing && (
+          <Text variant="caption" fontWeight="400" fontSize="12px">
+            {props.charCount}/{props.maxCharLimit} ký tự
+          </Text>
+        )}
+      </Box>
       {!props.isEditing && props.userId === auth.id && (
         <Stack sx={{ border: "1px solid #c3c3c3", borderRadius: "5px" }}>
           <Button

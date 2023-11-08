@@ -37,11 +37,11 @@ export default function UserMenuOptionsListContainer() {
   return (
     <>
       <UserMenuOptionsList
-        filteredOption={filteredOption}
         handleLogout={handleLogout}
         handleClose={handleClose}
         anchorEl={anchorEl}
         open={open}
+        auth={auth}
       />
       <UserProfile src={auth?.profileURL} handleClick={handleClick} />
     </>
