@@ -82,7 +82,10 @@ const loggedInAdminRoutes = [
   { path: "/edit-tag", component: EditTagPage },
   //Reports Page
   { path: "/reported-profile", component: ReportedProfilePage },
-  { path: "/reported-profile/view/:id", component: ReportedProfileDetail },
+  {
+    path: "/reported-profile/view/:reportedUserId",
+    component: ReportedProfileDetail,
+  },
   { path: "/reported-comment", component: ReportedCommentPage },
   //Activity Log Page
   { path: "/activity-log", component: ActivityLogPage },

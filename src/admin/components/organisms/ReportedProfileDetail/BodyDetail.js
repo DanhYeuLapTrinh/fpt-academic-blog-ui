@@ -2,10 +2,8 @@ import React from "react";
 import { Avatar, Box, Stack, Typography, Paper } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { useReportedProfileContext } from "../../../context/ReportedProfileContext";
-function BodyDetail() {
-  const { reportedProfiles } = useReportedProfileContext();
 
+function BodyDetail(props) {
   return (
     <Paper
       sx={{
@@ -78,7 +76,7 @@ function BodyDetail() {
               display: "block",
             }}
           >
-            {reportedProfiles[0].fullName}
+            {props.fullName}
           </Typography>
           <Typography
             sx={{
