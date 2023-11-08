@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Styles.module.scss";
 import Text from "../../../atoms/Text/Text";
 import {
-  Breadcrumbs,
   Container,
-  Divider,
   IconButton,
   Stack,
   Tooltip,
@@ -13,8 +11,8 @@ import { Icon } from "@iconify/react";
 import AuthorPost from "../../../molecules/AuthorPost/AuthorPost";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import MyBread from "../../../molecules/MyBread/MyBread";
-import PostInteraction from "../../../organisms/PostInteraction/PostInteraction";
 import PostMenuOptionListService from "../../../organisms/PostMenuOptiopList/PostMenuOptionListService";
+import PostInteractionService from "../../../organisms/PostInteraction/PostInteractionService";
 export default function ViewAPost(props) {
   return (
     <Container>
@@ -75,7 +73,10 @@ export default function ViewAPost(props) {
         <img style={{ margin: "10px 0 40px" }} src={props.data?.coverURL} />
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
-      <PostInteraction />
+      <PostInteractionService
+        postId={props.data.postId}
+        vote={props.data.numOfUpVote - props.data.numOfDownVote}
+      />
     </Container>
   );
 }
