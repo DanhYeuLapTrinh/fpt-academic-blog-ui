@@ -47,7 +47,7 @@ export default function LatestPostSection(props) {
           <Carousel
             responsive={responsive}
             autoPlay={true}
-            autoPlaySpeed={5000}
+            autoPlaySpeed={1000 * 20}
             className="hello"
             arrows
             centerMode={false}
@@ -60,6 +60,7 @@ export default function LatestPostSection(props) {
                   .map((_, i) => <LatestPostSkeleton key={i} />)
               : props.latestPosts.map((item) => (
                   <PostCardV1
+                    key={item?.postId}
                     url={item?.coverURL}
                     src={item?.avatarURL}
                     label={item?.accountName}

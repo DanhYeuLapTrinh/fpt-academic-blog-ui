@@ -4,7 +4,6 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useHome from "../../../hooks/useHome";
 
 export default function HomeService() {
-  const { isLoading, setIsLoading } = useHome();
   const axiosPrivate = useAxiosPrivate();
   const {
     latestPosts,
@@ -15,33 +14,57 @@ export default function HomeService() {
     setRewardedPosts,
     allPosts,
     setAllPosts,
+    isRefreshProgress,
   } = useHome();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true);
         let trendingPosts = await axiosPrivate.get(
           process.env.REACT_APP_TRENDING_POSTS
         );
         setTrendingPosts(trendingPosts?.data?.slice(0, 4));
-        let rewardedPosts = await axiosPrivate.get(
-          process.env.REACT_APP_REWARDED_POSTS
-        );
-        setRewardedPosts(rewardedPosts?.data);
+      } catch (error) {}
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         let latestPosts = await axiosPrivate.get(
           process.env.REACT_APP_LATEST_POSTS
         );
         setLatestPosts(latestPosts?.data);
-        let allPosts = await axiosPrivate.get(process.env.REACT_APP_ALL_POSTS);
-        setAllPosts(allPosts?.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoading(false);
-      }
+      } catch (error) {}
     };
-    fetchData();
-  }, []);
+    if (trendingPosts) fetchData();
+  }, [trendingPosts]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let rewardedPosts = await axiosPrivate.get(
+          process.env.REACT_APP_REWARDED_POSTS
+        );
+        setRewardedPosts(rewardedPosts?.data);
+      } catch (error) {}
+    };
+    if (latestPosts) fetchData();
+  }, [latestPosts]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let allPosts = await axiosPrivate.get(process.env.REACT_APP_ALL_POSTS);
+  //       setAllPosts(allPosts?.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
+
   return (
     <Home
       trendingPosts={trendingPosts}

@@ -52,7 +52,7 @@ export default function AccountInfoBar(props) {
       </Stack>
       <Stack direction={"row"} spacing={1}>
         {props.majorName && (
-          <Link to={`/topic/${props.majorID}`}>
+          <Link to={`/categories/${props.majorID}`}>
             <Chip
               sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
               label={getFirstChar(props.majorName)}
@@ -60,7 +60,7 @@ export default function AccountInfoBar(props) {
           </Link>
         )}
         {props.subjectName && (
-          <Link to={`/topic/${props.subjectID}`}>
+          <Link to={`/categories/${props.subjectID}`}>
             <Chip
               sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
               label={props.subjectName}

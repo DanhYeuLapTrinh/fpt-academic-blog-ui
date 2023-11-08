@@ -27,7 +27,7 @@ export default function RewardedPostList() {
         : rewardedPosts?.map((item, index) => {
             if (index >= 1 && index <= 4) {
               return (
-                <>
+                <div key={index}>
                   <RewardedPostsUnder
                     url={item?.coverURL}
                     title={item?.title}
@@ -48,7 +48,7 @@ export default function RewardedPostList() {
                   {index < 4 && (
                     <Divider sx={{ width: "100%" }} orientation="horizontal" />
                   )}
-                </>
+                </div>
               );
             }
           })}

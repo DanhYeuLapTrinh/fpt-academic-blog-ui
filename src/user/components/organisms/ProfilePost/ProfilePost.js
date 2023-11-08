@@ -52,12 +52,12 @@ export default function ProfilePost(props) {
               <PostTag
                 color="primary.main"
                 text={getFirstChar(props.majorName)}
-                link={`/topic/${props.majorID}`}
+                link={`/categories/${props.majorID}`}
               />
               <PostTag
                 color="primary.main"
                 text={props.subjectName}
-                link={`/topic/${props.subjectID}`}
+                link={`/categories/${props.subjectID}`}
               />
               <PostTag
                 color="primary.main"

@@ -1,23 +1,9 @@
 import { Divider, IconButton, Stack } from "@mui/material";
 import { Icon } from "@iconify/react";
-import React, { useState } from "react";
+import React from "react";
 import Text from "../../atoms/Text/Text";
 
-export default function PostInteraction() {
-  const [select, setSelect] = useState("up");
-  const [vote, setVote] = useState(10);
-  const handleUpvote = () => {
-    if (select !== "up") {
-      setSelect("up");
-      setVote((prev) => prev + 1);
-    }
-  };
-  const handleDownvote = () => {
-    if (select !== "down") {
-      setSelect("down");
-      setVote((prev) => prev - 1);
-    }
-  };
+export default function PostInteraction(props) {
   return (
     <div>
       <Divider orientation="horizontal" />
@@ -28,8 +14,8 @@ export default function PostInteraction() {
         m={"5px 0"}
       >
         <Stack direction={"row"} alignItems={"center"}>
-          <IconButton onClick={() => handleUpvote()}>
-            {select === "up" ? (
+          <IconButton onClick={props.handleUpvote}>
+            {props.select === "up" ? (
               <Icon
                 icon="tabler:arrow-big-up-filled"
                 style={{ color: "#5927e5", fontSize: "28px" }}
@@ -41,9 +27,9 @@ export default function PostInteraction() {
               />
             )}
           </IconButton>
-          <Text>{vote}</Text>
-          <IconButton onClick={() => handleDownvote()}>
-            {select === "down" ? (
+          <Text>{props.vote}</Text>
+          <IconButton onClick={props.handleDownvote}>
+            {props.select === "down" ? (
               <Icon
                 icon="tabler:arrow-big-up-filled"
                 style={{ color: "#5927e5", fontSize: "28px" }}

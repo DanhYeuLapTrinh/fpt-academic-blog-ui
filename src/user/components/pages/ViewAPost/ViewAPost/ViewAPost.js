@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Styles.module.scss";
 import Text from "../../../atoms/Text/Text";
 import {
-  Breadcrumbs,
   Container,
-  Divider,
   IconButton,
   Stack,
   Tooltip,
@@ -13,10 +11,9 @@ import { Icon } from "@iconify/react";
 import AuthorPost from "../../../molecules/AuthorPost/AuthorPost";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import MyBread from "../../../molecules/MyBread/MyBread";
-import PostInteraction from "../../../organisms/PostInteraction/PostInteraction";
 import PostMenuOptionListService from "../../../organisms/PostMenuOptiopList/PostMenuOptionListService";
+import PostInteractionService from "../../../organisms/PostInteraction/PostInteractionService";
 export default function ViewAPost(props) {
-  const [clicked, setClicked] = useState(false);
   return (
     <Container>
       <MyBread
@@ -38,7 +35,7 @@ export default function ViewAPost(props) {
           src={props.data?.avatarURL}
           text={props.data?.accountName}
           time={props.data?.dateOfPost}
-          id={props.data?.userId}
+          userId={props.data?.userId}
           comments={props?.data?.comments.length}
           isFollowing={props.isFollowing}
           unfollowAccount={props.unfollowAccount}
@@ -48,9 +45,9 @@ export default function ViewAPost(props) {
           authorSize="16px"
         />
         <Stack direction={"row"} alignItems={"center"}>
-          {!clicked ? (
-            <Tooltip title="Thêm danh sách yêu thích" placement="right">
-              <IconButton onClick={() => setClicked(true)}>
+          {!props.isFavored ? (
+            <Tooltip title="Thêm danh sách yêu thích" placement="top">
+              <IconButton onClick={props.addToFavorite}>
                 <Icon
                   icon="ion:bookmark-outline"
                   width={"24px"}
@@ -59,8 +56,8 @@ export default function ViewAPost(props) {
               </IconButton>
             </Tooltip>
           ) : (
-            <Tooltip title="Xóa khỏi danh sách yêu thích" placement="right">
-              <IconButton onClick={() => setClicked(false)}>
+            <Tooltip title="Xóa khỏi danh sách yêu thích" placement="top">
+              <IconButton onClick={props.removeFromFavorite}>
                 <Icon icon="ion:bookmark" width={"24px"} color="#5927e5" />
               </IconButton>
             </Tooltip>
@@ -76,7 +73,10 @@ export default function ViewAPost(props) {
         <img style={{ margin: "10px 0 40px" }} src={props.data?.coverURL} />
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
-      <PostInteraction />
+      <PostInteractionService
+        postId={props.data.postId}
+        vote={props.data.numOfUpVote - props.data.numOfDownVote}
+      />
     </Container>
   );
 }

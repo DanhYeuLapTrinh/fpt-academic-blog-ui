@@ -5,26 +5,30 @@ import { Button, Stack } from "@mui/material";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import Text from "../../atoms/Text/Text";
 import { timeConverter } from "../../../utils/StringMethod";
+import { Link } from "react-router-dom";
 
 export default function AuthorPost(props) {
   const auth = useAuth();
   return (
     <Stack direction={"row"} sx={{ alignItems: "center" }} spacing={"10px"}>
-      <UserProfile
-        width={props.avatarWidth ? props.avatarWidth : "28px"}
-        height={props.avatarHeight ? props.avatarHeight : "28px"}
-        src={props.src}
-        alt="User"
-      />
-
+      <Link to={`/profile/${props.userId}`}>
+        <UserProfile
+          width={props.avatarWidth ? props.avatarWidth : "28px"}
+          height={props.avatarHeight ? props.avatarHeight : "28px"}
+          src={props.src}
+          alt="User"
+        />
+      </Link>
       <Stack spacing={"4px"}>
         <Stack direction={"row"} sx={{ alignItems: "center" }} spacing={"14px"}>
-          <Text
-            fontSize={props.authorSize ? props.authorSize : "12px"}
-            color={props.color ? props.color : "text.main"}
-          >
-            {props.text}
-          </Text>
+          <Link to={`/profile/${props.userId}`} style={{textDecoration: "none"}}>
+            <Text
+              fontSize={props.authorSize ? props.authorSize : "12px"}
+              color={props.color ? props.color : "text.main"}
+            >
+              {props.text}
+            </Text>
+          </Link>
           {auth?.id !== props.id ? (
             <Button
               sx={{ textTransform: "none", borderRadius: "20px" }}

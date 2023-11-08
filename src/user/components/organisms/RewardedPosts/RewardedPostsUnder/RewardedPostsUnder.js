@@ -68,12 +68,12 @@ export default function RewardedPostsUnder(props) {
               <PostTag
                 text={getFirstChar(props.majorName)}
                 color={props.tagColor ? props.tagColor : "primary.main"}
-                link={`/topic/${props.majorID}`}
+                link={`/categories/${props.majorID}`}
               />
               <PostTag
                 text={props.subjectName}
                 color={props.tagColor ? props.tagColor : "primary.main"}
-                link={`/topic/${props.subjectID}`}
+                link={`/categories/${props.subjectID}`}
               />
               <PostTag
                 text={props.tagName}

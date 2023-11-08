@@ -14,7 +14,6 @@ export default function ViewProfile(props) {
   let avatarURL = props.avatarURL ?? "/assets/img/blank.png";
   const { selected } = useProfile();
   const auth = useAuth();
-  console.log(props.isFollowing);
   return (
     <Box>
       <Box sx={{ bgcolor: "secondary.alt" }}>
