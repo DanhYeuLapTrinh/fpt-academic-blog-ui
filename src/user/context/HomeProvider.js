@@ -5,8 +5,9 @@ export default function HomeProvider({ children }) {
   const [rewardedPosts, setRewardedPosts] = useState();
   const [latestPosts, setLatestPosts] = useState();
   const [allPosts, setAllPosts] = useState();
+  const [shortPosts, setShortPosts] = useState();
+  const [userAccounts, setUserAccounts] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [isRefreshProgress, setIsRefreshProgress] = useState(false);
   return (
     <HomeContext.Provider
       value={{
@@ -20,8 +21,10 @@ export default function HomeProvider({ children }) {
         setLatestPosts,
         allPosts,
         setAllPosts,
-        isRefreshProgress,
-        setIsRefreshProgress,
+        shortPosts,
+        setShortPosts,
+        userAccounts,
+        setUserAccounts,
       }}
     >
       {children}

@@ -11,7 +11,7 @@ export default function RewardedPostList() {
   const { rewardedPosts } = useHome();
   return (
     <Container sx={{ marginBottom: "59px" }}>
-      <SectionTitle title="Lựa chọn bởi giảng viên" />
+      <SectionTitle title="Lựa chọn bởi giảng viên" see/>
       <RewardedPostTop rewardedPosts={rewardedPosts} />
       {!rewardedPosts
         ? Array(4)
