@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import {
   Box,
@@ -188,7 +187,6 @@ function AddCategory({ closeAddCategoryModal }) {
           Hủy
         </Button>
       </Box>
-      <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </Box>
   );
 }

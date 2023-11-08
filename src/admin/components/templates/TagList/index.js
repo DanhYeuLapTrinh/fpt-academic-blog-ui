@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import DeleteConfirm from "../../molecules/Tag/DeleteConfirm";
@@ -71,17 +70,11 @@ function TagList() {
         const newTag = response.data;
         setTagData([...tagData, newTag]);
         handleClose();
-        toast.success(`Thêm thẻ "${newTagName}" thành công`, {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.success(`Thêm thẻ "${newTagName}" thành công`);
       })
       .catch((error) => {
         console.error("Error adding tag: " + error);
-        toast.error(`Thêm thẻ "${newTagName}" không thành công`, {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.error(`Thêm thẻ "${newTagName}" không thành công`);
       });
   };
 
@@ -102,17 +95,11 @@ function TagList() {
         );
         setTagData(updatedTagData);
         setDeleteConfirmationOpen(false);
-        toast.success(`Đã xóa thẻ: ${tagToDelete.name}`, {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.success(`Đã xóa thẻ: ${tagToDelete.name}`);
       })
       .catch((error) => {
         console.error("Error deleting tag: " + error);
-        toast.error(`Xóa thẻ không thành công`, {
-          position: "top-right",
-          autoClose: 3000,
-        });
+        toast.error(`Xóa thẻ không thành công`);
         setDeleteConfirmationOpen(false);
       });
   };
@@ -190,8 +177,6 @@ function TagList() {
         deleteTag={handleDeleteConfirmation}
         data={tagToDelete.name}
       />
-
-      <ToastContainer position="top-right" autoClose={3000} closeOnClick />
     </div>
   );
 }

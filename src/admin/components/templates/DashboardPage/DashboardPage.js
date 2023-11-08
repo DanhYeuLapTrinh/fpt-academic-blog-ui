@@ -50,17 +50,17 @@ function DashboardPage() {
 
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
-                title="Hồ sơ bị báo cáo"
-                total={data.total_reported_profile}
-                color="warning"
+                title="Số lượng truy cập theo ngày"
+                total={data.total_visit}
+                color="success"
                 icon={"carbon:report"}
               />
             </Grid>
 
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
-                title="Bình luận bị báo cáo"
-                total={data.total_reported_comment}
+                title="Số lượng báo cáo"
+                total={data.total_reported_profile}
                 color="error"
                 icon={"ic:round-report"}
               />

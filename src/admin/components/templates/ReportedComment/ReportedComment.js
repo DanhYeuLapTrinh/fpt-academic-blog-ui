@@ -8,8 +8,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { LinearProgress, Typography } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 function ReportedComment() {
   const axiosPrivate = useAxiosPrivate();
@@ -196,7 +195,6 @@ function ReportedComment() {
           </span>
         }
       />
-      <ToastContainer position="top-right" autoClose="3000" />
     </>
   );
 }
