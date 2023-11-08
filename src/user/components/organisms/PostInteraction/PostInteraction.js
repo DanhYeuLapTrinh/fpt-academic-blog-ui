@@ -5,13 +5,13 @@ import Text from "../../atoms/Text/Text";
 
 export default function PostInteraction(props) {
   return (
-    <div>
-      <Divider orientation="horizontal" />
+    <div style={{backgroundColor: "#f7f9fc", padding: "0 20px"}}>
+      <Divider orientation="horizontal"/>
       <Stack
         direction={"row"}
         alignItems={"center"}
         justifyContent={"space-around"}
-        m={"5px 0"}
+        m={"3px 0"}
       >
         <Stack direction={"row"} alignItems={"center"}>
           <IconButton onClick={props.handleUpvote}>

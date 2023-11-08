@@ -3,6 +3,7 @@ import ViewAPost from "./ViewAPost";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import useAuth from "../../../../hooks/useAuth";
+import ViewAPostSkeleton from "../../../organisms/Skeleton/ViewAPostSkeleton/ViewAPostSkeleton";
 
 export default function ViewAPostService() {
   const { slug } = useParams();
@@ -10,7 +11,7 @@ export default function ViewAPostService() {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState();
   const [isFollowing, setIsFollowing] = useState(false);
-  const [isFavored, setIsFavored] = useState(false)
+  const [isFavored, setIsFavored] = useState(false);
 
   useEffect(() => {
     try {
@@ -32,7 +33,9 @@ export default function ViewAPostService() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let favorList = await axiosPrivate.get(process.env.REACT_APP_VIEW_FAVORITE);
+        let favorList = await axiosPrivate.get(
+          process.env.REACT_APP_VIEW_FAVORITE
+        );
 
         if (favorList) {
           let isFavored = favorList?.data?.some(
@@ -130,7 +133,9 @@ export default function ViewAPostService() {
 
   return (
     <>
-      {data && (
+      {!data ? (
+        <ViewAPostSkeleton />
+      ) : (
         <ViewAPost
           data={data}
           isFollowing={isFollowing}
