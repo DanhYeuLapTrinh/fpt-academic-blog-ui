@@ -8,9 +8,10 @@ import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArro
 import MyBread from "../../../molecules/MyBread/MyBread";
 import PostMenuOptionListService from "../../../organisms/PostMenuOptiopList/PostMenuOptionListService";
 import PostInteractionService from "../../../organisms/PostInteraction/PostInteractionService";
+import CommentBar from "../../../organisms/CommentBar/CommentBar";
 export default function ViewAPost(props) {
   return (
-    <Container>
+    <Container sx={{mb: 10}}>
       <MyBread
         input={props?.data?.category}
         tag={props?.data?.tag}
@@ -65,13 +66,14 @@ export default function ViewAPost(props) {
         </Stack>
       </Stack>
       <div className={styles.contentWrapper}>
-        <img style={{ margin: "10px 0 40px" }} src={props.data?.coverURL} />
+        <img style={{ p: "10px 0 40px" }} src={props.data?.coverURL} />
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
       <PostInteractionService
         postId={props.data.postId}
         vote={props.data.numOfUpVote - props.data.numOfDownVote}
       />
+      <CommentBar src={props.data.avatarURL} profile={props.data?.userId}/>
     </Container>
   );
 }

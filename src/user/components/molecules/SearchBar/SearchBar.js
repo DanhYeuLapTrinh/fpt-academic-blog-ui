@@ -2,6 +2,7 @@ import { IconButton, InputBase, Paper } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import React from "react";
+import SearchPopper from "../../organisms/SearchPopper/SearchPopper";
 
 export default function SearchBar() {
   return (
@@ -19,9 +20,7 @@ export default function SearchBar() {
         <SearchRoundedIcon />
       </IconButton>
       <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Nhấn để tìm kiếm" />
-      <IconButton color="primary" sx={{ m: "10px" }}>
-        <TuneRoundedIcon />
-      </IconButton>
+      <SearchPopper/>
     </Paper>
   );
 }

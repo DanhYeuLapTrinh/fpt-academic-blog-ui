@@ -16,6 +16,8 @@ export default function HomeService() {
     setShortPosts,
     userAccounts,
     setUserAccounts,
+    trendingTags,
+    setTrendingTags,
   } = useHome();
 
   const [trendingPostsHome, setTrendingPostsHome] = useState();
@@ -59,14 +61,26 @@ export default function HomeService() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        let trendingTags = await axiosPrivate.get(
+          process.env.REACT_APP_TRENDING_TAGS
+        );
+        setTrendingTags(trendingTags?.data);
+      } catch (error) {}
+    };
+    if (rewardedPosts) fetchData();
+  }, [rewardedPosts]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         let shortPosts = await axiosPrivate.get(
           process.env.REACT_APP_SHORT_POSTS
         );
         setShortPosts(shortPosts?.data);
       } catch (error) {}
     };
-    if (rewardedPosts) fetchData();
-  }, [rewardedPosts]);
+    if (trendingTags) fetchData();
+  }, [trendingTags]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -99,6 +113,7 @@ export default function HomeService() {
       latestPosts={latestPosts}
       allPosts={allPosts}
       shortPosts={shortPosts}
+      trendingTags={trendingTags}
     />
   );
 }

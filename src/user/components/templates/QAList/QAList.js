@@ -7,7 +7,7 @@ import Text from "../../atoms/Text/Text";
 export default function QAList() {
   return (
     <Box width={"740px"}>
-      <SectionTitle title="Hỏi & Đáp" filter />
+      <SectionTitle title="Hỏi & Đáp" />
       <Stack spacing={"20px"}>
         <QA />
         <QA />
