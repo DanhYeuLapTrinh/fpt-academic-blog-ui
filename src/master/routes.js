@@ -27,8 +27,10 @@ import HomeService from "../user/components/pages/Home/HomeService";
 import ViewAPostService from "../user/components/pages/ViewAPost/ViewAPost/ViewAPostService";
 import ApprovedPostService from "../user/components/pages/ApprovedPosts/ApprovedPostService";
 import ViewProfileService from "../user/components/pages/ViewProfile/ViewProfileService";
-import TagsPageService from "../user/components/pages/TagsPage/TagsPageService";
 import ApprovedQuestionsService from "../user/components/pages/ApprovedQuestions/ApprovedQuestionsService";
+import CategoriesService from "../user/components/pages/Categories/CategoriesService";
+import TrendingPostsSeeMoreService from "../user/components/pages/SeeMore/TrendingPostsSeeMore/TrendingPostsSeeMoreService";
+import LatestPostsSeeMoreService from "../user/components/pages/SeeMore/LatestPostsSeeMore/LatestPostsSeeMoreService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -44,9 +46,13 @@ const loggedInUserRoutes = [
   { path: "/feed", component: Feed },
   { path: "/news", component: News },
   { path: "/write", component: WriteService },
+  { path: "/trending", component: TrendingPostsSeeMoreService },
+  { path: "/latest", component: LatestPostsSeeMoreService },
   { path: "/view/:slug", component: ViewAPostService },
   { path: "/profile/:id", component: ViewProfileService },
   { path: "/profile/:id/question", component: ViewProfileService },
+  { path: "/categories/:id", component: CategoriesService },
+  { path: "/tags/:id", component: "" },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },

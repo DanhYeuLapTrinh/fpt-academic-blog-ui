@@ -13,7 +13,7 @@ import FooterFblog from "../../molecules/FooterDetail/FooterFblog";
 import FooterCommunity from "../../molecules/FooterDetail/FooterCommunity";
 import FooterAddress from "../../molecules/FooterDetail/FooterAddress";
 import FooterContact from "../../molecules/FooterDetail/FooterContact";
-import './Footer.scss'
+import "./Footer.scss";
 
 export default function Footer() {
   return (
@@ -22,7 +22,7 @@ export default function Footer() {
         <Container>
           <List sx={{ display: "flex", gap: "30px", p: "20px 0" }}>
             <Link style={{ textDecoration: "none" }}>
-              <ListItemText>
+              <ListItemText onClick={() => window.scrollTo(0, 0)}>
                 <Text color="secondary.main" lineHeight="16px">
                   Trang chủ
                 </Text>
