@@ -73,12 +73,12 @@ export default function PostCardV2(props) {
           <PostTag
             text={getFirstChar(props.majorName)}
             color={props.tagColor ? props.tagColor : "secondary.main"}
-            link={`/topic/${props.majorID}`}
+            link={`/categories/${props.majorID}`}
           />
           <PostTag
             text={props.subjectName}
             color={props.tagColor ? props.tagColor : "secondary.main"}
-            link={`/topic/${props.subjectID}`}
+            link={`/categories/${props.subjectID}`}
           />
           <PostTag
             text={props.tagName}

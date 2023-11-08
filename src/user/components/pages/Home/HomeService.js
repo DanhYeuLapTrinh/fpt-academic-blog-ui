@@ -14,6 +14,7 @@ export default function HomeService() {
     setRewardedPosts,
     allPosts,
     setAllPosts,
+    isRefreshProgress,
   } = useHome();
 
   useEffect(() => {
@@ -23,23 +24,7 @@ export default function HomeService() {
           process.env.REACT_APP_TRENDING_POSTS
         );
         setTrendingPosts(trendingPosts?.data?.slice(0, 4));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let rewardedPosts = await axiosPrivate.get(
-          process.env.REACT_APP_REWARDED_POSTS
-        );
-        setRewardedPosts(rewardedPosts?.data);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
     fetchData();
   }, []);
@@ -51,24 +36,34 @@ export default function HomeService() {
           process.env.REACT_APP_LATEST_POSTS
         );
         setLatestPosts(latestPosts?.data);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
-    fetchData();
-  }, []);
+    if (trendingPosts) fetchData();
+  }, [trendingPosts]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let allPosts = await axiosPrivate.get(process.env.REACT_APP_ALL_POSTS);
-        setAllPosts(allPosts?.data);
-      } catch (error) {
-        console.log(error);
-      }
+        let rewardedPosts = await axiosPrivate.get(
+          process.env.REACT_APP_REWARDED_POSTS
+        );
+        setRewardedPosts(rewardedPosts?.data);
+      } catch (error) {}
     };
-    fetchData();
-  }, []);
+    if (latestPosts) fetchData();
+  }, [latestPosts]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let allPosts = await axiosPrivate.get(process.env.REACT_APP_ALL_POSTS);
+  //       setAllPosts(allPosts?.data);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   return (
     <Home

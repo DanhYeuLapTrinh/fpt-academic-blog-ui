@@ -15,6 +15,7 @@ export default function ViewProfileService() {
   const { followerList, setFollowerList } = useProfile();
   const [isFollowing, setIsFollowing] = useState(false);
   const auth = useAuth();
+  window.scrollTo(0, 0);
   useEffect(() => {
     const fetchData = async () => {
       try {

@@ -48,23 +48,21 @@ export default function ViewAPostService() {
         console.log(error);
       }
     };
-    if(data && auth.id !== data?.userId) fetchData();
+    if (data && auth.id !== data?.userId) fetchData();
   }, [data]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let favorList = await axiosPrivate.get(
-          "favorite/posts",
-        );
+        let favorList = await axiosPrivate.get("favorite/posts");
 
-        console.log(favorList)
+        console.log(favorList);
       } catch (error) {
         console.log(error);
       }
     };
-    if(data) fetchData();
-  }, [data]);
+    if (isFollowing) fetchData();
+  }, [isFollowing]);
 
   const followAccount = async () => {
     try {
