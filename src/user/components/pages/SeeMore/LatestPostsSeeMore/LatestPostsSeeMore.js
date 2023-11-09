@@ -12,12 +12,11 @@ export default function LatestPostsSeeMore(props) {
     <Box mb={"20px"}>
       <Box
         sx={{
-          pt: "37px",
-          minHeight: "calc(100vh - 93px)",
+          p: "37px 0 57px",
           bgcolor: "secondary.alt",
         }}
       >
-        <Container sx={{ minHeight: "calc(100vh - 93px)" }}>
+        <Container>
           <SectionTitle title="Trang xem bài mới nhất" />
           {props.data && (
             <Box width={"100%"}>
