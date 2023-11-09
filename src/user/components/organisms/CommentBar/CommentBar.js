@@ -39,8 +39,15 @@ export default function CommentBar(props) {
               color: "text.main",
               borderRadius: "50px",
             },
+            renderValue: (value) => (
+              <Editor
+                apiKey="or7ndgcoxdbx9821y1j3d8oi37nqe538m257uvlwroa11wiq"
+                init={{ plugins: "image", toolbar: "image" }}
+              />
+            ),
           }}
         />
+        
       </Stack>
     </Box>
   );

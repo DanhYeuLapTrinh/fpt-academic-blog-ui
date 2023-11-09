@@ -11,7 +11,7 @@ import PostInteractionService from "../../../organisms/PostInteraction/PostInter
 import CommentBar from "../../../organisms/CommentBar/CommentBar";
 export default function ViewAPost(props) {
   return (
-    <Container sx={{mb: 10}}>
+    <Container sx={{ mb: 10 }}>
       <MyBread
         input={props?.data?.category}
         tag={props?.data?.tag}
@@ -66,14 +66,17 @@ export default function ViewAPost(props) {
         </Stack>
       </Stack>
       <div className={styles.contentWrapper}>
-        <img style={{ marginBottom: "30px" }} src={props.data?.coverURL} />
+        <img
+          style={{ marginBottom: props.data?.coverURL ? "30px" : "0px" }}
+          src={props.data?.coverURL}
+        />
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
       <PostInteractionService
         postId={props.data.postId}
         vote={props.data.numOfUpVote - props.data.numOfDownVote}
       />
-      <CommentBar src={props.data.avatarURL} profile={props.data?.userId}/>
+      <CommentBar src={props.data.avatarURL} profile={props.data?.userId} />
     </Container>
   );
 }

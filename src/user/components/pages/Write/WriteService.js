@@ -48,14 +48,16 @@ export default function WriteService() {
     setContent(content);
     setCharCount(title?.length);
   }, []);
-  useEffect(() => {
-    let interval = setInterval(() => {
-      if (!title) {
-        toast.error("Vui lòng nhập tiêu đề hợp lệ");
-      }
-    }, 1000 * 30);
-    return () => clearInterval(interval);
-  }, [title]);
+
+  // useEffect(() => {
+  //   let interval = setInterval(() => {
+  //     if (!title) {
+  //       toast.error("Vui lòng nhập tiêu đề hợp lệ");
+  //     }
+  //   }, 1000 * 30);
+  //   return () => clearInterval(interval);
+  // }, [title]);
+  
   const handleMajorChange = useCallback((e) => {
     setMajor(e.target.value);
     setSemester();

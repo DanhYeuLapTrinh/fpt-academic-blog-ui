@@ -1,23 +1,22 @@
-import { Box, Container, Stack } from '@mui/material'
-import React from 'react'
-import SectionTitle from '../../../molecules/SectionTitle/SectionTitle'
-import PostCardV1 from '../../../organisms/PostCardV1/PostCardV1'
-import { Link } from 'react-router-dom'
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2'
-import Text from '../../../atoms/Text/Text'
-import Post from '../../../organisms/Post/Post'
+import { Box, Container, Stack } from "@mui/material";
+import React from "react";
+import SectionTitle from "../../../molecules/SectionTitle/SectionTitle";
+import PostCardV1 from "../../../organisms/PostCardV1/PostCardV1";
+import { Link } from "react-router-dom";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import Text from "../../../atoms/Text/Text";
+import Post from "../../../organisms/Post/Post";
 
 export default function RewardedPostsSeeMore(props) {
   return (
     <Box mb={"20px"}>
       <Box
         sx={{
-          pt: "37px",
-          minHeight: "calc(100vh - 93px)",
+          p: "37px 0 57px",
           bgcolor: "secondary.alt",
         }}
       >
-        <Container sx={{ minHeight: "calc(100vh - 93px)" }}>
+        <Container>
           <SectionTitle title="Trang xem bài được trao thưởng" />
           {props.data && (
             <Box width={"100%"}>
@@ -200,5 +199,5 @@ export default function RewardedPostsSeeMore(props) {
         </Grid2>
       </Container>
     </Box>
-  )
+  );
 }
