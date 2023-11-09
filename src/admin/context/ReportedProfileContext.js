@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const ReportedProfileContext = createContext();
 
@@ -7,17 +7,17 @@ export const useReportedProfileContext = () => {
 };
 
 export const ReportedProfileProvider = ({ children }) => {
-  const [reportedProfiles, setReportedProfiles] = useState(
-    JSON.parse(localStorage.getItem("reportedProfiles")) || {}
+  const [reportedProfile, setReportedProfile] = useState(
+    JSON.parse(localStorage.getItem("reportedProfile")) || {}
   );
 
   useEffect(() => {
-    localStorage.setItem("reportedProfiles", JSON.stringify(reportedProfiles));
-  }, [reportedProfiles]);
+    localStorage.setItem("reportedProfile", JSON.stringify(reportedProfile));
+  }, [reportedProfile]);
 
   return (
     <ReportedProfileContext.Provider
-      value={{ reportedProfiles, setReportedProfiles }}
+      value={{ reportedProfile, setReportedProfile }}
     >
       {children}
     </ReportedProfileContext.Provider>

@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import BodyDetail from "../../organisms/ReportedProfileDetail/BodyDetail";
+import React, { useEffect } from "react";
+import HeaderDetail from "../../organisms/ReportedProfileDetail/HeaderDetail";
 import { Box, Container } from "@mui/material";
 import TitleHeader from "../../atoms/TitleHeader/TitleHeader";
 import ContentDetail from "../../organisms/ReportedProfileDetail/ContentDetail";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import { useReportedProfileContext } from "../../../context/ReportedProfileContext";
 import { useParams } from "react-router-dom";
 import "./styles.scss";
 
@@ -12,7 +13,9 @@ function ReportedProfileDetail() {
 
   const axiosPrivate = useAxiosPrivate();
 
-  const [reportedUser, setReportedUser] = useState([]);
+  const { reportedProfile, setReportedProfile } = useReportedProfileContext();
+
+  const { fullname, userStory } = reportedProfile;
 
   const fetchData = async () => {
     try {
@@ -20,10 +23,7 @@ function ReportedProfileDetail() {
         userId: reportedUserId,
       });
 
-      if (res?.status === 200) {
-        setReportedUser(res?.data);
-        console.log(res?.data);
-      }
+      setReportedProfile(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -46,11 +46,8 @@ function ReportedProfileDetail() {
     >
       <Container className="container">
         <TitleHeader title="Hồ sơ" />
-        <BodyDetail fullName={reportedUser.fullname} />
-        <ContentDetail
-          userStory={reportedUser.userStory}
-          fullName={reportedUser.fullname}
-        />
+        <HeaderDetail id={reportedUserId} />
+        <ContentDetail userStory={userStory} fullName={fullname} />
       </Container>
     </Box>
   );

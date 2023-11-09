@@ -1,7 +1,7 @@
 import { Avatar } from "@mui/material";
 import React from "react";
 
-function AvatarContentDetail() {
+function AvatarContentDetail(props) {
   return (
     <Avatar
       sx={{
@@ -19,7 +19,7 @@ function AvatarContentDetail() {
         overflow: "hidden",
         userSelect: "none",
       }}
-      src="https://wallpapers.com/images/hd/aesthetic-anime-boy-icon-houtarou-oreki-sbrd8ilkz3vhk7na.jpg"
+      src={props.avatar === null ? "/assets/img/blank.png" : props.avatar}
     />
   );
 }

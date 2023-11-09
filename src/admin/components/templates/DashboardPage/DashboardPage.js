@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import AppWidgetSummary from "../../molecules/GetSummary/GetSummary";
 
-import { Grid, Container, Typography } from "@mui/material";
+import {
+  Grid,
+  Container,
+  Typography,
+  CardHeader,
+  Box,
+  Card,
+} from "@mui/material";
 
 import useAuth from "../../../../user/hooks/useAuth";
 
@@ -68,11 +75,15 @@ function DashboardPage() {
           </>
         )}
 
-        <Grid item xs={12} md={6} lg={8}>
+        <Grid item xs={12} md={6} lg={6}>
           <SimpleCharts title="Lượng truy cập trang theo tuần" />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <BasicPie title="Trình duyệt truy cập" />
+        <Grid item xs={12} md={6} lg={6}>
+          <Card>
+            <Box sx={{ p: 3, pb: 1 }} dir="ltr">
+              <CardHeader title="Nhật ký hoạt động" />
+            </Box>
+          </Card>
         </Grid>
       </Grid>
     </Container>
