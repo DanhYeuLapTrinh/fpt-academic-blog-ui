@@ -1,7 +1,5 @@
 import React from "react";
 import PostCardV2 from "../../PostCardV2/PostCardV2";
-import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
-import { getFirstChar } from "../../../../utils/StringMethod";
 import PostCardV2Skeleton from "../../Skeleton/PostCardV2Skeleton/PostCardV2Skeleton";
 
 export default function RewardedPostTop(props) {

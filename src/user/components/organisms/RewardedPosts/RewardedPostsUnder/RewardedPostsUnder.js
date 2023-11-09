@@ -25,13 +25,15 @@ export default function RewardedPostsUnder(props) {
             }}
           >
             {props.isRewarded && (
-              <RewardBadge
-                small={true}
-                position="absolute"
-                top="10px"
-                right="10px"
-                zIndex="999"
-              />
+              <Link to={"/rewarded"}>
+                <RewardBadge
+                  small={true}
+                  position="absolute"
+                  top="10px"
+                  right="10px"
+                  zIndex="999"
+                />
+              </Link>
             )}
           </Box>
         </Link>

@@ -5,7 +5,7 @@ import useManagePost from "../../../hooks/useManagePost";
 import { sortByPropertyName } from "../../../utils/StringMethod";
 
 export default function PendingQuestionsService() {
-  const { sort, pendingQ, setPendingQ, setQAmount, } = useManagePost();
+  const { sort, pendingQ, setPendingQ, setQAmount } = useManagePost();
 
   const axiosPrivate = useAxiosPrivate();
   let sortedPending = sortByPropertyName(pendingQ, "", "postId");
@@ -15,7 +15,9 @@ export default function PendingQuestionsService() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await axiosPrivate.get("mentor/q-a/view");
+        let response = await axiosPrivate.get(
+          process.env.REACT_APP_PENDING_QUESTIONS
+        );
         setPendingQ(response?.data);
         setQAmount(response?.data?.length);
       } catch (error) {
@@ -24,5 +26,5 @@ export default function PendingQuestionsService() {
     };
     fetchData();
   }, []);
-  return <PendingQuestions questions={sortedPending}/>;
+  return <PendingQuestions questions={sortedPending} />;
 }

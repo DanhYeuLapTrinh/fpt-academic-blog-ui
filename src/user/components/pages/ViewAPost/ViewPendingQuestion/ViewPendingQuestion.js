@@ -35,7 +35,7 @@ export default function ViewPendingQuestion(props) {
         mt="20px"
       >
         <Button
-          onClick={props.handleClickOpen}
+          onClick={props.handleDecline}
           sx={{ padding: "10px", textTransform: "none" }}
           fullWidth
           variant="outlined"

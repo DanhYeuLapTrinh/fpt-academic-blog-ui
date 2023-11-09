@@ -12,7 +12,7 @@ export default function RewardedPostList() {
   let sortedRewardedPosts = sortByPropertyName(rewardedPosts, "", "postId");
   return (
     <Container sx={{ marginBottom: "59px" }}>
-      <SectionTitle title="Lựa chọn bởi giảng viên" see link="/rewarded"/>
+      <SectionTitle title="Lựa chọn bởi giảng viên" see link="/rewarded" />
       <RewardedPostTop rewardedPosts={rewardedPosts} />
       {!rewardedPosts
         ? Array(4)
@@ -30,6 +30,7 @@ export default function RewardedPostList() {
               return (
                 <div key={index}>
                   <RewardedPostsUnder
+                    key={item?.postId}
                     url={item?.coverURL}
                     title={item?.title}
                     description={item?.description}
