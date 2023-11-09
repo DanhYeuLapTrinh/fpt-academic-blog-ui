@@ -8,11 +8,11 @@ import DeleteSubjectPopup from "../../molecules/Category/DeleteSubjectPopup";
 import { toast } from "react-toastify";
 import EditCategoryModal from "../../../utils/Categories/EditCategory/EditCategory";
 
-import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
 
 import "./styles.scss";
+import { Card } from "@mui/material";
 
 function CateList() {
   const axiosPrivate = useAxiosPrivate();
@@ -178,18 +178,19 @@ function CateList() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
         }}
       >
-        <Box
+        <Card
           sx={{
             backgroundColor: "white",
             padding: 2,
             borderRadius: 2,
-            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.5)",
           }}
         >
           <AddCategory closeAddCategoryModal={closeAddCategoryModal} />
-        </Box>
+        </Card>
       </Modal>
     );
   };

@@ -12,7 +12,7 @@ function HeaderContentDetail(props) {
         paddingLeft: "24px",
         paddingRight: "24px",
       }}
-      avatar={<AvatarContentDetail />}
+      avatar={<AvatarContentDetail avatar={props.avatar} />}
       title={
         <Typography
           sx={{
@@ -25,10 +25,10 @@ function HeaderContentDetail(props) {
           }}
           variant="subtitle1"
         >
-          {props.fullName}
+          {props.accountName}
         </Typography>
       }
-      subheader={<Box>08 Nov 2023</Box>}
+      subheader={<Box>Đăng bài vào lúc: {props.dateOfPost}</Box>}
     />
   );
 }

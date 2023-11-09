@@ -34,18 +34,20 @@ export default function AdminLayout() {
   const [open, setOpen] = useState(false);
 
   return (
-    <NewsProvider>
-      <ThemeProvider>
-        <StyledRoot>
-          <Header onOpenNav={() => setOpen(true)} />
+    <ReportedProfileProvider>
+      <NewsProvider>
+        <ThemeProvider>
+          <StyledRoot>
+            <Header onOpenNav={() => setOpen(true)} />
 
-          <Nav openNav={open} onCloseNav={() => setOpen(false)} />
+            <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
-          <Main>
-            <Outlet />
-          </Main>
-        </StyledRoot>
-      </ThemeProvider>
-    </NewsProvider>
+            <Main>
+              <Outlet />
+            </Main>
+          </StyledRoot>
+        </ThemeProvider>
+      </NewsProvider>
+    </ReportedProfileProvider>
   );
 }

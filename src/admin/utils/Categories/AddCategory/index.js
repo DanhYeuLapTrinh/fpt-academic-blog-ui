@@ -20,14 +20,12 @@ function AddCategory({ closeAddCategoryModal }) {
   const [selectedMajorID, setSelectedMajorID] = useState("");
   const [selectedSubject, setSelectedSubject] = useState("");
   const [subjectError, setSubjectError] = useState("");
-  const [isFormOpen, setIsFormOpen] = useState(false);
-
-  //--------------------------------------------------------------
+  const [isNewCategoryOption, setIsNewCategoryOption] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState("");
 
   useEffect(() => {
     axiosPrivate.get(process.env.REACT_APP_CATEGORIES_LIST).then((res) => {
       setCateList(res.data);
-      console.log(res.data);
     });
 
     axiosPrivate.get(process.env.REACT_APP_MAJORS_LIST).then((res) => {
@@ -35,51 +33,75 @@ function AddCategory({ closeAddCategoryModal }) {
     });
   }, []);
 
-  //--------------------------------------------------------------
-
-  const handleAddCategory = (e) => {
+  const handleAddCategory = async (e) => {
     e.preventDefault();
 
-    if (!selectedSubject) {
+    if (!selectedSubject && !isNewCategoryOption) {
       setSubjectError("Danh mục không được để trống");
       return;
     } else {
       setSubjectError("");
     }
 
-    const data = {
-      specialization: selectedCategory,
-      semester: selectedSemester,
-      subject: selectedSubject,
-      majorId: selectedMajorID || selectedCategory,
-    };
+    let data = {};
 
-    axiosPrivate
-      .post(process.env.REACT_APP_ADD_NEW_CATEGORY, data)
-      .then((response) => {
-        toast.success("Thêm danh mục thành công!");
+    if (isNewCategoryOption) {
+      try {
+        const response = await axiosPrivate.post("admin/new-major", {
+          majorName: newCategoryName,
+        });
+        const newMajorId = response.data.id;
 
-        closeAddCategoryModal();
-      })
-      .catch((error) => {
-        toast.error("Lỗi khi thêm danh mục.");
-      });
+        data = {
+          specialization: newCategoryName,
+          semester: selectedSemester,
+          subject: selectedSubject,
+          majorId: newMajorId,
+        };
+      } catch (error) {
+        toast.error("Lỗi khi thêm chuyên ngành mới.");
+        return;
+      }
+    } else {
+      data = {
+        specialization: selectedCategory,
+        semester: selectedSemester,
+        subject: selectedSubject,
+        majorId: selectedMajorID || selectedCategory,
+      };
+    }
+    try {
+      const response = await axiosPrivate.post(
+        process.env.REACT_APP_ADD_NEW_CATEGORY,
+        data
+      );
+      toast.success("Thêm danh mục thành công!");
+      closeAddCategoryModal();
+    } catch (error) {
+      toast.error("Lỗi khi thêm danh mục.");
+    }
   };
 
-  const handleCategoryChange = (e) => {
-    if (cateList.some((cate) => cate.categoryName === e.target.value)) {
+  const handleCategoryChange = async (e) => {
+    const selectedValue = e.target.value;
+
+    if (selectedValue === "newCategory") {
+      setIsNewCategoryOption(true);
+    } else {
+      setIsNewCategoryOption(false);
+      setSelectedCategory(selectedValue);
+
       const selectedCate = cateList.find(
-        (cate) => cate.categoryName === e.target.value
+        (cate) => cate.categoryName === selectedValue
       );
       const matchedMajor = majorList.find(
         (major) => major.majorName === selectedCate.majorName
       );
+
       if (matchedMajor) {
         setSelectedMajorID(matchedMajor.id);
       }
     }
-
-    setSelectedCategory(e.target.value);
   };
 
   const handleSemesterChange = (e) => {
@@ -90,7 +112,32 @@ function AddCategory({ closeAddCategoryModal }) {
     closeAddCategoryModal();
   };
 
-  //--------------------------------------------------------------
+  const renderCategoryOptions = () => {
+    return (
+      <>
+        <option value="">Chọn chuyên ngành</option>
+        {cateList.map((cate) => (
+          <option key={cate.id} value={cate.categoryName}>
+            {cate.categoryName}
+          </option>
+        ))}
+        <option value="newCategory">Thêm chuyên ngành mới</option>
+      </>
+    );
+  };
+
+  const renderNewCategoryInput = () => {
+    return (
+      <TextField
+        label="Chuyên ngành mới"
+        variant="outlined"
+        name="newCategoryName"
+        value={newCategoryName}
+        onChange={(e) => setNewCategoryName(e.target.value)}
+        sx={{ marginBottom: 2 }}
+      />
+    );
+  };
 
   const renderSemesterSelect = () => {
     const semesters = Array.from({ length: 9 }, (_, i) => i + 1);
@@ -103,7 +150,7 @@ function AddCategory({ closeAddCategoryModal }) {
           id="semester-select"
           value={selectedSemester}
           onChange={handleSemesterChange}
-          disabled={!selectedCategory || !selectedMajorID}
+          disabled={!selectedCategory || !isNewCategoryOption}
         >
           <option value="">Chọn học kỳ</option>
           {semesters.map((semester) => (
@@ -116,10 +163,6 @@ function AddCategory({ closeAddCategoryModal }) {
     );
   };
 
-  const toggleForm = () => {
-    setIsFormOpen(!isFormOpen);
-  };
-
   return (
     <Box
       sx={{
@@ -129,13 +172,12 @@ function AddCategory({ closeAddCategoryModal }) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: isFormOpen ? "rgba(255, 255, 255, 0.8)" : "white",
+        backgroundColor: "rgba(255, 255, 255, 0.8)",
         padding: 2,
         borderRadius: 2,
-        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
         position: "relative",
-        opacity: isFormOpen ? 0.5 : 1,
-        zIndex: isFormOpen ? 1 : "auto",
+        opacity: 1,
+        zIndex: "auto",
       }}
     >
       <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
@@ -146,17 +188,13 @@ function AddCategory({ closeAddCategoryModal }) {
         <Select
           native
           id="category-select"
-          value={selectedCategory}
+          value={isNewCategoryOption ? "newCategory" : selectedCategory}
           onChange={handleCategoryChange}
         >
-          <option value="">Chọn chuyên ngành</option>
-          {cateList.map((cate) => (
-            <option key={cate.id} value={cate.categoryName}>
-              {cate.categoryName}
-            </option>
-          ))}
+          {renderCategoryOptions()}
         </Select>
       </FormControl>
+      {isNewCategoryOption && renderNewCategoryInput()}
       {renderSemesterSelect()}
       <TextField
         label="Tên môn học"
@@ -164,7 +202,12 @@ function AddCategory({ closeAddCategoryModal }) {
         name="cateMonHoc"
         value={selectedSubject}
         onChange={(e) => setSelectedSubject(e.target.value)}
-        disabled={!selectedCategory || !selectedMajorID || !selectedSemester}
+        disabled={
+          !selectedCategory ||
+          !isNewCategoryOption ||
+          !selectedMajorID ||
+          !selectedSemester
+        }
         sx={{ marginBottom: 2 }}
       />
       {subjectError && (
