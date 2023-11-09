@@ -2,12 +2,14 @@ import React from "react";
 import PostCardShort from "../../organisms/PostCardShort/PostCardShort";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { sortByPropertyName } from "../../../utils/StringMethod";
 
 export default function ShortList(props) {
+  let sortedShortPosts = sortByPropertyName(props.shortPosts, "", "postId")
   return (
     <div>
-      <SectionTitle fontSize="20px" title="Lướt nhanh" see/>
-      {props.shortPosts && (
+      <SectionTitle fontSize="20px" title="Lướt nhanh" see link="/shorts"/>
+      {sortedShortPosts && (
         <Grid2 container xs={12} gap={"20px"}>
           <Grid2 container direction={"column"} xs rowGap={"20px"}>
             <Grid2 item xs>

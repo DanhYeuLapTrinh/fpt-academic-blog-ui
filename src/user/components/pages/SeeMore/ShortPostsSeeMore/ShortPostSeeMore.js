@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import { Box, Container, Stack } from "@mui/material";
 import SectionTitle from "../../../molecules/SectionTitle/SectionTitle";
 import PostCardV1 from "../../../organisms/PostCardV1/PostCardV1";
@@ -7,7 +7,7 @@ import Post from "../../../organisms/Post/Post";
 import Text from "../../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 
-export default function LatestPostsSeeMore(props) {
+export default function ShortPostSeeMore(props) {
   return (
     <Box mb={"20px"}>
       <Box
@@ -18,7 +18,7 @@ export default function LatestPostsSeeMore(props) {
         }}
       >
         <Container sx={{ minHeight: "calc(100vh - 93px)" }}>
-          <SectionTitle title="Trang xem bài mới nhất" />
+          <SectionTitle title="Trang xem nhanh" />
           {props.data && (
             <Box width={"100%"}>
               <Stack direction={"row"} width={"100%"} spacing={"20px"} mb={2}>
@@ -200,5 +200,5 @@ export default function LatestPostsSeeMore(props) {
         </Grid2>
       </Container>
     </Box>
-  );
+  )
 }

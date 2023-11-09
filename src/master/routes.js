@@ -32,6 +32,8 @@ import CategoriesService from "../user/components/pages/Categories/CategoriesSer
 import TrendingPostsSeeMoreService from "../user/components/pages/SeeMore/TrendingPostsSeeMore/TrendingPostsSeeMoreService";
 import LatestPostsSeeMoreService from "../user/components/pages/SeeMore/LatestPostsSeeMore/LatestPostsSeeMoreService";
 import TagsService from "../user/components/pages/Tags/TagsService";
+import RewardedPostsSeeMoreService from "../user/components/pages/SeeMore/RewardedPostsSeeMore/RewardedPostsSeeMoreService";
+import ShortPostSeeMoreService from "../user/components/pages/SeeMore/ShortPostsSeeMore/ShortPostSeeMoreService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -49,11 +51,13 @@ const loggedInUserRoutes = [
   { path: "/write", component: WriteService },
   { path: "/trending", component: TrendingPostsSeeMoreService },
   { path: "/latest", component: LatestPostsSeeMoreService },
+  { path: "/rewarded", component: RewardedPostsSeeMoreService },
+  { path: "/shorts", component: ShortPostSeeMoreService },
+  { path: "/categories", component: CategoriesService },
+  { path: "/tags", component: TagsService },
   { path: "/view/:slug", component: ViewAPostService },
   { path: "/profile/:id", component: ViewProfileService },
   { path: "/profile/:id/question", component: ViewProfileService },
-  { path: "/categories", component: CategoriesService },
-  { path: "/tags", component: TagsService },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },
