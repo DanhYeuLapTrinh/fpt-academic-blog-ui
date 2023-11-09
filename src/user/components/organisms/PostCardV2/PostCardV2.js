@@ -70,21 +70,46 @@ export default function PostCardV2(props) {
           </Text>
         </Wrapper>
         <Stack direction={"row"} spacing={"12px"} paddingTop={"15px"}>
-          <PostTag
-            text={getFirstChar(props.majorName)}
-            color={props.tagColor ? props.tagColor : "secondary.main"}
-            link={`/categories/${props.majorID}`}
-          />
-          <PostTag
-            text={props.subjectName}
-            color={props.tagColor ? props.tagColor : "secondary.main"}
-            link={`/categories/${props.subjectID}`}
-          />
-          <PostTag
-            text={props.tagName}
-            color={props.tagColor ? props.tagColor : "secondary.main"}
-            link={`/tags/${props.tagID}`}
-          />
+        <Link
+            to={{
+              pathname: "/categories",
+              search: `?name=${toSlug(props.majorName, true)}&id=${
+                props.majorID
+              }`,
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <PostTag
+              text={getFirstChar(props.majorName)}
+              color={props.tagColor ? props.tagColor : "secondary.main"}
+            />
+          </Link>
+          <Link
+            to={{
+              pathname: "/categories",
+              search: `?name=${toSlug(props.subjectName, true)}&id=${
+                props.subjectID
+              }`,
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <PostTag
+              text={props.subjectName}
+              color={props.tagColor ? props.tagColor : "secondary.main"}
+            />
+          </Link>
+          <Link
+            to={{
+              pathname: "/tags",
+              search: `?name=${toSlug(props.tagName, true)}&id=${props.tagID}`,
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <PostTag
+              text={props.tagName}
+              color={props.tagColor ? props.tagColor : "secondary.main"}
+            />
+          </Link>
         </Stack>
       </Box>
     </Link>

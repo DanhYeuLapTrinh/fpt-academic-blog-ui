@@ -31,6 +31,7 @@ import ApprovedQuestionsService from "../user/components/pages/ApprovedQuestions
 import CategoriesService from "../user/components/pages/Categories/CategoriesService";
 import TrendingPostsSeeMoreService from "../user/components/pages/SeeMore/TrendingPostsSeeMore/TrendingPostsSeeMoreService";
 import LatestPostsSeeMoreService from "../user/components/pages/SeeMore/LatestPostsSeeMore/LatestPostsSeeMoreService";
+import TagsService from "../user/components/pages/Tags/TagsService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -51,8 +52,8 @@ const loggedInUserRoutes = [
   { path: "/view/:slug", component: ViewAPostService },
   { path: "/profile/:id", component: ViewProfileService },
   { path: "/profile/:id/question", component: ViewProfileService },
-  { path: "/categories/:id", component: CategoriesService },
-  { path: "/tags/:id", component: "" },
+  { path: "/categories", component: CategoriesService },
+  { path: "/tags", component: TagsService },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },

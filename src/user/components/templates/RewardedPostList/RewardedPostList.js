@@ -4,14 +4,15 @@ import RewardedPostTop from "../../organisms/RewardedPosts/RewardedPostTop/Rewar
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import useHome from "../../../hooks/useHome";
-import { getFirstChar } from "../../../utils/StringMethod";
+import { getFirstChar, sortByPropertyName } from "../../../utils/StringMethod";
 import NormalPostSkeleton from "../../organisms/Skeleton/NormalPostSkeleton/NormalPostSkeleton";
 
 export default function RewardedPostList() {
   const { rewardedPosts } = useHome();
+  let sortedRewardedPosts = sortByPropertyName(rewardedPosts, "", "postId");
   return (
     <Container sx={{ marginBottom: "59px" }}>
-      <SectionTitle title="Lựa chọn bởi giảng viên" see/>
+      <SectionTitle title="Lựa chọn bởi giảng viên" see />
       <RewardedPostTop rewardedPosts={rewardedPosts} />
       {!rewardedPosts
         ? Array(4)
@@ -24,7 +25,7 @@ export default function RewardedPostList() {
                 )}
               </>
             ))
-        : rewardedPosts?.map((item, index) => {
+        : sortedRewardedPosts?.map((item, index) => {
             if (index >= 1 && index <= 4) {
               return (
                 <div key={index}>

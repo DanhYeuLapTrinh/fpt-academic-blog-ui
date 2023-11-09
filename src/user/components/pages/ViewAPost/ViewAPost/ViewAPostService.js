@@ -12,7 +12,7 @@ export default function ViewAPostService() {
   const [data, setData] = useState();
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFavored, setIsFavored] = useState(false);
-
+  window.scrollTo(0, 0);
   useEffect(() => {
     try {
       const fetchData = async () => {

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import { useEffect, useState } from "react";
 import useHome from "../../../hooks/useHome";
-import Categories from "./Categories";
+import Tags from "./Tags";
 
-export default function CategoriesService() {
+export default function TagsService() {
   const [searchParams] = useSearchParams();
   let name = searchParams.get("name");
   let id = searchParams.get("id");
@@ -18,7 +18,7 @@ export default function CategoriesService() {
         let response = await axiosPrivate.post(
           process.env.REACT_APP_FILTER_POSTS,
           {
-            categoryId: Number(id),
+            tagId: Number(id),
           }
         );
         setData(response?.data);
@@ -27,5 +27,5 @@ export default function CategoriesService() {
     };
     fetchData();
   }, [id]);
-  return <Categories name={name} id={id} data={data} amount={amount} />;
+  return <Tags name={name} id={id} data={data} amount={amount} />;
 }
