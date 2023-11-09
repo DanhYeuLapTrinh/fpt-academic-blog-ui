@@ -6,6 +6,7 @@ import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 export default function LatestPostsSeeMoreService() {
   const { latestPosts, setLatestPosts } = useHome();
   const axiosPrivate = useAxiosPrivate();
+  window.scrollTo(0, 0);
   useEffect(() => {
     const fetchData = async () => {
       try {

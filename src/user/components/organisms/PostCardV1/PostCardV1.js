@@ -35,14 +35,16 @@ export default function PostCardV1(props) {
             />
           )}
         </Box>
-        <Author
-          src={props.src}
-          author={true}
-          text={props.label}
-          color={props.authorColor}
-          time={props.time}
-          profile={props.userId}
-        />
+        {!props.noAuthor && (
+          <Author
+            src={props.src}
+            author={true}
+            text={props.label}
+            color={props.authorColor}
+            time={props.time}
+            profile={props.userId}
+          />
+        )}
         <Wrapper WebkitLineClamp="2">
           <Text
             fontSize={props.title}

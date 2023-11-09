@@ -41,8 +41,8 @@ export default function HomeService() {
         setLatestPosts(latestPosts?.data);
       } catch (error) {}
     };
-    if (trendingPosts) fetchData();
-  }, [trendingPosts]);
+    if (trendingPostsHome) fetchData();
+  }, [trendingPostsHome]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,7 +94,7 @@ export default function HomeService() {
 
   return (
     <Home
-    trendingPostsHome={trendingPostsHome}
+      trendingPostsHome={trendingPostsHome}
       rewardedPosts={rewardedPosts}
       latestPosts={latestPosts}
       allPosts={allPosts}

@@ -6,6 +6,7 @@ import useHome from "../../../../hooks/useHome";
 export default function TrendingPostsSeeMoreService() {
   const axiosPrivate = useAxiosPrivate();
   const { trendingPosts, setTrendingPosts } = useHome();
+  window.scrollTo(0, 0);
   useEffect(() => {
     const fetchData = async () => {
       try {
