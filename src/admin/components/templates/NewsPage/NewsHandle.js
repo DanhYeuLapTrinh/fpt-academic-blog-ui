@@ -9,7 +9,7 @@ function NewsHandle() {
   const axiosPrivate = useAxiosPrivate();
 
   const { news, setNews } = useNewsContext();
-  
+
   const fetchData = async () => {
     const newsRes = await axiosPrivate.get("news/list");
     setNews(newsRes.data);

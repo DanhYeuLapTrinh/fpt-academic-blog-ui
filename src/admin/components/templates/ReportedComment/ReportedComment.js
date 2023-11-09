@@ -185,7 +185,7 @@ function ReportedComment() {
 
       <DismissDialog
         open={dismissDialogOpen}
-        onConfirm={handleDismiss}
+        onDismiss={handleDismiss}
         onCancel={handleCancel}
         title="Xác nhận"
         content={

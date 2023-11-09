@@ -7,27 +7,37 @@ import {
   Typography,
 } from "@mui/material";
 import HeaderContentDetail from "../HeaderContentDetail";
+import { useReportedProfileContext } from "../../../context/ReportedProfileContext";
 import React from "react";
 
-function BodyContent(props) {
+function BodyContent() {
+  const { reportedProfile } = useReportedProfileContext();
+
+  const postList = reportedProfile.postList || [];
+
   return (
-    <Stack sx={{ display: "flex", flexDirection: "column", gap: 24 }}>
-      <Paper
-        sx={{
-          backgroundColor: "rgb(255, 255, 255)",
-          color: "rgb(33, 43, 54)",
-          transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-          backgroundImage: "none",
-          overflow: "hidden",
-          position: "relative",
-          boxShadow:
-            "0px 0px 2px 0px rgba(145, 158, 171, 0.2), 0px 12px 24px -4px rgba(145, 158, 171, 0.12)",
-          borderRadius: "16px",
-          zIndex: 0,
-        }}
-      >
-        <HeaderContentDetail fullName={props.props.fullName} />
-        <div>
+    <Stack sx={{ display: "flex", flexDirection: "column", gap: 5 }}>
+      {postList.map((post) => (
+        <Paper
+          key={post.postId}
+          sx={{
+            backgroundColor: "rgb(255, 255, 255)",
+            color: "rgb(33, 43, 54)",
+            transition: "box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+            backgroundImage: "none",
+            overflow: "hidden",
+            position: "relative",
+            boxShadow:
+              "0px 0px 2px 0px rgba(145, 158, 171, 0.2), 0px 12px 24px -4px rgba(145, 158, 171, 0.12)",
+            borderRadius: "16px",
+            zIndex: 0,
+          }}
+        >
+          <HeaderContentDetail
+            accountName={post.accountName}
+            dateOfPost={post.dateOfPost}
+            avatar={post.avatarURL}
+          />
           <Typography
             sx={{
               margin: 0,
@@ -38,8 +48,7 @@ function BodyContent(props) {
               paddingLeft: "24px",
             }}
           >
-            The sun slowly set over the horizon, painting the sky in vibrant
-            hues of orange and pink.
+            {post.title}
           </Typography>
 
           <Box sx={{ padding: 2 }}>
@@ -65,13 +74,13 @@ function BodyContent(props) {
                 <img
                   className="MuiImageListItem-img"
                   alt="coverURL"
-                  src="https://img.freepik.com/free-vector/set-torii-gates-water_52683-44986.jpg?w=1060&t=st=1699465788~exp=1699466388~hmac=9ca802d77875b0bfbeb1e6937cf4b75ad2ba5621016e064c633ea5798d83a8a0"
+                  src={post.coverURL}
                 />
               </ImageListItem>
             </ImageList>
           </Box>
-        </div>
-      </Paper>
+        </Paper>
+      ))}
     </Stack>
   );
 }
