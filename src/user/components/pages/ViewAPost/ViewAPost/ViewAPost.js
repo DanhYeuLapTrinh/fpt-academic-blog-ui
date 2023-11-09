@@ -66,7 +66,7 @@ export default function ViewAPost(props) {
         </Stack>
       </Stack>
       <div className={styles.contentWrapper}>
-        <img style={{ p: "10px 0 40px" }} src={props.data?.coverURL} />
+        <img style={{ marginBottom: "30px" }} src={props.data?.coverURL} />
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
       <PostInteractionService

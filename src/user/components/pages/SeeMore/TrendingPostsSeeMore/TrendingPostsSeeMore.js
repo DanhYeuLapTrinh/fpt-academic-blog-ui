@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 export default function TrendingPostsSeeMore(props) {
   return (
-    <Box>
+    <Box mb={"20px"}>
       <Box
         sx={{
           pt: "37px",
@@ -175,7 +175,7 @@ export default function TrendingPostsSeeMore(props) {
       </Box>
       <Container>
         <Grid2 container>
-          <Grid2 item xs={8} direction={"column"} mt={"20px"}>
+          <Grid2 item xs={8} direction={"column"}>
             {props?.data?.slice(5)?.map((item, index) => (
               <Post
                 key={index}

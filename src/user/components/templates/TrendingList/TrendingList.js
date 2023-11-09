@@ -3,7 +3,6 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import PostCardV2 from "../../organisms/PostCardV2/PostCardV2";
 import PostCardV1 from "../../organisms/PostCardV1/PostCardV1";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
-import { getFirstChar } from "../../../utils/StringMethod";
 import PostCardV1Skeleton from "../../organisms/Skeleton/PostCardV1Skeleton/PostCardV1Skeleton";
 import PostCardV2Skeleton from "../../organisms/Skeleton/PostCardV2Skeleton/PostCardV2Skeleton";
 
@@ -17,7 +16,7 @@ export default function TrendingList(props) {
         {!props.trendingPostsHome ? (
           <PostCardV1Skeleton desc />
         ) : (
-          <PostCardV1
+        <PostCardV1
             url={props?.trendingPostsHome[1]?.coverURL}
             src={props?.trendingPostsHome[1]?.avatarURL}
             label={props?.trendingPostsHome[1]?.accountName}
