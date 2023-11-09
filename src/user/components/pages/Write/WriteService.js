@@ -112,6 +112,10 @@ export default function WriteService() {
       );
       if (response.status === 200) {
         localStorage.removeItem("content");
+        setMajor(undefined)
+        setSemester(undefined)
+        setSubject(undefined)
+        setTag(undefined)
         setTitle("");
         setFile("");
         setCoverURL("");

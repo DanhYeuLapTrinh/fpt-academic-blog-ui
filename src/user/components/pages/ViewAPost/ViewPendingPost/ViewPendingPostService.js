@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import ViewPendingPost from "./ViewPendingPost";
-import useError from "../../../../hooks/useError";
 
 export default function ViewPendingPostService() {
   const { slug } = useParams();
@@ -11,7 +10,6 @@ export default function ViewPendingPostService() {
   const [data, setData] = useState();
   const [open, setOpen] = useState();
   const [isRewaded, setIsRewarded] = useState();
-  const { errorMsg } = useError();
 
   const handleClose = (event, reason) => {
     if (reason !== "backdropClick") {

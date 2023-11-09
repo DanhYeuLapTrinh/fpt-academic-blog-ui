@@ -45,7 +45,9 @@ export default function ViewProfileService() {
     fetchData();
   }, [id]);
 
-  const sort = sortByPropertyName(user?.postList, "", "postId");
+  const sortedPostsList = sortByPropertyName(user?.postList, "", "postId");
+
+  const sortedQAList = sortByPropertyName(user?.qaList, "", "postId");
 
   const followAccount = async () => {
     try {
@@ -93,7 +95,8 @@ export default function ViewProfileService() {
       numOfPost={user?.numOfPost}
       numOfFollower={user?.numOfFollower}
       userStory={user?.userStory}
-      postList={sort}
+      postList={sortedPostsList}
+      qaList={sortedQAList}
       userId={user?.userId}
       slug={id}
       followAccount={followAccount}
