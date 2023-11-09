@@ -14,6 +14,7 @@ import {
   lecturerRoutes,
   mentorRoutes,
   lecturerRoutesOther,
+  mentorRoutesOther,
 } from "./master/routes";
 import ManagePostLayout from "./user/layouts/ManagePostLayout";
 import ManageQuestionLayout from "./user/layouts/ManageQuestionLayout";
@@ -74,7 +75,7 @@ function App() {
           </Route>
           {/* Logged in mentor routes */}
           <Route element={<HomeLayout />}>
-            <Route element={<ManageQuestionLayout/>}>
+            <Route element={<ManageQuestionLayout />}>
               <Route element={<RequireAuth allowRoles={["mentor"]} />}>
                 {mentorRoutes.map((item, index) => {
                   const Page = item.component;
@@ -83,6 +84,14 @@ function App() {
                   );
                 })}
               </Route>
+            </Route>
+            <Route element={<RequireAuth allowRoles={["mentor"]} />}>
+              {mentorRoutesOther.map((item, index) => {
+                const Page = item.component;
+                return (
+                  <Route key={index} path={item.path} element={<Page />} />
+                );
+              })}
             </Route>
           </Route>
           {/* Logged in admin routes */}

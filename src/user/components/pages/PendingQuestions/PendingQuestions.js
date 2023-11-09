@@ -13,11 +13,15 @@ export default function PendingQuestions(props) {
           title={item?.title}
           description={item?.description}
           pending
-          major={getFirstChar(item?.category[0])}
-          subject={item?.category[1]}
-          tag={item?.tag}
+          majorName={item?.category[0]?.categoryName}
+          majorID={item?.category[0]?.categoryId}
+          subjectName={item?.category[2]?.categoryName}
+          subjectID={item?.category[2]?.categoryId}
+          tagName={item?.tag.tagName}
+          tagID={item?.tag.tagId}
           time={timeConverter(item?.dateOfPost)}
           src={item?.avatarURL}
+          userId={item?.userId}
           label={item?.accountName}
           slug={item?.slug}
         />

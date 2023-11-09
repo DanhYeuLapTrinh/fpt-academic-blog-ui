@@ -34,6 +34,7 @@ import LatestPostsSeeMoreService from "../user/components/pages/SeeMore/LatestPo
 import TagsService from "../user/components/pages/Tags/TagsService";
 import RewardedPostsSeeMoreService from "../user/components/pages/SeeMore/RewardedPostsSeeMore/RewardedPostsSeeMoreService";
 import ShortPostSeeMoreService from "../user/components/pages/SeeMore/ShortPostsSeeMore/ShortPostSeeMoreService";
+import ViewPendingQuestionService from "../user/components/pages/ViewAPost/ViewPendingQuestion/ViewPendingQuestionService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -71,7 +72,10 @@ const lecturerRoutesOther = [
 const mentorRoutes = [
   { path: "/pending-questions", component: PendingQuestionsService },
   { path: "/approved-questions", component: ApprovedQuestionsService },
-  { path: "/pending-q/:slug", component: "" },
+];
+
+const mentorRoutesOther = [
+  { path: "/pending-questions/:slug", component: ViewPendingQuestionService },
 ];
 
 const loggedInAdminRoutes = [
@@ -110,4 +114,5 @@ export {
   lecturerRoutes,
   mentorRoutes,
   lecturerRoutesOther,
+  mentorRoutesOther
 };
