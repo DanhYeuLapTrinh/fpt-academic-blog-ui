@@ -43,6 +43,8 @@ export default function LoginForm() {
         username: values.username,
         password: values.password,
       });
+      if (response?.data?.isBanned)
+        throw new Error("Tài khoản không được phép đăng nhập vào hệ thống");
       const auth = {
         id: response?.data?.id,
         user: response?.data?.username,
@@ -59,7 +61,13 @@ export default function LoginForm() {
         navigate("/welcome", { replace: true });
       } else navigate("/", { replace: true });
     } catch (error) {
-      if (!error?.response) {
+      if (
+        error.message === "Tài khoản không được phép đăng nhập vào hệ thống"
+      ) {
+        toast.error(error.message);
+        values.username = "";
+        values.password = "";
+      } else if (!error?.response) {
         toast.error("Có lỗi trong quá trình xử lý");
         values.username = "";
         values.password = "";

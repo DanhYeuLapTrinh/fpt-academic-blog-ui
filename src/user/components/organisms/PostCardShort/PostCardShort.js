@@ -4,12 +4,12 @@ import Author from "../../molecules/Author/Author";
 import Text from "../../atoms/Text/Text";
 import PostTag from "../../atoms/PostTag/PostTag";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
-import { getFirstChar } from "../../../utils/StringMethod";
+import { getFirstChar, toSlug } from "../../../utils/StringMethod";
 import { Link } from "react-router-dom";
 
 export default function PostCardShort(props) {
   return (
-    <Link to={`/view/${props.slug}`} style={{textDecoration: "none"}}>
+    <Link to={`/view/${props.slug}`} style={{ textDecoration: "none" }}>
       <Box
         sx={{
           width: "calc(100% - 20px)/2",
@@ -52,24 +52,49 @@ export default function PostCardShort(props) {
           width={"100%"}
           paddingTop={"15px"}
         >
-          <PostTag
-            text={getFirstChar(props.majorName)}
-            color={"secondary.main"}
-            fontSize="9px"
-            link={`/categories/${props.majorID}`}
-          />
-          <PostTag
-            text={props.subjectName}
-            color={"secondary.main"}
-            fontSize="9px"
-            link={`/categories/${props.subjectID}`}
-          />
-          <PostTag
-            text={props.tagName}
-            color={"secondary.main"}
-            fontSize="9px"
-            link={`/tags/${props.tagID}`}
-          />
+          <Link
+            to={{
+              pathname: "/categories",
+              search: `?name=${toSlug(props.majorName, true)}&id=${
+                props.majorID
+              }`,
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <PostTag
+              fontSize="10px"
+              text={getFirstChar(props.majorName)}
+              color={props.tagColor ? props.tagColor : "secondary.main"}
+            />
+          </Link>
+          <Link
+            to={{
+              pathname: "/categories",
+              search: `?name=${toSlug(props.subjectName, true)}&id=${
+                props.subjectID
+              }`,
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <PostTag
+              fontSize="10px"
+              text={props.subjectName}
+              color={props.tagColor ? props.tagColor : "secondary.main"}
+            />
+          </Link>
+          <Link
+            to={{
+              pathname: "/tags",
+              search: `?name=${toSlug(props.tagName, true)}&id=${props.tagID}`,
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <PostTag
+              fontSize="10px"
+              text={props.tagName}
+              color={props.tagColor ? props.tagColor : "secondary.main"}
+            />
+          </Link>
         </Stack>
       </Box>
     </Link>

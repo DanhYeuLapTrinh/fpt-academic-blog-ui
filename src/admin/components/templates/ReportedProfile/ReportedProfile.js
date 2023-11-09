@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, LinearProgress, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useReportedProfileContext } from "../../../context/ReportedProfileContext";
 
 function ReportedProfile() {
   const axiosPrivate = useAxiosPrivate();
 
-  const { reportedProfiles, setReportedProfiles } = useReportedProfileContext();
+  const [reportedProfiles, setReportedProfiles] = useState([]);
 
   //----------------------------------------------------------------
 

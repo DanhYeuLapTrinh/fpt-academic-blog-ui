@@ -178,6 +178,7 @@ export default function ViewProfile(props) {
                       tagName={item?.tag.tagName}
                       tagID={item?.tag.tagId}
                       time={item.dateOfPost}
+                      slug={item.slug}
                       title="22px"
                       small
                     />

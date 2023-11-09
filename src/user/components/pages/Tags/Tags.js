@@ -1,11 +1,10 @@
-import { Container, Stack } from "@mui/material";
-import React from "react";
-import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
-import Text from "../../atoms/Text/Text";
-import { toSlug } from "../../../utils/StringMethod";
-import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
+import { Container, Stack } from '@mui/material'
+import React from 'react'
+import Text from '../../atoms/Text/Text'
+import SectionTitle from '../../molecules/SectionTitle/SectionTitle'
+import RewardedPostsUnder from '../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder'
 
-export default function Categories(props) {
+export default function Tags(props) {
   return (
     <Container sx={{ mt: "37px", minHeight: "calc(100vh - 93px)" }}>
       {props.data ? (
@@ -52,5 +51,5 @@ export default function Categories(props) {
         </>
       ) : null}
     </Container>
-  );
+  )
 }

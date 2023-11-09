@@ -9,9 +9,5 @@ export default function PostTag(props) {
     fontWeight: "600",
     ...props,
   };
-  return (
-    <Link to={`${props.link}`} style={{ textDecoration: "none" }}>
-      <Text {...configTag}>{props.text && `#${props.text}`}</Text>
-    </Link>
-  );
+  return <Text {...configTag}>{props.text && `#${props.text}`}</Text>;
 }

@@ -6,7 +6,7 @@ import { Box, Stack } from "@mui/material";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
 import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
 import { Link } from "react-router-dom";
-import { getFirstChar } from "../../../utils/StringMethod";
+import { getFirstChar, toSlug } from "../../../utils/StringMethod";
 export default function PostCardV1(props) {
   return (
     <Link to={`/view/${props.slug}`} style={{ textDecoration: "none" }}>
@@ -62,21 +62,46 @@ export default function PostCardV1(props) {
           </Wrapper>
         )}
         <Stack direction={"row"} spacing={"12px"}>
-          <PostTag
-            text={getFirstChar(props.majorName)}
-            color={props.tagColor ? props.tagColor : "primary.main"}
-            link={`/categories/${props.majorID}`}
-          />
-          <PostTag
-            text={props.subjectName}
-            color={props.tagColor ? props.tagColor : "primary.main"}
-            link={`/categories/${props.subjectID}`}
-          />
-          <PostTag
-            text={props.tagName}
-            color={props.tagColor ? props.tagColor : "primary.main"}
-            link={`/tags/${props.tagID}`}
-          />
+          <Link
+            to={{
+              pathname: "/categories",
+              search: `?name=${toSlug(props.majorName, true)}&id=${
+                props.majorID
+              }`,
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <PostTag
+              text={getFirstChar(props.majorName)}
+              color={props.tagColor ? props.tagColor : "primary.main"}
+            />
+          </Link>
+          <Link
+            to={{
+              pathname: "/categories",
+              search: `?name=${toSlug(props.subjectName, true)}&id=${
+                props.subjectID
+              }`,
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <PostTag
+              text={props.subjectName}
+              color={props.tagColor ? props.tagColor : "primary.main"}
+            />
+          </Link>
+          <Link
+            to={{
+              pathname: "/tags",
+              search: `?name=${toSlug(props.tagName, true)}&id=${props.tagID}`,
+            }}
+            style={{ textDecoration: "none" }}
+          >
+            <PostTag
+              text={props.tagName}
+              color={props.tagColor ? props.tagColor : "primary.main"}
+            />
+          </Link>
         </Stack>
       </Stack>
     </Link>
