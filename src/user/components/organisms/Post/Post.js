@@ -25,13 +25,15 @@ export default function Post(props) {
             }}
           >
             {props.isRewarded && (
-              <RewardBadge
-                small={props.small}
-                position="absolute"
-                top="10px"
-                right="10px"
-                zIndex="999"
-              />
+              <Link to={"/rewarded"}>
+                <RewardBadge
+                  small={props.small}
+                  position="absolute"
+                  top="10px"
+                  right="10px"
+                  zIndex="999"
+                />
+              </Link>
             )}
           </Box>
           <Box sx={{ width: "calc(100% - 240px)", p: "0px 0px 0px 20px" }}>

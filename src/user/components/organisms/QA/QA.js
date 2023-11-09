@@ -16,7 +16,7 @@ export default function QA(props) {
           width: props.full ? "100%" : "740px",
           height: "135px",
           borderRadius: "10px",
-          bgcolor: "secondary.alt",
+          bgcolor: props.bg ? props.bg : "secondary.alt",
           display: "flex",
           p: " 8px 15px 0px 20px",
         }}

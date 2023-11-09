@@ -27,13 +27,15 @@ export default function ProfilePost(props) {
           }}
         >
           {props.isRewarded && (
-            <RewardBadge
-              small={props.small}
-              position="absolute"
-              top="15px"
-              right="15px"
-              zIndex="999"
-            />
+            <Link to={"/rewarded"}>
+              <RewardBadge
+                small={props.small}
+                position="absolute"
+                top="15px"
+                right="15px"
+                zIndex="999"
+              />
+            </Link>
           )}
         </Box>
         <Box width={"calc(100% - 261px)"}>

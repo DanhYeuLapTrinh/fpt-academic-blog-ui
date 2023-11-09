@@ -8,6 +8,7 @@ export default function ApprovedQuestions(props) {
     <Stack p={"20px 0"} spacing={2}>
       {props?.approvedQ?.map((item) => (
         <QA
+          key={item.postId}
           full
           title={item?.title}
           description={item?.description}

@@ -37,18 +37,23 @@ export default function ViewPendingQuestionService() {
     }
   };
 
-  const handleDecline = async (reason) => {
+  const handleDecline = async () => {
     try {
-      await axiosPrivate.post(process.env.REACT_APP_DECLINE_POST, {
+      await axiosPrivate.post(process.env.REACT_APP_DECLINE_QA, {
         postId: data?.postId,
-        reasonOfDecline: reason,
       });
       window.scrollTo(0, 0);
-      navigate("/approved-posts", { replace: true });
+      navigate("/pending-questions", { replace: true });
     } catch (error) {
       console.log(error);
     }
   };
-  
-  return <ViewPendingQuestion data={data} handleSubmit={handleSubmit} />;
+
+  return (
+    <ViewPendingQuestion
+      data={data}
+      handleSubmit={handleSubmit}
+      handleDecline={handleDecline}
+    />
+  );
 }

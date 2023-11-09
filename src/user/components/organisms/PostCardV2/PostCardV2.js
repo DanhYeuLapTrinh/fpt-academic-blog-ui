@@ -42,13 +42,15 @@ export default function PostCardV2(props) {
           }}
         >
           {props.isRewarded && (
-            <RewardBadge
-              small={props.small}
-              position="absolute"
-              top="10px"
-              right="10px"
-              zIndex="999"
-            />
+            <Link to={"/rewarded"}>
+              <RewardBadge
+                small={props.small}
+                position="absolute"
+                top="10px"
+                right="10px"
+                zIndex="999"
+              />
+            </Link>
           )}
         </Box>
         <Author

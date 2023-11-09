@@ -9,6 +9,11 @@ import useProfile from "../../../hooks/useProfile";
 import { Icon } from "@iconify/react";
 import MyMenuOptionListService from "../../organisms/MyMenuOptionList/MyMenuOptionListService";
 import useAuth from "../../../hooks/useAuth";
+import QA from "../../organisms/QA/QA";
+import { timeConverter } from "../../../utils/StringMethod";
+import ProfilePostList from "../../organisms/ProfileDetail/ProfilePostList/ProfilePostList";
+import ProfileQuestionList from "../../organisms/ProfileDetail/ProfileQuestionList/ProfileQuestionList";
+import ProfileFollowerList from "../../organisms/ProfileDetail/ProfileFollowerList/ProfileFollowerList";
 
 export default function ViewProfile(props) {
   let imgURL = props.url ?? "/assets/img/blank-cover.jpg";
@@ -163,74 +168,13 @@ export default function ViewProfile(props) {
               spacing={"20px"}
             >
               {selected === "Bài viết" && (
-                <>
-                  <Text fontSize="23px">Bài viết</Text>
-                  {props?.postList?.length > 0 ? (
-                    props?.postList?.map((item, index) => (
-                      <ProfilePost
-                        key={index}
-                        url={item.coverURL}
-                        isRewarded={item.is_rewarded}
-                        postTitle={item.title}
-                        description={item.description}
-                        majorName={item?.category[0]?.categoryName}
-                        majorID={item?.category[0]?.categoryId}
-                        subjectName={item?.category[2]?.categoryName}
-                        subjectID={item?.category[2]?.categoryId}
-                        tagName={item?.tag.tagName}
-                        tagID={item?.tag.tagId}
-                        time={item.dateOfPost}
-                        slug={item.slug}
-                        title="22px"
-                        small
-                      />
-                    ))
-                  ) : (
-                    <Stack
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      height={"100%"}
-                    >
-                      <Stack alignItems={"center"} spacing={1}>
-                        <Icon
-                          icon="mdi:border-none-variant"
-                          color="#c3c3c3"
-                          width="50"
-                          height="50"
-                        />
-                        <Text color="lightText.main">
-                          Chưa có bài viết nào được đăng
-                        </Text>
-                      </Stack>
-                    </Stack>
-                  )}
-                </>
+                <ProfilePostList postList={props.postList}/>
               )}
               {selected === "Câu hỏi" && (
-                <>
-                  <Text fontSize="23px">Câu hỏi</Text>
-                  {props?.sortedQAList?.length > 0 ? (
-                    "Có bài"
-                  ) : (
-                    <Stack
-                      justifyContent={"center"}
-                      alignItems={"center"}
-                      height={"100%"}
-                    >
-                      <Stack alignItems={"center"} spacing={1}>
-                        <Icon
-                          icon="mdi:border-none-variant"
-                          color="#c3c3c3"
-                          width="50"
-                          height="50"
-                        />
-                        <Text color="lightText.main">
-                          Chưa có câu hỏi nào được đăng
-                        </Text>
-                      </Stack>
-                    </Stack>
-                  )}
-                </>
+                <ProfileQuestionList qaList={props.qaList}/>
+              )}
+              {selected === "Người theo dõi" && (
+                <ProfileFollowerList followerList={props.followerList}/>
               )}
             </Stack>
           </Stack>
