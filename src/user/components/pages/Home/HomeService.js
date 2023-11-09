@@ -94,18 +94,6 @@ export default function HomeService() {
     if (shortPosts) fetchData();
   }, [shortPosts]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       let allPosts = await axiosPrivate.get(process.env.REACT_APP_ALL_POSTS);
-  //       setAllPosts(allPosts?.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   fetchData();
-  // }, []);
-
   return (
     <Home
       trendingPostsHome={trendingPostsHome}

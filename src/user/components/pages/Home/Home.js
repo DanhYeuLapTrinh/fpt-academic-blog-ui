@@ -21,7 +21,7 @@ export default function Home(props) {
       <RewardedPostList />
       <Container>
         <Grid2 container xs={12} columnGap={"20px"}>
-          <Grid2 item xs={8} sx={{ marginBottom: "59px" }}>
+          <Grid2 item xs={8}>
             <QAList />
             <PostList allPosts={props.allPosts} />
           </Grid2>
