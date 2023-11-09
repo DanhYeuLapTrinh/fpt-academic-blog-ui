@@ -8,14 +8,14 @@ export default function SectionTitle(props) {
   return (
     <Stack
       direction={"row"}
-      width={"100%"}
+      width={props.width ? props.width : "100%"}
       sx={{
         alignItems: "center",
         justifyContent: "space-between",
         paddingBottom: "20px",
       }}
     >
-      <Text fontSize={props.fontSize ? props.fontSize : "28px"}>
+      <Text fontWeight={props.fontWeight ? props.fontWeight : "500"} color={props.color} fontSize={props.fontSize ? props.fontSize : "28px"}>
         {props.title}
       </Text>
       {props.filter && <Filter post={props.post} />}

@@ -27,7 +27,7 @@ export default function Home(props) {
           </Grid2>
           <Grid2 item xs>
             <Stack spacing={12}>
-              <TrendingTagSection />
+              <TrendingTagSection trendingTags={props.trendingTags}/>
               <ShortList shortPosts={props.shortPosts} />
             </Stack>
           </Grid2>

@@ -1,7 +1,7 @@
 import React from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import Text from "../../atoms/Text/Text";
-import { Button, IconButton, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { timeConverter } from "../../../utils/StringMethod";
 import { Link } from "react-router-dom";
 

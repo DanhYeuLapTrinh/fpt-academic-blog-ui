@@ -7,7 +7,7 @@ import { getFirstChar } from "../../../utils/StringMethod";
 export default function PostList(props) {
   return (
     <Box width={"740px"} sx={{ marginTop: "59px" }}>
-      <SectionTitle title="Bài viết" filter post />
+      <SectionTitle title="Bài viết" />
       {props.allPosts?.map((item, index) => (
         <Post
           key={index}

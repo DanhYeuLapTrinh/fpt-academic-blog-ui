@@ -1,15 +1,16 @@
 import { Box, Stack } from "@mui/material";
 import React from "react";
-import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
 import Text from "../../atoms/Text/Text";
 import Author from "../../molecules/Author/Author";
 import PostTag from "../../atoms/PostTag/PostTag";
 import { Link } from "react-router-dom";
+import { getFirstChar } from "../../../utils/StringMethod";
+import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
 
 export default function Post(props) {
   return (
-    <Link to={`/view/${props.slug}`} style={{textDecoration: "none"}}>
+    <Link to={`/view/${props.slug}`} style={{ textDecoration: "none" }}>
       <div style={{ width: "100%", paddingTop: "20px" }}>
         <Stack direction={"row"}>
           <Box
@@ -22,7 +23,17 @@ export default function Post(props) {
               borderRadius: "10px",
               position: "relative",
             }}
-          ></Box>
+          >
+            {props.isRewarded && (
+              <RewardBadge
+                small={props.small}
+                position="absolute"
+                top="10px"
+                right="10px"
+                zIndex="999"
+              />
+            )}
+          </Box>
           <Box sx={{ width: "calc(100% - 240px)", p: "0px 0px 0px 20px" }}>
             <Stack height={"149px"} justifyContent={"space-evenly"}>
               <Wrapper WebkitLineClamp="2">
@@ -58,16 +69,19 @@ export default function Post(props) {
                 />
                 <Stack direction={"row"} spacing={"12px"}>
                   <PostTag
-                    text={props.major}
-                    color={props.tagColor ? props.tagColor : "primary.main"}
+                    text={getFirstChar(props.majorName)}
+                    color={props.tagColor ? props.tagColor : "secondary.main"}
+                    link={`/categories/${props.majorID}`}
                   />
                   <PostTag
-                    text={props.subject}
-                    color={props.tagColor ? props.tagColor : "primary.main"}
+                    text={props.subjectName}
+                    color={props.tagColor ? props.tagColor : "secondary.main"}
+                    link={`/categories/${props.subjectID}`}
                   />
                   <PostTag
-                    text={props.tag}
-                    color={props.tagColor ? props.tagColor : "primary.main"}
+                    text={props.tagName}
+                    color={props.tagColor ? props.tagColor : "secondary.main"}
+                    link={`/tags/${props.tagID}`}
                   />
                 </Stack>
               </Stack>
