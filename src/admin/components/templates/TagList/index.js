@@ -116,13 +116,10 @@ function TagList() {
       headerName: "",
       width: 200,
       renderCell: (params) => (
-        console.log(params),
-        (
-          <DeleteForeverIcon
-            style={{ color: "red", cursor: "pointer" }}
-            onClick={() => handleDeleteClick(params.row.id, params.row.tagName)}
-          />
-        )
+        <DeleteForeverIcon
+          style={{ color: "red", cursor: "pointer" }}
+          onClick={() => handleDeleteClick(params.row.id, params.row.tagName)}
+        />
       ),
     },
   ];

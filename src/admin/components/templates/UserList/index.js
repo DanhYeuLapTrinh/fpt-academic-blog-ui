@@ -227,7 +227,7 @@ function UserResultList() {
   //----------------------------------------------------------------------------
 
   const columns = [
-    { field: "id", headerName: "ID", width: 25 },
+    { field: "id", headerName: "ID", width: 100 },
     { field: "username", headerName: "Tài khoản", width: 150 },
     { field: "fullName", headerName: "Tên đầy đủ", width: 150 },
     { field: "email", headerName: "Email", width: 300 },
@@ -291,7 +291,7 @@ function UserResultList() {
     {
       field: "action",
       headerName: "Hành động",
-      width: 200,
+      width: 150,
       renderCell: (params) => (
         <Grid container direction="row" spacing={1}>
           <Grid item xs={12}>

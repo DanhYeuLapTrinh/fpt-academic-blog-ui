@@ -56,7 +56,7 @@ function NewsHandle() {
         component="h4"
         gutterBottom
       >
-        Danh sách tin tức nóng hổi vừa mới ra lò
+        Danh sách tin tức
       </Typography>
       <DataGrid
         loading={news.length === 0}
