@@ -48,14 +48,16 @@ export default function WriteService() {
     setContent(content);
     setCharCount(title?.length);
   }, []);
-  useEffect(() => {
-    let interval = setInterval(() => {
-      if (!title) {
-        toast.error("Vui lòng nhập tiêu đề hợp lệ");
-      }
-    }, 1000 * 30);
-    return () => clearInterval(interval);
-  }, [title]);
+
+  // useEffect(() => {
+  //   let interval = setInterval(() => {
+  //     if (!title) {
+  //       toast.error("Vui lòng nhập tiêu đề hợp lệ");
+  //     }
+  //   }, 1000 * 30);
+  //   return () => clearInterval(interval);
+  // }, [title]);
+  
   const handleMajorChange = useCallback((e) => {
     setMajor(e.target.value);
     setSemester();
@@ -112,6 +114,10 @@ export default function WriteService() {
       );
       if (response.status === 200) {
         localStorage.removeItem("content");
+        setMajor(undefined)
+        setSemester(undefined)
+        setSubject(undefined)
+        setTag(undefined)
         setTitle("");
         setFile("");
         setCoverURL("");
@@ -136,6 +142,7 @@ export default function WriteService() {
     };
     fetchData();
   }, []);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {

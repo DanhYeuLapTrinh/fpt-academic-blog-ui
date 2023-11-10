@@ -18,7 +18,7 @@ export default function UserProfile({ ...props }) {
       height: "100%",
       cursor: "pointer",
     },
-    src: props.src ?? "../assets/img/blank.png",
+    src: props.src ?? "/assets/img/blank.png",
     alt: props.alt,
   };
   return (

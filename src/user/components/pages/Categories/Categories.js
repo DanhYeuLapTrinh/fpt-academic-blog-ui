@@ -5,7 +5,7 @@ import Text from "../../atoms/Text/Text";
 import { toSlug } from "../../../utils/StringMethod";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
 
-export default function Topic(props) {
+export default function Categories(props) {
   return (
     <Container sx={{ mt: "37px", minHeight: "calc(100vh - 93px)" }}>
       {props.data ? (
@@ -24,10 +24,7 @@ export default function Topic(props) {
                 fontWeight="bold"
                 fontSize="24px"
                 color="primary.main"
-                title={`#${toSlug(
-                  props.data[0].category[2].categoryName,
-                  true
-                )}`}
+                title={`#${props.name}`}
               />
             </Stack>
             <Text fontSize="13px">Tổng số bài viết: {props.amount}</Text>

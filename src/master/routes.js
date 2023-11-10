@@ -31,6 +31,10 @@ import ApprovedQuestionsService from "../user/components/pages/ApprovedQuestions
 import CategoriesService from "../user/components/pages/Categories/CategoriesService";
 import TrendingPostsSeeMoreService from "../user/components/pages/SeeMore/TrendingPostsSeeMore/TrendingPostsSeeMoreService";
 import LatestPostsSeeMoreService from "../user/components/pages/SeeMore/LatestPostsSeeMore/LatestPostsSeeMoreService";
+import TagsService from "../user/components/pages/Tags/TagsService";
+import RewardedPostsSeeMoreService from "../user/components/pages/SeeMore/RewardedPostsSeeMore/RewardedPostsSeeMoreService";
+import ShortPostSeeMoreService from "../user/components/pages/SeeMore/ShortPostsSeeMore/ShortPostSeeMoreService";
+import ViewPendingQuestionService from "../user/components/pages/ViewAPost/ViewPendingQuestion/ViewPendingQuestionService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -48,11 +52,13 @@ const loggedInUserRoutes = [
   { path: "/write", component: WriteService },
   { path: "/trending", component: TrendingPostsSeeMoreService },
   { path: "/latest", component: LatestPostsSeeMoreService },
+  { path: "/rewarded", component: RewardedPostsSeeMoreService },
+  { path: "/shorts", component: ShortPostSeeMoreService },
+  { path: "/categories", component: CategoriesService },
+  { path: "/tags", component: TagsService },
   { path: "/view/:slug", component: ViewAPostService },
   { path: "/profile/:id", component: ViewProfileService },
   { path: "/profile/:id/question", component: ViewProfileService },
-  { path: "/categories/:id", component: CategoriesService },
-  { path: "/tags/:id", component: "" },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },
@@ -66,7 +72,10 @@ const lecturerRoutesOther = [
 const mentorRoutes = [
   { path: "/pending-questions", component: PendingQuestionsService },
   { path: "/approved-questions", component: ApprovedQuestionsService },
-  { path: "/pending-q/:slug", component: "" },
+];
+
+const mentorRoutesOther = [
+  { path: "/pending-questions/:slug", component: ViewPendingQuestionService },
 ];
 
 const loggedInAdminRoutes = [
@@ -105,4 +114,5 @@ export {
   lecturerRoutes,
   mentorRoutes,
   lecturerRoutesOther,
+  mentorRoutesOther
 };

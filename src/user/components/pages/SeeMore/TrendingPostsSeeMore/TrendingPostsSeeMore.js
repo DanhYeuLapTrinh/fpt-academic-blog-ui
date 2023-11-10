@@ -1,24 +1,24 @@
 import React from "react";
-import { Box, Chip, Container, Stack } from "@mui/material";
+import { Box, Container, Stack } from "@mui/material";
 import SectionTitle from "../../../molecules/SectionTitle/SectionTitle";
 import PostCardV2 from "../../../organisms/PostCardV2/PostCardV2";
 import PostCardV1 from "../../../organisms/PostCardV1/PostCardV1";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import Post from "../../../organisms/Post/Post";
 import Text from "../../../atoms/Text/Text";
+import { Link } from "react-router-dom";
 
 export default function TrendingPostsSeeMore(props) {
   return (
-    <Box>
+    <Box mb={"20px"}>
       <Box
         sx={{
-          pt: "37px",
-          minHeight: "calc(100vh - 93px)",
+          p: "37px 0 57px",
           bgcolor: "secondary.alt",
         }}
       >
-        <Container sx={{ minHeight: "calc(100vh - 93px)" }}>
-          <SectionTitle title="Bài viết thịnh hành" />
+        <Container>
+          <SectionTitle title="Trang xem bài thịnh hành" />
           {props.data && (
             <Box width={"100%"}>
               <Stack direction={"row"} width={"100%"} spacing={"20px"} mb={2}>
@@ -40,7 +40,12 @@ export default function TrendingPostsSeeMore(props) {
                     title="20px"
                     noAuthor
                   />
-                  <Text fontSize={"14px"}>{props.data[0].accountName}</Text>
+                  <Link
+                    to={`/profile/${props.data[0]?.userId}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Text fontSize={"14px"}>{props.data[0].accountName}</Text>
+                  </Link>
                 </Box>
                 <Box flex={1}>
                   <PostCardV1
@@ -60,7 +65,12 @@ export default function TrendingPostsSeeMore(props) {
                     title="20px"
                     noAuthor
                   />
-                  <Text fontSize={"14px"}>{props.data[1].accountName}</Text>
+                  <Link
+                    to={`/profile/${props.data[1]?.userId}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Text fontSize={"14px"}>{props.data[1].accountName}</Text>
+                  </Link>
                 </Box>
               </Stack>
               <Grid2 container xs={12}>
@@ -99,7 +109,12 @@ export default function TrendingPostsSeeMore(props) {
                       title="20px"
                       noAuthor
                     />
-                    <Text fontSize={"14px"}>{props.data[2].accountName}</Text>
+                    <Link
+                      to={`/profile/${props.data[2]?.userId}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Text fontSize={"14px"}>{props.data[2].accountName}</Text>
+                    </Link>
                   </Grid2>
                   <Grid2 item xs={4}>
                     <PostCardV1
@@ -119,7 +134,12 @@ export default function TrendingPostsSeeMore(props) {
                       title="20px"
                       noAuthor
                     />
-                    <Text fontSize={"14px"}>{props.data[3].accountName}</Text>
+                    <Link
+                      to={`/profile/${props.data[3]?.userId}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Text fontSize={"14px"}>{props.data[3].accountName}</Text>
+                    </Link>
                   </Grid2>
                   <Grid2 item xs={4}>
                     <PostCardV1
@@ -139,7 +159,12 @@ export default function TrendingPostsSeeMore(props) {
                       title="20px"
                       noAuthor
                     />
-                    <Text fontSize={"16px"}>{props.data[4].accountName}</Text>
+                    <Link
+                      to={`/profile/${props.data[4]?.userId}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Text fontSize={"14px"}>{props.data[4].accountName}</Text>
+                    </Link>
                   </Grid2>
                 </Grid2>
               </Grid2>
@@ -149,7 +174,7 @@ export default function TrendingPostsSeeMore(props) {
       </Box>
       <Container>
         <Grid2 container>
-          <Grid2 item xs={8} direction={"column"} mt={"20px"}>
+          <Grid2 item xs={8} direction={"column"}>
             {props?.data?.slice(5)?.map((item, index) => (
               <Post
                 key={index}

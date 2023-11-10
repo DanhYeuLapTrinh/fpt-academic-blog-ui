@@ -8,6 +8,7 @@ import ImageClick from "../../atoms/ImagePlaceholder/ImageClick";
 import { Icon } from "@iconify/react";
 import useContent from "../../../hooks/useContent";
 import useHome from "../../../hooks/useHome";
+import { toast } from "react-toastify";
 export default function Dropzone() {
   // functon onDrop chỉ chạy khi người dùng bỏ ảnh vào
   // useCallback để tránh tình trạng bị rerender khi component Dropzone rerender
@@ -15,7 +16,6 @@ export default function Dropzone() {
   const { isLoading, setIsLoading } = useHome();
   const { file, setFile } = useContent();
   const { setCoverURL, coverURL } = useContent();
-  const [rejectedFile, setRejectedFile] = useState();
   const handleSubmit = async (file) => {
     try {
       setIsLoading(true);
@@ -44,7 +44,7 @@ export default function Dropzone() {
       handleSubmit(acceptedFiles?.[0]);
     }
     if (rejectedFiles?.[0]) {
-      setRejectedFile(rejectedFiles?.[0]);
+      toast.error("File không hợp lệ hoặc quá lớn")
     }
   }, []);
 

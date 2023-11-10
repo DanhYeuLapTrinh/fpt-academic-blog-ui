@@ -72,7 +72,6 @@ export default function ProfileNavList(props) {
               height: "3px",
               bgcolor: "primary.main",
               borderRadius: "10px 10px 0 0",
-              
             }}
           />
         )}

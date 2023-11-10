@@ -12,7 +12,8 @@ export default function ViewProfileService() {
   const profileID = Number(id);
   const axiosPrivate = useAxiosPrivate();
   const [user, setUser] = useState({});
-  const { followerList, setFollowerList } = useProfile();
+  const { followerList, setFollowerList, followingList, setFollowingList } =
+    useProfile();
   const [isFollowing, setIsFollowing] = useState(false);
   const auth = useAuth();
   window.scrollTo(0, 0);
@@ -33,6 +34,16 @@ export default function ViewProfileService() {
           }
         );
 
+        let followingList = await axiosPrivate.post(
+          process.env.REACT_APP_VIEW_FOLLOWING,
+          {
+            userId: profileID,
+          }
+        );
+
+        if (followingList) {
+          setFollowingList(followingList?.data);
+        }
         if (followersList) {
           setFollowerList(followersList?.data);
           const isFollowingUser = followersList?.data?.some(
@@ -45,7 +56,9 @@ export default function ViewProfileService() {
     fetchData();
   }, [id]);
 
-  const sort = sortByPropertyName(user?.postList, "", "postId");
+  const sortedPostsList = sortByPropertyName(user?.postList, "", "postId");
+
+  const sortedQAList = sortByPropertyName(user?.qaList, "", "postId");
 
   const followAccount = async () => {
     try {
@@ -93,12 +106,14 @@ export default function ViewProfileService() {
       numOfPost={user?.numOfPost}
       numOfFollower={user?.numOfFollower}
       userStory={user?.userStory}
-      postList={sort}
+      postList={sortedPostsList}
+      qaList={sortedQAList}
       userId={user?.userId}
       slug={id}
       followAccount={followAccount}
       unfollowAccount={unfollowAccount}
       isFollowing={isFollowing}
+      followerList={followerList}
     />
   );
 }
