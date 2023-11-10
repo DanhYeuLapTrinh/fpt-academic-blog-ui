@@ -5,12 +5,14 @@ import axios from "../../../api/axios";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import useAuth from "../../../hooks/useAuth";
 import { UserMenuOptionsListData } from "../../../data/UserMenuOptionList";
+import useProfile from "../../../hooks/useProfile";
 
 export default function UserMenuOptionsListContainer() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const navigate = useNavigate();
   const auth = useAuth();
+  const {avatarURL} = useProfile()
+  const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -43,7 +45,7 @@ export default function UserMenuOptionsListContainer() {
         open={open}
         auth={auth}
       />
-      <UserProfile src={auth?.profileURL} handleClick={handleClick} />
+      <UserProfile src={avatarURL} handleClick={handleClick} />
     </>
   );
 }

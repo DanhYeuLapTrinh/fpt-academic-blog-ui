@@ -19,8 +19,10 @@ import axios from "../../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import useHome from "../../../hooks/useHome";
 import { toast } from "react-toastify";
+import useProfile from "../../../hooks/useProfile";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const {setAvatarURL} = useProfile()
   const { isLoading, setIsLoading } = useHome();
   const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
@@ -54,6 +56,7 @@ export default function LoginForm() {
         profileURL: response?.data?.profileURL,
         coverURL: response?.data?.coverURL,
       };
+      setAvatarURL(response?.data?.profileURL)
       localStorage.setItem("auth", JSON.stringify(auth));
       values.username = "";
       values.password = "";
