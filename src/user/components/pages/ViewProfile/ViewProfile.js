@@ -1,14 +1,13 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Divider,
   IconButton,
   Stack,
   Tooltip,
 } from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useState } from "react";
+import React from "react";
 import Text from "../../atoms/Text/Text";
 import ProfileNavList from "../../molecules/ProfileNavList/ProfileNavList";
 import UserStoryService from "../../organisms/UserStory/UserStoryService";
@@ -20,12 +19,12 @@ import ProfilePostList from "../../organisms/ProfileDetail/ProfilePostList/Profi
 import ProfileQuestionList from "../../organisms/ProfileDetail/ProfileQuestionList/ProfileQuestionList";
 import ProfileFollowerList from "../../organisms/ProfileDetail/ProfileFollowerList/ProfileFollowerList";
 import UploadImageIcon from "../../organisms/UploadImageIcon/UploadImageIcon";
-import useHome from "../../../hooks/useHome";
 import UploadCoverIcon from "../../organisms/UploadImageIcon/UploadCoverIcon";
+import ProfileFollowerListService from "../../organisms/ProfileDetail/ProfileFollowerList/ProfileFollowerListService";
+import ProfileFollowingListService from "../../organisms/ProfileDetail/ProfileFollowingList/ProfileFollowingListService";
 
 export default function ViewProfile(props) {
   const { avatarURL, profileCoverURL, selected } = useProfile();
-  const { isLoading } = useHome();
   const auth = useAuth();
   let avatarUser =
     (props.userId === auth.id && avatarURL) ||
@@ -35,12 +34,11 @@ export default function ViewProfile(props) {
     (props.userId === auth.id && profileCoverURL) ||
     props.coverUrl ||
     "/assets/img/blank-cover.jpg";
-  
   return (
     <Box>
       <Box sx={{ bgcolor: "secondary.alt" }}>
         <Container>
-          <Box height={`calc(${props.height} + 80px)`}>
+          <Box height={`calc(${props.height} + 90px)`}>
             <Box
               sx={{
                 width: "100%",
@@ -69,10 +67,9 @@ export default function ViewProfile(props) {
               )}
               <Box
                 sx={{
-                  width: "165px",
-                  height: "165px",
+                  width: "200px",
+                  height: "200px",
                   backgroundImage: `url(${avatarUser})`,
-                  opacity: isLoading ? "0.9" : "1",
                   bgcolor: "white",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
@@ -84,7 +81,7 @@ export default function ViewProfile(props) {
                   alignItems: "center",
                   justifyContent: "center",
                   position: "absolute",
-                  bottom: "-70px",
+                  bottom: "-80px",
                   left: "50%",
                   transform: "translateX(-50%)",
                   zIndex: 1,
@@ -181,7 +178,7 @@ export default function ViewProfile(props) {
                       {props.isFollowing ? "Đang theo dõi" : "Theo dõi"}
                     </Text>
                   </Button>
-                  <MyMenuOptionListService userId={props.userId} />
+                  <MyMenuOptionListService />
                 </Stack>
               )}
             </Stack>
@@ -216,7 +213,10 @@ export default function ViewProfile(props) {
                 <ProfileQuestionList qaList={props.qaList} />
               )}
               {selected === "Người theo dõi" && (
-                <ProfileFollowerList followerList={props.followerList} />
+                <ProfileFollowerListService />
+              )}
+              {selected === "Đang theo dõi" && (
+                <ProfileFollowingListService />
               )}
             </Stack>
           </Stack>

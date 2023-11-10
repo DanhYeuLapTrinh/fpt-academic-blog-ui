@@ -59,6 +59,8 @@ const loggedInUserRoutes = [
   { path: "/view/:slug", component: ViewAPostService },
   { path: "/profile/:id", component: ViewProfileService },
   { path: "/profile/:id/question", component: ViewProfileService },
+  { path: "/profile/:id/follower", component: ViewProfileService },
+  { path: "/profile/:id/following", component: ViewProfileService },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },

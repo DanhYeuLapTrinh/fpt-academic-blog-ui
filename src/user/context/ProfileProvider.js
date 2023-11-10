@@ -2,6 +2,7 @@ import React, { createContext, useState } from "react";
 const ProfileContext = createContext();
 export default function ProfileProvider({ children }) {
   const [selected, setSelected] = useState("Bài viết");
+  const [user, setUser] = useState({});
   const [followingList, setFollowingList] = useState([]);
   const [followerList, setFollowerList] = useState([]);
   const [avatarURL, setAvatarURL] = useState(null);
@@ -9,6 +10,8 @@ export default function ProfileProvider({ children }) {
   return (
     <ProfileContext.Provider
       value={{
+        user,
+        setUser,
         selected,
         setSelected,
         followingList,

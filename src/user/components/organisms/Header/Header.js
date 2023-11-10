@@ -5,12 +5,12 @@ import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 import NavList from "../../molecules/Navigation/NavList";
 import useProfile from "../../../hooks/useProfile";
-import useAuth from "../../../hooks/useAuth";
 
 export default function Header() {
-  const { avatarURL, setAvatarURL, setProfileCoverURL, profileCoverURL } =
-    useProfile();
-
+  const { avatarURL, setAvatarURL } = useProfile();
+  useEffect(() => {
+    setAvatarURL(JSON.parse(localStorage.getItem("auth"))?.profileURL ?? null);
+  }, [avatarURL]);
   return (
     <Container sx={{ padding: "15px 0" }}>
       <Stack

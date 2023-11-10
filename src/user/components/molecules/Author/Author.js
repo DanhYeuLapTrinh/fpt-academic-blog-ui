@@ -4,6 +4,7 @@ import Text from "../../atoms/Text/Text";
 import { Stack } from "@mui/material";
 import { timeConverter } from "../../../utils/StringMethod";
 import { Link } from "react-router-dom";
+import Wrapper from "../../atoms/Wrapper/Wrapper";
 
 export default function Author(props) {
   return (
@@ -16,12 +17,14 @@ export default function Author(props) {
             src={props.src}
             alt="User"
           />
-          <Text
-            fontSize={props.authorSize ? props.authorSize : "12px"}
-            color={props.color ? props.color : "text.main"}
-          >
-            {props.text}
-          </Text>
+          <Wrapper WebkitLineClamp="1">
+            <Text
+              fontSize={props.authorSize ? props.authorSize : "12px"}
+              color={props.color ? props.color : "text.main"}
+            >
+              {props.text}
+            </Text>
+          </Wrapper>
         </Stack>
       </Link>
       <Stack>
@@ -33,13 +36,15 @@ export default function Author(props) {
           >
             &middot;
           </Text>
-          <Text
-            fontSize="12px"
-            lineHeight="12px"
-            color={props.color ? props.color : "text.main"}
-          >
-            {timeConverter(props.time)}
-          </Text>
+          <Wrapper WebkitLineClamp="1">
+            <Text
+              fontSize="12px"
+              lineHeight="12px"
+              color={props.color ? props.color : "text.main"}
+            >
+              {timeConverter(props.time)}
+            </Text>
+          </Wrapper>
         </Stack>
       </Stack>
     </Stack>
