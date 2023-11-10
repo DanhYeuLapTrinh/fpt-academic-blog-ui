@@ -43,7 +43,7 @@ export default function ProfileNavList(props) {
         )}
       </Link>
       <Link
-        to={""}
+        to={`/profile/${props.slug}/follower`}
         style={{ textDecoration: "none" }}
         onClick={() => setSelected("Người theo dõi")}
       >
@@ -60,7 +60,7 @@ export default function ProfileNavList(props) {
         )}
       </Link>
       <Link
-        to={""}
+        to={`/profile/${props.slug}/following`}
         style={{ textDecoration: "none" }}
         onClick={() => setSelected("Đang theo dõi")}
       >
