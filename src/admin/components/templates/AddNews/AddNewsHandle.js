@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import { Button, Card, Input, Typography } from "@mui/material";
@@ -9,13 +9,31 @@ export default function App() {
   const editorRef = useRef(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [hasInputData, setHasInputData] = useState(false);
 
-  const handleTitleChange = (event) => {
-    setTitle(event.target.value);
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (hasInputData === true) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [hasInputData]);
+
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+    setHasInputData(true);
   };
 
   const handleEditorChange = (content) => {
     setContent(content);
+    setHasInputData(true);
   };
 
   const resetForm = () => {
@@ -35,10 +53,12 @@ export default function App() {
       .then((response) => {
         toast.success("Thêm tin tức thành công");
         resetForm();
+        setHasInputData(false);
       })
       .catch((error) => {
         toast.error("Thêm tin tức thất bại");
         console.error(error);
+        setHasInputData(false);
       });
   };
 
