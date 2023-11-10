@@ -18,27 +18,30 @@ import {
 } from "./master/routes";
 import ManagePostLayout from "./user/layouts/ManagePostLayout";
 import ManageQuestionLayout from "./user/layouts/ManageQuestionLayout";
+import HasAuth from "./user/utils/HasAuth";
 function App() {
   return (
     <div>
       <BrowserRouter>
         <Routes>
           {/* Puclic routes */}
-          <Route element={<LoginLayout />}>
-            {publicRoutes.map((item, index) => {
-              const Page = item.component;
-              return <Route key={index} path={item.path} element={<Page />} />;
-            })}
-          </Route>
-          {/* Reset password routes */}
-          <Route element={<LoginLayout />}>
-            <Route element={<RequireEmail />}>
-              {recoverPasswordRoutes.map((item, index) => {
+          <Route element={<HasAuth/>}>
+            <Route element={<LoginLayout />}>
+              {publicRoutes.map((item, index) => {
                 const Page = item.component;
-                return (
-                  <Route key={index} path={item.path} element={<Page />} />
-                );
+                return <Route key={index} path={item.path} element={<Page />} />;
               })}
+            </Route>
+            {/* Reset password routes */}
+            <Route element={<LoginLayout />}>
+              <Route element={<RequireEmail />}>
+                {recoverPasswordRoutes.map((item, index) => {
+                  const Page = item.component;
+                  return (
+                    <Route key={index} path={item.path} element={<Page />} />
+                  );
+                })}
+              </Route>
             </Route>
           </Route>
           {/* Logged in user routes */}

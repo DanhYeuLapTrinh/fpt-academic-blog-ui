@@ -11,12 +11,15 @@ export default function ViewProfileService() {
   const { id } = useParams();
   const profileID = Number(id);
   const axiosPrivate = useAxiosPrivate();
-  const [user, setUser] = useState({});
-  const { followerList, setFollowerList, followingList, setFollowingList } =
+  const { followerList, setFollowerList, user, setUser, setSelected } =
     useProfile();
   const [isFollowing, setIsFollowing] = useState(false);
   const auth = useAuth();
-  window.scrollTo(0, 0);
+  useEffect(() => {
+    setSelected("Bài viết");
+    window.scrollTo(0, 0);
+  }, []);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -27,23 +30,20 @@ export default function ViewProfileService() {
           }
         );
         setUser(profileInfo?.data);
+      } catch (error) {}
+    };
+    fetchData();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         let followersList = await axiosPrivate.post(
           process.env.REACT_APP_VIEW_FOLLOWERS,
           {
             userId: profileID,
           }
         );
-
-        let followingList = await axiosPrivate.post(
-          process.env.REACT_APP_VIEW_FOLLOWING,
-          {
-            userId: profileID,
-          }
-        );
-
-        if (followingList) {
-          setFollowingList(followingList?.data);
-        }
         if (followersList) {
           setFollowerList(followersList?.data);
           const isFollowingUser = followersList?.data?.some(
@@ -53,8 +53,8 @@ export default function ViewProfileService() {
         }
       } catch (error) {}
     };
-    fetchData();
-  }, [id]);
+    if (profileID !== auth.id) fetchData();
+  }, [profileID]);
 
   const sortedPostsList = sortByPropertyName(user?.postList, "", "postId");
 
@@ -97,15 +97,17 @@ export default function ViewProfileService() {
       }
     } catch (error) {}
   };
+
   return (
     <ViewProfile
       url={user?.coverURL}
-      height="218px"
-      avatarURL={user?.profileUrl}
+      height="330px"
       accountName={user?.fullname}
       numOfPost={user?.numOfPost}
       numOfFollower={user?.numOfFollower}
       userStory={user?.userStory}
+      profileUrl={user?.profileUrl}
+      coverUrl={user?.coverUrl}
       postList={sortedPostsList}
       qaList={sortedQAList}
       userId={user?.userId}
@@ -113,7 +115,6 @@ export default function ViewProfileService() {
       followAccount={followAccount}
       unfollowAccount={unfollowAccount}
       isFollowing={isFollowing}
-      followerList={followerList}
     />
   );
 }

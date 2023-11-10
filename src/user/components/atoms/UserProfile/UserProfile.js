@@ -7,23 +7,14 @@ export default function UserProfile({ ...props }) {
     height: "36px",
     sx: {
       borderRadius: "50px",
-    },
-    cursor: "pointer",
-    ...props,
-  };
-  const configPic = {
-    style: {
+      backgroundImage: `url(${props.src ?? "/assets/img/blank.png"})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
       borderRadius: "50px",
-      width: "100%",
-      height: "100%",
+      position: "relative",
       cursor: "pointer",
     },
-    src: props.src ?? "/assets/img/blank.png",
-    alt: props.alt,
+    ...props,
   };
-  return (
-    <Box {...configContainer}>
-      <img {...configPic} onClick={props.handleClick} />
-    </Box>
-  );
+  return <Box {...configContainer} onClick={props.handleClick} />;
 }

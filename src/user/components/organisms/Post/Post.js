@@ -68,6 +68,7 @@ export default function Post(props) {
                   author={true}
                   text={props.author}
                   time={props.time}
+                  profile={props.userId}
                 />
                 <Stack direction={"row"} spacing={"12px"}>
                   <Link

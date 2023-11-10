@@ -1,9 +1,9 @@
+import { Stack } from "@mui/material";
 import React from "react";
 import Text from "../../../atoms/Text/Text";
-import { Stack } from "@mui/material";
 import UserFollowProfile from "../../UserFollowProfile/UserFollowProfile";
 
-export default function ProfileFollowerList(props) {
+export default function ProfileFollowingList(props) {
   return (
     <div>
       <Stack
@@ -11,10 +11,12 @@ export default function ProfileFollowerList(props) {
         justifyContent={"space-between"}
         alignItems={"center"}
       >
-        <Text fontSize="23px">Người theo dõi</Text>
+        <Text fontSize="23px">Đang theo dõi</Text>
         <Text fontWeight="400" fontSize="14px">
           Lượt theo dõi:{" "}
-          <span style={{ fontWeight: "600" }}>{props.followerList.length}</span>
+          <span style={{ fontWeight: "600" }}>
+            {props.followingList.length}
+          </span>
         </Text>
       </Stack>
       <Stack
@@ -24,13 +26,14 @@ export default function ProfileFollowerList(props) {
         paddingTop={"20px"}
       >
         <Stack direction={"row"} flexWrap={"wrap"} gap={"20px"} width={"100%"}>
-          {props?.followerList?.map((follower, index) => (
+          {props?.followingList?.map((following, index) => (
             <UserFollowProfile
               key={index}
-              url={follower.profileUrl}
-              fullName={follower.fullName}
-              slug={`/profile/${follower.id}`}
-              id={follower.id}
+              url={following.profileUrl}
+              fullName={following.fullName}
+              id={following.id}
+              slug={`/profile/${following.id}`}
+              followingPage
             />
           ))}
         </Stack>

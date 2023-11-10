@@ -49,6 +49,7 @@ export default function PostList() {
             url={item?.coverURL}
             title={item?.title}
             description={item?.description}
+            userId={item?.userId}
             author={item?.accountName}
             src={item?.avatarURL}
             time={item?.dateOfPost}

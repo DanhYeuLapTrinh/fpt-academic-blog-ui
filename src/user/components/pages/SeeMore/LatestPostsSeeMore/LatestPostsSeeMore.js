@@ -38,6 +38,7 @@ export default function LatestPostsSeeMore(props) {
                     clamp="4"
                     title="20px"
                     noAuthor
+                    smallText
                   />
                   <Link
                     to={`/profile/${props.data[0]?.userId}`}

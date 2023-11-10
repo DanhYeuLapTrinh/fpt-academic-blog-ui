@@ -5,11 +5,14 @@ import { Icon } from "@iconify/react";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
+import useProfile from "../../../hooks/useProfile";
+import { useParams } from "react-router-dom";
 export default function MyMenuOptionListService(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [reportReasons, setReportReasons] = useState([]);
   const [reportId, setReportId] = useState(null);
   const [openReport, setOpenReport] = useState(false);
+  const { id } = useParams();
   const axiosPrivate = useAxiosPrivate();
   const auth = useAuth();
   const open = Boolean(anchorEl);
@@ -38,8 +41,9 @@ export default function MyMenuOptionListService(props) {
         setReportReasons(response?.data);
       } catch (error) {}
     };
-    if (props.userId !== auth.id) fetchData();
-  }, []);
+    if (Number(id) !== auth.id) fetchData();
+  }, [id, auth.id]);
+
   const reportProfile = async () => {
     try {
       if (!reportId) {
@@ -47,7 +51,7 @@ export default function MyMenuOptionListService(props) {
         return;
       }
       await axiosPrivate.post(process.env.REACT_APP_REPORT_PROFILE, {
-        userId: props.userId,
+        userId: id,
         reasonOfReportId: reportId,
       });
       toast.success("Báo cáo tài khoản người dùng thành công");

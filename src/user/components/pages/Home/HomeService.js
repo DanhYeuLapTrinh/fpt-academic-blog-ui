@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Home from "./Home";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useHome from "../../../hooks/useHome";
+import useProfile from "../../../hooks/useProfile";
 
 export default function HomeService() {
   const axiosPrivate = useAxiosPrivate();
@@ -19,7 +20,6 @@ export default function HomeService() {
     trendingTags,
     setTrendingTags,
   } = useHome();
-
   const [trendingPostsHome, setTrendingPostsHome] = useState();
 
   useEffect(() => {
