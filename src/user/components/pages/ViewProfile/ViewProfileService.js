@@ -100,12 +100,13 @@ export default function ViewProfileService() {
   return (
     <ViewProfile
       url={user?.coverURL}
-      height="218px"
-      avatarURL={user?.profileUrl}
+      height="310px"
       accountName={user?.fullname}
       numOfPost={user?.numOfPost}
       numOfFollower={user?.numOfFollower}
       userStory={user?.userStory}
+      profileUrl={user?.profileUrl}
+      coverUrl={user?.coverUrl}
       postList={sortedPostsList}
       qaList={sortedQAList}
       userId={user?.userId}
