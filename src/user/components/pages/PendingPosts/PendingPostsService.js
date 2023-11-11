@@ -11,7 +11,6 @@ export default function PendingPostsService() {
     pendingPosts,
     setPendingPosts,
     sort,
-    setSort,
     setAmount,
   } = useManagePost();
   const { isLoading, setIsLoading } = useHome();

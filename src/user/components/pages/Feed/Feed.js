@@ -18,7 +18,7 @@ export default function Feed(props) {
       >
         <Container>
           <SectionTitle title="Trang xem bảng tin" />
-          {props.data && (
+          {props?.data?.length > 6 && (
             <Box width={"100%"}>
               <Stack direction={"row"} width={"100%"} spacing={"20px"} mb={2}>
                 <Box flex={1}>

@@ -7,6 +7,7 @@ export default function ManagePostProvider({ children }) {
   const [approvedQ, setApprovedQ] = useState();
   const [sort, setSort] = useState("Mới nhất");
   const [type, setType] = useState("Bài viết đang chờ");
+  const [draftType, setDraftType] = useState("Nháp");
   const [questionType, setQuestionType] = useState("Câu hỏi đang chờ");
   const [qAmount, setQAmount] = useState(0);
   const [qApprovedAmount, setQApprovedAmount] = useState(0);
@@ -37,6 +38,7 @@ export default function ManagePostProvider({ children }) {
         setQApprovedAmount,
         approvedQ,
         setApprovedQ,
+        draftType, setDraftType
       }}
     >
       {children}

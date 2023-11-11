@@ -36,6 +36,8 @@ import ViewPendingQuestionService from "../user/components/pages/ViewAPost/ViewP
 import FeedService from "../user/components/pages/Feed/FeedService";
 import EditProfileService from "../user/components/pages/EditProfile/EditProfileService";
 import NewsService from "../user/components/pages/News/NewsService";
+import DraftService from "../user/components/pages/Draft/DraftService";
+import FavoriteService from "../user/components/pages/Favorite/FavoriteService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -51,8 +53,10 @@ const loggedInUserRoutes = [
   { path: "/feed", component: FeedService },
   { path: "/news", component: NewsService },
   { path: "/write", component: WriteService },
+  { path: "/favorite", component: FavoriteService },
   { path: "/trending", component: TrendingPostsSeeMoreService },
   { path: "/latest", component: LatestPostsSeeMoreService },
+  { path: "/draft", component: DraftService },
   { path: "/rewarded", component: RewardedPostsSeeMoreService },
   { path: "/shorts", component: ShortPostSeeMoreService },
   { path: "/categories", component: CategoriesService },
