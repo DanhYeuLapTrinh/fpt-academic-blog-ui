@@ -11,6 +11,7 @@ export default function App() {
   const [content, setContent] = useState("");
   const [hasInputData, setHasInputData] = useState(false);
 
+  console.log(hasInputData);
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (hasInputData === true) {
@@ -90,8 +91,8 @@ export default function App() {
       <Editor
         apiKey="jyymcsj2533984fe0lwdenxx5exsesynmz7lbatgw0cnnre9"
         onInit={(evt, editor) => (editorRef.current = editor)}
-        initialValue="Vui lòng nhập nội dung tin tức!"
         init={{
+          placeholder: "Nhập nội dung tin tức ở đây !!!",
           height: 500,
           menubar: false,
           plugins: [

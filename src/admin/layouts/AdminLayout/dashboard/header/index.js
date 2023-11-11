@@ -72,7 +72,7 @@ export default function Header({ onOpenNav }) {
           aria-label="breadcrumb"
         >
           <Link
-            underline="hover"
+            underline="none"
             sx={{ display: "flex", alignItems: "center" }}
             color="inherit"
           >
@@ -83,7 +83,7 @@ export default function Header({ onOpenNav }) {
             <Link
               key={index}
               color="inherit"
-              underline="hover"
+              underline="none"
               sx={{ display: "flex", alignItems: "center" }}
             >
               {route.icon}
