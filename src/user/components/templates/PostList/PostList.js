@@ -15,19 +15,22 @@ export default function PostList() {
       page: page,
       postOfPage: postsPerPage,
     });
-    return { post: [...response?.data], prevOffset: page };
+    return { ...response?.data, prevOffset: page };
   };
 
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: ({ pageParam = 1 }) => fetchData(pageParam, 5),
     getNextPageParam: (lastPage) => {
-      // so sánh nếu số post trên web hiển thị nhiều hơn số post tổng thì return false dừng call api
+      if (lastPage.prevOffset * 6 >= lastPage.TotalPost) {
+        return false;
+      }
       return lastPage.prevOffset + 1;
     },
   });
+
   const posts = data?.pages?.reduce((acc, page) => {
-    return [...acc, ...page.post];
+    return [...acc, ...page.Posts];
   }, []);
 
   return (
@@ -38,9 +41,11 @@ export default function PostList() {
         next={() => fetchNextPage()}
         hasMore={hasNextPage}
         loader={
-          <Stack width={"100%"} sx={{ textAlign: "center", m: "20px 0" }}>
-            <Text>...đang tải...</Text>
-          </Stack>
+          hasNextPage ? (
+            <Stack width={"100%"} sx={{ textAlign: "center", m: "20px 0" }}>
+              <Text>...đang tải...</Text>
+            </Stack>
+          ) : null
         }
       >
         {posts?.map((item, index) => (

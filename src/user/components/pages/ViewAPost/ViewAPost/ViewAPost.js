@@ -9,6 +9,8 @@ import MyBread from "../../../molecules/MyBread/MyBread";
 import PostMenuOptionListService from "../../../organisms/PostMenuOptiopList/PostMenuOptionListService";
 import PostInteractionService from "../../../organisms/PostInteraction/PostInteractionService";
 import CommentBar from "../../../organisms/CommentBar/CommentBar";
+import Comment from "../../../molecules/Comment/Comment";
+import CommentsList from "../../../organisms/CommentsList/CommentsList";
 export default function ViewAPost(props) {
   return (
     <Container sx={{ mb: 10 }}>
@@ -77,6 +79,7 @@ export default function ViewAPost(props) {
         vote={props.data.numOfUpVote - props.data.numOfDownVote}
       />
       <CommentBar src={props.data.avatarURL} profile={props.data?.userId} />
+      <CommentsList comments={props.data.comments}/>
     </Container>
   );
 }

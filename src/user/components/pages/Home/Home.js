@@ -22,7 +22,7 @@ export default function Home(props) {
       <Container>
         <Grid2 container xs={12} columnGap={"20px"}>
           <Grid2 item xs={8}>
-            <QAList />
+            <QAList qaList={props.qaList}/>
             <PostList allPosts={props.allPosts} />
           </Grid2>
           <Grid2 item xs>

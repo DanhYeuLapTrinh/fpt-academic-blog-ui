@@ -6,6 +6,7 @@ export default function HomeProvider({ children }) {
   const [latestPosts, setLatestPosts] = useState();
   const [allPosts, setAllPosts] = useState();
   const [shortPosts, setShortPosts] = useState();
+  const [qaList, setQAList] = useState();
   const [trendingTags, setTrendingTags] = useState();
   const [userAccounts, setUserAccounts] = useState();
   const [amount, setAmount] = useState(0);
@@ -31,6 +32,8 @@ export default function HomeProvider({ children }) {
         setAmount,
         trendingTags,
         setTrendingTags,
+        qaList,
+        setQAList,
       }}
     >
       {children}
