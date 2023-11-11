@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { Box, Card, CardHeader } from "@mui/material";
 
@@ -18,11 +18,11 @@ export default function SimpleCharts({ totalVisit }) {
     );
   }
 
-  const [visits, setVisits] = React.useState(
+  const [visits, setVisits] = useState(
     JSON.parse(localStorage.getItem("visits")) || [0, 0, 0, 0, 0, 0, 0]
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     const date = new Date();
     const dayOfWeek = (date.getDay() + 6) % 7;
 
@@ -33,7 +33,7 @@ export default function SimpleCharts({ totalVisit }) {
     });
   }, [totalVisit]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     localStorage.setItem("visits", JSON.stringify(visits));
   }, [visits]);
 

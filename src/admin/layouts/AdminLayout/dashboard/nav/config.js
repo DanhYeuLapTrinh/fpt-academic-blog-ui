@@ -4,10 +4,9 @@ import PeopleIcon from "@mui/icons-material/People";
 import CategoryIcon from "@mui/icons-material/Category";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
-import DescriptionIcon from "@mui/icons-material/Description";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
-import SettingsIcon from "@mui/icons-material/Settings";
+
 // ----------------------------------------------------------------------
 
 const navConfig = [
@@ -74,16 +73,6 @@ const navConfig = [
         icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
       },
     ],
-  },
-  {
-    title: "Nhật ký hoạt động",
-    path: "/activity-log",
-    icon: <DescriptionIcon />,
-  },
-  {
-    title: "Cài đặt",
-    path: "/setting",
-    icon: <SettingsIcon />,
   },
 ];
 
