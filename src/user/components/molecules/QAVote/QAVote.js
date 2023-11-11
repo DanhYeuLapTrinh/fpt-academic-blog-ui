@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import { IconButton, Stack } from '@mui/material';
 import Text from '../../atoms/Text/Text';
 
-export default function QAVote() {
+export default function QAVote(props) {
   return (
     <Stack alignItems={'center'} paddingBottom={'15px'}>
       {/* <Icon
@@ -23,7 +23,7 @@ export default function QAVote() {
           vFlip={false}
         />
       </IconButton>
-      <Text color="middleText.main" fontWeight="400" fontSize="14px">39</Text>
+      <Text color="middleText.main" fontWeight="400" fontSize="14px">{props.vote}</Text>
       <IconButton sx={{p: '3px'}}>
         <Icon
           icon="tabler:arrow-big-up"

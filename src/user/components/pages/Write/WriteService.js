@@ -57,7 +57,7 @@ export default function WriteService() {
   //   }, 1000 * 30);
   //   return () => clearInterval(interval);
   // }, [title]);
-  
+
   const handleMajorChange = useCallback((e) => {
     setMajor(e.target.value);
     setSemester();
@@ -75,31 +75,34 @@ export default function WriteService() {
     setTagID();
   }, []);
 
-  const handleSubmit = useCallback(async () => {
-    try {
-      if (
-        !title ||
-        wordcount < 30 ||
-        (!coverURL && tag !== "Q&A") ||
-        !contentTiny ||
-        !tagID ||
-        !subjectID
-      ) {
-        toast.error("Vui lòng điền đầy đủ thông tin");
-        return;
-      } else if (charCount >= 100) {
-        toast.error("Tiêu đề không được dài hơn 100 ký tự");
-        return;
-      } else if (charCount < 30) {
-        toast.error("Tiêu đề quá ngắn");
-        return;
-      }
-      let slug = toSlug(title);
-      let description = getFirstTagContent(contentTiny);
-      let postCoverURL = tag !== "Q&A" ? coverURL : "";
-      let response = await axiosPrivate.post(
-        process.env.REACT_APP_CREATE_POST,
-        {
+  const handleSubmit = useCallback(
+    async (e) => {
+      try {
+        if (
+          !title ||
+          wordcount < 30 ||
+          (!coverURL && tag !== "Q&A") ||
+          !contentTiny ||
+          !tagID ||
+          !subjectID
+        ) {
+          toast.error("Vui lòng điền đầy đủ thông tin");
+          return;
+        } else if (charCount >= 100) {
+          toast.error("Tiêu đề không được dài hơn 100 ký tự");
+          return;
+        } else if (charCount < 30) {
+          toast.error("Tiêu đề quá ngắn");
+          return;
+        }
+        let apiCallURL =
+          e.target.value === "draft"
+            ? process.env.REACT_APP_ADD_TO_DRAFT
+            : process.env.REACT_APP_CREATE_POST;
+        let slug = toSlug(title);
+        let description = getFirstTagContent(contentTiny);
+        let postCoverURL = tag !== "Q&A" ? coverURL : "";
+        let response = await axiosPrivate.post(apiCallURL, {
           accountId: auth?.id,
           title: title,
           description: description,
@@ -110,26 +113,27 @@ export default function WriteService() {
           coverURL: postCoverURL,
           slug: slug,
           length: wordcount,
+        });
+        if (response.status === 200) {
+          localStorage.removeItem("content");
+          setMajor(undefined);
+          setSemester(undefined);
+          setSubject(undefined);
+          setTag(undefined);
+          setTitle("");
+          setFile("");
+          setCoverURL("");
+          window.scrollTo(0, 0);
+          toast.success("Đăng bài thành công");
+          navigate("/", { replace: true });
         }
-      );
-      if (response.status === 200) {
-        localStorage.removeItem("content");
-        setMajor(undefined)
-        setSemester(undefined)
-        setSubject(undefined)
-        setTag(undefined)
-        setTitle("");
-        setFile("");
-        setCoverURL("");
-        window.scrollTo(0, 0);
-        toast.success("Đăng bài thành công");
-        navigate("/", { replace: true });
+      } catch (error) {
+        console.log(error);
+        toast.error("Có lỗi trong quá trình xử lý");
       }
-    } catch (error) {
-      console.log(error);
-      toast.error("Có lỗi trong quá trình xử lý");
-    }
-  }, [tagID, subjectID, contentTiny, title, coverURL, tag]);
+    },
+    [tagID, subjectID, contentTiny, title, coverURL, tag]
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -142,7 +146,7 @@ export default function WriteService() {
     };
     fetchData();
   }, []);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {

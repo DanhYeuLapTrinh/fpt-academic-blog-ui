@@ -5,10 +5,12 @@ import { Link, useParams } from "react-router-dom";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useProfile from "../../../hooks/useProfile";
+import useAuth from "../../../hooks/useAuth";
 
 export default function UserFollowProfile(props) {
   const axiosPrivate = useAxiosPrivate();
   const { followingList, setFollowingList } = useProfile();
+  const auth = useAuth()
   const { id } = useParams();
   const unfollow = async (inputId) => {
     try {
@@ -45,7 +47,7 @@ export default function UserFollowProfile(props) {
             <Text fontSize="15px">{props.fullName}</Text>
           </Wrapper>
         </Link>
-        {props.followingPage && (
+        {(props.followingPage && Number(id) === auth.id) && (
           <Button
             size="small"
             sx={{ justifySelf: "flex-end", textTransform: "none" }}

@@ -23,7 +23,7 @@ export default function QA(props) {
       >
         {!props.pending && (
           <Box display={"flex"} alignItems={"center"} pr={"10px"}>
-            <QAVote />
+            <QAVote vote={props.vote}/>
           </Box>
         )}
         <Stack

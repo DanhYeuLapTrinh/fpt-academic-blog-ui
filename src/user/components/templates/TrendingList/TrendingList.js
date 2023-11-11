@@ -16,7 +16,7 @@ export default function TrendingList(props) {
         {!props.trendingPostsHome ? (
           <PostCardV1Skeleton desc />
         ) : (
-        <PostCardV1
+          <PostCardV1
             url={props?.trendingPostsHome[1]?.coverURL}
             src={props?.trendingPostsHome[1]?.avatarURL}
             label={props?.trendingPostsHome[1]?.accountName}

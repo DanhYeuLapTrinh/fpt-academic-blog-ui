@@ -43,7 +43,7 @@ export default function Write({ ...props }) {
         spacing={2}
         paddingTop={"30px"}
       >
-        <Button fullWidth sx={{ padding: "10px" }} variant="outlined">
+        <Button onClick={props.handleSubmit} value="draft" fullWidth sx={{ padding: "10px" }} variant="outlined">
           Lưu bản nháp
         </Button>
         <Button

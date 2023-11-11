@@ -22,7 +22,7 @@ export default function LoginLayout() {
             color: "primary.main",
           }}
         >
-          fblog.com
+          fblog.site
         </Typography>
         <Text
           sx={{
