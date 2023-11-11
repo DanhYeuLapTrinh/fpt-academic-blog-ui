@@ -2,8 +2,6 @@ import LoginForm from "../user/components/organisms/LoginForm/LoginForm";
 import EmailEntryForm from "../user/components/organisms/EmailEntryForm/EmailEntryForm";
 import OTPForm from "../user/components/organisms/OTPForm/OTPForm";
 import RecoverPasswordForm from "../user/components/organisms/RecoverPasswordForm/RecoverPasswordForm";
-import Feed from "../user/components/pages/Feed/Feed";
-import News from "../user/components/pages/News/News";
 //Admin Routes
 import Welcome from "../admin/components/pages/Welcome/Welcome";
 import UserList from "../admin/components/pages/Users/UserList";
@@ -35,6 +33,11 @@ import TagsService from "../user/components/pages/Tags/TagsService";
 import RewardedPostsSeeMoreService from "../user/components/pages/SeeMore/RewardedPostsSeeMore/RewardedPostsSeeMoreService";
 import ShortPostSeeMoreService from "../user/components/pages/SeeMore/ShortPostsSeeMore/ShortPostSeeMoreService";
 import ViewPendingQuestionService from "../user/components/pages/ViewAPost/ViewPendingQuestion/ViewPendingQuestionService";
+import FeedService from "../user/components/pages/Feed/FeedService";
+import EditProfileService from "../user/components/pages/EditProfile/EditProfileService";
+import NewsService from "../user/components/pages/News/NewsService";
+import DraftService from "../user/components/pages/Draft/DraftService";
+import FavoriteService from "../user/components/pages/Favorite/FavoriteService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -47,15 +50,18 @@ const recoverPasswordRoutes = [
 
 const loggedInUserRoutes = [
   { path: "/", component: HomeService },
-  { path: "/feed", component: Feed },
-  { path: "/news", component: News },
+  { path: "/feed", component: FeedService },
+  { path: "/news", component: NewsService },
   { path: "/write", component: WriteService },
+  { path: "/favorite", component: FavoriteService },
   { path: "/trending", component: TrendingPostsSeeMoreService },
   { path: "/latest", component: LatestPostsSeeMoreService },
+  { path: "/draft", component: DraftService },
   { path: "/rewarded", component: RewardedPostsSeeMoreService },
   { path: "/shorts", component: ShortPostSeeMoreService },
   { path: "/categories", component: CategoriesService },
   { path: "/tags", component: TagsService },
+  { path: "/profile/edit", component: EditProfileService },
   { path: "/view/:slug", component: ViewAPostService },
   { path: "/profile/:id", component: ViewProfileService },
   { path: "/profile/:id/question", component: ViewProfileService },
@@ -116,5 +122,5 @@ export {
   lecturerRoutes,
   mentorRoutes,
   lecturerRoutesOther,
-  mentorRoutesOther
+  mentorRoutesOther,
 };

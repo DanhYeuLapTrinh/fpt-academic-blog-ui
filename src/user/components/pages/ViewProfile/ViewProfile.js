@@ -17,7 +17,6 @@ import MyMenuOptionListService from "../../organisms/MyMenuOptionList/MyMenuOpti
 import useAuth from "../../../hooks/useAuth";
 import ProfilePostList from "../../organisms/ProfileDetail/ProfilePostList/ProfilePostList";
 import ProfileQuestionList from "../../organisms/ProfileDetail/ProfileQuestionList/ProfileQuestionList";
-import ProfileFollowerList from "../../organisms/ProfileDetail/ProfileFollowerList/ProfileFollowerList";
 import UploadImageIcon from "../../organisms/UploadImageIcon/UploadImageIcon";
 import UploadCoverIcon from "../../organisms/UploadImageIcon/UploadCoverIcon";
 import ProfileFollowerListService from "../../organisms/ProfileDetail/ProfileFollowerList/ProfileFollowerListService";

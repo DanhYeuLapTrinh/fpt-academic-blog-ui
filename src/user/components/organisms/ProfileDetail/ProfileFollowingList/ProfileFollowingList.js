@@ -13,7 +13,7 @@ export default function ProfileFollowingList(props) {
       >
         <Text fontSize="23px">Đang theo dõi</Text>
         <Text fontWeight="400" fontSize="14px">
-          Lượt theo dõi:{" "}
+          Đang theo dõi:{" "}
           <span style={{ fontWeight: "600" }}>
             {props.followingList.length}
           </span>

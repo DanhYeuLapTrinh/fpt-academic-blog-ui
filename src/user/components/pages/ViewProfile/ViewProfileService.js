@@ -19,7 +19,7 @@ export default function ViewProfileService() {
     setSelected("Bài viết");
     window.scrollTo(0, 0);
   }, []);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -46,7 +46,7 @@ export default function ViewProfileService() {
         );
         if (followersList) {
           setFollowerList(followersList?.data);
-          const isFollowingUser = followersList?.data?.some(
+          let isFollowingUser = followersList?.data?.some(
             (follower) => follower.id === auth.id
           );
           setIsFollowing(isFollowingUser);
@@ -75,6 +75,14 @@ export default function ViewProfileService() {
           ...prevUser,
           numOfFollower: prevUser.numOfFollower + 1,
         }));
+        setFollowerList((prevFollowerList) => [
+          ...prevFollowerList,
+          {
+            id: auth.id,
+            fullName: auth.user,
+            profileUrl: auth.profileURL,
+          },
+        ]);
       }
     } catch (error) {}
   };
@@ -94,6 +102,12 @@ export default function ViewProfileService() {
           ...prevUser,
           numOfFollower: prevUser.numOfFollower - 1,
         }));
+        setFollowerList((prevFollowerList) => {
+          let newFollowerList = prevFollowerList.filter(
+            (follower) => follower.id !== auth.id
+          );
+          return newFollowerList;
+        });
       }
     } catch (error) {}
   };

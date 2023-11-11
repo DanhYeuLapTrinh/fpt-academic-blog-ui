@@ -48,7 +48,7 @@ export default function AuthorQA(props) {
         <Text fontSize="23px" color={props.color ? props.color : "text.main"}>
           &middot;
         </Text>
-        <Text fontSize="12px" color={props.color ? props.color : "text.main"}>
+        <Text fontSize="11px" color={props.color ? props.color : "text.main"}>
           {props.time}
         </Text>
       </Stack>

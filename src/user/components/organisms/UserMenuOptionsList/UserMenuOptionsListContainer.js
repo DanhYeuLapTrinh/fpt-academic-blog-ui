@@ -30,12 +30,10 @@ export default function UserMenuOptionsListContainer() {
       }
     } catch (error) {
       console.log(error);
+      localStorage.removeItem("auth");
       navigate("/login", { replace: true })
     }
   };
-  const filteredOption = UserMenuOptionsListData.filter((item) => {
-    return item.role === "public" || item.role === auth?.role;
-  });
   return (
     <>
       <UserMenuOptionsList
