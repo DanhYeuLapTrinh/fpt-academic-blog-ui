@@ -73,6 +73,7 @@ export default function SearchPopper(props) {
                   <Stack
                     direction={"row"}
                     spacing={1}
+                    flex={10}
                   >
                     <FormControl>
                       <Select
@@ -111,7 +112,7 @@ export default function SearchPopper(props) {
                           ))}
                       </Select>
                     </FormControl>
-                    <FormControl error={props.subject === undefined && true}>
+                    <FormControl>
                       <Select
                         sx={{ height: "30px", pr: "5px" }}
                         IconComponent={KeyboardArrowDownIcon}

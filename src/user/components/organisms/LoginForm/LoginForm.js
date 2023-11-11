@@ -49,7 +49,7 @@ export default function LoginForm() {
         throw new Error("Tài khoản không được phép đăng nhập vào hệ thống");
       const auth = {
         id: response?.data?.id,
-        user: response?.data?.username,
+        user: response?.data?.fullname,
         role: response?.data?.roleName,
         token: response?.data?.token,
         refreshToken: response?.data?.refreshToken,

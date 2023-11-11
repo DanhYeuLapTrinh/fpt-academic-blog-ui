@@ -57,14 +57,14 @@ export default function UserMenuOptionsList(props) {
           label="Xem tài khoản"
         />
       </Link>
-      <Link to={``} style={{ textDecoration: "none" }}>
+      <Link to={`/draft`} style={{ textDecoration: "none" }}>
         <UserMenuOption
           icon={<Icon icon="ri:draft-line" color="#444746" width="24" />}
           handleClose={props.handleClose}
           label="Nháp"
         />
       </Link>
-      <Link to={``} style={{ textDecoration: "none" }}>
+      <Link to={`/favorite`} style={{ textDecoration: "none" }}>
         <UserMenuOption
           icon={<Icon icon="ri:bookmark-line" color="#444746" width="24" />}
           handleClose={props.handleClose}
