@@ -154,6 +154,18 @@ export default function WriteService() {
       } catch (error) {}
     };
     fetchData();
+    return () => {
+      if (window.confirm("Thao tác của bạn sẽ không được lưu!")) {
+        localStorage.removeItem("content");
+        setMajor(undefined);
+        setSemester(undefined);
+        setSubject(undefined);
+        setTag(undefined);
+        setTitle("");
+        setFile("");
+        setCoverURL("");
+      }
+    };
   }, []);
 
   return (
