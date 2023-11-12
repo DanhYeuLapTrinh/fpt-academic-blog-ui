@@ -11,11 +11,10 @@ import { addUserSchema } from "../../components/atoms/AddUserValidation";
 import useAxiosPrivate from "../../../user/hooks/useAxiosPrivate";
 
 function AddUserForm({ open, onClose, onAddUser, data }) {
-
   const [selectedRole, setSelectedRole] = useState("");
 
   const [majors, setMajors] = useState([]);
-  
+
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -100,6 +99,24 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
   });
 
   const [formData, setFormData] = useState(initialUser);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      const message = "Nếu F5 thì dữ liệu đang nhập sẽ mất";
+      event.returnValue = message;
+      return message;
+    };
+
+    if (open) {
+      window.addEventListener("beforeunload", handleBeforeUnload);
+    } else {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    }
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [open]);
 
   return (
     <Dialog open={open} onClose={onClose}>

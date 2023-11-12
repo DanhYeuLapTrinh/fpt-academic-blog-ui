@@ -14,8 +14,6 @@ import NewsPage from "../admin/components/pages/NewsPage/NewsPage";
 import AddNews from "../admin/components/pages/AddNews/AddNews";
 import DetailNew from "../admin/components/pages/DetailNew/DetailNew";
 import ReportedProfileDetail from "../admin/components/pages/ReportedProfileDetail/ReportedProfileDetail";
-import ActivityLogPage from "../admin/components/pages/ActivityLog/ActivityLogPage";
-import SettingPage from "../admin/components/pages/Setting/SettingPage";
 
 import WriteService from "../user/components/pages/Write/WriteService";
 import PendingPostsService from "../user/components/pages/PendingPosts/PendingPostsService";
@@ -108,14 +106,11 @@ const loggedInAdminRoutes = [
     component: ReportedProfileDetail,
   },
   { path: "/reported-comment", component: ReportedCommentPage },
-  //Activity Log Page
-  { path: "/activity-log", component: ActivityLogPage },
+
   //News Page
   { path: "/news-admin", component: NewsPage },
   { path: "news/view/:id", component: DetailNew },
   { path: "/add-news", component: AddNews },
-  //Setting Page
-  { path: "/setting", component: SettingPage },
 ];
 
 export {

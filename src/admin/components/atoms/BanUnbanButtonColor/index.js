@@ -6,19 +6,19 @@ const buttonSx = {
   color: "#fff",
 };
 
-const unbanButtonSx = {
-  ...buttonSx,
-  background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-  "&:hover": {
-    background: "linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",
-  },
-};
-
 const banButtonSx = {
   ...buttonSx,
   background: "linear-gradient(45deg, #4CAF50 30%, #45a049 90%)",
   "&:hover": {
     background: "linear-gradient(45deg, #45a049 30%, #4CAF50 90%)",
+  },
+};
+
+const unbanButtonSx = {
+  ...buttonSx,
+  background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+  "&:hover": {
+    background: "linear-gradient(45deg, #FF8E53 30%, #FE6B8B 90%)",
   },
 };
 

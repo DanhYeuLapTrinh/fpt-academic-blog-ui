@@ -6,7 +6,7 @@ import {
   DialogTitle,
   TextField,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 
 function AddTagForm({
   open,
@@ -16,6 +16,23 @@ function AddTagForm({
   data,
   newTagName,
 }) {
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      const message = "Nếu F5 thì dữ liệu đang nhập sẽ mất";
+      event.returnValue = message;
+      return message;
+    };
+
+    if (open) {
+      window.addEventListener("beforeunload", handleBeforeUnload);
+    } else {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    }
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [open]);
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle sx={{ fontWeight: "bold" }}>Thêm thẻ mới</DialogTitle>

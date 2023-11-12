@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useReportedProfileContext } from "../../../context/ReportedProfileContext";
 import { Avatar, Box, Stack, Typography, Paper, Button } from "@mui/material";
 import DismissDialog from "../../molecules/ReportedComment/DismissDialog";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
-
+import BanReportedProfile from "../../molecules/BanReportedProfile/BanReportedProfile";
 import {
   PaperSx,
-  BoxSx,
   fullNameSx,
   subHeaderSx,
   backgroundDetailBottom,
@@ -19,6 +18,11 @@ import { toast } from "react-toastify";
 
 function HeaderDetail({ id }) {
   const { reportedProfile } = useReportedProfileContext();
+
+  const coverURL = reportedProfile.coverUrl;
+
+  const defaultCoverURL =
+    "https://api-prod-minimal-v510.vercel.app/assets/images/cover/cover_4.jpg";
 
   const axiosPrivate = useAxiosPrivate();
 
@@ -34,6 +38,15 @@ function HeaderDetail({ id }) {
 
   const [dismissDialogOpen, setDismissDialogOpen] = useState(false);
 
+  const [banStatus, setBanStatus] = useState(
+    JSON.parse(localStorage.getItem("banStatus")) || {}
+  );
+
+  const handleBanSuccess = () => {
+    const updatedBanStatus = { ...banStatus, [id]: true };
+    setBanStatus(updatedBanStatus);
+    localStorage.setItem("banStatus", JSON.stringify(updatedBanStatus));
+  };
   const handleDismiss = async () => {
     await axiosPrivate
       .post("admin/dismiss-reported-profile", {
@@ -51,6 +64,10 @@ function HeaderDetail({ id }) {
       });
   };
 
+  const banAccount = (id) => {
+    return axiosPrivate.post(process.env.REACT_APP_BAN_ACCOUNT, { id });
+  };
+
   const openDismiss = async (id) => {
     setDismissDialogOpen(true);
   };
@@ -61,7 +78,18 @@ function HeaderDetail({ id }) {
 
   return (
     <Paper sx={PaperSx}>
-      <Box sx={BoxSx}>
+      <Box
+        sx={{
+          height: "100%",
+          color: "rgb(255, 255, 255)",
+          background: coverURL
+            ? `url(${coverURL})`
+            : `linear-gradient(rgba(0, 75, 80, 0.8), rgba(0, 75, 80, 0.8)) center center / cover no-repeat, url(${defaultCoverURL})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+          backgroundSize: "cover",
+        }}
+      >
         <Stack sx={stackAvatarSx}>
           <Avatar
             sx={avatarSx}
@@ -88,7 +116,17 @@ function HeaderDetail({ id }) {
         </Stack>
       </Box>
       <div style={backgroundDetailBottom}>
-        <Button onClick={() => openDismiss(id)} variant="contained">
+        <BanReportedProfile
+          userId={id}
+          banUserCallback={banAccount}
+          banStatus={banStatus}
+          onBanSuccess={handleBanSuccess}
+        />
+        <Button
+          onClick={() => openDismiss(id)}
+          variant="contained"
+          sx={{ borderRadius: "20px", marginLeft: "20px" }}
+        >
           Gỡ bỏ báo cáo
         </Button>
       </div>

@@ -16,7 +16,7 @@ import useAuth from "../../../../user/hooks/useAuth";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 import SimpleCharts from "../../molecules/BarChart/SimpleBarChart";
-import BasicPie from "../../molecules/PieChart/PieChart";
+
 function DashboardPage() {
   const auth = useAuth();
   const username = auth?.user;
@@ -76,7 +76,7 @@ function DashboardPage() {
         )}
 
         <Grid item xs={12} md={6} lg={6}>
-          <SimpleCharts title="Lượng truy cập trang theo tuần" />
+          <SimpleCharts totalVisit={data.total_visit} />
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <Card>
