@@ -116,11 +116,25 @@ export default function EditDraftService() {
     },
     [tagID, subjectID, contentTiny, title, coverURL]
   );
+
+  const deleteDraft = async () => {
+    try {
+      let response = await axiosPrivate.post(process.env.REACT_APP_REMOVE_DRAFT, {
+        postId: draftDetail.postId,
+      })
+      if(response) {
+        navigate("/draft", { replace: true });
+      }
+    } catch (error) {
+      
+    }
+  }
   return (
     <EditDraft
       draft={draftDetail}
       handleSubmit={handleSubmit}
       handleImage={handleImage}
+      deleteDraft={deleteDraft}
     />
   );
 }

@@ -44,7 +44,7 @@ export default function ViewAPostService() {
         );
 
         if (favorList) {
-          let isFavored = favorList?.postDetail?.some(
+          let isFavored = favorList?.data?.some(
             (favor) => favor?.postListDto?.postId === postDetail.postId
           );
           setIsFavored(isFavored);
@@ -67,7 +67,7 @@ export default function ViewAPostService() {
         );
 
         if (followersList) {
-          let isFollowingUser = followersList?.postDetail?.some(
+          let isFollowingUser = followersList?.data?.some(
             (follower) => follower.id === auth.id
           );
           setIsFollowing(isFollowingUser);
@@ -157,7 +157,7 @@ export default function ViewAPostService() {
         }
       } catch (error) {}
     };
-    if (vote) fetchData();
+    fetchData();
   }, [vote]);
 
   const handleUpvote = async () => {

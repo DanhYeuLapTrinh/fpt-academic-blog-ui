@@ -95,7 +95,7 @@ export default function QA(props) {
             </Stack>
             <AuthorQA
               label={props.label}
-              text="11"
+              text={props.text}
               pending={props.pending}
               time={props.time}
               src={props.src}

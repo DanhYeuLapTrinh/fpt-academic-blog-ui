@@ -26,6 +26,7 @@ export default function QAList(props) {
             title={item.title}
             description={item.description}
             vote={item.numOfUpVote - item.numOfDownVote}
+            text={item.numberOfComment}
           />
         ))}
         <IconButton
