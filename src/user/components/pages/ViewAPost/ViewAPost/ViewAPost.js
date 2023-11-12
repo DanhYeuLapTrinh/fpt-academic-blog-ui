@@ -63,6 +63,7 @@ export default function ViewAPost(props) {
           )}
           <PostMenuOptionListService
             userId={props.data?.userId}
+            postId={props.data?.postId}
             allowComment={props.data?.allowComment}
             isEdited={props.data?.is_edited}
           />

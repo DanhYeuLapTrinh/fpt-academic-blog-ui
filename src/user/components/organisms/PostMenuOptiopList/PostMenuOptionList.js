@@ -18,7 +18,14 @@ import { Link, useParams } from "react-router-dom";
 
 export default function PostMenuOptionList(props) {
   const [open, setOpen] = useState(false);
-  const {slug} = useParams();
+  const [isDelete, setIsDelete] = useState(false);
+  const { slug } = useParams();
+  const handleClickDelete = () => {
+    setIsDelete(true);
+  };
+  const handleCloseDelete = () => {
+    setIsDelete(false);
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -107,6 +114,43 @@ export default function PostMenuOptionList(props) {
                     Tôi đã hiểu
                   </Text>
                 </Link>
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <MenuItem onClick={handleClickDelete}>
+            <ListItemIcon>
+              <Icon
+                icon="ant-design:delete-outlined"
+                color="#444746"
+                width="24"
+              />
+            </ListItemIcon>
+            <Text fontSize="14px">Xóa bài viết</Text>
+          </MenuItem>
+          <Dialog
+            open={isDelete}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Bạn muốn xóa bài viết này?"}
+            </DialogTitle>
+            <DialogContent>
+              <Stack spacing={1}>
+                <DialogContentText id="alert-dialog-description">
+                  Bài viết này sẽ bị xóa và không hiển thị trên trang cá nhân
+                  của bạn nữa
+                </DialogContentText>
+              </Stack>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDelete} variant="outlined">
+                <Text fontSize="14px">Hủy</Text>
+              </Button>
+              <Button onClick={props.deletePost} autoFocus variant="contained">
+                <Text color="secondary.main" fontSize="14px">
+                  Tôi đã hiểu
+                </Text>
               </Button>
             </DialogActions>
           </Dialog>
