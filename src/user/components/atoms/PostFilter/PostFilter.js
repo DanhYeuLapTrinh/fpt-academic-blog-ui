@@ -19,10 +19,7 @@ export default function PostFilter(props) {
             <Text fontSize="14px">Ngành</Text>
           </MenuItem>
           {props.data?.map((item) => (
-            <MenuItem
-              key={item.id}
-              value={item.categoryName}
-            >
+            <MenuItem key={item.id} value={item.categoryName}>
               <Text fontSize="14px">{item.categoryName}</Text>
             </MenuItem>
           ))}
@@ -43,10 +40,7 @@ export default function PostFilter(props) {
           {props.data
             ?.find((item) => item.categoryName === props.major)
             ?.childCategories?.map((item) => (
-              <MenuItem
-                key={item.id}
-                value={item.categoryName}
-              >
+              <MenuItem key={item.id} value={item.categoryName}>
                 <Text fontSize="14px">{item.categoryName}</Text>
               </MenuItem>
             ))}
