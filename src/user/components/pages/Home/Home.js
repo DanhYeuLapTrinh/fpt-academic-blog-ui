@@ -9,10 +9,12 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import TrendingTagSection from "../../organisms/TrendingTagSection/TrendingTagSection";
 import ShortList from "../../templates/ShortList/ShortList";
 import PostList from "../../templates/PostList/PostList";
+import BackToTopButton from "../../atoms/BackToTopButton/BackToTopButton";
 
 export default function Home(props) {
   return (
-    <div>
+    <div style={{position: "relative"}}>
+      <BackToTopButton/>
       <Container>
         <TrendingList trendingPostsHome={props.trendingPostsHome} />
         <SearchSection />

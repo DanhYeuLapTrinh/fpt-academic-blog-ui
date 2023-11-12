@@ -1,17 +1,37 @@
-import { Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
-import React from "react";
-import UserMenuOption from "../../molecules/UserMenuOption/UserMenuOption";
-import { Link } from "react-router-dom";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Divider,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Stack,
+} from "@mui/material";
+import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import Text from "../../atoms/Text/Text";
+import { Link, useParams } from "react-router-dom";
 
 export default function PostMenuOptionList(props) {
+  const [open, setOpen] = useState(false);
+  const {slug} = useParams();
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+    props.handleClose();
+  };
   return (
     <Menu
       anchorEl={props.anchorEl}
       open={props.open}
       onClose={props.handleClose}
-      onClick={props.handleClose}
       PaperProps={{
         elevation: 0,
         sx: {
@@ -49,12 +69,47 @@ export default function PostMenuOptionList(props) {
       </MenuItem>
       {props.isAuthor && (
         <>
-          <MenuItem>
+          <MenuItem onClick={handleClickOpen}>
             <ListItemIcon>
               <Icon icon="uil:edit" color="#444746" width="24" />
             </ListItemIcon>
             <Text fontSize="14px">Chỉnh sửa bài viết</Text>
           </MenuItem>
+          <Dialog
+            open={open}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Bạn muốn chỉnh sửa bài viết này?"}
+            </DialogTitle>
+            <DialogContent>
+              <Stack spacing={1}>
+                <DialogContentText id="alert-dialog-description">
+                  Bài viết được chỉnh sửa và bài viết gốc sẽ là hai bài viết độc
+                  lập, mọi phần thưởng (nếu có) ở bài viết gốc sẽ được giữ
+                  nguyên.
+                </DialogContentText>
+                <DialogContentText id="alert-dialog-description">
+                  Tuy nhiên đối với bài viết được chỉnh sửa nếu có thay đổi quá
+                  lớn so với bản gốc thì chúng tôi sẽ thông báo cho người kiểm
+                  duyệt xem xét lại việc trao thưởng cho bài viết mới này.
+                </DialogContentText>
+              </Stack>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog} variant="outlined">
+                <Text fontSize="14px">Hủy</Text>
+              </Button>
+              <Button onClick={handleCloseDialog} autoFocus variant="contained">
+                <Link to={`/edit/${slug}`} style={{ textDecoration: "none" }}>
+                  <Text color="secondary.main" fontSize="14px">
+                    Tôi đã hiểu
+                  </Text>
+                </Link>
+              </Button>
+            </DialogActions>
+          </Dialog>
           {props.allowComment ? (
             <MenuItem>
               <ListItemIcon>

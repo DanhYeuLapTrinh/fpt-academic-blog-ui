@@ -17,13 +17,13 @@ export default function PostList() {
     });
     return { ...response?.data, prevOffset: page };
   };
-
+  let hasMorePosts = true;
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["posts"],
     queryFn: ({ pageParam = 1 }) => fetchData(pageParam, 5),
     getNextPageParam: (lastPage) => {
       if (lastPage.prevOffset * 6 >= lastPage.TotalPost) {
-        return false;
+        hasMorePosts = false;
       }
       return lastPage.prevOffset + 1;
     },
@@ -41,12 +41,13 @@ export default function PostList() {
         next={() => fetchNextPage()}
         hasMore={hasNextPage}
         loader={
-          hasNextPage ? (
+          hasMorePosts && (
             <Stack width={"100%"} sx={{ textAlign: "center", m: "20px 0" }}>
               <Text>...đang tải...</Text>
             </Stack>
-          ) : null
+          )
         }
+        style={{marginBottom: "20px"}}
       >
         {posts?.map((item, index) => (
           <Post

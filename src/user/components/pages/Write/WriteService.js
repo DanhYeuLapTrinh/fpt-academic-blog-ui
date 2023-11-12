@@ -7,7 +7,6 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import useContent from "../../../hooks/useContent";
 import { toast } from "react-toastify";
-import { setIn } from "formik";
 export default function WriteService() {
   const { title, contentTiny } =
     JSON.parse(localStorage.getItem("content")) || "";
@@ -24,7 +23,6 @@ export default function WriteService() {
   } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
-  const auth = useAuth();
   const {
     data,
     setData,
@@ -103,7 +101,6 @@ export default function WriteService() {
         let description = getFirstTagContent(contentTiny);
         let postCoverURL = tag !== "Q&A" ? coverURL : "";
         let response = await axiosPrivate.post(apiCallURL, {
-          accountId: auth?.id,
           title: title,
           description: description,
           content: contentTiny,
@@ -124,7 +121,9 @@ export default function WriteService() {
           setFile("");
           setCoverURL("");
           window.scrollTo(0, 0);
-          toast.success("Đăng bài thành công");
+          toast.success(
+            e.target.value === "draft" ? "Đã lưu nháp" : "Đăng bài thành công"
+          );
           navigate("/", { replace: true });
         }
       } catch (error) {
