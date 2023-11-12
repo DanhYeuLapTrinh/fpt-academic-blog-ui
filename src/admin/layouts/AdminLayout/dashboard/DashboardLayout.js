@@ -8,6 +8,10 @@ import Nav from "./nav";
 import ThemeProvider from "../../../components/theme";
 import { NewsProvider } from "../../../context/NewsContext";
 import { ReportedProfileProvider } from "../../../context/ReportedProfileContext";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import enGB from "date-fns/locale/en-GB";
+
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
 
@@ -34,20 +38,22 @@ export default function AdminLayout() {
   const [open, setOpen] = useState(false);
 
   return (
-    <ReportedProfileProvider>
-      <NewsProvider>
-        <ThemeProvider>
-          <StyledRoot>
-            <Header onOpenNav={() => setOpen(true)} />
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
+      <ReportedProfileProvider>
+        <NewsProvider>
+          <ThemeProvider>
+            <StyledRoot>
+              <Header onOpenNav={() => setOpen(true)} />
 
-            <Nav openNav={open} onCloseNav={() => setOpen(false)} />
+              <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
-            <Main>
-              <Outlet />
-            </Main>
-          </StyledRoot>
-        </ThemeProvider>
-      </NewsProvider>
-    </ReportedProfileProvider>
+              <Main>
+                <Outlet />
+              </Main>
+            </StyledRoot>
+          </ThemeProvider>
+        </NewsProvider>
+      </ReportedProfileProvider>
+    </LocalizationProvider>
   );
 }

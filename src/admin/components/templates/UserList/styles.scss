@@ -1,38 +1,19 @@
 .header-title {
+  display: flex;
+  justify-content: space-between;
   h2 {
     font-size: 1.875rem;
     font-weight: bold;
   }
 }
 
-.header-actions {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-
-  .search-input {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-
-    .search-textbox {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-      border: 1px solid #e2e8f0;
-      border-radius: 0.75rem;
-
-      .search-icon {
-        position: absolute;
-        left: 0.5rem;
-        top: 0.5rem;
-        color: #080808;
-      }
-    }
-  }
-}
-
 .role-col {
   display: flex;
+}
+
+.tab {
+  font-weight: bold;
+  color: black;
 }
 
 .select-role {
@@ -43,4 +24,3 @@
   border-radius: 0.75rem;
   background-color: transparent;
 }
-

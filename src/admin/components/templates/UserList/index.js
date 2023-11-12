@@ -21,7 +21,18 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
-import { Grid, LinearProgress } from "@mui/material";
+import {
+  Grid,
+  LinearProgress,
+  Tabs,
+  Tab,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Stack,
+  Box,
+} from "@mui/material";
 
 import "./styles.scss";
 
@@ -40,11 +51,15 @@ function UserResultList() {
 
   const [isMuted, setIsMuted] = useState({});
 
+  const [isMutedChanged, setIsMutedChanged] = useState(false);
+
   const [selectedUserId, setSelectedUserId] = useState("");
 
   const [selectedUsername, setSelectedUsername] = useState("");
 
   const [editingUserId, setEditingUserId] = useState(null);
+
+  const [role, setRole] = useState("");
 
   const [newRole, setNewRole] = useState("");
 
@@ -54,9 +69,17 @@ function UserResultList() {
 
   const [noRows, setNoRows] = useState(false);
 
-  const [banStatus, setBanStatus] = useState(
-    JSON.parse(localStorage.getItem("banStatus")) || {}
+  const [banStatus, setBanStatus] = useState({});
+
+  const [banStatusChanged, setBanStatusChanged] = useState(false);
+
+  const [value, setValue] = useState(0);
+
+  const allUsers = records.filter(
+    (user) => user.isBanned === false && user.isMuted === false
   );
+  const bannedUsers = records.filter((user) => user.isBanned === true);
+  const mutedUsers = records.filter((user) => user.isMuted === true);
 
   //----------------------------------------------------------------------------
 
@@ -67,8 +90,20 @@ function UserResultList() {
       setNoRows(true);
     }
     setData(res.data);
-    // setData(res.data.map((user) => ({ ...user, id: user._id })));
     setRecords(res.data);
+
+    const banStatusObj = {};
+    res.data.forEach((item) => {
+      banStatusObj[item.id] = item.isBanned;
+    });
+    setBanStatus(banStatusObj);
+
+    const isMutedObj = {};
+    res.data.forEach((item) => {
+      isMutedObj[item.id] = item.isMuted;
+    });
+    setIsMuted(isMutedObj);
+
     setLoading(false);
     console.log(res.data);
   };
@@ -78,15 +113,12 @@ function UserResultList() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("banStatus", JSON.stringify(banStatus));
-  }, [banStatus]);
+    fetchData();
+  }, [banStatusChanged]);
 
   useEffect(() => {
-    const storedIsMuted = JSON.parse(localStorage.getItem("isMuted"));
-    if (storedIsMuted) {
-      setIsMuted(storedIsMuted);
-    }
-  }, []);
+    fetchData();
+  }, [isMutedChanged]);
 
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -126,6 +158,14 @@ function UserResultList() {
 
   const handleSearchUser = (event) => {
     handleSearch(event, data, setRecords);
+  };
+
+  const handleChangeFilter = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleChangeSetRole = (event) => {
+    setRole(event.target.value);
   };
 
   const openMuteModal = (id) => {
@@ -176,12 +216,18 @@ function UserResultList() {
     );
   };
 
-  const banAccount = (id) => {
-    return axiosPrivate.post(process.env.REACT_APP_BAN_ACCOUNT, { id });
+  const banAccount = async (id) => {
+    return await axiosPrivate
+      .post(process.env.REACT_APP_BAN_ACCOUNT, { id })
+      .then(() => {
+        setBanStatusChanged(!banStatusChanged);
+      });
   };
 
-  const unbanAccount = (id) => {
-    return axiosPrivate.post(process.env.REACT_APP_UNBAN_ACCOUNT, { id });
+  const unbanAccount = async (id) => {
+    return await axiosPrivate
+      .post(process.env.REACT_APP_UNBAN_ACCOUNT, { id })
+      .then(() => setBanStatusChanged(!banStatusChanged));
   };
 
   const muteUser = () => {
@@ -196,11 +242,11 @@ function UserResultList() {
           const updatedIsMuted = { ...isMuted };
           updatedIsMuted[selectedUserId] = true;
 
-          localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
-
           setIsMuted(updatedIsMuted);
 
           setShowMuteModal(false);
+
+          setIsMutedChanged(!isMutedChanged);
 
           toast.success(`Hạn chế ${selectedUsername} thành công!`);
         });
@@ -214,11 +260,11 @@ function UserResultList() {
         const updatedIsMuted = { ...isMuted };
         updatedIsMuted[userId] = false;
 
-        localStorage.setItem("isMuted", JSON.stringify(updatedIsMuted));
-
         setIsMuted(updatedIsMuted);
 
         setShowMuteModal(false);
+
+        setIsMutedChanged(!isMutedChanged);
 
         toast.warn(`Hủy hạn chế ${selectedUsername} thành công!`);
       });
@@ -227,12 +273,33 @@ function UserResultList() {
   //----------------------------------------------------------------------------
 
   const columns = [
-    { field: "id", headerName: "ID", width: 100 },
-    { field: "username", headerName: "Tài khoản", width: 150 },
-    { field: "fullName", headerName: "Tên đầy đủ", width: 150 },
-    { field: "email", headerName: "Email", width: 300 },
+    {
+      field: "id",
+      headerClassName: "super-app-theme--header",
+      headerName: "ID",
+      width: 100,
+    },
+    {
+      field: "username",
+      headerClassName: "super-app-theme--header",
+      headerName: "Tài khoản",
+      width: 150,
+    },
+    {
+      field: "fullname",
+      headerClassName: "super-app-theme--header",
+      headerName: "Tên đầy đủ",
+      width: 150,
+    },
+    {
+      field: "email",
+      headerClassName: "super-app-theme--header",
+      headerName: "Email",
+      width: 300,
+    },
     {
       field: "role",
+      headerClassName: "super-app-theme--header",
       headerName: "Vai trò",
       valueGetter: (params) => params.row.role.roleName,
       width: 150,
@@ -277,6 +344,7 @@ function UserResultList() {
     },
     {
       field: "banned",
+      headerClassName: "super-app-theme--header",
       headerName: "Trạng thái",
       width: 200,
       renderCell: (params) =>
@@ -290,8 +358,9 @@ function UserResultList() {
     },
     {
       field: "action",
+      headerClassName: "super-app-theme--header",
       headerName: "Hành động",
-      width: 150,
+      flex: 1,
       renderCell: (params) => (
         <Grid container direction="row" spacing={1}>
           <Grid item xs={12}>
@@ -332,22 +401,7 @@ function UserResultList() {
     <>
       <div className="header-title">
         <h2 className="title">Danh sách tài khoản</h2>
-      </div>
-      <div className="header-actions">
-        <div className="container-search-box">
-          <div className="search-box">
-            <TextField
-              className="search-input"
-              placeholder="Tìm kiếm tài khoản..."
-              type="text"
-              variant="outlined"
-              onChange={handleSearchUser}
-              InputProps={{
-                startAdornment: <SearchIcon className="search-icon" />,
-              }}
-            />
-          </div>
-        </div>
+
         <div className="header-action">
           <form>
             <AddNewButton
@@ -364,38 +418,168 @@ function UserResultList() {
         </div>
       </div>
 
-      <DataGrid
-        getRowId={(row) => row.id || row.username}
-        loading={loading}
+      <Tabs value={value} onChange={handleChangeFilter}>
+        <Tab label="Tất cả" className="tab" />
+        <Tab label="Bị cấm" className="tab" />
+        <Tab label="Bị hạn chế" className="tab" />
+      </Tabs>
+
+      <Grid container>
+        <Grid item xs={2}>
+          <FormControl
+            variant="outlined"
+            sx={{ display: "flex", flex: 1, padding: 1.5 }}
+          >
+            <InputLabel id="role-label" sx={{ mt: 1.8, ml: 1, fontSize: 13 }}>
+              Vai trò
+            </InputLabel>
+            <Select
+              labelId="role-label"
+              id="role-select"
+              value={role}
+              onChange={handleChangeSetRole}
+              label="Role"
+            >
+              <MenuItem value={"admin"}>Admin</MenuItem>
+              <MenuItem value={"lecturer"}>Lecturer</MenuItem>
+              <MenuItem value={"mentor"}>Mentor</MenuItem>
+              <MenuItem value={"student"}>Student</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={10}>
+          <TextField
+            className="search-input"
+            placeholder="Tìm kiếm tài khoản..."
+            type="text"
+            variant="outlined"
+            fullWidth
+            sx={{
+              padding: 1.5,
+              fontSize: 13,
+            }}
+            onChange={handleSearchUser}
+            InputProps={{
+              startAdornment: <SearchIcon sx={{ marginRight: 1 }} />,
+            }}
+          />
+        </Grid>
+      </Grid>
+
+      <Box
         sx={{
-          "& .MuiDataGrid-cell": {
-            display: "flex",
-            padding: "8px",
-            whiteSpace: "normal",
-            wordWrap: "break-word",
-          },
-          "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-            outline: "none !important",
+          width: "100%",
+          "& .super-app-theme--header": {
+            backgroundColor: "rgb(193, 195, 196)",
           },
         }}
-        slots={{
-          noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
-          loadingOverlay: () => loading && <LinearProgress />,
-        }}
-        rows={records}
-        rowHeight={75}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5, 10, 25]}
-        autoHeight
-        disableRowSelectionOnClick
-      />
+      >
+        {value === 0 && (
+          <DataGrid
+            getRowId={(row) => row.id || row.username}
+            loading={loading}
+            sx={{
+              "& .MuiDataGrid-cell": {
+                display: "flex",
+                padding: "8px",
+                whiteSpace: "normal",
+                wordWrap: "break-word",
+              },
+              "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+                outline: "none !important",
+              },
+            }}
+            slots={{
+              noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+              loadingOverlay: () => loading && <LinearProgress />,
+            }}
+            rows={allUsers}
+            rowHeight={75}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10, 25]}
+            autoHeight
+            disableRowSelectionOnClick
+          />
+        )}
+
+        {value === 1 && (
+          <DataGrid
+            getRowId={(row) => row.id || row.username}
+            loading={loading}
+            sx={{
+              "& .MuiDataGrid-cell": {
+                display: "flex",
+                padding: "8px",
+                whiteSpace: "normal",
+                wordWrap: "break-word",
+              },
+              "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+                outline: "none !important",
+              },
+            }}
+            slots={{
+              noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+              loadingOverlay: () => loading && <LinearProgress />,
+            }}
+            rows={bannedUsers}
+            rowHeight={75}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10, 25]}
+            autoHeight
+            disableRowSelectionOnClick
+          />
+        )}
+
+        {value === 2 && (
+          <DataGrid
+            getRowId={(row) => row.id || row.username}
+            loading={loading}
+            sx={{
+              "& .MuiDataGrid-cell": {
+                display: "flex",
+                padding: "8px",
+                whiteSpace: "normal",
+                wordWrap: "break-word",
+              },
+              "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
+                outline: "none !important",
+              },
+            }}
+            slots={{
+              noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+              loadingOverlay: () => loading && <LinearProgress />,
+            }}
+            rows={mutedUsers}
+            rowHeight={75}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
+              },
+            }}
+            pageSizeOptions={[5, 10, 25]}
+            autoHeight
+            disableRowSelectionOnClick
+          />
+        )}
+      </Box>
 
       <MuteModal
         isOpen={showMuteModal}
