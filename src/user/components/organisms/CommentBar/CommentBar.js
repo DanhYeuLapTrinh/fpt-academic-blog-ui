@@ -2,8 +2,6 @@ import { Box, Stack, TextField } from "@mui/material";
 import React from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import { Link } from "react-router-dom";
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import usePost from "../../../hooks/usePost";
 import useAuth from "../../../hooks/useAuth";
 
 export default function CommentBar({handleSubmit, ...props}) {
@@ -36,6 +34,7 @@ export default function CommentBar({handleSubmit, ...props}) {
           size="small"
           fullWidth
           multiline
+          autoFocus={props.autoFocus}
           onKeyUp={(e) => handleSubmit(e)}
           InputProps={{
             sx: {

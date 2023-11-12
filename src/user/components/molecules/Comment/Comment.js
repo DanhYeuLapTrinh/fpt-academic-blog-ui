@@ -85,7 +85,7 @@ export default function Comment({deleteComment, addComment,...props}) {
           </Stack>
         </Stack>
       </Stack>
-      {isReplying && <CommentBar auth={auth} reply handleSubmit={(e) => addComment(e, replyId)}/>} 
+      {isReplying && <CommentBar autoFocus auth={auth} reply handleSubmit={(e) => addComment(e, replyId)}/>} 
       {props.replies.length > 0 &&
         props.replies.map((reply) => (
           <Comment
