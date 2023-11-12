@@ -38,14 +38,11 @@ function HeaderDetail({ id }) {
 
   const [dismissDialogOpen, setDismissDialogOpen] = useState(false);
 
-  const [banStatus, setBanStatus] = useState(
-    JSON.parse(localStorage.getItem("banStatus")) || {}
-  );
+  const [banStatus, setBanStatus] = useState({});
 
   const handleBanSuccess = () => {
     const updatedBanStatus = { ...banStatus, [id]: true };
     setBanStatus(updatedBanStatus);
-    localStorage.setItem("banStatus", JSON.stringify(updatedBanStatus));
   };
   const handleDismiss = async () => {
     await axiosPrivate

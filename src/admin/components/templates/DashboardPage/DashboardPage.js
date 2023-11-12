@@ -23,10 +23,13 @@ function DashboardPage() {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
 
+  const fetchData = async () => {
+    const res = await axiosPrivate.get("admin/dashboard");
+    setData(res.data);
+  };
+
   useEffect(() => {
-    axiosPrivate.get("admin/dashboard").then((res) => {
-      setData(res.data);
-    });
+    fetchData();
   }, []);
 
   return (
@@ -57,7 +60,7 @@ function DashboardPage() {
 
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary
-                title="Số lượng truy cập theo ngày"
+                title="Số lượng truy cập ngày hôm nay"
                 total={data.total_visit}
                 color="success"
                 icon={"carbon:report"}
