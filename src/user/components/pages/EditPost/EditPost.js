@@ -8,8 +8,7 @@ import ContentField from "../../organisms/ContentField/ContentField";
 import useContent from "../../../hooks/useContent";
 export default function EditPost({ post,...props }) {
   const [isSaving, setIsSaving] = useState("Chưa lưu");
-  const { coverURL } = useContent();
-  console.log(coverURL);
+
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       {post?.category && (
@@ -58,7 +57,7 @@ export default function EditPost({ post,...props }) {
       )}
       <TitleField edited title />
       <Dropzone />
-      <ContentField edited setIsSaving={setIsSaving} isSaving={isSaving}/>
+      <ContentField edited setIsSaving={setIsSaving} isSaving={isSaving} handleImage={props.handleImage}/>
       <Stack
         direction={"row"}
         justifyContent={"flex-end"}

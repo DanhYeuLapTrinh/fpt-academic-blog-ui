@@ -30,11 +30,24 @@ export default function ContentField({ ...props }) {
         onEditorChange={(newValue, editor) => {
           props.setIsSaving("Đang lưu...");
           setTimeout(() => {
-            if (!props.edited) {  
+            if (props.normal) {
               let content = JSON.parse(localStorage.getItem("content"));
               if (!content) content = {};
               content.contentTiny = newValue;
               localStorage.setItem("content", JSON.stringify(content));
+              setContent(newValue);
+              let wordcount1 = editor.plugins.wordcount;
+              setWordcount(wordcount1.body.getWordCount());
+            } else if (props.draft) {
+              let draftContent = JSON.parse(
+                localStorage.getItem("draftContent")
+              );
+              if (!draftContent) draftContent = {};
+              draftContent.contentTiny = newValue;
+              localStorage.setItem(
+                "draftContent",
+                JSON.stringify(draftContent)
+              );
               setContent(newValue);
               let wordcount1 = editor.plugins.wordcount;
               setWordcount(wordcount1.body.getWordCount());
@@ -44,20 +57,29 @@ export default function ContentField({ ...props }) {
               );
               if (!editedContent) editedContent = {};
               editedContent.contentTiny = newValue;
-              localStorage.setItem("editedContent", JSON.stringify(editedContent));
+              localStorage.setItem(
+                "editedContent",
+                JSON.stringify(editedContent)
+              );
               setContent(newValue);
               let wordcount1 = editor.plugins.wordcount;
               setWordcount(wordcount1.body.getWordCount());
             }
             props.setIsSaving("Đã lưu");
-          }, 1000);
+          }, 2000);
         }}
         onInit={(evt, editor) => {
           setTimeout(() => {
             setLoad(true);
-            if (!props.edited) {
+            if (props.normal) {
               const { contentTiny } =
                 JSON.parse(localStorage.getItem("content")) || "";
+              if (contentTiny) {
+                editor.setContent(contentTiny);
+              }
+            } else if (props.draft) {
+              const { contentTiny } =
+                JSON.parse(localStorage.getItem("draftContent")) || "";
               if (contentTiny) {
                 editor.setContent(contentTiny);
               }
@@ -68,7 +90,7 @@ export default function ContentField({ ...props }) {
                 editor.setContent(contentTiny);
               }
             }
-          }, 100);
+          }, 500);
         }}
         init={{
           entity_encoding: "raw",

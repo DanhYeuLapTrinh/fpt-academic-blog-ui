@@ -25,7 +25,20 @@ export default function EditPostService() {
     setCharCount,
     setFile,
   } = useContent();
-
+  const handleImage = async (blobInfo) => {
+    try {
+      const formData = new FormData();
+      formData.append("file[]", blobInfo.blob(), blobInfo.filename());
+      const response = await axiosPrivate.post(
+        process.env.REACT_APP_IMAGE_UPLOAD,
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+      if (response.status === 200) return response?.data.link;
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const { subjectID, setSubjectID, tagID, setTagID } = usePostTag();
   useEffect(() => {
     const fetchData = async () => {
@@ -100,5 +113,5 @@ export default function EditPostService() {
       toast.error("Có lỗi trong quá trình xử lý");
     }
   }, [tagID, subjectID, contentTiny, title, coverURL]);
-  return <EditPost post={postDetail} handleSubmit={handleSubmit} />;
+  return <EditPost post={postDetail} handleSubmit={handleSubmit} handleImage={handleImage}/>;
 }
