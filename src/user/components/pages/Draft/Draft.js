@@ -66,7 +66,7 @@ export default function Draft({ draft, declined }) {
             tagID={item?.tag.tagId}
             time={item.dateOfPost}
             postId={item.postId}
-            slug={"/draft/" + item.slug}
+            slug={"/edit-draft/" + item.slug}
           />
         ))}
       {draftType === "Bài viết bị từ chối" &&
@@ -88,7 +88,7 @@ export default function Draft({ draft, declined }) {
             tagID={item?.tag.tagId}
             time={item.dateOfPost}
             postId={item.postId}
-            slug={"/draft/" + item.slug}
+            slug={"/edit-draft/" + item.slug}
           />
         ))}
     </Container>

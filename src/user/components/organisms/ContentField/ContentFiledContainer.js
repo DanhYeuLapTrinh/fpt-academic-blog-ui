@@ -24,6 +24,7 @@ export default function ContentFiledContainer() {
       handleImage={handleImage}
       isSaving={isSaving}
       setIsSaving={setIsSaving}
+      normal
     />
   );
 }
