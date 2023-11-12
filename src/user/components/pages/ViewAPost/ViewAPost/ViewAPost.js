@@ -11,6 +11,7 @@ import PostInteractionService from "../../../organisms/PostInteraction/PostInter
 import CommentBar from "../../../organisms/CommentBar/CommentBar";
 import Comment from "../../../molecules/Comment/Comment";
 import CommentsList from "../../../organisms/CommentsList/CommentsList";
+import CommentSectionService from "../../../templates/CommentSection/CommentSectionService";
 export default function ViewAPost(props) {
   return (
     <Container sx={{ mb: 10 }}>
@@ -68,18 +69,22 @@ export default function ViewAPost(props) {
         </Stack>
       </Stack>
       <div className={styles.contentWrapper}>
-        <img
-          style={{ marginBottom: props.data?.coverURL ? "30px" : "0px" }}
-          src={props.data?.coverURL}
-        />
+        {props.data?.coverURL && (
+          <img
+            style={{ marginBottom: props.data?.coverURL ? "30px" : "0px" }}
+            src={props.data?.coverURL}
+          />
+        )}
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
       <PostInteractionService
-        postId={props.data.postId}
-        vote={props.data.numOfUpVote - props.data.numOfDownVote}
+        vote={props.vote}
+        select={props.select}
+        setSelect={props.setSelect}
+        handleUpvote={props.handleUpvote}
+        handleDownvote={props.handleDownvote}
       />
-      <CommentBar src={props.data.avatarURL} profile={props.data?.userId} />
-      <CommentsList comments={props.data.comments}/>
+      <CommentSectionService comments={props.data.comments} />
     </Container>
   );
 }
