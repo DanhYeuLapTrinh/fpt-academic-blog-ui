@@ -15,28 +15,31 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ProfileProvider from "./user/context/ProfileProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import PostProvider from "./user/context/PostProvider";
 const queryClient = new QueryClient();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <ThemeProvider theme={MyTheme}>
-    <QueryClientProvider client={queryClient}>
-      <ProfileProvider>
-        <ManagePostProvider>
-          <HomeProvider>
-            <ErrorProvider>
-              <ContentProvider>
-                <PostTagProvider>
-                  <LoginProvider>
-                    <App />
-                    <ToastContainer theme="colored" />
-                  </LoginProvider>
-                </PostTagProvider>
-              </ContentProvider>
-            </ErrorProvider>
-          </HomeProvider>
-        </ManagePostProvider>
-      </ProfileProvider>
-    </QueryClientProvider>
+    <PostProvider>
+      <QueryClientProvider client={queryClient}>
+        <ProfileProvider>
+          <ManagePostProvider>
+            <HomeProvider>
+              <ErrorProvider>
+                <ContentProvider>
+                  <PostTagProvider>
+                    <LoginProvider>
+                      <App />
+                      <ToastContainer theme="colored" />
+                    </LoginProvider>
+                  </PostTagProvider>
+                </ContentProvider>
+              </ErrorProvider>
+            </HomeProvider>
+          </ManagePostProvider>
+        </ProfileProvider>
+      </QueryClientProvider>
+    </PostProvider>
   </ThemeProvider>
 );
 reportWebVitals();

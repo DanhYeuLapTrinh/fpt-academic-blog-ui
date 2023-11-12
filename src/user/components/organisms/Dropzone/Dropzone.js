@@ -14,8 +14,7 @@ export default function Dropzone() {
   // useCallback để tránh tình trạng bị rerender khi component Dropzone rerender
   // chỉ rerender khi có ảnh thôi
   const { isLoading, setIsLoading } = useHome();
-  const { file, setFile } = useContent();
-  const { setCoverURL, coverURL } = useContent();
+  const { file, setFile, setCoverURL, coverURL } = useContent();
   const handleSubmit = async (file) => {
     try {
       setIsLoading(true);

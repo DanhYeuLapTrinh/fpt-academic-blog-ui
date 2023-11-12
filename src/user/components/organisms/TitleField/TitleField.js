@@ -14,10 +14,22 @@ export default function TitleField(props) {
   };
 
   useEffect(() => {
-    let content = JSON.parse(localStorage.getItem("content"));
-    if (!content) content = {};
-    content.title = title;
-    localStorage.setItem("content", JSON.stringify(content));
+    if (props.normal) {
+      let content = JSON.parse(localStorage.getItem("content"));
+      if (!content) content = {};
+      content.title = title;
+      localStorage.setItem("content", JSON.stringify(content));
+    } else if (props.draft) {
+      let draftContent = JSON.parse(localStorage.getItem("draftContent"));
+      if (!draftContent) draftContent = {};
+      draftContent.title = title;
+      localStorage.setItem("draftContent", JSON.stringify(draftContent));
+    } else {
+      let editedContent = JSON.parse(localStorage.getItem("editedContent"));
+      if (!editedContent) editedContent = {};
+      editedContent.title = title;
+      localStorage.setItem("editedContent", JSON.stringify(editedContent));
+    }
   }, [title]);
 
   return (

@@ -4,15 +4,20 @@ import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import useAuth from "../../../../hooks/useAuth";
 import ViewAPostSkeleton from "../../../organisms/Skeleton/ViewAPostSkeleton/ViewAPostSkeleton";
+import usePost from "../../../../hooks/usePost";
 
 export default function ViewAPostService() {
   const { slug } = useParams();
   const auth = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const [data, setData] = useState();
+  const {postDetail, setPostDetail} = usePost();
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFavored, setIsFavored] = useState(false);
-  window.scrollTo(0, 0);
+  const [vote, setVote] = useState(0);
+  // check xem vote gì trước up down ""
+  const [select, setSelect] = useState("");
+  // check xem đã vote chưa true false
+  const [voted, setVoted] = useState();
   useEffect(() => {
     try {
       const fetchData = async () => {
@@ -22,7 +27,8 @@ export default function ViewAPostService() {
             slug: slug,
           }
         );
-        setData(response.data);
+        setPostDetail(response?.data);
+        setVote(response?.data?.numOfUpVote - response?.data?.numOfDownVote);
       };
       fetchData();
     } catch (error) {
@@ -38,8 +44,8 @@ export default function ViewAPostService() {
         );
 
         if (favorList) {
-          let isFavored = favorList?.data?.some(
-            (favor) => favor?.postListDto?.postId === data.postId
+          let isFavored = favorList?.postDetail?.some(
+            (favor) => favor?.postListDto?.postId === postDetail.postId
           );
           setIsFavored(isFavored);
         }
@@ -47,8 +53,8 @@ export default function ViewAPostService() {
         console.log(error);
       }
     };
-    if (data) fetchData();
-  }, [data]);
+    if (postDetail) fetchData();
+  }, [postDetail]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,12 +62,12 @@ export default function ViewAPostService() {
         let followersList = await axiosPrivate.post(
           process.env.REACT_APP_VIEW_FOLLOWERS,
           {
-            userId: data?.userId,
+            userId: postDetail?.userId,
           }
         );
 
         if (followersList) {
-          let isFollowingUser = followersList?.data?.some(
+          let isFollowingUser = followersList?.postDetail?.some(
             (follower) => follower.id === auth.id
           );
           setIsFollowing(isFollowingUser);
@@ -70,8 +76,8 @@ export default function ViewAPostService() {
         console.log(error);
       }
     };
-    if (data && auth.id !== data?.userId) fetchData();
-  }, [data]);
+    if (postDetail && auth.id !== postDetail?.userId) fetchData();
+  }, [postDetail]);
 
   const followAccount = async () => {
     try {
@@ -79,7 +85,7 @@ export default function ViewAPostService() {
         process.env.REACT_APP_FOLLOW_ACCOUNT,
         {
           followedBy: auth?.id,
-          userId: data?.userId,
+          userId: postDetail?.userId,
         }
       );
       if (response) {
@@ -94,7 +100,7 @@ export default function ViewAPostService() {
         process.env.REACT_APP_UNFOLLOW_ACCOUNT,
         {
           followedBy: auth?.id,
-          userId: data?.userId,
+          userId: postDetail?.userId,
         }
       );
       if (response) {
@@ -108,7 +114,7 @@ export default function ViewAPostService() {
       let response = await axiosPrivate.post(
         process.env.REACT_APP_ADD_TO_FAVORITE,
         {
-          postId: data?.postId,
+          postId: postDetail?.postId,
         }
       );
       if (response) {
@@ -122,7 +128,7 @@ export default function ViewAPostService() {
       let response = await axiosPrivate.post(
         process.env.REACT_APP_REMOVE_FROM_FAVORITE,
         {
-          postId: data?.postId,
+          postId: postDetail?.postId,
         }
       );
       if (response) {
@@ -131,19 +137,111 @@ export default function ViewAPostService() {
     } catch (error) {}
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let response = await axiosPrivate.post(
+          process.env.REACT_APP_CHECK_VOTE,
+          {
+            postId: postDetail?.postId,
+          }
+        );
+        if (response?.data) {
+          if (response?.data[0]?.typeOfVote === "up") {
+            setSelect("up");
+            setVoted(true);
+          } else if (response?.data[0]?.typeOfVote === "down") {
+            setSelect("down");
+            setVoted(true);
+          }
+        }
+      } catch (error) {}
+    };
+    if (vote) fetchData();
+  }, [vote]);
+
+  const handleUpvote = async () => {
+    try {
+      if (!voted) {
+        await axiosPrivate.post(process.env.REACT_APP_ADD_VOTE, {
+          postId: postDetail?.postId,
+          typeOfVote: "up",
+        });
+        setSelect("up");
+        setVoted(true);
+        setVote(vote + 1);
+      } else if (select === "up") {
+        await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
+          postId: postDetail?.postId,
+        });
+        setSelect("");
+        setVoted(false);
+        setVote(vote - 1);
+      } else if (select === "down") {
+        await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
+          postId: postDetail?.postId,
+        });
+        await axiosPrivate.post(process.env.REACT_APP_ADD_VOTE, {
+          postId: postDetail?.postId,
+          typeOfVote: "up",
+        });
+        setSelect("up");
+        setVoted(true);
+        setVote(vote + 2);
+      }
+    } catch (error) {}
+  };
+
+  const handleDownvote = async () => {
+    try {
+      if (!voted) {
+        await axiosPrivate.post(process.env.REACT_APP_ADD_VOTE, {
+          postId: postDetail?.postId,
+          typeOfVote: "down",
+        });
+        setSelect("down");
+        setVoted(true);
+        setVote(vote - 1);
+      } else if (select === "down") {
+        await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
+          postId: postDetail?.postId,
+        });
+        setSelect("");
+        setVoted(false);
+        setVote(vote + 1);
+      } else if (select === "up") {
+        await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
+          postId: postDetail?.postId,
+        });
+        await axiosPrivate.post(process.env.REACT_APP_ADD_VOTE, {
+          postId: postDetail?.postId,
+          typeOfVote: "down",
+        });
+        setSelect("down");
+        setVoted(true);
+        setVote(vote - 2);
+      }
+    } catch (error) {}
+  };
   return (
     <>
-      {!data ? (
+      {!postDetail ? (
         <ViewAPostSkeleton />
       ) : (
         <ViewAPost
-          data={data}
+          data={postDetail}
+          auth={auth}
           isFollowing={isFollowing}
           followAccount={followAccount}
           unfollowAccount={unfollowAccount}
           isFavored={isFavored}
           addToFavorite={addToFavorite}
           removeFromFavorite={removeFromFavorite}
+          vote={vote}
+          select={select}
+          setSelect={setSelect}
+          handleUpvote={handleUpvote}
+          handleDownvote={handleDownvote}
         />
       )}
     </>
