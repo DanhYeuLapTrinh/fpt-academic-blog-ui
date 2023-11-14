@@ -45,8 +45,10 @@ function AddCategory({ closeAddCategoryModal }) {
     });
   }, []);
 
-  const isMajorNameExists = (majorName) => {
-    return majorList.some((major) => major.majorName === majorName);
+  const isCategoryNameExists = (categoryName) => {
+    return cateList.some(
+      (specialization) => specialization.categoryName === categoryName
+    );
   };
 
   const isSubjectExists = (subject) => {
@@ -74,7 +76,7 @@ function AddCategory({ closeAddCategoryModal }) {
     if (isNewCategoryOption) {
       const newMajorName = newCategoryName.trim();
 
-      if (isMajorNameExists(newMajorName)) {
+      if (isCategoryNameExists(newMajorName)) {
         toast.error("Chuyên ngành mới đã tồn tại.");
         return;
       }

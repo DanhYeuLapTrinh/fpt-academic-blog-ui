@@ -2,14 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import AppWidgetSummary from "../../molecules/GetSummary/GetSummary";
 
-import {
-  Grid,
-  Container,
-  Typography,
-  CardHeader,
-  Box,
-  Card,
-} from "@mui/material";
+import { Grid, Container, Typography } from "@mui/material";
 
 import useAuth from "../../../../user/hooks/useAuth";
 
@@ -24,7 +17,7 @@ function DashboardPage() {
   const [data, setData] = useState([]);
 
   const totalReports =
-    data.total_reported_comment + data.total_reported_profile;
+    (data.total_reported_comment || 0) + (data.total_reported_profile || 0);
 
   console.log(data);
 
@@ -36,6 +29,16 @@ function DashboardPage() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${
+    today.getMonth() + 1
+  }-${today.getDate()}`;
+
+  const todayVisits =
+    data.total_visit && data.total_visit[todayKey]
+      ? data.total_visit[todayKey]
+      : 0;
 
   return (
     <Container maxWidth="xl">
@@ -64,10 +67,10 @@ function DashboardPage() {
 
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
-              title="Lượng truy cập ngày hôm nay"
-              total={data.total_visit}
+              title="Truy cập ngày hôm nay"
+              total={todayVisits}
               color="success"
-              icon={"carbon:report"}
+              icon={"mdi:chart-bar"}
             />
           </Grid>
 
@@ -81,7 +84,7 @@ function DashboardPage() {
           </Grid>
         </>
 
-        <Grid item xs={12} md={6} lg={6}>
+        <Grid item xs={12} md={9} lg={9}>
           <SimpleCharts totalVisit={data.total_visit} />
         </Grid>
       </Grid>
