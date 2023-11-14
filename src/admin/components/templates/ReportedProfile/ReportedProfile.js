@@ -30,8 +30,8 @@ function ReportedProfile() {
     { field: "fullName", headerName: "Tên hồ sơ", width: 150 },
     {
       field: "profileUrl",
-      headerName: "Hình ảnh",
-      width: 100,
+      headerName: "Ảnh đại diện",
+      width: 150,
       renderCell: (params) => (
         <img
           src={params.value ? params.value : "/assets/img/blank.png"}

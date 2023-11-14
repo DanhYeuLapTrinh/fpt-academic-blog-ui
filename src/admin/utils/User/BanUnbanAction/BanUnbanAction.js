@@ -36,7 +36,7 @@ const BanUnbanUser = ({
     setIsBanning(true);
     unbanUserCallback(userId)
       .then(() => {
-        toast.warn("Bỏ cấm tài khoản thành công");
+        toast.success("Bỏ cấm tài khoản thành công");
         setBanStatus({ ...banStatus, [userId]: false });
       })
       .catch((error) => {

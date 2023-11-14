@@ -75,9 +75,13 @@ function UserResultList() {
 
   const [value, setValue] = useState(0);
 
-  const allUsers = records.filter(
-    (user) => user.isBanned === false && user.isMuted === false
-  );
+  const [filterRole, setFilterRole] = useState("");
+
+  const allUsers = filterRole
+    ? records.filter((user) => user.role.roleName === filterRole)
+    : records.filter(
+        (user) => user.isBanned === false && user.isMuted === false
+      );
   const bannedUsers = records.filter((user) => user.isBanned === true);
   const mutedUsers = records.filter((user) => user.isMuted === true);
 
@@ -165,7 +169,9 @@ function UserResultList() {
   };
 
   const handleChangeSetRole = (event) => {
-    setRole(event.target.value);
+    const role = event.target.value;
+
+    setFilterRole(role);
   };
 
   const openMuteModal = (id) => {
@@ -266,9 +272,22 @@ function UserResultList() {
 
         setIsMutedChanged(!isMutedChanged);
 
-        toast.warn(`Hủy hạn chế ${selectedUsername} thành công!`);
+        toast.success(`Hủy hạn chế ${selectedUsername} thành công!`);
       });
   };
+
+  const convertTimestampToTime = (timestamp) => {
+    const date = new Date(timestamp / 1000);
+
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    return `${hours}:${minutes}`;
+  };
+
+  const mutetimeFromAPI = records?.mutetime || null;
+
+  const timeString = convertTimestampToTime(mutetimeFromAPI);
 
   //----------------------------------------------------------------------------
 
@@ -436,14 +455,15 @@ function UserResultList() {
             <Select
               labelId="role-label"
               id="role-select"
-              value={role}
+              value={filterRole}
               onChange={handleChangeSetRole}
               label="Role"
             >
-              <MenuItem value={"admin"}>Admin</MenuItem>
-              <MenuItem value={"lecturer"}>Lecturer</MenuItem>
-              <MenuItem value={"mentor"}>Mentor</MenuItem>
-              <MenuItem value={"student"}>Student</MenuItem>
+              <MenuItem value="">Chọn vai trò</MenuItem>
+              <MenuItem value="admin">Admin</MenuItem>
+              <MenuItem value="lecturer">Lecturer</MenuItem>
+              <MenuItem value="mentor">Mentor</MenuItem>
+              <MenuItem value="student">Student</MenuItem>
             </Select>
           </FormControl>
         </Grid>
@@ -567,6 +587,20 @@ function UserResultList() {
             rows={mutedUsers}
             rowHeight={75}
             columns={columns}
+            // columns={[
+            //   ...columns,
+            //   ...(value === 2
+            //     ? [
+            //         {
+            //           field: "mutetime",
+            //           headerName: "Thời gian",
+            //           valueGetter: (params) => {
+            //             return convertTimestampToTime(params.row.mutetime);
+            //           },
+            //         },
+            //       ]
+            //     : []),
+            // ]}
             initialState={{
               pagination: {
                 paginationModel: {
