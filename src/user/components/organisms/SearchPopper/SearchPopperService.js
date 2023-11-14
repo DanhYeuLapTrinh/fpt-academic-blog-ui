@@ -2,83 +2,56 @@ import React, { useCallback, useEffect, useState } from "react";
 import SearchPopper from "./SearchPopper";
 import usePostTag from "../../../hooks/usePostTag";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchPopperService() {
-  const [inputTitle, setInputTitle] = useState("");
+  const [inputTitle, setInputTitle] = useState(null);
+  const [inputContent, setInputContent] = useState("");
+  const [categoryList, setCategoryList] = useState([]);
+  const navigate = useNavigate()
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason !== "backdropClick") {
+      setOpen(false);
+    }
+  };
   const axiosPrivate = useAxiosPrivate();
-  const {
-    data,
-    setData,
-    tagList,
-    setTagList,
-    major,
-    setMajor,
-    semester,
-    setSemester,
-    subject,
-    setSubject,
-    tag,
-    setTag,
-    subjectID,
-    setSubjectID,
-    tagID,
-    setTagID,
-  } = usePostTag();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosPrivate.get(
-          process.env.REACT_APP_CATEGORIES_API
+        let response = await axiosPrivate.get(
+          process.env.REACT_APP_GET_CATEGORY
         );
-        setData(response.data);
+        setCategoryList(response?.data);
       } catch (error) {}
     };
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
-        setTagList(tagList.data);
-      } catch (error) {}
-    };
-    fetchData();
-  }, []);
-
-  const handleMajorChange = useCallback((e) => {
-    setMajor(e.target.value);
-    setSemester();
-    setSubject();
-    setSubjectID();
-    setTag();
-    setTagID();
-  }, []);
-
-  const handleSemesterChange = useCallback((e) => {
-    setSemester(e.target.value);
-    setSubject();
-    setSubjectID();
-    setTag();
-    setTagID();
-  }, []);
+  const handleSearch = async () => {
+    try {
+      let response = await axiosPrivate.post(process.env.REACT_APP_FILTER_POSTS, {
+        title: inputTitle,
+        listTagsAndCategories: inputContent
+      })
+      navigate("/filter")
+    } catch (error) {
+      
+    }
+  }
   return (
     <SearchPopper
-      data={data}
-      setData={setData}
-      tagList={tagList}
-      major={major}
-      setMajor={setMajor}
-      semester={semester}
-      setSemester={setSemester}
-      subject={subject}
-      setSubject={setSubject}
-      tag={tag}
-      setTag={setTag}
-      setSubjectID={setSubjectID}
-      setTagID={setTagID}
-      handleMajorChange={handleMajorChange}
-      handleSemesterChange={handleSemesterChange}
+      categoryList={categoryList}
+      inputContent={inputContent}
+      setInputContent={setInputContent}
+      handleSearch={handleSearch}
+      handleClickOpen={handleClickOpen}
+      handleClose={handleClose}
+      open={open}
     />
   );
 }

@@ -38,6 +38,8 @@ import DraftService from "../user/components/pages/Draft/DraftService";
 import FavoriteService from "../user/components/pages/Favorite/FavoriteService";
 import EditPostService from "../user/components/pages/EditPost/EditPostService";
 import EditDraftService from "../user/components/pages/EditDraft/EditDraftService";
+import FilterService from "../user/components/pages/Filter/FilterService";
+import ViewNewsService from "../user/components/pages/News/ViewNewsService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -69,6 +71,8 @@ const loggedInUserRoutes = [
   { path: "/profile/:id/following", component: ViewProfileService },
   { path: "/edit/:slug", component: EditPostService },
   { path: "/edit-draft/:slug", component: EditDraftService },
+  { path: "/filter", component: FilterService },
+  { path: "/news/:id", component: ViewNewsService },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },

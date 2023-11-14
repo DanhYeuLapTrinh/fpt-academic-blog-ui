@@ -9,31 +9,18 @@ import DialogContent from "@mui/material/DialogContent";
 import {
   FormControl,
   IconButton,
-  MenuItem,
-  Select,
+  Paper,
   Stack,
   TextField,
 } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-export default function SearchPopper(props) {
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+import AutocompleteSearch from "../AutocompleteSearch/AutocompleteSearch";
 
-  const handleClose = (event, reason) => {
-    if (reason !== "backdropClick") {
-      setOpen(false);
-    }
-  };
+export default function SearchPopper({ categoryList, setInputContent, handleSearch, open, handleClickOpen, handleClose }) {
+
 
   return (
-    <div style={{ position: "relative" }}>
-      <IconButton
-        color="primary"
-        sx={{ m: "10px", position: "relative" }}
-        onClick={handleClickOpen}
-      >
+    <div>
+      <IconButton color="primary" sx={{ m: "10px" }} onClick={handleClickOpen}>
         <TuneRoundedIcon />
       </IconButton>
       <Dialog
@@ -41,6 +28,7 @@ export default function SearchPopper(props) {
         open={open}
         onClose={handleClose}
         maxWidth="md"
+        sx={{ zIndex: 888 }}
       >
         <DialogContent>
           <Box
@@ -70,106 +58,17 @@ export default function SearchPopper(props) {
                   <Box flex={2}>
                     <Text>Chủ đề:</Text>
                   </Box>
-                  <Stack
-                    direction={"row"}
-                    spacing={1}
-                    flex={10}
-                  >
-                    <FormControl>
-                      <Select
-                        sx={{ height: "30px", pr: "5px" }}
-                        IconComponent={KeyboardArrowDownIcon}
-                        value={props.major ?? "Ngành"}
-                        onChange={(e) => props.handleMajorChange(e)}
-                      >
-                        <MenuItem value="Ngành" disabled>
-                          <Text fontSize="14px">Ngành</Text>
-                        </MenuItem>
-                        {props.data?.map((item) => (
-                          <MenuItem key={item.id} value={item.categoryName}>
-                            <Text fontSize="14px">{item.categoryName}</Text>
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    <FormControl>
-                      <Select
-                        sx={{ height: "30px", pr: "5px" }}
-                        IconComponent={KeyboardArrowDownIcon}
-                        value={props.semester ?? "Kỳ"}
-                        onChange={(e) => props.handleSemesterChange(e)}
-                        disabled={!props.major}
-                      >
-                        <MenuItem value="Kỳ" disabled>
-                          <Text fontSize="14px">Kỳ</Text>
-                        </MenuItem>
-                        {props.data
-                          ?.find((item) => item.categoryName === props.major)
-                          ?.childCategories?.map((item) => (
-                            <MenuItem key={item.id} value={item.categoryName}>
-                              <Text fontSize="14px">{item.categoryName}</Text>
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
-                    <FormControl>
-                      <Select
-                        sx={{ height: "30px", pr: "5px" }}
-                        IconComponent={KeyboardArrowDownIcon}
-                        value={props.subject ?? "Môn"}
-                        onChange={(e) => props.setSubject(e.target.value)}
-                        disabled={!props.semester}
-                      >
-                        <MenuItem value="Môn" disabled>
-                          <Text fontSize="14px">Môn</Text>
-                        </MenuItem>
-                        {props.data
-                          ?.find((item) => item.categoryName === props.major)
-                          ?.childCategories?.find(
-                            (item) => item.categoryName === props.semester
-                          )
-                          ?.childCategories?.map((item) => (
-                            <MenuItem
-                              key={item.id}
-                              value={item.categoryName}
-                              onClick={() => props.setSubjectID(item.id)}
-                            >
-                              <Text fontSize="14px">{item.categoryName}</Text>
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
-                    <FormControl>
-                      <Select
-                        sx={{ height: "30px", pr: "5px" }}
-                        IconComponent={KeyboardArrowDownIcon}
-                        value={props.tag ?? "Thẻ"}
-                        onChange={(e) => props.setTag(e.target.value)}
-                        disabled={!props.subject}
-                      >
-                        <MenuItem value="Thẻ" disabled>
-                          <Text fontSize="14px">Thẻ</Text>
-                        </MenuItem>
-                        {props.tagList?.map((tag) => (
-                          <MenuItem
-                            key={tag.id}
-                            value={tag.tagName}
-                            onClick={() => props.setTagID(tag.id)}
-                          >
-                            <Text fontSize="14px">{tag.tagName}</Text>
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Stack>
+                  <Box flex={10} width={"100%"}>
+                    <AutocompleteSearch categoryList={categoryList} setInputContent={setInputContent}/>
+                  </Box>
                 </Stack>
               </FormControl>
             </Stack>
           </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Ok</Button>
+        <DialogActions sx={{p: "0 20px 20px 0"}}>
+          <Button onClick={handleClose} variant="outlined">Hủy</Button>
+          <Button onClick={handleSearch} variant="contained">Tìm kiếm</Button>
         </DialogActions>
       </Dialog>
     </div>

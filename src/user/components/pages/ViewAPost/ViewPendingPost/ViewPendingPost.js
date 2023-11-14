@@ -34,7 +34,6 @@ export default function ViewPendingPost(props) {
         control={<Switch color="warning" onChange={props.handleGiveReward} />}
         label={<Text>Trao thưởng</Text>}
       />
-
       <Stack
         direction={"row"}
         justifyContent={"flex-end"}

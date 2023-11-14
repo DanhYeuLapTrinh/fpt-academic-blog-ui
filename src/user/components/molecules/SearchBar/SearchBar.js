@@ -3,12 +3,12 @@ import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import React from "react";
 import SearchPopperService from "../../organisms/SearchPopper/SearchPopperService";
 
-export default function SearchBar() {
+export default function SearchBar(props) {
   return (
     <Paper
       elevation={3}
       sx={{
-        width: "740px",
+        width: props.width ? props.width : "740px",
         height: "60px",
         display: "flex",
         alignItems: "center",

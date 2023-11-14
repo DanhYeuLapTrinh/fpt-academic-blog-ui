@@ -71,6 +71,7 @@ export default function EditDraftService() {
     async (e) => {
       try {
         if (!title || charCount < 30 || wordcount < 30 || !coverURL || !contentTiny) {
+          console.log(title, charCount, wordcount, coverURL, contentTiny)
           toast.error("Vui lòng điền đầy đủ thông tin");
           return;
         } else if (charCount >= 100) {
