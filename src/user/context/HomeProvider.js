@@ -11,6 +11,8 @@ export default function HomeProvider({ children }) {
   const [userAccounts, setUserAccounts] = useState();
   const [amount, setAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [accountList, setAccountList] = useState([]);
+  const [accountName, setAccountName] = useState("");
   return (
     <HomeContext.Provider
       value={{
@@ -34,6 +36,10 @@ export default function HomeProvider({ children }) {
         setTrendingTags,
         qaList,
         setQAList,
+        accountList,
+        setAccountList,
+        accountName,
+        setAccountName,
       }}
     >
       {children}

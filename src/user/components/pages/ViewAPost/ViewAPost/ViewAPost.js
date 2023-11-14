@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Styles.module.scss";
 import Text from "../../../atoms/Text/Text";
-import { Container, IconButton, Stack, Tooltip } from "@mui/material";
+import { Box, Container, IconButton, Stack, Tooltip } from "@mui/material";
 import { Icon } from "@iconify/react";
 import AuthorPost from "../../../molecules/AuthorPost/AuthorPost";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
@@ -9,9 +9,11 @@ import MyBread from "../../../molecules/MyBread/MyBread";
 import PostMenuOptionListService from "../../../organisms/PostMenuOptiopList/PostMenuOptionListService";
 import PostInteractionService from "../../../organisms/PostInteraction/PostInteractionService";
 import CommentSectionService from "../../../templates/CommentSection/CommentSectionService";
+import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
+import { Link } from "react-router-dom";
 export default function ViewAPost(props) {
   return (
-    <Container sx={{ mb: 10 }}>
+    <Container sx={{ mb: 10, minHeight: "calc(100vh - 93px - 80px)" }}>
       <MyBread
         input={props?.data?.category}
         tag={props?.data?.tag}
@@ -68,10 +70,28 @@ export default function ViewAPost(props) {
       </Stack>
       <div className={styles.contentWrapper}>
         {props.data?.coverURL && (
-          <img
-            style={{ marginBottom: props.data?.coverURL ? "30px" : "0px" }}
-            src={props.data?.coverURL}
-          />
+          <Box sx={{ position: "relative" }}>
+            <img
+              style={{
+                marginBottom: props.data?.coverURL ? "30px" : "0px",
+                position: "relative",
+              }}
+              src={props.data?.coverURL}
+            />
+            {props.data?.is_rewarded && (
+              <Link to={"/rewarded"}>
+                <RewardBadge
+                  small
+                  position="absolute"
+                  top="15px"
+                  width="60px"
+                  height="50px"
+                  right="15px"
+                  zIndex="999"
+                />
+              </Link>
+            )}
+          </Box>
         )}
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
