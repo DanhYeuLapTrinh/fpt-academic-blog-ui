@@ -15,6 +15,7 @@ export default function EditCategoryModal({
   open,
   categories,
   fetchData,
+  majors,
 }) {
   const [categoryName, setCategoryName] = useState(category.categoryName);
   const axiosPrivate = useAxiosPrivate();
@@ -22,40 +23,50 @@ export default function EditCategoryModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (categories && categories.length > 0) {
-      const isCategoryNameConflict = categories.some(
-        (cat) => cat.categoryName === categoryName && cat.id !== category.id
-      );
+    const isCategoryNameConflict = categories.some(
+      (c) => c.categoryName === categoryName && c.id !== category.id
+    );
 
-      if (isCategoryNameConflict) {
-        toast.error("Category name already exists");
-      } else {
-        const isSubjectNameConflict = categories.some(
-          (cat) =>
-            cat.subjects &&
-            cat.subjects.some(
-              (subject) =>
-                subject.categoryName === categoryName && cat.id !== category.id
-            )
-        );
-
-        if (isSubjectNameConflict) {
-          toast.error("Category name conflicts with subjects");
-        } else {
-          try {
-            await axiosPrivate.post(process.env.REACT_APP_EDIT_CATEGORY, {
-              id: category.id,
-              categoryName: categoryName,
-            });
-            fetchData();
-            toast.success("Category updated successfully");
-            closeModal();
-          } catch (error) {
-            toast.error("Failed to update category");
-          }
-        }
-      }
+    if (isCategoryNameConflict) {
+      toast.error("Chuyên ngành đã tồn tại");
+      return;
     }
+
+    const isSubjectNameConflict = categories.some((c) =>
+      c.childCategories
+        ? c.childCategories.some(
+            (semester) =>
+              semester.childCategories &&
+              semester.childCategories.some(
+                (subject) =>
+                  subject.categoryName === categoryName &&
+                  subject.id !== category.id
+              )
+          )
+        : false
+    );
+
+    if (isSubjectNameConflict) {
+      toast.error("Môn học đã tồn tại");
+      return;
+    }
+
+    try {
+      await axiosPrivate.post(process.env.REACT_APP_EDIT_CATEGORY, {
+        id: category.id,
+        categoryName: categoryName,
+      });
+    } catch (error) {
+      console.error("Error editing category:", error);
+      toast.error("Lỗi khi cập nhật danh mục");
+      return;
+    }
+
+    toast.success("Cập nhật thành công!");
+
+    closeModal();
+
+    fetchData();
   };
 
   return (
