@@ -10,7 +10,7 @@ export default function ViewAPostService() {
   const { slug } = useParams();
   const auth = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const {postDetail, setPostDetail} = usePost();
+  const { postDetail, setPostDetail, setVoteList, setReportReasons } = usePost();
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFavored, setIsFavored] = useState(false);
   const [vote, setVote] = useState(0);
@@ -31,6 +31,7 @@ export default function ViewAPostService() {
         setVote(response?.data?.numOfUpVote - response?.data?.numOfDownVote);
       };
       fetchData();
+      window.scrollTo(0, 0);
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +45,7 @@ export default function ViewAPostService() {
         );
 
         if (favorList) {
-          let isFavored = favorList?.postDetail?.some(
+          let isFavored = favorList?.data?.some(
             (favor) => favor?.postListDto?.postId === postDetail.postId
           );
           setIsFavored(isFavored);
@@ -67,7 +68,7 @@ export default function ViewAPostService() {
         );
 
         if (followersList) {
-          let isFollowingUser = followersList?.postDetail?.some(
+          let isFollowingUser = followersList?.data?.some(
             (follower) => follower.id === auth.id
           );
           setIsFollowing(isFollowingUser);
@@ -147,10 +148,12 @@ export default function ViewAPostService() {
           }
         );
         if (response?.data) {
-          if (response?.data[0]?.typeOfVote === "up") {
+          setVoteList(response?.data);
+          let item = response?.data.find((x) => x.commentId === null);
+          if (item?.typeOfVote === "up") {
             setSelect("up");
             setVoted(true);
-          } else if (response?.data[0]?.typeOfVote === "down") {
+          } else if (item?.typeOfVote === "down") {
             setSelect("down");
             setVoted(true);
           }
@@ -159,6 +162,18 @@ export default function ViewAPostService() {
     };
     if (vote) fetchData();
   }, [vote]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let response = await axiosPrivate.get(
+          process.env.REACT_APP_REPORT_REASONS
+        );
+        setReportReasons(response?.data);
+      } catch (error) {}
+    };
+    fetchData();
+  }, []);
 
   const handleUpvote = async () => {
     try {

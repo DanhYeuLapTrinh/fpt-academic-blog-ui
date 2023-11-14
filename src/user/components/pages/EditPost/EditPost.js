@@ -5,10 +5,10 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import TitleField from "../../organisms/TitleField/TitleField";
 import Dropzone from "../../organisms/Dropzone/Dropzone";
 import ContentField from "../../organisms/ContentField/ContentField";
-import useContent from "../../../hooks/useContent";
+import {useNavigate} from "react-router-dom"
 export default function EditPost({ post,...props }) {
   const [isSaving, setIsSaving] = useState("Chưa lưu");
-
+  const navigate = useNavigate();
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       {post?.category && (
@@ -64,6 +64,14 @@ export default function EditPost({ post,...props }) {
         spacing={2}
         paddingTop={"30px"}
       >
+        <Button
+          fullWidth
+          sx={{ padding: "10px" }}
+          variant="outlined"
+          onClick={() => navigate(-1)}
+        >
+          Hủy
+        </Button>
         <Button
           fullWidth
           onClick={props.handleSubmit}

@@ -4,7 +4,14 @@ import { Stack } from "@mui/material";
 import { timeConverter } from "../../../utils/StringMethod";
 import usePost from "../../../hooks/usePost";
 
-export default function CommentsList({rootComments, getReplies, deleteComment, addComment}) {
+export default function CommentsList({
+  rootComments,
+  getReplies,
+  deleteComment,
+  addComment,
+  editComment,
+  ...props
+}) {
   return (
     <Stack>
       {rootComments?.map((comment) => (
@@ -20,6 +27,8 @@ export default function CommentsList({rootComments, getReplies, deleteComment, a
           deleteComment={deleteComment}
           parentId={comment.parent_id}
           addComment={addComment}
+          editComment={editComment}
+          comment={comment}
         />
       ))}
     </Stack>

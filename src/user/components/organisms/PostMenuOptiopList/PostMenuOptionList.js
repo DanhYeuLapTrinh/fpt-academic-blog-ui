@@ -18,7 +18,14 @@ import { Link, useParams } from "react-router-dom";
 
 export default function PostMenuOptionList(props) {
   const [open, setOpen] = useState(false);
-  const {slug} = useParams();
+  const [isDelete, setIsDelete] = useState(false);
+  const { slug } = useParams();
+  const handleClickDelete = () => {
+    setIsDelete(true);
+  };
+  const handleCloseDelete = () => {
+    setIsDelete(false);
+  };
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -90,23 +97,64 @@ export default function PostMenuOptionList(props) {
                   lập, mọi phần thưởng (nếu có) ở bài viết gốc sẽ được giữ
                   nguyên.
                 </DialogContentText>
+              </Stack>
+            </DialogContent>
+            <DialogActions sx={{ p: "0 20px 20px 0" }}>
+              <Button
+                onClick={handleCloseDialog}
+                variant="outlined"
+                sx={{ width: "100px", textTransform: "none" }}
+              >
+                <Text fontSize="14px">Hủy</Text>
+              </Button>
+              <Button
+                onClick={handleCloseDialog}
+                autoFocus
+                variant="contained"
+                sx={{ width: "100px", textTransform: "none" }}
+              >
+                <Link to={`/edit/${slug}`} style={{ textDecoration: "none" }}>
+                  <Text color="secondary.main" fontSize="14px">
+                    Tiếp tục
+                  </Text>
+                </Link>
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <MenuItem onClick={handleClickDelete}>
+            <ListItemIcon>
+              <Icon
+                icon="ant-design:delete-outlined"
+                color="#444746"
+                width="24"
+              />
+            </ListItemIcon>
+            <Text fontSize="14px">Xóa bài viết</Text>
+          </MenuItem>
+          <Dialog
+            open={isDelete}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Bạn muốn xóa bài viết này?"}
+            </DialogTitle>
+            <DialogContent>
+              <Stack spacing={1}>
                 <DialogContentText id="alert-dialog-description">
-                  Tuy nhiên đối với bài viết được chỉnh sửa nếu có thay đổi quá
-                  lớn so với bản gốc thì chúng tôi sẽ thông báo cho người kiểm
-                  duyệt xem xét lại việc trao thưởng cho bài viết mới này.
+                  Bài viết này sẽ bị xóa và không hiển thị trên trang cá nhân
+                  của bạn nữa
                 </DialogContentText>
               </Stack>
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleCloseDialog} variant="outlined">
+              <Button onClick={handleCloseDelete} variant="outlined">
                 <Text fontSize="14px">Hủy</Text>
               </Button>
-              <Button onClick={handleCloseDialog} autoFocus variant="contained">
-                <Link to={`/edit/${slug}`} style={{ textDecoration: "none" }}>
-                  <Text color="secondary.main" fontSize="14px">
-                    Tôi đã hiểu
-                  </Text>
-                </Link>
+              <Button onClick={props.deletePost} autoFocus variant="contained">
+                <Text color="secondary.main" fontSize="14px">
+                  Tôi đã hiểu
+                </Text>
               </Button>
             </DialogActions>
           </Dialog>
