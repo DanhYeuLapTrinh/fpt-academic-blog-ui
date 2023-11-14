@@ -53,7 +53,7 @@ function DetailNew() {
       </div>
       <Divider sx={{ my: "25px" }} />
 
-      {/* <NewsBottom /> */}
+      <NewsBottom fetchData={fetchData} selectedNewsId={id} />
     </>
   );
 }

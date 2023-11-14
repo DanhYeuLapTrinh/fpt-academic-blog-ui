@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNewsContext } from "../../../context/NewsContext";
 import { Link } from "react-router-dom";
 
-function NewsBottom() {
+function NewsBottom({ fetchData, selectedNewsId }) {
   const { news } = useNewsContext();
+
+  useEffect(() => {
+    fetchData();
+  }, [selectedNewsId]);
 
   return (
     <div>
