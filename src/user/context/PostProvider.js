@@ -4,6 +4,8 @@ export default function PostProvider({ children }) {
   const [postDetail, setPostDetail] = useState();
   const [activeComment, setActiveComment] = useState(null);
   const [tagName, setTagName] = useState(null);
+  const [voteList, setVoteList] = useState([]);
+  const [reportReasons, setReportReasons] = useState([]);
   return (
     <PostContext.Provider
       value={{
@@ -13,6 +15,10 @@ export default function PostProvider({ children }) {
         setActiveComment,
         tagName,
         setTagName,
+        voteList,
+        setVoteList,
+        reportReasons,
+        setReportReasons,
       }}
     >
       {children}

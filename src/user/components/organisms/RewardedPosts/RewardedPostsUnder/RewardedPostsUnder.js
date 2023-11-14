@@ -46,12 +46,12 @@ export default function RewardedPostsUnder(props) {
                 </Text>
               </Wrapper>
             </Link>
-            {props.approve && (
+            {/* {props.approve && (
               <LecturerMenuService
                 isRewarded={props.isRewarded}
                 postId={props.postId}
               />
-            )}
+            )} */}
             <Link to={`${props?.slug}`} style={{ textDecoration: "none" }}>
               <Wrapper WebkitLineClamp="3">
                 <Text fontWeight="400" fontSize="14px">
