@@ -83,7 +83,6 @@ function UserResultList() {
         (user) => user.isBanned === false && user.isMuted === false
       );
   const bannedUsers = records.filter((user) => user.isBanned === true);
-  const mutedUsers = records.filter((user) => user.isMuted === true);
 
   //----------------------------------------------------------------------------
 
@@ -296,30 +295,35 @@ function UserResultList() {
       field: "id",
       headerClassName: "super-app-theme--header",
       headerName: "ID",
+      sortable: false,
       width: 100,
     },
     {
       field: "username",
       headerClassName: "super-app-theme--header",
       headerName: "Tài khoản",
+      sortable: false,
       width: 150,
     },
     {
       field: "fullname",
       headerClassName: "super-app-theme--header",
       headerName: "Tên đầy đủ",
+      sortable: false,
       width: 150,
     },
     {
       field: "email",
       headerClassName: "super-app-theme--header",
       headerName: "Email",
+      sortable: false,
       width: 300,
     },
     {
       field: "role",
       headerClassName: "super-app-theme--header",
       headerName: "Vai trò",
+      sortable: false,
       valueGetter: (params) => params.row.role.roleName,
       width: 150,
       renderCell: (params) => {
@@ -365,6 +369,7 @@ function UserResultList() {
       field: "banned",
       headerClassName: "super-app-theme--header",
       headerName: "Trạng thái",
+      sortable: false,
       width: 200,
       renderCell: (params) =>
         banStatus[params.row.id] && isMuted[params.row.id]
@@ -379,6 +384,7 @@ function UserResultList() {
       field: "action",
       headerClassName: "super-app-theme--header",
       headerName: "Hành động",
+      sortable: false,
       flex: 1,
       renderCell: (params) => (
         <Grid container direction="row" spacing={1}>
@@ -391,25 +397,6 @@ function UserResultList() {
               banStatus={banStatus}
               setBanStatus={setBanStatus}
             />
-          </Grid>
-          <Grid item xs={12}>
-            {banStatus[params.row.id] === true ? null : isMuted[
-                params.row.id
-              ] ? (
-              <Button
-                sx={unmuteButtonSx}
-                onClick={() => unmuteUser(params.row.id)}
-              >
-                Gỡ hạn chế tài khoản
-              </Button>
-            ) : (
-              <Button
-                sx={muteButtonSx}
-                onClick={() => openMuteModal(params.row.id)}
-              >
-                Hạn chế tài khoản
-              </Button>
-            )}
           </Grid>
         </Grid>
       ),
@@ -440,7 +427,6 @@ function UserResultList() {
       <Tabs value={value} onChange={handleChangeFilter}>
         <Tab label="Tất cả" className="tab" />
         <Tab label="Bị cấm" className="tab" />
-        <Tab label="Bị hạn chế" className="tab" />
       </Tabs>
 
       <Grid container>
@@ -527,6 +513,8 @@ function UserResultList() {
             pageSizeOptions={[5, 10, 25]}
             autoHeight
             disableRowSelectionOnClick
+            disableColumnMenu
+            disableColumnFilter
           />
         )}
 
@@ -562,55 +550,8 @@ function UserResultList() {
             pageSizeOptions={[5, 10, 25]}
             autoHeight
             disableRowSelectionOnClick
-          />
-        )}
-
-        {value === 2 && (
-          <DataGrid
-            getRowId={(row) => row.id || row.username}
-            loading={loading}
-            sx={{
-              "& .MuiDataGrid-cell": {
-                display: "flex",
-                padding: "8px",
-                whiteSpace: "normal",
-                wordWrap: "break-word",
-              },
-              "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-                outline: "none !important",
-              },
-            }}
-            slots={{
-              noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
-              loadingOverlay: () => loading && <LinearProgress />,
-            }}
-            rows={mutedUsers}
-            rowHeight={75}
-            columns={columns}
-            // columns={[
-            //   ...columns,
-            //   ...(value === 2
-            //     ? [
-            //         {
-            //           field: "mutetime",
-            //           headerName: "Thời gian",
-            //           valueGetter: (params) => {
-            //             return convertTimestampToTime(params.row.mutetime);
-            //           },
-            //         },
-            //       ]
-            //     : []),
-            // ]}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            autoHeight
-            disableRowSelectionOnClick
+            disableColumnMenu
+            disableColumnFilter
           />
         )}
       </Box>

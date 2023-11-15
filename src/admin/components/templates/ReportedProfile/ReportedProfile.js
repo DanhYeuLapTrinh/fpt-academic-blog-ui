@@ -5,18 +5,27 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Button, LinearProgress, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
+import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
+
 function ReportedProfile() {
   const axiosPrivate = useAxiosPrivate();
 
   const [reportedProfiles, setReportedProfiles] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
+  const [noRows, setNoRows] = useState(false);
   //----------------------------------------------------------------
 
   const fetchData = async () => {
     const reportedProfilesRes = await axiosPrivate.get(
       process.env.REACT_APP_VIEW_REPORT_PROFILES
     );
+    if (!reportedProfilesRes.length) {
+      setNoRows(true);
+    }
     setReportedProfiles(reportedProfilesRes.data);
+    setLoading(false);
     console.log(reportedProfilesRes.data);
   };
 
@@ -27,10 +36,11 @@ function ReportedProfile() {
   //----------------------------------------------------------------
 
   const columns = [
-    { field: "fullName", headerName: "Tên hồ sơ", width: 150 },
+    { field: "fullName", headerName: "Tên hồ sơ", sortable: false, width: 150 },
     {
       field: "profileUrl",
       headerName: "Ảnh đại diện",
+      sortable: false,
       width: 150,
       renderCell: (params) => (
         <img
@@ -40,10 +50,16 @@ function ReportedProfile() {
         />
       ),
     },
-    { field: "reasonOfReport", headerName: "Lý do báo cáo", width: 300 },
+    {
+      field: "reasonOfReport",
+      headerName: "Lý do báo cáo",
+      sortable: false,
+      width: 300,
+    },
     {
       field: "action",
       headerName: "",
+      sortable: false,
       width: 150,
       renderCell: (params) => (
         <Link to={`/reported-profile/view/${params.row.reportedUserId}`}>
@@ -100,11 +116,14 @@ function ReportedProfile() {
           },
         }}
         slots={{
-          loadingOverlay: LinearProgress,
+          noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+          loadingOverlay: () => loading && <LinearProgress />,
         }}
         pageSizeOptions={[5, 10, 25]}
         autoHeight
         disableRowSelectionOnClick
+        disableColumnMenu
+        disableColumnFilter
       />
     </div>
   );
