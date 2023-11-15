@@ -66,7 +66,7 @@ export default function ContentField({ ...props }) {
               setWordcount(wordcount1.body.getWordCount());
             }
             props.setIsSaving("Đã lưu");
-          }, 2000);
+          }, 1000);
         }}
         onInit={(evt, editor) => {
           setTimeout(() => {

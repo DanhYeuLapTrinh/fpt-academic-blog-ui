@@ -1,8 +1,15 @@
-import { Button, Container, FormControlLabel, Stack, Switch } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControlLabel,
+  Stack,
+  Switch,
+} from "@mui/material";
 import React from "react";
 import Text from "../../../atoms/Text/Text";
 import styles from "./Styles.module.scss";
 import AccountInfoBar from "../../../organisms/AccountInfoBar/AccountInfoBar";
+import PopupEdit from "../../../organisms/PopupEdit/PopupEdit";
 import PopUpDialog from "../../../organisms/PopUpDialog/PopUpDialog";
 export default function ViewPendingPost(props) {
   return (
@@ -19,6 +26,10 @@ export default function ViewPendingPost(props) {
         tagName={props.data?.tag?.tagName}
         tagID={props.data?.tag?.tagId}
         userId={props.data?.userId}
+      />
+      <PopupEdit
+        oldLink={props.oldLink?.slug}
+        oldName={props.oldLink?.title}
       />
       <div className={styles.contentWrapper}>
         <Text>

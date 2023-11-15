@@ -40,13 +40,13 @@ export default function UserMenuOptionsList(props) {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      <Link to={`/profile/edit`} style={{ textDecoration: "none" }}>
+      {/* <Link to={`/profile/edit`} style={{ textDecoration: "none" }}>
         <UserMenuOption
           icon={<Icon icon="uil:setting" color="#444746" width="24" />}
           handleClose={props.handleClose}
           label="Thông tin tài khoản"
         />
-      </Link>
+      </Link> */}
       <Link
         to={`/profile/${props.auth?.id}`}
         style={{ textDecoration: "none" }}

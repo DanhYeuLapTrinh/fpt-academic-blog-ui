@@ -15,9 +15,16 @@ import {
 } from "@mui/material";
 import AutocompleteSearch from "../AutocompleteSearch/AutocompleteSearch";
 
-export default function SearchPopper({ categoryList, setInputContent, handleSearch, open, handleClickOpen, handleClose }) {
-
-
+export default function SearchPopper({
+  categoryList,
+  setInputContent,
+  handleSearch,
+  open,
+  handleClickOpen,
+  handleClose,
+  setInputTitle,
+  inputTitle
+}) {
   return (
     <div>
       <IconButton color="primary" sx={{ m: "10px" }} onClick={handleClickOpen}>
@@ -50,6 +57,8 @@ export default function SearchPopper({ categoryList, setInputContent, handleSear
                     sx={{ flex: 10 }}
                     multiline
                     placeholder="Nhập cụm từ khớp với tiêu đề bài viết..."
+                    value={inputTitle}
+                    onChange={(e) => setInputTitle(e.target.value)}
                   />
                 </Stack>
               </FormControl>
@@ -59,16 +68,23 @@ export default function SearchPopper({ categoryList, setInputContent, handleSear
                     <Text>Chủ đề:</Text>
                   </Box>
                   <Box flex={10} width={"100%"}>
-                    <AutocompleteSearch categoryList={categoryList} setInputContent={setInputContent}/>
+                    <AutocompleteSearch
+                      categoryList={categoryList}
+                      setInputContent={setInputContent}
+                    />
                   </Box>
                 </Stack>
               </FormControl>
             </Stack>
           </Box>
         </DialogContent>
-        <DialogActions sx={{p: "0 20px 20px 0"}}>
-          <Button onClick={handleClose} variant="outlined">Hủy</Button>
-          <Button onClick={handleSearch} variant="contained">Tìm kiếm</Button>
+        <DialogActions sx={{ p: "0 20px 20px 0" }}>
+          <Button onClick={handleClose} variant="outlined">
+            Hủy
+          </Button>
+          <Button onClick={handleSearch} variant="contained">
+            Tìm kiếm
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

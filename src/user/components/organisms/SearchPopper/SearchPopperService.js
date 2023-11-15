@@ -3,11 +3,13 @@ import SearchPopper from "./SearchPopper";
 import usePostTag from "../../../hooks/usePostTag";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
+import useHome from "../../../hooks/useHome";
 
 export default function SearchPopperService() {
   const [inputTitle, setInputTitle] = useState(null);
   const [inputContent, setInputContent] = useState("");
   const [categoryList, setCategoryList] = useState([]);
+  const {searchPost, setSearchPost} = useHome()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
@@ -34,10 +36,11 @@ export default function SearchPopperService() {
 
   const handleSearch = async () => {
     try {
-      let response = await axiosPrivate.post(process.env.REACT_APP_FILTER_POSTS, {
+      let response = await axiosPrivate.post(process.env.REACT_APP_FILTER_POSTS_HOME, {
         title: inputTitle,
         listTagsAndCategories: inputContent
       })
+      setSearchPost(response?.data)
       navigate("/filter")
     } catch (error) {
       
@@ -47,6 +50,8 @@ export default function SearchPopperService() {
     <SearchPopper
       categoryList={categoryList}
       inputContent={inputContent}
+      inputTitle={inputTitle}
+      setInputTitle={setInputTitle}
       setInputContent={setInputContent}
       handleSearch={handleSearch}
       handleClickOpen={handleClickOpen}
