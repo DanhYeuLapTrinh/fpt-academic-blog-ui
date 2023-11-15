@@ -83,15 +83,11 @@ export default function EditPostService() {
       }
       let slug = toSlug(title);
       let description = getFirstTagContent(contentTiny);
-      let editedContent =
-        contentTiny +
-        "\n\n" +
-        `<p><strong>Phiên bản mới của: </strong><a href="http://localhost:3000/view/${oldSlug}">${oldTitle}</a></p>`;
       let response = await axiosPrivate.post(process.env.REACT_APP_EDIT_POST, {
         postId: postDetail?.postId,
         title: title,
         description: description,
-        content: editedContent,
+        content: contentTiny,
         allowComment: true,
         categoryId: subjectID,
         tagId: tagID,

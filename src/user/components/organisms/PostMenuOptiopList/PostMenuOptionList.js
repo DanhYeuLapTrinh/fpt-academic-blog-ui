@@ -72,7 +72,7 @@ export default function PostMenuOptionList(props) {
         to={`/view/${props.data.originSlug}`}
         style={{ textDecoration: "none" }}
       >
-        <MenuItem disabled={!props.isEdited}>
+        <MenuItem disabled={props.isEdited}>
           <ListItemIcon>
             <Icon icon="ph:eye-bold" color="#444746" width="24" />
           </ListItemIcon>
