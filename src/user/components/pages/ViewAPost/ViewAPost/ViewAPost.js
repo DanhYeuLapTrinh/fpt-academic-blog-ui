@@ -20,10 +20,10 @@ export default function ViewAPost(props) {
         tag={props?.data?.tag}
         separator={<KeyboardDoubleArrowRightIcon sx={{ width: "16px" }} />}
       />
-      {props.data.originSlug && (
+      {props.data.editedSlug && (
         <PopupEdit
           oldLink={props.data?.editedSlug}
-          oldName={props.oldLink?.title}
+          oldName={props.data?.editedSlug}
           label="Bài viết này đã được sửa thành: "
         />
       )}
