@@ -66,7 +66,7 @@ export default function ContentField({ ...props }) {
               setWordcount(wordcount1.body.getWordCount());
             }
             props.setIsSaving("Đã lưu");
-          }, 2000);
+          }, 1000);
         }}
         onInit={(evt, editor) => {
           setTimeout(() => {
@@ -76,18 +76,24 @@ export default function ContentField({ ...props }) {
                 JSON.parse(localStorage.getItem("content")) || "";
               if (contentTiny) {
                 editor.setContent(contentTiny);
+                let wordcount1 = editor.plugins.wordcount;
+                setWordcount(wordcount1.body.getWordCount());
               }
             } else if (props.draft) {
               const { contentTiny } =
                 JSON.parse(localStorage.getItem("draftContent")) || "";
               if (contentTiny) {
                 editor.setContent(contentTiny);
+                let wordcount1 = editor.plugins.wordcount;
+                setWordcount(wordcount1.body.getWordCount());
               }
             } else {
               const { contentTiny } =
                 JSON.parse(localStorage.getItem("editedContent")) || "";
               if (contentTiny) {
                 editor.setContent(contentTiny);
+                let wordcount1 = editor.plugins.wordcount;
+                setWordcount(wordcount1.body.getWordCount());
               }
             }
           }, 500);

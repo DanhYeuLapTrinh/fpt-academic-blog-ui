@@ -4,8 +4,10 @@ import PostFilter from "../../atoms/PostFilter/PostFilter";
 import TitleField from "../../organisms/TitleField/TitleField";
 import Dropzone from "../../organisms/Dropzone/Dropzone";
 import ContentFiledContainer from "../../organisms/ContentField/ContentFiledContainer";
+import usePostTag from "../../../hooks/usePostTag";
 
 export default function Write({ ...props }) {
+  const {tag} = usePostTag()
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       <PostFilter
@@ -43,15 +45,17 @@ export default function Write({ ...props }) {
         spacing={2}
         paddingTop={"30px"}
       >
-        <Button
-          onClick={props.handleSubmit}
-          value="draft"
-          fullWidth
-          sx={{ padding: "10px" }}
-          variant="outlined"
-        >
-          Lưu bản nháp
-        </Button>
+        {tag !== "Q&A" && (
+          <Button
+            fullWidth
+            onClick={props.handleSubmit}
+            sx={{ padding: "10px" }}
+            variant="outlined"
+            value="draft"
+          >
+            Lưu bản nháp
+          </Button>
+        )}
         <Button
           fullWidth
           onClick={props.handleSubmit}

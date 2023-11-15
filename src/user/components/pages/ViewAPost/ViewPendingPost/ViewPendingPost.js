@@ -1,8 +1,15 @@
-import { Button, Container, FormControlLabel, Stack, Switch } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControlLabel,
+  Stack,
+  Switch,
+} from "@mui/material";
 import React from "react";
 import Text from "../../../atoms/Text/Text";
 import styles from "./Styles.module.scss";
 import AccountInfoBar from "../../../organisms/AccountInfoBar/AccountInfoBar";
+import PopupEdit from "../../../organisms/PopupEdit/PopupEdit";
 import PopUpDialog from "../../../organisms/PopUpDialog/PopUpDialog";
 export default function ViewPendingPost(props) {
   return (
@@ -20,6 +27,13 @@ export default function ViewPendingPost(props) {
         tagID={props.data?.tag?.tagId}
         userId={props.data?.userId}
       />
+      {props.data.originSlug && (
+        <PopupEdit
+          oldLink={props.oldLink?.slug}
+          oldName={props.oldLink?.title}
+          label="Đây là một bài viết đã được chỉnh sửa dựa trên bài có tên:"
+        />
+      )}
       <div className={styles.contentWrapper}>
         <Text>
           <h1 style={{ fontSize: "40px", lineHeight: "50px" }}>
@@ -34,7 +48,6 @@ export default function ViewPendingPost(props) {
         control={<Switch color="warning" onChange={props.handleGiveReward} />}
         label={<Text>Trao thưởng</Text>}
       />
-
       <Stack
         direction={"row"}
         justifyContent={"flex-end"}

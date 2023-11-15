@@ -55,6 +55,7 @@ export default function PostMenuOptionListService(props) {
         allowComment={props.allowComment}
         isEdited={props.isEdited}
         deletePost={deletePost}
+        data={props.data}
       />
     </>
   );

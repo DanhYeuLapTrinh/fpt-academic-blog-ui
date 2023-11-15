@@ -8,9 +8,15 @@ export default function Unauthorized() {
   const navigate = useNavigate();
   const auth = useAuth();
   const goHome = () => {
-    if (auth.token) {
-      navigate("/", { replace: true });
-    } else navigate("/login", { replace: true });
+    if (auth.refreshToken) {
+      if (auth.role !== "admin") {
+        navigate("/", { replace: true });
+      } else if (!auth) {
+        navigate("/login", { replace: true });
+      } else {
+        navigate("/welcome", { replace: true });
+      }
+    }
   };
   const goBack = () => navigate(-1);
   return (

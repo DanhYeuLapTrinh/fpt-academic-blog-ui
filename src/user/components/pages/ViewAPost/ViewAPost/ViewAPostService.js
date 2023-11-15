@@ -10,7 +10,8 @@ export default function ViewAPostService() {
   const { slug } = useParams();
   const auth = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const { postDetail, setPostDetail, setVoteList, setReportReasons } = usePost();
+  const { postDetail, setPostDetail, setVoteList, setReportReasons } =
+    usePost();
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFavored, setIsFavored] = useState(false);
   const [vote, setVote] = useState(0);
@@ -19,8 +20,8 @@ export default function ViewAPostService() {
   // check xem đã vote chưa true false
   const [voted, setVoted] = useState();
   useEffect(() => {
-    try {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      try {
         let response = await axiosPrivate.post(
           process.env.REACT_APP_VIEW_A_POST,
           {
@@ -29,12 +30,12 @@ export default function ViewAPostService() {
         );
         setPostDetail(response?.data);
         setVote(response?.data?.numOfUpVote - response?.data?.numOfDownVote);
-      };
-      fetchData();
-      window.scrollTo(0, 0);
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+    window.scrollTo(0, 0);
   }, [slug]);
 
   useEffect(() => {

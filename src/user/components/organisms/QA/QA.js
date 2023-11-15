@@ -21,11 +21,11 @@ export default function QA(props) {
           p: " 8px 15px 0px 20px",
         }}
       >
-        {!props.pending && (
+        {/* {!props.pending && (
           <Box display={"flex"} alignItems={"center"} pr={"10px"}>
             <QAVote vote={props.vote}/>
           </Box>
-        )}
+        )} */}
         <Stack
           sx={{ width: "100%", height: "135px" }}
           justifyContent={"space-evenly"}

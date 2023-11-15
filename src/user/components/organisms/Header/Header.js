@@ -1,15 +1,32 @@
 import React, { useEffect } from "react";
 import UserTab from "../UserTab/UserTab";
-import { Box, Container, Divider, Stack } from "@mui/material";
+import { Container, Divider, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 import NavList from "../../molecules/Navigation/NavList";
 import useProfile from "../../../hooks/useProfile";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import useAuth from "../../../hooks/useAuth";
 
 export default function Header() {
   const { avatarURL, setAvatarURL } = useProfile();
+  const axiosPrivate = useAxiosPrivate();
+  const auth = useAuth();
   useEffect(() => {
-    setAvatarURL(JSON.parse(localStorage.getItem("auth"))?.profileURL ?? null);
+    const fetchData = async () => {
+      try {
+        let profileInfo = await axiosPrivate.post(
+          process.env.REACT_APP_VIEW_PROFILE,
+          {
+            userId: auth.id,
+          }
+        );
+        if(profileInfo) {
+          setAvatarURL(profileInfo?.data?.profileUrl)
+        }
+      } catch (error) {}
+    };
+    fetchData();
   }, [avatarURL]);
   return (
     <Container sx={{ padding: "15px 0" }}>
