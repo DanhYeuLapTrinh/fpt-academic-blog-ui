@@ -3,6 +3,7 @@ import SearchBar from "../../molecules/SearchBar/SearchBar";
 import SearchBarTop from "../../molecules/SearchBarTop/SearchBarTop";
 import SearchBarBottom from "../../molecules/SearchBarBottom/SearchBarBottom";
 import { Stack } from "@mui/material";
+import SearchBarService from "../../molecules/SearchBar/SearchBarService";
 export default function SearchSection() {
   return (
     <Stack
@@ -15,7 +16,7 @@ export default function SearchSection() {
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
         spacing={"12px"}
       >
-        <SearchBar />
+        <SearchBarService/>
         <SearchBarBottom />
       </Stack>
     </Stack>

@@ -4,6 +4,8 @@ import UserProfile from "../../atoms/UserProfile/UserProfile";
 import { Link } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import usePost from "../../../hooks/usePost";
+import useProfile from "../../../hooks/useProfile";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
 export default function CommentBar({
   handleSubmit,
@@ -11,15 +13,34 @@ export default function CommentBar({
   initialText = "",
   ...props
 }) {
+  
   const [text, setText] = useState(initialText);
   const { setActiveComment } = usePost();
+  const { avatarURL, setAvatarURL } = useProfile();
+  const auth = useAuth();
+  const axiosPrivate = useAxiosPrivate()
   const onSubmit = (e) => {
     if (e.keyCode === 13 && e.shiftKey === false) {
       handleSubmit(e);
       !props.reply && setText("");
     }
   };
-  const auth = useAuth();
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let profileInfo = await axiosPrivate.post(
+          process.env.REACT_APP_VIEW_PROFILE,
+          {
+            userId: auth.id,
+          }
+        );
+        if(profileInfo) {
+          setAvatarURL(profileInfo?.data?.profileUrl)
+        }
+      } catch (error) {}
+    };
+    fetchData();
+  }, [avatarURL]);
   return (
     <Stack
       spacing={2}
@@ -37,7 +58,7 @@ export default function CommentBar({
             <UserProfile
               width={props.avatarWidth ? props.avatarWidth : "42px"}
               height={props.avatarHeight ? props.avatarHeight : "42px"}
-              src={auth.profileURL}
+              src={avatarURL}
               alt="User"
             />
           </Link>

@@ -8,6 +8,7 @@ export default function ViewPendingPostService() {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState();
+  const [oldLink, setOldLink] = useState(null)
   const [open, setOpen] = useState();
   const [isRewaded, setIsRewarded] = useState();
 
@@ -31,7 +32,16 @@ export default function ViewPendingPostService() {
             slug: slug,
           }
         );
-        setData(response.data);
+        setData(response?.data);
+        if(response?.data?.originSlug) {
+          const origin = await axiosPrivate.post(
+            process.env.REACT_APP_VIEW_A_POST,
+            {
+              slug: response.data.originSlug,
+            }
+          );
+          setOldLink(origin.data);
+        }
       };
       fetchData();
     } catch (error) {
@@ -77,6 +87,7 @@ export default function ViewPendingPostService() {
       handleClickOpen={handleClickOpen}
       handleClose={handleClose}
       handleGiveReward={handleGiveReward}
+      oldLink={oldLink}
     />
   );
 }

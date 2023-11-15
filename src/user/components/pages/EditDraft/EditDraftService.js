@@ -71,6 +71,7 @@ export default function EditDraftService() {
     async (e) => {
       try {
         if (!title || charCount < 30 || wordcount < 30 || !coverURL || !contentTiny) {
+          console.log(title, charCount, wordcount, coverURL, contentTiny)
           toast.error("Vui lòng điền đầy đủ thông tin");
           return;
         } else if (charCount >= 100) {
@@ -83,7 +84,7 @@ export default function EditDraftService() {
         let apiCallURL =
           e.target.value === "draft"
             ? process.env.REACT_APP_EDIT_DRAFT
-            : process.env.REACT_APP_CREATE_POST;
+            : "drafts/send";
         let slug = toSlug(title);
         let description = getFirstTagContent(contentTiny);
         let response = await axiosPrivate.post(apiCallURL, {

@@ -31,35 +31,37 @@ export default function UserFollowProfile(props) {
   };
   return (
     <Box sx={{ width: "calc((100% - 20px)/2)" }}>
-      <Link to={props.slug} style={{ textDecoration: "none" }}>
-        <Stack direction={"row"} spacing={2} alignItems={"center"}>
-          <Box
-            sx={{
-              width: "60px",
-              height: "60px",
-              backgroundImage: `url(${props.url ?? "/assets/img/blank.png"})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              borderRadius: "10px",
-            }}
-          />
-          <Wrapper WebkitLineClamp="1" width="170px">
-            <Text fontSize="15px">{props.fullName}</Text>
-          </Wrapper>
-          {props.followingPage && Number(id) === auth.id && (
-            <Button
-              size="small"
-              sx={{ justifySelf: "flex-end", textTransform: "none" }}
-              variant="contained"
-              onClick={() => unfollow(props.id)}
-            >
-              <Text fontSize="12px" color="secondary.main">
-                Hủy theo dõi
-              </Text>
-            </Button>
-          )}
-        </Stack>
-      </Link>
+      <Stack direction={"row"} spacing={2} alignItems={"center"}>
+        <Link to={props.slug} style={{ textDecoration: "none" }}>
+          <Stack direction={"row"} spacing={2} alignItems={"center"}>
+            <Box
+              sx={{
+                width: "60px",
+                height: "60px",
+                backgroundImage: `url(${props.url ?? "/assets/img/blank.png"})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                borderRadius: "10px",
+              }}
+            />
+            <Wrapper WebkitLineClamp="1" width="170px">
+              <Text fontSize="15px">{props.fullName}</Text>
+            </Wrapper>
+          </Stack>
+        </Link>
+        {props.followingPage && Number(id) === auth.id && (
+          <Button
+            size="small"
+            sx={{ justifySelf: "flex-end", textTransform: "none" }}
+            variant="contained"
+            onClick={() => unfollow(props.id)}
+          >
+            <Text fontSize="12px" color="secondary.main">
+              Hủy theo dõi
+            </Text>
+          </Button>
+        )}
+      </Stack>
     </Box>
   );
 }

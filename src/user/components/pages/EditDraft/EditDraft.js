@@ -20,8 +20,10 @@ import TitleField from "../../organisms/TitleField/TitleField";
 import Dropzone from "../../organisms/Dropzone/Dropzone";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
+import usePostTag from "../../../hooks/usePostTag";
 export default function EditDraft({ draft, ...props }) {
   const [isSaving, setIsSaving] = useState("Chưa lưu");
+  const { tag } = usePostTag();
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       {draft?.category && (
@@ -105,15 +107,17 @@ export default function EditDraft({ draft, ...props }) {
         spacing={2}
         paddingTop={"30px"}
       >
-        <Button
-          fullWidth
-          onClick={props.handleSubmit}
-          sx={{ padding: "10px" }}
-          variant="outlined"
-          value="draft"
-        >
-          Lưu bản nháp
-        </Button>
+        {tag !== "Q%A" && (
+          <Button
+            fullWidth
+            onClick={props.handleSubmit}
+            sx={{ padding: "10px" }}
+            variant="outlined"
+            value="draft"
+          >
+            Lưu bản nháp
+          </Button>
+        )}
         <Button
           fullWidth
           onClick={props.handleSubmit}
