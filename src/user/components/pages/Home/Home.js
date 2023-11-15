@@ -10,8 +10,10 @@ import TrendingTagSection from "../../organisms/TrendingTagSection/TrendingTagSe
 import ShortList from "../../templates/ShortList/ShortList";
 import PostList from "../../templates/PostList/PostList";
 import BackToTopButton from "../../atoms/BackToTopButton/BackToTopButton";
+import useHome from "../../../hooks/useHome";
 
 export default function Home(props) {
+  const { userAccounts } = useHome();
   return (
     <div style={{ position: "relative" }}>
       <BackToTopButton />
@@ -25,7 +27,7 @@ export default function Home(props) {
         <Grid2 container xs={12} columnGap={"20px"}>
           <Grid2 item xs={8}>
             <QAList qaList={props.qaList} />
-            <PostList allPosts={props.allPosts} />
+            {userAccounts && <PostList />}
           </Grid2>
           <Grid2 item xs>
             <Stack spacing={12}>

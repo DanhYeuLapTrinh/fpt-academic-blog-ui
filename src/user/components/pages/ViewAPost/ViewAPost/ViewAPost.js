@@ -12,7 +12,10 @@ import CommentSectionService from "../../../templates/CommentSection/CommentSect
 import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
 import { Link } from "react-router-dom";
 import PopupEdit from "../../../organisms/PopupEdit/PopupEdit";
+import PostMenu from "../../../organisms/PostMenu/PostMenu";
 export default function ViewAPost(props) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(props?.data?.content, 'text/html');
   return (
     <Container sx={{ mb: 10, minHeight: "calc(100vh - 93px - 80px)" }}>
       <MyBread
@@ -20,13 +23,6 @@ export default function ViewAPost(props) {
         tag={props?.data?.tag}
         separator={<KeyboardDoubleArrowRightIcon sx={{ width: "16px" }} />}
       />
-      {props.data.editedSlug && (
-        <PopupEdit
-          oldLink={props.data?.editedSlug}
-          oldName={props.data?.editedSlug}
-          label="Bài viết này đã được sửa thành: "
-        />
-      )}
       <Text m="5px 0 20px">
         <p style={{ fontSize: "40px", lineHeight: "50px", fontWeight: "500" }}>
           {props.data?.title}
@@ -77,6 +73,7 @@ export default function ViewAPost(props) {
           />
         </Stack>
       </Stack>
+      {doc && <PostMenu menu={doc}/>}
       <div className={styles.contentWrapper}>
         {props.data?.coverURL && (
           <Box sx={{ position: "relative" }}>

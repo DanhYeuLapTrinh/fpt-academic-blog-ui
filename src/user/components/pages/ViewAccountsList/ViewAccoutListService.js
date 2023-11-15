@@ -13,6 +13,7 @@ export default function ViewAccoutListService() {
   const [users, setUsers] = useState([]);
   const { id } = useParams();
   const auth = useAuth();
+  let hasMoreUsers = true;
   const fetchData = async (page, usersOfPage) => {
     let response = await axiosPrivate.post(
       process.env.REACT_APP_SEARCH_ACCOUNT,
@@ -29,6 +30,9 @@ export default function ViewAccoutListService() {
     queryKey: ["users"],
     queryFn: ({ pageParam = 1 }) => fetchData(pageParam, 10),
     getNextPageParam: (lastPage) => {
+      if (lastPage.prevOffset * 5 >= lastPage.users.length) {
+        hasMoreUsers = false;
+      }
       return lastPage.prevOffset + 1;
     },
   });
@@ -39,6 +43,7 @@ export default function ViewAccoutListService() {
         return [...acc, ...page.users];
       }, [])
     );
+    window.scrollTo(0, 0);
   }, [data]);
 
   const followAccount = async (inputId) => {
@@ -96,9 +101,11 @@ export default function ViewAccoutListService() {
       next={() => fetchNextPage()}
       hasMore={hasNextPage}
       loader={
-        <Stack width={"100%"} sx={{ textAlign: "center", m: "20px 0" }}>
-          <Text>...đang tải...</Text>
-        </Stack>
+        hasMoreUsers && (
+          <Stack width={"100%"} sx={{ textAlign: "center", m: "20px 0" }}>
+            <Text>...đang tải...</Text>
+          </Stack>
+        )
       }
       style={{ marginBottom: "20px" }}
     >

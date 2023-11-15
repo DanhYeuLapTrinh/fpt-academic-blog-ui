@@ -68,64 +68,32 @@ export default function PostMenuOptionList(props) {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      <Link
-        to={`/view/${props.data.originSlug}`}
-        style={{ textDecoration: "none" }}
-      >
-        <MenuItem disabled={props.isEdited}>
-          <ListItemIcon>
-            <Icon icon="ph:eye-bold" color="#444746" width="24" />
-          </ListItemIcon>
-          <Text fontSize="14px">Xem lịch sử chỉnh sửa</Text>
-        </MenuItem>
-      </Link>
+      {props.data.originSlug && (
+        <Link
+          to={`/view/${props.data.originSlug}`}
+          style={{ textDecoration: "none" }}
+        >
+          <MenuItem>
+            <ListItemIcon>
+              <Icon icon="ph:eye-bold" color="#444746" width="24" />
+            </ListItemIcon>
+            <Text fontSize="14px">Xem lịch sử chỉnh sửa</Text>
+          </MenuItem>
+        </Link>
+      )}
       {props.isAuthor && (
         <>
-          <MenuItem onClick={handleClickOpen}>
-            <ListItemIcon>
-              <Icon icon="uil:edit" color="#444746" width="24" />
-            </ListItemIcon>
-            <Text fontSize="14px">Chỉnh sửa bài viết</Text>
-          </MenuItem>
-          <Dialog
-            open={open}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
+          <Link
+            to={`/edit/${props.data.slug}`}
+            style={{ textDecoration: "none" }}
           >
-            <DialogTitle id="alert-dialog-title">
-              {"Bạn muốn chỉnh sửa bài viết này?"}
-            </DialogTitle>
-            <DialogContent>
-              <Stack spacing={1}>
-                <DialogContentText id="alert-dialog-description">
-                  Bài viết được chỉnh sửa và bài viết gốc sẽ là hai bài viết độc
-                  lập, mọi phần thưởng (nếu có) ở bài viết gốc sẽ được giữ
-                  nguyên.
-                </DialogContentText>
-              </Stack>
-            </DialogContent>
-            <DialogActions sx={{ p: "0 20px 20px 0" }}>
-              <Button
-                onClick={handleCloseDialog}
-                variant="outlined"
-                sx={{ width: "100px", textTransform: "none" }}
-              >
-                <Text fontSize="14px">Hủy</Text>
-              </Button>
-              <Button
-                onClick={handleCloseDialog}
-                autoFocus
-                variant="contained"
-                sx={{ width: "100px", textTransform: "none" }}
-              >
-                <Link to={`/edit/${slug}`} style={{ textDecoration: "none" }}>
-                  <Text color="secondary.main" fontSize="14px">
-                    Tiếp tục
-                  </Text>
-                </Link>
-              </Button>
-            </DialogActions>
-          </Dialog>
+            <MenuItem onClick={handleClickOpen}>
+              <ListItemIcon>
+                <Icon icon="uil:edit" color="#444746" width="24" />
+              </ListItemIcon>
+              <Text fontSize="14px">Chỉnh sửa bài viết</Text>
+            </MenuItem>
+          </Link>
           <MenuItem onClick={handleClickDelete}>
             <ListItemIcon>
               <Icon

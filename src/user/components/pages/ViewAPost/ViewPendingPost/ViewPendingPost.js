@@ -27,13 +27,6 @@ export default function ViewPendingPost(props) {
         tagID={props.data?.tag?.tagId}
         userId={props.data?.userId}
       />
-      {props.data.originSlug && (
-        <PopupEdit
-          oldLink={props.oldLink?.slug}
-          oldName={props.oldLink?.title}
-          label="Đây là một bài viết đã được chỉnh sửa dựa trên bài có tên:"
-        />
-      )}
       <div className={styles.contentWrapper}>
         <Text>
           <h1 style={{ fontSize: "40px", lineHeight: "50px" }}>
