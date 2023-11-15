@@ -14,33 +14,27 @@ import BackToTopButton from "../../atoms/BackToTopButton/BackToTopButton";
 export default function Home(props) {
   return (
     <div style={{ position: "relative" }}>
-      {props && (
-        <>
-          <BackToTopButton />
-          <Container>
-            <TrendingList trendingPostsHome={props.trendingPostsHome} />
-            <SearchSection />
-          </Container>
-          <LatestPostSection latestPosts={props.latestPosts} />
-          <RewardedPostList />
-          <Container>
-            <Grid2 container xs={12} columnGap={"20px"}>
-              <Grid2 item xs={8}>
-                <QAList qaList={props.qaList} />
-                <PostList allPosts={props.allPosts} />
-              </Grid2>
-              <Grid2 item xs>
-                <Stack spacing={12}>
-                  <TrendingTagSection trendingTags={props.trendingTags} />
-                  {props.shortPosts && (
-                    <ShortList shortPosts={props.shortPosts} />
-                  )}
-                </Stack>
-              </Grid2>
-            </Grid2>
-          </Container>
-        </>
-      )}
+      <BackToTopButton />
+      <Container>
+        <TrendingList trendingPostsHome={props.trendingPostsHome} />
+        <SearchSection />
+      </Container>
+      <LatestPostSection latestPosts={props.latestPosts} />
+      <RewardedPostList />
+      <Container>
+        <Grid2 container xs={12} columnGap={"20px"}>
+          <Grid2 item xs={8}>
+            <QAList qaList={props.qaList} />
+            <PostList allPosts={props.allPosts} />
+          </Grid2>
+          <Grid2 item xs>
+            <Stack spacing={12}>
+              <TrendingTagSection trendingTags={props.trendingTags} />
+              {props.shortPosts && <ShortList shortPosts={props.shortPosts} />}
+            </Stack>
+          </Grid2>
+        </Grid2>
+      </Container>
     </div>
   );
 }
