@@ -18,6 +18,7 @@ function CateList() {
   const axiosPrivate = useAxiosPrivate();
 
   const [categories, setCategories] = useState([]);
+  const [majors, setMajors] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSemester, setSelectedSemester] = useState(null);
   const [selectedSubject, setSelectedSubject] = useState(null);
@@ -43,6 +44,9 @@ function CateList() {
       process.env.REACT_APP_CATEGORIES_LIST
     );
     setCategories(categoriesRes.data);
+
+    const majorsRes = await axiosPrivate.get(process.env.REACT_APP_MAJORS_LIST);
+    setMajors(majorsRes.data);
   };
 
   useEffect(() => {
@@ -71,6 +75,7 @@ function CateList() {
   };
 
   const openDeleteModal = (category) => {
+    console.log("Category clicked:", category);
     setIsDeleteModalOpen(true);
     setCategoryToDelete(category);
   };
@@ -104,17 +109,19 @@ function CateList() {
   };
 
   //-----------------------------------------------------------------------------------
-
   const handleDeleteCategory = async () => {
     if (categoryToDelete) {
       try {
         await axiosPrivate.post(process.env.REACT_APP_DELETE_CATEGORY, {
           id: categoryToDelete.id,
         });
+
         toast.success(
           `Xóa chuyên ngành "${categoryToDelete.categoryName}" thành công`
         );
+
         fetchData();
+
         closeDeleteModal();
       } catch (error) {
         if (error.response.status === 409) {
