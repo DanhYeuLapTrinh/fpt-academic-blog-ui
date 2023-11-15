@@ -4,6 +4,7 @@ import "./ContentField.scss";
 import useContent from "../../../hooks/useContent";
 import { Box } from "@mui/material";
 import Text from "../../atoms/Text/Text";
+import { toSlug } from "../../../utils/StringMethod";
 export default function ContentField({ ...props }) {
   const { setContent, setWordcount } = useContent();
   const [load, setLoad] = useState(false);
@@ -28,6 +29,7 @@ export default function ContentField({ ...props }) {
       <Editor
         apiKey="or7ndgcoxdbx9821y1j3d8oi37nqe538m257uvlwroa11wiq"
         onEditorChange={(newValue, editor) => {
+          console.log(newValue)
           props.setIsSaving("Đang lưu...");
           setTimeout(() => {
             if (props.normal) {
@@ -129,6 +131,15 @@ export default function ContentField({ ...props }) {
           quickbars_insert_toolbar: "image media pagebreak",
           quickbars_image_toolbar: false,
           min_height: 230,
+          setup: (editor) => {
+            editor.on('NodeChange', () => {
+              editor.dom.select('h2').forEach(node => {
+                if (!node.id) {
+                  node.id = toSlug(node.textContent); 
+                }
+              });
+            });
+          }
         }}
       />
     </div>

@@ -42,44 +42,58 @@ export default function Comment({
           <Stack direction={"row"} spacing={1} width={"100%"}>
             {!isEditing && (
               <Stack
-                minWidth={"300px"}
+                direction={"row"}
+                width={"100%"}
                 bgcolor={"secondary.alt"}
-                p={1}
+                minHeight={"80px"}
                 borderRadius={"10px"}
               >
-                <Link
-                  to={`/profile/${props.userId}`}
-                  style={{ textDecoration: "none" }}
+                <Stack
+                  width={"100%"}
+                  p={1}
+                  height={"100%"}
+                  justifyContent={"space-evenly"}
                 >
-                  <Text color="primary.main" fontSize="17px">
-                    {props.author}
+                  <Stack direction={"row"} spacing={2} alignItems={"center"}>
+                    <Link
+                      to={`/profile/${props.userId}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Text color="primary.main" fontSize="17px">
+                        {props.author}
+                      </Text>
+                    </Link>
+                    <Text fontSize="13px" fontWeight="400">
+                      {props.time}
+                    </Text>
+                  </Stack>
+                  <Text fontWeight="400" fontSize="15px">
+                    {props.content}
                   </Text>
-                </Link>
-                <Text fontWeight="400" fontSize="15px">
-                  {props.content}
-                </Text>
+                </Stack>
+                {!isEditing && (
+                  <CommentMenuOptionListService
+                    comment={props.comment}
+                    deleteComment={deleteComment}
+                  />
+                )}
               </Stack>
             )}
-            {isEditing && (
-              <CommentBar
-                hasCancelButton
-                autoFocus
-                auth={auth}
-                edit
-                initialText={props.content}
-                handleEdit={(e) => editComment(props.comment.commentId, e)}
-              />
-            )}
-            {!isEditing && (
-              <CommentMenuOptionListService
-                comment={props.comment}
-                deleteComment={deleteComment}
-              />
-            )}
+            <Box sx={{ position: "absolute", top: 0, right: 2 }}>
+              {isEditing && (
+                <CommentBar
+                  hasCancelButton
+                  autoFocus
+                  auth={auth}
+                  edit
+                  initialText={props.content}
+                  handleEdit={(e) => editComment(props.comment.commentId, e)}
+                />
+              )}
+            </Box>
           </Stack>
           {!isEditing && (
             <Stack direction={"row"} spacing={2} alignItems={"center"}>
-              <Text fontSize="12px">{props.time}</Text>
               <CommentInteractionService
                 vote={props.comment?.numOfUpvote - props.comment?.numOfDownvote}
                 comment={props.comment}

@@ -4,6 +4,7 @@ import CommentsList from "../../organisms/CommentsList/CommentsList";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePost from "../../../hooks/usePost";
+import { toast } from "react-toastify";
 
 export default function CommentSection({ rootComments, getReplies }) {
   const axiosPrivate = useAxiosPrivate();
@@ -11,7 +12,10 @@ export default function CommentSection({ rootComments, getReplies }) {
 
   const addComment = async (e, parentId = null) => {
     let value = e.target.value.trim();
-    if (value === "") return;
+    if (value === "") {
+      toast.error("Bình luận không thể trống") 
+      return;
+    }
     try {
       e.preventDefault();
       if (parentId) {
