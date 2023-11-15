@@ -143,8 +143,11 @@ function CateList() {
         toast.success(
           `Xóa môn học "${subjectToDelete.categoryName}" thành công`
         );
-        fetchData();
         closeDeleteSubjectModal();
+        await fetchData();
+
+        setSelectedSubject(null);
+        setSelectedRadioSubject(null);
       } catch (error) {
         if (error.response.status === 409) {
           toast.error(
@@ -196,7 +199,10 @@ function CateList() {
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.5)",
           }}
         >
-          <AddCategory closeAddCategoryModal={closeAddCategoryModal} />
+          <AddCategory
+            closeAddCategoryModal={closeAddCategoryModal}
+            fetchData={fetchData}
+          />
         </Card>
       </Modal>
     );

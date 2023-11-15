@@ -94,13 +94,34 @@ function ReportedComment() {
   };
 
   const columns = [
-    { field: "reporterName", headerName: "Người báo cáo", width: 200 },
-    { field: "reportDate", headerName: "Ngày báo cáo", width: 200 },
-    { field: "reasonOfReport", headerName: "Lý do báo cáo", width: 200 },
-    { field: "content", headerName: "Nội dung bình luận", width: 500 },
+    {
+      field: "reporterName",
+      headerName: "Người báo cáo",
+      sortable: false,
+      width: 200,
+    },
+    {
+      field: "reportDate",
+      headerName: "Ngày báo cáo",
+      sortable: false,
+      width: 200,
+    },
+    {
+      field: "reasonOfReport",
+      headerName: "Lý do báo cáo",
+      sortable: false,
+      width: 200,
+    },
+    {
+      field: "content",
+      headerName: "Nội dung bình luận",
+      sortable: false,
+      width: 500,
+    },
     {
       field: "action",
       headerName: "Hành động",
+      sortable: false,
       renderCell: (params) => {
         return (
           <>
@@ -168,6 +189,8 @@ function ReportedComment() {
         pageSizeOptions={[5, 10, 25]}
         autoHeight
         disableRowSelectionOnClick
+        disableColumnMenu
+        disableColumnFilter
       />
 
       <ConfirmDialog

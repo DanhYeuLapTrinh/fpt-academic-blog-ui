@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 
-function AddCategory({ closeAddCategoryModal }) {
+function AddCategory({ closeAddCategoryModal, fetchData }) {
   const axiosPrivate = useAxiosPrivate();
   const [cateList, setCateList] = useState([]);
   const [majorList, setMajorList] = useState([]);
@@ -51,6 +51,10 @@ function AddCategory({ closeAddCategoryModal }) {
     );
   };
 
+  const isMajorNameExists = (majorName) => {
+    return majorList.some((major) => major.majorName === majorName);
+  };
+
   const isSubjectExists = (subject) => {
     return cateList.some((category) =>
       category.childCategories.some((semester) =>
@@ -76,8 +80,8 @@ function AddCategory({ closeAddCategoryModal }) {
     if (isNewCategoryOption) {
       const newMajorName = newCategoryName.trim();
 
-      if (isCategoryNameExists(newMajorName)) {
-        toast.error("Chuyên ngành mới đã tồn tại.");
+      if (isMajorNameExists(newMajorName)) {
+        toast.error("Danh mục bạn tạo đã tồn tại đã tồn tại.");
         return;
       }
 
@@ -118,6 +122,7 @@ function AddCategory({ closeAddCategoryModal }) {
       );
       toast.success("Thêm danh mục thành công!");
       closeAddCategoryModal();
+      fetchData();
     } catch (error) {
       toast.error("Lỗi khi thêm danh mục.");
     }
