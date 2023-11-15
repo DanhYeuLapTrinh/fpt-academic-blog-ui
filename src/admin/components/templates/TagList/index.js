@@ -110,10 +110,11 @@ function TagList() {
   };
 
   const columns = [
-    { field: "tagName", headerName: "Tên thẻ", width: 200 },
+    { field: "tagName", headerName: "Tên thẻ", sortable: false, width: 200 },
     {
       field: "action",
       headerName: "",
+      sortable: false,
       width: 200,
       renderCell: (params) => (
         <DeleteForeverIcon
@@ -166,6 +167,8 @@ function TagList() {
         pageSizeOptions={[5, 10, 25]}
         autoHeight
         disableRowSelectionOnClick
+        disableColumnMenu
+        disableColumnFilter
       />
 
       <DeleteConfirm
