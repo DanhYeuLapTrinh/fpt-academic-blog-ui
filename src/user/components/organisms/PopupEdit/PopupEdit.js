@@ -18,7 +18,7 @@ export default function PopupEdit(props) {
           <Text fontSize="30px">Thông báo</Text>
           <Stack direction={"row"} spacing={1} alignItems={"center"}>
             <Text fontWeight="400">
-              Đây là một bài viết đã được chỉnh sửa dựa trên bài có tên:{" "}
+              {props.label}
             </Text>
             <Link
               to={`/view/${props.oldLink}`}

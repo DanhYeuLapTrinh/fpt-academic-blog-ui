@@ -22,17 +22,19 @@ export default function Home(props) {
             <SearchSection />
           </Container>
           <LatestPostSection latestPosts={props.latestPosts} />
-          {/* <RewardedPostList /> */}
+          <RewardedPostList />
           <Container>
             <Grid2 container xs={12} columnGap={"20px"}>
               <Grid2 item xs={8}>
-                {/* <QAList qaList={props.qaList} />
-                <PostList allPosts={props.allPosts} /> */}
+                <QAList qaList={props.qaList} />
+                <PostList allPosts={props.allPosts} />
               </Grid2>
               <Grid2 item xs>
                 <Stack spacing={12}>
-                  {/* <TrendingTagSection trendingTags={props.trendingTags} />
-                  <ShortList shortPosts={props.shortPosts} /> */}
+                  <TrendingTagSection trendingTags={props.trendingTags} />
+                  {props.shortPosts && (
+                    <ShortList shortPosts={props.shortPosts} />
+                  )}
                 </Stack>
               </Grid2>
             </Grid2>

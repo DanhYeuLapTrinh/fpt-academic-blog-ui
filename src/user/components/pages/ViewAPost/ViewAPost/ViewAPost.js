@@ -11,6 +11,7 @@ import PostInteractionService from "../../../organisms/PostInteraction/PostInter
 import CommentSectionService from "../../../templates/CommentSection/CommentSectionService";
 import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
 import { Link } from "react-router-dom";
+import PopupEdit from "../../../organisms/PopupEdit/PopupEdit";
 export default function ViewAPost(props) {
   return (
     <Container sx={{ mb: 10, minHeight: "calc(100vh - 93px - 80px)" }}>
@@ -19,6 +20,13 @@ export default function ViewAPost(props) {
         tag={props?.data?.tag}
         separator={<KeyboardDoubleArrowRightIcon sx={{ width: "16px" }} />}
       />
+      {props.data.originSlug && (
+        <PopupEdit
+          oldLink={props.data?.editedSlug}
+          oldName={props.oldLink?.title}
+          label="Bài viết này đã được sửa thành: "
+        />
+      )}
       <Text m="5px 0 20px">
         <p style={{ fontSize: "40px", lineHeight: "50px", fontWeight: "500" }}>
           {props.data?.title}
@@ -65,6 +73,7 @@ export default function ViewAPost(props) {
             postId={props.data?.postId}
             allowComment={props.data?.allowComment}
             isEdited={props.data?.is_edited}
+            data={props.data}
           />
         </Stack>
       </Stack>

@@ -69,10 +69,12 @@ export default function PostMenuOptionList(props) {
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
       <MenuItem disabled={!props.isEdited}>
-        <ListItemIcon>
-          <Icon icon="ph:eye-bold" color="#444746" width="24" />
-        </ListItemIcon>
-        <Text fontSize="14px">Xem lịch sử chỉnh sửa</Text>
+        <Link to={`/view/${props.data.originSlug}`}>
+          <ListItemIcon>
+            <Icon icon="ph:eye-bold" color="#444746" width="24" />
+          </ListItemIcon>
+          <Text fontSize="14px">Xem lịch sử chỉnh sửa</Text>
+        </Link>
       </MenuItem>
       {props.isAuthor && (
         <>
@@ -158,7 +160,7 @@ export default function PostMenuOptionList(props) {
               </Button>
             </DialogActions>
           </Dialog>
-          {props.allowComment ? (
+          {/* {props.allowComment ? (
             <MenuItem>
               <ListItemIcon>
                 <Icon
@@ -176,7 +178,7 @@ export default function PostMenuOptionList(props) {
               </ListItemIcon>
               <Text fontSize="14px">Bật tính năng bình luận</Text>
             </MenuItem>
-          )}
+          )} */}
         </>
       )}
     </Menu>
