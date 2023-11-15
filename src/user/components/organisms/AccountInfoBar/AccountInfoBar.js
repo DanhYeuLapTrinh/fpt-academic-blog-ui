@@ -2,7 +2,11 @@ import { Box, Chip, Stack } from "@mui/material";
 import React from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import Text from "../../atoms/Text/Text";
-import { getFirstChar, timeConverter, toSlug } from "../../../utils/StringMethod";
+import {
+  getFirstChar,
+  timeConverter,
+  toSlug,
+} from "../../../utils/StringMethod";
 import { Link } from "react-router-dom";
 
 export default function AccountInfoBar(props) {
@@ -17,7 +21,10 @@ export default function AccountInfoBar(props) {
     >
       <Stack direction={"row"} alignItems={"center"} spacing={1}>
         <Link to={""} style={{ textDecoration: "none" }}>
-          <Link to={`/profile/${props.userId}`} style={{textDecoration: "none"}}>
+          <Link
+            to={`/profile/${props.userId}`}
+            style={{ textDecoration: "none" }}
+          >
             <Stack direction={"row"} alignItems={"center"} spacing={1}>
               <UserProfile
                 width="28px"
@@ -52,7 +59,14 @@ export default function AccountInfoBar(props) {
       </Stack>
       <Stack direction={"row"} spacing={1}>
         {props.majorName && (
-          <Link to={`/categories/${props.majorID}`}>
+          <Link
+            to={{
+              pathname: "/categories",
+              search: `?name=${toSlug(props.majorName, true)}&id=${
+                props.majorID
+              }`,
+            }}
+          >
             <Chip
               sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
               label={getFirstChar(props.majorName)}
@@ -60,7 +74,14 @@ export default function AccountInfoBar(props) {
           </Link>
         )}
         {props.subjectName && (
-          <Link to={`/categories/${props.subjectID}`}>
+          <Link
+            to={{
+              pathname: "/categories",
+              search: `?name=${toSlug(props.subjectName, true)}&id=${
+                props.subjectID
+              }`,
+            }}
+          >
             <Chip
               sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
               label={props.subjectName}
@@ -68,7 +89,12 @@ export default function AccountInfoBar(props) {
           </Link>
         )}
         {props.tagName && (
-          <Link to={`/tag/${props.tagID}`}>
+          <Link
+            to={{
+              pathname: "/tags",
+              search: `?name=${toSlug(props.tagName, true)}&id=${props.tagID}`,
+            }}
+          >
             <Chip
               sx={{ bgcolor: "white", color: "primary.main", fontWeight: 600 }}
               label={props.tagName}

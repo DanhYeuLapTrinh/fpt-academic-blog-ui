@@ -5,8 +5,8 @@ import Text from "../../atoms/Text/Text";
 
 export default function PostInteraction(props) {
   return (
-    <div style={{backgroundColor: "#f7f9fc", padding: "0 20px"}}>
-      <Divider orientation="horizontal"/>
+    <div style={{ backgroundColor: "#f7f9fc", padding: "0 20px" }}>
+      <Divider orientation="horizontal" />
       <Stack
         direction={"row"}
         alignItems={"center"}
@@ -53,16 +53,6 @@ export default function PostInteraction(props) {
         >
           <Icon icon="fa6-regular:comment" width={"24px"} color="#444746" />
           <Text ml="6px">Bình luận</Text>
-        </IconButton>
-        <IconButton
-          sx={{
-            "&hover": {
-              backgroundColor: "transparent",
-            },
-          }}
-        >
-          <Icon icon="ph:share-fat" width={"24px"} color="#444746" />
-          <Text ml="6px">Chia sẻ</Text>
         </IconButton>
       </Stack>
       <Divider orientation="horizontal" />

@@ -1,16 +1,13 @@
 import React from "react";
 import styles from "./Styles.module.scss";
 import Text from "../../../atoms/Text/Text";
-import { Container, IconButton, Skeleton, Stack, Tooltip } from "@mui/material";
+import { Container, IconButton, Stack, Tooltip } from "@mui/material";
 import { Icon } from "@iconify/react";
 import AuthorPost from "../../../molecules/AuthorPost/AuthorPost";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 import MyBread from "../../../molecules/MyBread/MyBread";
 import PostMenuOptionListService from "../../../organisms/PostMenuOptiopList/PostMenuOptionListService";
 import PostInteractionService from "../../../organisms/PostInteraction/PostInteractionService";
-import CommentBar from "../../../organisms/CommentBar/CommentBar";
-import Comment from "../../../molecules/Comment/Comment";
-import CommentsList from "../../../organisms/CommentsList/CommentsList";
 import CommentSectionService from "../../../templates/CommentSection/CommentSectionService";
 export default function ViewAPost(props) {
   return (
@@ -63,6 +60,7 @@ export default function ViewAPost(props) {
           )}
           <PostMenuOptionListService
             userId={props.data?.userId}
+            postId={props.data?.postId}
             allowComment={props.data?.allowComment}
             isEdited={props.data?.is_edited}
           />

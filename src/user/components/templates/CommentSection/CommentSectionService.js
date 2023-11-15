@@ -2,7 +2,7 @@ import React from "react";
 import CommentSection from "./CommentSection";
 import usePost from "../../../hooks/usePost";
 
-export default function CommentSectionService(props) {
+export default function CommentSectionService() {
   const { postDetail, activeComment, setActiveComment } = usePost();
 
   const rootComments = postDetail.comments
