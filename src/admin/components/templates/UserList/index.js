@@ -39,7 +39,9 @@ function UserResultList() {
 
   const [isAddUserFormOpen, setAddUserFormOpen] = useState(false);
 
-  const { data, setData, records, setRecords } = useUserContext();
+  const { data, setData } = useUserContext();
+
+  const [records, setRecords] = useState([]);
 
   const [showMuteModal, setShowMuteModal] = useState(false);
 
@@ -271,19 +273,6 @@ function UserResultList() {
       });
   };
 
-  const convertTimestampToTime = (timestamp) => {
-    const date = new Date(timestamp / 1000);
-
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-
-    return `${hours}:${minutes}`;
-  };
-
-  const mutetimeFromAPI = records?.mutetime || null;
-
-  const timeString = convertTimestampToTime(mutetimeFromAPI);
-
   //----------------------------------------------------------------------------
 
   const columns = [
@@ -325,7 +314,6 @@ function UserResultList() {
                   value={newRole}
                   onChange={(e) => setNewRole(e.target.value)}
                 >
-                  <option value="admin">Admin</option>
                   <option value="lecturer">Lecturer</option>
                   <option value="mentor">Mentor</option>
                   <option value="student">Student</option>
@@ -401,10 +389,11 @@ function UserResultList() {
         <Link to={`/users/view/${params.row.id}`}>
           <Button
             sx={{
-              backgroundColor: "#4caf50",
+              backgroundColor: "#5927e5",
               color: "#fff",
               border: "none",
               padding: "5px 10px",
+              fontSize: "12px",
               borderRadius: "20px",
               cursor: "pointer",
               marginRight: "10px",

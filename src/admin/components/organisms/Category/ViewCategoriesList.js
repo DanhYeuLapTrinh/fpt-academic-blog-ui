@@ -7,6 +7,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import CategoryTitle from "../../atoms/CategoryTitle/CategoryTitle";
 
 function ViewCategoriesList({
   categories,
@@ -48,29 +49,19 @@ function ViewCategoriesList({
 
   return (
     <Grid container spacing={2}>
-      <Grid
-        item
-        xs={12}
-        md={4}
-        sx={{
-          boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
-          border: "1px solid #ccc",
-          margin: 2,
-          borderRadius: 8,
-        }}
-      >
-        <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-          Chuyên ngành
-        </Typography>
+      <Grid item xs={12} md={4}>
+        <CategoryTitle title="Chuyên ngành" />
+
         <List>
           {categories.map((category) => (
             <ListItem
               key={category.id}
               onClick={() => handleCategoryClick(category)}
-              button
               sx={{
                 cursor: "pointer",
-                borderRadius: "10px 0 0 10px",
+                boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.2)",
+                margin: "8px 0",
+                borderRadius: "20px",
                 backgroundColor:
                   selectedCategory === category ? "primary.light" : "inherit",
               }}
@@ -98,30 +89,19 @@ function ViewCategoriesList({
       </Grid>
 
       {isSemesterVisible && (
-        <Grid
-          item
-          xs={12}
-          md={3}
-          sx={{
-            boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
-            border: "1px solid #ccc",
-            margin: 2,
-            borderRadius: 8,
-          }}
-        >
-          <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-            Học kỳ
-          </Typography>
+        <Grid item xs={12} md={4}>
+          <CategoryTitle title="Học kỳ" />
           <List>
             {selectedCategory &&
               selectedCategory.childCategories.map((semester) => (
                 <ListItem
                   key={semester.id}
                   onClick={() => handleSemesterClick(semester)}
-                  button
                   sx={{
                     cursor: "pointer",
-                    borderRadius: "10px 0 0 10px",
+                    boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.2)",
+                    margin: "8px 0",
+                    borderRadius: "20px",
                     backgroundColor:
                       selectedSemester === semester
                         ? "primary.light"
@@ -136,30 +116,18 @@ function ViewCategoriesList({
       )}
 
       {isSubjectVisible && (
-        <Grid
-          item
-          xs={12}
-          md={4}
-          sx={{
-            boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)",
-            border: "1px solid #ccc",
-            margin: 2,
-            borderRadius: 8,
-          }}
-        >
-          <Typography variant="h6" sx={{ fontWeight: "bold", marginBottom: 2 }}>
-            Môn học
-          </Typography>
+        <Grid item xs={12} md={4}>
+          <CategoryTitle title="Môn học" />
           <List>
             {selectedSemester &&
               selectedSemester.childCategories.map((subject) => (
                 <ListItem
                   key={subject.id}
                   sx={{
-                    borderRadius: "10px 0 0 10px",
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: 2,
+                    cursor: "pointer",
+                    boxShadow: "1px 1px 3px rgba(0, 0, 0, 0.2)",
+                    margin: "8px 0",
+                    borderRadius: "20px",
                   }}
                 >
                   <ListItemIcon>

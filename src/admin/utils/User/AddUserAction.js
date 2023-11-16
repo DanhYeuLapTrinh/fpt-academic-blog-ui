@@ -18,19 +18,15 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    if (selectedRole === "lecturer") {
-      axiosPrivate
-        .get(process.env.REACT_APP_MAJORS_LIST)
-        .then((response) => {
-          setMajors(response.data);
-        })
-        .catch((error) => {
-          console.error("Lỗi khi tải danh sách majors", error);
-        });
-    } else {
-      setMajors([]);
-    }
-  }, [selectedRole]);
+    axiosPrivate
+      .get(process.env.REACT_APP_MAJORS_LIST)
+      .then((response) => {
+        setMajors(response.data);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi tải danh sách majors", error);
+      });
+  }, []);
 
   const initialUser = {
     username: "",
@@ -76,7 +72,7 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
 
       const phone = data.map((user) => user.phone);
       if (phone.includes(values.phone)) {
-        formik.setFieldError("phone", "Số điện thoại đã tồn tại");
+        formik.setFieldError("phone", "Số diện thoại đã tồn tại");
         hasError = true;
       }
 
@@ -86,7 +82,7 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
         hasError = true;
       }
 
-      if (selectedRole === "lecturer" && !values.majorId) {
+      if (!values.majorId) {
         formik.setFieldError("majorId", "Vui lòng chọn ngành");
         hasError = true;
       }
@@ -94,7 +90,8 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
       if (!hasError) {
         onAddUser({
           ...values,
-          majorId: selectedRole === "lecturer" ? values.majorId : null,
+          role: selectedRole || "",
+          majorId: values.majorId || null,
         });
 
         onClose();
@@ -211,33 +208,31 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
             <MenuItem value="">
               <em>Chọn vai trò</em>
             </MenuItem>
-            <MenuItem value="admin">admin</MenuItem>
             <MenuItem value="lecturer">lecturer</MenuItem>
             <MenuItem value="mentor">mentor</MenuItem>
             <MenuItem value="student">student</MenuItem>
           </Select>
         </FormControl>
-        {selectedRole === "lecturer" && (
-          <FormControl required fullWidth sx={{ paddingTop: "5px" }}>
-            <InputLabel>Ngành</InputLabel>
-            <Select
-              name="majorId"
-              onChange={formik.handleChange}
-              value={formik.values.majorId}
-              error={formik.errors.majorId}
-              helpertext={formik.errors.majorId}
-            >
-              <MenuItem value="">
-                <em>Chọn ngành</em>
+
+        <FormControl required fullWidth sx={{ paddingTop: "5px" }}>
+          <InputLabel>Ngành</InputLabel>
+          <Select
+            name="majorId"
+            onChange={formik.handleChange}
+            value={formik.values.majorId}
+            error={formik.errors.majorId}
+            helpertext={formik.errors.majorId}
+          >
+            <MenuItem value="">
+              <em>Chọn ngành</em>
+            </MenuItem>
+            {majors.map((major) => (
+              <MenuItem key={major.id} value={major.id}>
+                {major.majorName}
               </MenuItem>
-              {majors.map((major) => (
-                <MenuItem key={major.id} value={major.id}>
-                  {major.majorName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        )}
+            ))}
+          </Select>
+        </FormControl>
       </DialogContent>
       <DialogActions style={{ paddingTop: "10px" }}>
         <Button

@@ -24,6 +24,7 @@ function ReportedProfileDetail() {
       });
 
       setReportedProfile(res.data);
+      console.log(res.data);
     } catch (err) {
       console.log(err);
     }
@@ -36,7 +37,7 @@ function ReportedProfileDetail() {
   return (
     <Box
       sx={{
-        "-webkit-box-flex": 1,
+        WebkitBoxFlex: 1,
         flexGrow: 1,
         minHeight: "100%",
         display: "flex",
