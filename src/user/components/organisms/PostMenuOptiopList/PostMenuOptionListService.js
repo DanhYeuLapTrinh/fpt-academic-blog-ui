@@ -3,15 +3,17 @@ import PostMenuOptionList from "./PostMenuOptionList";
 import useAuth from "../../../hooks/useAuth";
 import { IconButton } from "@mui/material";
 import { Icon } from "@iconify/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import usePost from "../../../hooks/usePost";
 export default function PostMenuOptionListService(props) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const [isAuthor, setIsAuthor] = useState(false);
+  const {isAuthor, setIsAuthor} = usePost()
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const auth = useAuth();
+  const {slug} = useParams()
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -19,10 +21,11 @@ export default function PostMenuOptionListService(props) {
     setAnchorEl(null);
   };
   useEffect(() => {
-    if (auth?.id === props?.userId) {
+    if (auth?.id === props.userId) {
       setIsAuthor(true);
     }
-  }, [auth, props]);
+    return () => setIsAuthor(false);
+  }, [props.userId, slug]);
 
   const deletePost = async () => {
     try {
@@ -51,7 +54,6 @@ export default function PostMenuOptionListService(props) {
         handleClose={handleClose}
         anchorEl={anchorEl}
         open={open}
-        isAuthor={isAuthor}
         allowComment={props.allowComment}
         isEdited={props.isEdited}
         deletePost={deletePost}

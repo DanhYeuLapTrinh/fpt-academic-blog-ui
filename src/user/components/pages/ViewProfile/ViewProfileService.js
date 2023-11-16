@@ -56,9 +56,15 @@ export default function ViewProfileService() {
     if (profileID !== auth.id) fetchData();
   }, [profileID]);
 
-  const sortedPostsList = sortByPropertyName(user?.postList, "", "postId");
+  const sortedPostsList = user?.postList?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
 
-  const sortedQAList = sortByPropertyName(user?.qaList, "", "postId");
+  const sortedQAList = user?.qaList?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
 
   const followAccount = async () => {
     try {

@@ -19,7 +19,7 @@ import usePost from "../../../hooks/usePost";
 
 export default function CommentMenuOptionList({ comment, ...props }) {
   const auth = useAuth();
-  const {setActiveComment} = usePost()
+  const { setActiveComment } = usePost();
   return (
     <>
       <Menu
@@ -53,13 +53,13 @@ export default function CommentMenuOptionList({ comment, ...props }) {
         )}
         {comment.userId === auth.id && (
           <>
-            <MenuItem onClick={() => setActiveComment({ id: comment.commentId, type: "edit" })}>
+            <MenuItem
+              onClick={() =>
+                setActiveComment({ id: comment.commentId, type: "edit" })
+              }
+            >
               <ListItemIcon>
-                <Icon
-                  icon="ic:baseline-report-gmailerrorred"
-                  color="#444746"
-                  width="22"
-                />
+                <Icon icon="mi:edit" color="#444746" width="22" />
               </ListItemIcon>
               <Text fontSize="13px">Chỉnh sửa bình luận</Text>
             </MenuItem>

@@ -7,34 +7,21 @@ export default function PopupEdit(props) {
   return (
     <Paper
       sx={{
-        mt: "20px",
+        m: "20px 0",
         p: 2,
         display: "flex",
         flexDirection: "column",
+        bgcolor: props.bgcolor,
+        borderRadius: "10px"
       }}
     >
-      <Stack spacing={1} direction={"row"}>
-        <Stack>
-          <Text fontSize="30px">Thông báo</Text>
-          <Stack direction={"row"} spacing={1} alignItems={"center"}>
-            <Text fontWeight="400">
-              {props.label}
-            </Text>
-            <Link
-              to={`/view/${props.oldLink}`}
-              style={{ textDecoration: "none" }}
-            >
-              <Text
-                color="secondary.main"
-                padding="4px 8px"
-                bgcolor="primary.main"
-                borderRadius="10px"
-              >
-                {props.oldName}
-              </Text>
-            </Link>
-          </Stack>
-        </Stack>
+      <Stack spacing={1}>
+        <Text color={props.color} fontSize="30px">
+          {props.label}
+        </Text>
+        <Text fontWeight="400" color={props.color}>
+          {props.content}
+        </Text>
       </Stack>
     </Paper>
   );

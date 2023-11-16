@@ -29,8 +29,8 @@ export default function Comment({
   const replyId = props.parentId ? props.parentId : props.commentId;
   return (
     <Stack>
-      <Stack ml={props.ml} p={2} spacing={1} direction={"row"}>
-        <Box width={"5%"}>
+      <Stack ml={props.ml} p={"16px 0"} spacing={2} direction={"row"}>
+        <Box>
           <Link
             to={`/profile/${props.userId}`}
             style={{ textDecoration: "none" }}
@@ -50,7 +50,7 @@ export default function Comment({
               >
                 <Stack
                   width={"100%"}
-                  p={1}
+                  p={2}
                   height={"100%"}
                   justifyContent={"space-evenly"}
                 >
@@ -79,19 +79,17 @@ export default function Comment({
                 )}
               </Stack>
             )}
-            <Box sx={{ position: "absolute", top: 0, right: 2 }}>
-              {isEditing && (
-                <CommentBar
-                  hasCancelButton
-                  autoFocus
-                  auth={auth}
-                  edit
-                  initialText={props.content}
-                  handleEdit={(e) => editComment(props.comment.commentId, e)}
-                />
-              )}
-            </Box>
           </Stack>
+          {isEditing && (
+            <CommentBar
+              hasCancelButton
+              autoFocus
+              auth={auth}
+              edit
+              initialText={props.content}
+              handleEdit={(e) => editComment(props.comment.commentId, e)}
+            />
+          )}
           {!isEditing && (
             <Stack direction={"row"} spacing={2} alignItems={"center"}>
               <CommentInteractionService

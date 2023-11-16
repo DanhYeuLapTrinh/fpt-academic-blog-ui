@@ -78,7 +78,7 @@ export default function EditPost({ post,...props }) {
           sx={{ padding: "10px" }}
           variant="contained"
         >
-          Gửi bài
+          Gửi bản chỉnh sửa
         </Button>
       </Stack>
     </Container>

@@ -7,16 +7,17 @@ import useManagePost from "../../../hooks/useManagePost";
 
 export default function PendingPostsService() {
   const axiosPrivate = useAxiosPrivate();
-  const {
-    pendingPosts,
-    setPendingPosts,
-    sort,
-    setAmount,
-  } = useManagePost();
+  const { pendingPosts, setPendingPosts, sort, setAmount } = useManagePost();
   const { isLoading, setIsLoading } = useHome();
-  let sortedPending = sortByPropertyName(pendingPosts, "", "postId");
+  let sortedPending = pendingPosts.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
   if (sort !== "Mới nhất") {
-    sortedPending = sortByPropertyName(pendingPosts, "asc", "postId");
+    sortedPending = pendingPosts.sort(
+      (a, b) =>
+        new Date(a.dateOfPost).getTime() - new Date(b.dateOfPost).getTime()
+    );
   }
   useEffect(() => {
     const fetchData = async () => {

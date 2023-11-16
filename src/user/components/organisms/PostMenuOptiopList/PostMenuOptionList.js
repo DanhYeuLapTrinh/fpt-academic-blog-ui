@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
@@ -6,6 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
+  IconButton,
   ListItemIcon,
   Menu,
   MenuItem,
@@ -14,12 +16,15 @@ import {
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import Text from "../../atoms/Text/Text";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import usePost from "../../../hooks/usePost";
+import ViewAPost from "../../pages/ViewAPost/ViewAPost/ViewAPost";
 
 export default function PostMenuOptionList(props) {
   const [open, setOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
-  const { slug } = useParams();
+  const { historyDetail } = usePost();
+  const { isAuthor } = usePost();
   const handleClickDelete = () => {
     setIsDelete(true);
   };
@@ -32,7 +37,6 @@ export default function PostMenuOptionList(props) {
 
   const handleCloseDialog = () => {
     setOpen(false);
-    props.handleClose();
   };
   return (
     <Menu
@@ -68,20 +72,31 @@ export default function PostMenuOptionList(props) {
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      {props.data.originSlug && (
-        <Link
-          to={`/view/${props.data.originSlug}`}
-          style={{ textDecoration: "none" }}
-        >
-          <MenuItem>
-            <ListItemIcon>
-              <Icon icon="ph:eye-bold" color="#444746" width="24" />
-            </ListItemIcon>
-            <Text fontSize="14px">Xem lịch sử chỉnh sửa</Text>
-          </MenuItem>
-        </Link>
-      )}
-      {props.isAuthor && (
+      <MenuItem disabled={!props.isEdited} onClick={handleClickOpen}>
+        <ListItemIcon>
+          <Icon icon="ph:eye-bold" color="#444746" width="24" />
+        </ListItemIcon>
+        <Text fontSize="14px">Xem lịch sử chỉnh sửa</Text>
+      </MenuItem>
+      <Box sx={{ position: "relative" }}>
+        <Dialog open={open} maxWidth="lg">
+          <DialogContent sx={{ p: 5 }}>
+            <ViewAPost previewHistory data={historyDetail}/>
+          </DialogContent>
+          <DialogActions sx={{ position: "absolute", right: 20, top: 20 }}>
+            <IconButton
+              sx={{ p: 0 }}
+              disableFocusRipple
+              disableRipple
+              disableTouchRipple
+              onClick={handleCloseDialog}
+            >
+              <Icon icon="uil:x" color="#444746" width="24" />
+            </IconButton>
+          </DialogActions>
+        </Dialog>
+      </Box>
+      {isAuthor && (
         <>
           <Link
             to={`/edit/${props.data.slug}`}
@@ -131,7 +146,7 @@ export default function PostMenuOptionList(props) {
               </Button>
             </DialogActions>
           </Dialog>
-          {/* {props.allowComment ? (
+          {props.allowComment ? (
             <MenuItem>
               <ListItemIcon>
                 <Icon
@@ -149,7 +164,7 @@ export default function PostMenuOptionList(props) {
               </ListItemIcon>
               <Text fontSize="14px">Bật tính năng bình luận</Text>
             </MenuItem>
-          )} */}
+          )}
         </>
       )}
     </Menu>

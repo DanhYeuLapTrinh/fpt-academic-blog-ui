@@ -26,7 +26,7 @@ export default function RewardBadge(props) {
       )}
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        height={props.small ? "26px" : "22px"}
+        height={props.small ? "22px" : "26px"}
         viewBox="0 0 384 512"
         fill="#ffbe42"
       >

@@ -29,7 +29,6 @@ export default function ContentField({ ...props }) {
       <Editor
         apiKey="or7ndgcoxdbx9821y1j3d8oi37nqe538m257uvlwroa11wiq"
         onEditorChange={(newValue, editor) => {
-          console.log(newValue)
           props.setIsSaving("Đang lưu...");
           setTimeout(() => {
             if (props.normal) {
@@ -107,7 +106,7 @@ export default function ContentField({ ...props }) {
           placeholder:
             "Nhập đoạn giới thiệu để mọi người biết rõ về bài viết hơn nhé...",
           content_style:
-            "body { font-family:Roboto,sans-serif; font-size:18px; font-weight:400;color:#444746; margin: 8px !important;} img { width: 100%; border-radius: 10px; } iframe { width: 1128px !important; height: 628px !important;}",
+            "body { font-family:Roboto,sans-serif; font-size:18px; font-weight:400;color:#444746; margin: 8px !important;} img { width: 100%; border-radius: 10px;} iframe { width: 1128px !important; height: 628px !important;}",
           menubar: false,
           media_alt_source: false,
           image_dimensions: false,
@@ -132,14 +131,14 @@ export default function ContentField({ ...props }) {
           quickbars_image_toolbar: false,
           min_height: 230,
           setup: (editor) => {
-            editor.on('NodeChange', () => {
-              editor.dom.select('h2').forEach(node => {
+            editor.on("NodeChange", () => {
+              editor.dom.select("h2").forEach((node) => {
                 if (!node.id) {
-                  node.id = toSlug(node.textContent); 
+                  node.id = toSlug(node.textContent);
                 }
               });
             });
-          }
+          },
         }}
       />
     </div>

@@ -27,6 +27,14 @@ export default function ViewPendingPost(props) {
         tagID={props.data?.tag?.tagId}
         userId={props.data?.userId}
       />
+      {props.data?.reasonOfDecline && (
+        <PopupEdit
+          bgcolor="primary.main"
+          label="Bài viết này đã từng bị từ chối vì lý do"
+          content={props.data?.reasonOfDecline}
+          color="secondary.main"
+        />
+      )}
       <div className={styles.contentWrapper}>
         <Text>
           <h1 style={{ fontSize: "40px", lineHeight: "50px" }}>

@@ -2,10 +2,12 @@ import React, { createContext, useState } from "react";
 const PostContext = createContext();
 export default function PostProvider({ children }) {
   const [postDetail, setPostDetail] = useState();
+  const [historyDetail, setHistoryDetail] = useState();
   const [activeComment, setActiveComment] = useState(null);
   const [tagName, setTagName] = useState(null);
   const [voteList, setVoteList] = useState([]);
   const [reportReasons, setReportReasons] = useState([]);
+  const [isAuthor, setIsAuthor] = useState(false);
   return (
     <PostContext.Provider
       value={{
@@ -19,6 +21,10 @@ export default function PostProvider({ children }) {
         setVoteList,
         reportReasons,
         setReportReasons,
+        isAuthor,
+        setIsAuthor,
+        historyDetail,
+        setHistoryDetail,
       }}
     >
       {children}

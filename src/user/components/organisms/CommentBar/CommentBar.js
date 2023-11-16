@@ -46,8 +46,7 @@ export default function CommentBar({
       spacing={2}
       sx={{
         width: "100%",
-        bgcolor: props.reply || props.edit ? "" : "secondary.alt",
-        p: props.edit ? "" : 2,
+        p: props.edit ? "" : "16px 0",
         borderRadius: "0 0 10px 10px",
         pl: props.reply && "55px",
       }}
