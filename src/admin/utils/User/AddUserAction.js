@@ -74,6 +74,12 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
         hasError = true;
       }
 
+      const phone = data.map((user) => user.phone);
+      if (phone.includes(values.phone)) {
+        formik.setFieldError("phone", "Số điện thoại đã tồn tại");
+        hasError = true;
+      }
+
       const email = data.map((user) => user.email);
       if (email.includes(values.email)) {
         formik.setFieldError("email", "Email đã tồn tại");

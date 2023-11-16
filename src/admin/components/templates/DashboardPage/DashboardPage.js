@@ -10,20 +10,26 @@ import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 import SimpleCharts from "../../molecules/BarChart/SimpleBarChart";
 
+import CircularProgress from "@mui/material/CircularProgress";
+
 function DashboardPage() {
   const auth = useAuth();
   const username = auth?.user;
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const totalReports =
     (data.total_reported_comment || 0) + (data.total_reported_profile || 0);
+
+  const displayTotalReports = loading ? <CircularProgress /> : totalReports;
 
   console.log(data);
 
   const fetchData = async () => {
     const res = await axiosPrivate.get("admin/dashboard");
     setData(res.data);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -36,9 +42,11 @@ function DashboardPage() {
   }-${today.getDate()}`;
 
   const todayVisits =
-    data.total_visit && data.total_visit[todayKey]
-      ? data.total_visit[todayKey]
-      : 0;
+    data.total_visit && data.total_visit[todayKey] ? (
+      data.total_visit[todayKey]
+    ) : (
+      <CircularProgress />
+    );
 
   return (
     <Container maxWidth="xl">
@@ -51,7 +59,7 @@ function DashboardPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Số lượng bài viết"
-              total={data.total_post}
+              total={data.total_post || <CircularProgress />}
               icon={"iconoir:post-solid"}
             />
           </Grid>
@@ -59,7 +67,7 @@ function DashboardPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Số lượng người dùng"
-              total={data.total_user}
+              total={data.total_user || <CircularProgress />}
               color="info"
               icon={"mdi:user"}
             />
@@ -77,7 +85,7 @@ function DashboardPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary
               title="Số lượng báo cáo"
-              total={totalReports}
+              total={displayTotalReports}
               color="error"
               icon={"ic:round-report"}
             />
