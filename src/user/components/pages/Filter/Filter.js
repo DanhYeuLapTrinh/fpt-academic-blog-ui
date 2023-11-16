@@ -3,18 +3,42 @@ import { Container, Stack } from "@mui/material";
 import SearchBar from "../../molecules/SearchBar/SearchBar";
 import useHome from "../../../hooks/useHome";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
+import { Icon } from "@iconify/react";
+import Text from "../../atoms/Text/Text";
+import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 
 export default function Filter() {
-  const { searchPost } = useHome();
+  const { searchPost, accountName, setAccountName } = useHome();
+  window.scrollTo(0, 0);
   return (
-    <Container sx={{ mt: "37px" }}>
+    <Container sx={{ mt: "37px", minHeight: "calc(100vh - 93px)" }}>
       <Stack
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
-        spacing={"12px"}
         width="100%"
+        mb={"20px"}
       >
-        <SearchBar width="100%" />
+        <SearchBar
+          accountName={accountName}
+          setAccountName={setAccountName}
+          width="100%"
+        />
       </Stack>
+      <SectionTitle title="Bài viết liên quan" />
+      {searchPost.postList?.length === 0 && (
+        <Stack
+          width={"100%"}
+          height={"100%"}
+          mt={"80px"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          spacing={2}
+        >
+          <Icon icon="mingcute:sad-line" color="#c3c3c3" width="180" />
+          <Text color="lightText.main" fontSize="20px">
+            Hiện chưa có bài viết nào thuộc nội dung bạn đã tìm kiếm
+          </Text>
+        </Stack>
+      )}
       {searchPost.postList?.map((item) => (
         <RewardedPostsUnder
           key={item?.postId}

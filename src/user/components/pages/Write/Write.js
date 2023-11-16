@@ -1,13 +1,28 @@
 import React from "react";
-import { Button, Container, Stack } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Checkbox,
+  Container,
+  Stack,
+  TextField,
+} from "@mui/material";
 import PostFilter from "../../atoms/PostFilter/PostFilter";
 import TitleField from "../../organisms/TitleField/TitleField";
 import Dropzone from "../../organisms/Dropzone/Dropzone";
 import ContentFiledContainer from "../../organisms/ContentField/ContentFiledContainer";
 import usePostTag from "../../../hooks/usePostTag";
-
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import useContent from "../../../hooks/useContent";
+import Text from "../../atoms/Text/Text";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 export default function Write({ ...props }) {
-  const {tag} = usePostTag()
+  const { tag } = usePostTag();
+  const { topic, setSkills, skills } = useContent();
+  const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
+  const checkedIcon = <CheckBoxIcon fontSize="small" />;
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       <PostFilter
@@ -39,6 +54,36 @@ export default function Write({ ...props }) {
           <ContentFiledContainer />
         </>
       )}
+      <Box minHeight={"50px"} paddingTop={"30px"}>
+        <Autocomplete
+          multiple
+          options={topic}
+          value={skills}
+          fullWidth
+          disableCloseOnSelect
+          popupIcon={<KeyboardArrowDownIcon />}
+          getOptionLabel={(option) => option.skillName}
+          renderOption={(props, option, { selected }) => (
+            <Text {...props}>
+              <Checkbox
+                icon={icon}
+                checkedIcon={checkedIcon}
+                style={{ marginRight: 8 }}
+                checked={selected}
+              />
+              <Text>{option.skillName}</Text>
+            </Text>
+          )}
+          onChange={(event, value) => setSkills(value)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              variant="outlined"
+              placeholder="Chọn từ khóa để chúng tôi phân loại bài viết tốt hơn"
+            />
+          )}
+        />
+      </Box>
       <Stack
         direction={"row"}
         justifyContent={"flex-end"}

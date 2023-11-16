@@ -17,9 +17,15 @@ export default function ApprovedPostService() {
     setIsRewarded,
   } = useManagePost();
   const { isLoading, setIsLoading } = useHome();
-  let sortedApprove = sortByPropertyName(approvedPosts, "", "postId");
+  let sortedApprove = approvedPosts.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
   if (sort !== "Mới nhất") {
-    sortedApprove = sortByPropertyName(approvedPosts, "asc", "postId");
+    sortedApprove = approvedPosts.sort(
+      (a, b) =>
+        new Date(a.dateOfPost).getTime() - new Date(b.dateOfPost).getTime()
+    );
   }
   useEffect(() => {
     const fetchData = async () => {

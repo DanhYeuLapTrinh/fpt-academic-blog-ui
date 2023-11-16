@@ -14,6 +14,7 @@ export default function HomeProvider({ children }) {
   const [accountList, setAccountList] = useState([]);
   const [accountName, setAccountName] = useState("");
   const [searchPost, setSearchPost] = useState("");
+  const [users, setUsers] = useState([]);
   return (
     <HomeContext.Provider
       value={{
@@ -41,7 +42,10 @@ export default function HomeProvider({ children }) {
         setAccountList,
         accountName,
         setAccountName,
-        searchPost, setSearchPost
+        searchPost,
+        setSearchPost,
+        users,
+        setUsers,
       }}
     >
       {children}

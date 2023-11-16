@@ -1,4 +1,4 @@
-import { Button, Container, Stack } from "@mui/material";
+import { Box, Button, Container, Stack } from "@mui/material";
 import React from "react";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
@@ -6,6 +6,8 @@ import Text from "../../atoms/Text/Text";
 import useAuth from "../../../hooks/useAuth";
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import useHome from "../../../hooks/useHome";
+import SearchBar from "../../molecules/SearchBar/SearchBar";
 
 export default function ViewAccountList({
   users,
@@ -13,9 +15,9 @@ export default function ViewAccountList({
   unfollowAccount,
 }) {
   const auth = useAuth();
-
+  console.log(users);
   return (
-    <Container sx={{ mt: "37px", minHeight: "calc(100vh - 93px)" }}>
+    <Box sx={{ mt: "37px", minHeight: "calc(100vh - 93px)" }}>
       <SectionTitle title="Mọi người" />
       <Stack spacing={2}>
         {users?.map((item) => (
@@ -71,6 +73,6 @@ export default function ViewAccountList({
           </Stack>
         ))}
       </Stack>
-    </Container>
+    </Box>
   );
 }

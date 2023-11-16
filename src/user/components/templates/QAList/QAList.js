@@ -29,24 +29,26 @@ export default function QAList(props) {
             text={item.numberOfComment}
           />
         ))}
-        <IconButton
-          onClick={
-            displayedQA < props?.qaList?.length ? handleSeeMore : handleSeeLess
-          }
-          disableFocusRipple
-          disableRipple
-          disableTouchRipple
+        <Box
+          sx={{
+            width: "100%",
+            height: "39px",
+            bgcolor: "secondary.alt",
+            borderRadius: "10px",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          <Box
-            sx={{
-              width: "100%",
-              height: "39px",
-              bgcolor: "secondary.alt",
-              borderRadius: "10px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+          <IconButton
+            onClick={
+              displayedQA < props?.qaList?.length
+                ? handleSeeMore
+                : handleSeeLess
+            }
+            disableFocusRipple
+            disableRipple
+            disableTouchRipple
           >
             {displayedQA < props?.qaList?.length ? (
               <Text fontSize="12px" color="primary.main">
@@ -57,8 +59,8 @@ export default function QAList(props) {
                 Thu nhỏ
               </Text>
             )}
-          </Box>
-        </IconButton>
+          </IconButton>
+        </Box>
       </Stack>
     </Box>
   );

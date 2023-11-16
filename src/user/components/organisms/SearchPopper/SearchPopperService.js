@@ -4,13 +4,14 @@ import usePostTag from "../../../hooks/usePostTag";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import useHome from "../../../hooks/useHome";
+import { toast } from "react-toastify";
 
 export default function SearchPopperService() {
   const [inputTitle, setInputTitle] = useState(null);
-  const [inputContent, setInputContent] = useState("");
+  const [inputContent, setInputContent] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
-  const {searchPost, setSearchPost} = useHome()
-  const navigate = useNavigate()
+  const { searchPost, setSearchPost } = useHome();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,16 +37,22 @@ export default function SearchPopperService() {
 
   const handleSearch = async () => {
     try {
-      let response = await axiosPrivate.post(process.env.REACT_APP_FILTER_POSTS_HOME, {
-        title: inputTitle,
-        listTagsAndCategories: inputContent
-      })
-      setSearchPost(response?.data)
-      navigate("/filter")
-    } catch (error) {
-      
-    }
-  }
+      if(inputTitle === null && inputContent === "") {
+        toast.error("Vui lòng nhập tiêu đề hoặc chủ đề để tìm kiếm")
+        return
+      }
+      let response = await axiosPrivate.post(
+        process.env.REACT_APP_FILTER_POSTS_HOME,
+        {
+          title: inputTitle,
+          listTagsAndCategories: inputContent,
+        }
+      );
+      setSearchPost(response?.data);
+      setOpen(false);
+      navigate("/filter");
+    } catch (error) {}
+  };
   return (
     <SearchPopper
       categoryList={categoryList}

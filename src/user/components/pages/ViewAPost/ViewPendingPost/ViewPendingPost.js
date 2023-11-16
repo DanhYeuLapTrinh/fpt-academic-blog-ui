@@ -27,11 +27,12 @@ export default function ViewPendingPost(props) {
         tagID={props.data?.tag?.tagId}
         userId={props.data?.userId}
       />
-      {props.data.originSlug && (
+      {props.data?.reasonOfDecline && (
         <PopupEdit
-          oldLink={props.oldLink?.slug}
-          oldName={props.oldLink?.title}
-          label="Đây là một bài viết đã được chỉnh sửa dựa trên bài có tên:"
+          bgcolor="primary.main"
+          label="Bài viết này đã từng bị từ chối vì lý do"
+          content={props.data?.reasonOfDecline}
+          color="secondary.main"
         />
       )}
       <div className={styles.contentWrapper}>

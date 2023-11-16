@@ -1,6 +1,6 @@
 import React from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
-import { Box, IconButton, Stack } from "@mui/material";
+import { Box, Chip, Divider, IconButton, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 import { timeConverter } from "../../../utils/StringMethod";
@@ -14,6 +14,7 @@ export default function Comment({
   addComment,
   editComment,
   setInitialValue,
+  comment,
   ...props
 }) {
   const auth = useAuth();
@@ -28,9 +29,9 @@ export default function Comment({
     activeComment.type === "edit";
   const replyId = props.parentId ? props.parentId : props.commentId;
   return (
-    <Stack>
-      <Stack ml={props.ml} p={2} spacing={1} direction={"row"}>
-        <Box width={"5%"}>
+    <Stack pl={props.ml} width={"100%"}>
+      <Stack p={"16px 0"} spacing={2} direction={"row"}>
+        <Box>
           <Link
             to={`/profile/${props.userId}`}
             style={{ textDecoration: "none" }}
@@ -42,47 +43,78 @@ export default function Comment({
           <Stack direction={"row"} spacing={1} width={"100%"}>
             {!isEditing && (
               <Stack
-                minWidth={"300px"}
+                direction={"row"}
+                width={"100%"}
                 bgcolor={"secondary.alt"}
-                p={1}
+                minHeight={"80px"}
                 borderRadius={"10px"}
               >
-                <Link
-                  to={`/profile/${props.userId}`}
-                  style={{ textDecoration: "none" }}
+                <Stack
+                  width={"100%"}
+                  p={2}
+                  height={"100%"}
+                  justifyContent={"space-evenly"}
                 >
-                  <Text color="primary.main" fontSize="17px">
-                    {props.author}
+                  <Stack
+                    direction={"row"}
+                    spacing={"10px"}
+                    alignItems={"center"}
+                  >
+                    <Link
+                      to={`/profile/${props.userId}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Text fontSize="17px">{props.author}</Text>
+                    </Link>
+                    {comment?.userBadges[0] && (
+                      <Text>
+                        <Chip
+                          label={
+                            comment?.userBadges[0].badgeName === "Lecturer"
+                              ? "Giảng viên"
+                              : comment?.userBadges[0].badgeName
+                          }
+                          size="small"
+                          sx={{
+                            minWidth: "50px",
+                            borderRadius: "5px",
+                            color: "primary.main",
+                          }}
+                        />
+                      </Text>
+                    )}
+                    <Text fontSize="12px" fontWeight="400">
+                      {props.time}
+                    </Text>
+                  </Stack>
+                  <Text fontWeight="400" fontSize="15px">
+                    {props.content}
                   </Text>
-                </Link>
-                <Text fontWeight="400" fontSize="15px">
-                  {props.content}
-                </Text>
+                </Stack>
+                {!isEditing && (
+                  <CommentMenuOptionListService
+                    comment={comment}
+                    deleteComment={deleteComment}
+                  />
+                )}
               </Stack>
             )}
-            {isEditing && (
-              <CommentBar
-                hasCancelButton
-                autoFocus
-                auth={auth}
-                edit
-                initialText={props.content}
-                handleEdit={(e) => editComment(props.comment.commentId, e)}
-              />
-            )}
-            {!isEditing && (
-              <CommentMenuOptionListService
-                comment={props.comment}
-                deleteComment={deleteComment}
-              />
-            )}
           </Stack>
+          {isEditing && (
+            <CommentBar
+              hasCancelButton
+              autoFocus
+              auth={auth}
+              edit
+              initialText={props.content}
+              handleEdit={(e) => editComment(comment.commentId, e)}
+            />
+          )}
           {!isEditing && (
             <Stack direction={"row"} spacing={2} alignItems={"center"}>
-              <Text fontSize="12px">{props.time}</Text>
               <CommentInteractionService
-                vote={props.comment?.numOfUpvote - props.comment?.numOfDownvote}
-                comment={props.comment}
+                vote={comment?.numOfUpvote - comment?.numOfDownvote}
+                comment={comment}
               />
               <IconButton
                 disableFocusRipple
@@ -112,7 +144,7 @@ export default function Comment({
         props.replies.map((reply) => (
           <Comment
             key={reply.commentId}
-            ml={"55px"}
+            ml="55px"
             content={reply.content}
             author={reply.accountName}
             userId={reply.userId}
@@ -124,7 +156,7 @@ export default function Comment({
             deleteComment={deleteComment}
             replies={[]}
             comment={reply}
-            vote={props.comment?.numOfUpvote - props.comment?.numOfDownvote}
+            vote={comment?.numOfUpvote - comment?.numOfDownvote}
           />
         ))}
     </Stack>

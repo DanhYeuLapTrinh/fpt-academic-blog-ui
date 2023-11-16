@@ -15,11 +15,11 @@ export default function HomeService() {
     allPosts,
     shortPosts,
     setShortPosts,
-    userAccounts,
     setUserAccounts,
     trendingTags,
     setTrendingTags,
-    qaList, setQAList
+    qaList,
+    setQAList,
   } = useHome();
   const [trendingPostsHome, setTrendingPostsHome] = useState();
 
@@ -86,14 +86,12 @@ export default function HomeService() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let qaList = await axiosPrivate.get(
-          process.env.REACT_APP_QA_LIST
-        );
+        let qaList = await axiosPrivate.get(process.env.REACT_APP_QA_LIST);
         setQAList(qaList?.data);
       } catch (error) {}
-    }
-    if(shortPosts) fetchData()
-  }, [shortPosts])
+    };
+    if (shortPosts) fetchData();
+  }, [shortPosts]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -112,7 +110,6 @@ export default function HomeService() {
       trendingPostsHome={trendingPostsHome}
       rewardedPosts={rewardedPosts}
       latestPosts={latestPosts}
-      allPosts={allPosts}
       shortPosts={shortPosts}
       trendingTags={trendingTags}
       qaList={qaList}

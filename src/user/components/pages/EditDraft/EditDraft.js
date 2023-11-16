@@ -21,6 +21,7 @@ import Dropzone from "../../organisms/Dropzone/Dropzone";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import usePostTag from "../../../hooks/usePostTag";
+import PopupEdit from "../../organisms/PopupEdit/PopupEdit";
 export default function EditDraft({ draft, ...props }) {
   const [isSaving, setIsSaving] = useState("Chưa lưu");
   const { tag } = usePostTag();
@@ -92,6 +93,14 @@ export default function EditDraft({ draft, ...props }) {
             </IconButton>
           </Tooltip>
         </Stack>
+      )}
+      {draft.reasonOfDecline && (
+        <PopupEdit
+          bgcolor="primary.main"
+          label="Lý do từ chối"
+          content={draft.reasonOfDecline}
+          color="secondary.main"
+        />
       )}
       <TitleField draft title />
       <Dropzone />
