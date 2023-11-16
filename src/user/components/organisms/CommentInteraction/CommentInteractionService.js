@@ -20,7 +20,6 @@ export default function CommentInteractionService({ comment, ...props }) {
         setVoted(true);
       }
     }
-    
   }, [voteList]);
 
   const handleUpvoteComment = async () => {

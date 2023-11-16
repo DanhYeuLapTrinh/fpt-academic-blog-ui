@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 
 export default function SearchPopperService() {
   const [inputTitle, setInputTitle] = useState(null);
-  const [inputContent, setInputContent] = useState("");
+  const [inputContent, setInputContent] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const { searchPost, setSearchPost } = useHome();
   const navigate = useNavigate();

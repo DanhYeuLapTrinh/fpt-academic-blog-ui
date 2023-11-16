@@ -1,6 +1,6 @@
 import React from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
-import { Box, IconButton, Stack } from "@mui/material";
+import { Box, Chip, Divider, IconButton, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 import { timeConverter } from "../../../utils/StringMethod";
@@ -14,6 +14,7 @@ export default function Comment({
   addComment,
   editComment,
   setInitialValue,
+  comment,
   ...props
 }) {
   const auth = useAuth();
@@ -28,8 +29,8 @@ export default function Comment({
     activeComment.type === "edit";
   const replyId = props.parentId ? props.parentId : props.commentId;
   return (
-    <Stack>
-      <Stack ml={props.ml} p={"16px 0"} spacing={2} direction={"row"}>
+    <Stack pl={props.ml} width={"100%"}>
+      <Stack p={"16px 0"} spacing={2} direction={"row"}>
         <Box>
           <Link
             to={`/profile/${props.userId}`}
@@ -54,16 +55,35 @@ export default function Comment({
                   height={"100%"}
                   justifyContent={"space-evenly"}
                 >
-                  <Stack direction={"row"} spacing={2} alignItems={"center"}>
+                  <Stack
+                    direction={"row"}
+                    spacing={"10px"}
+                    alignItems={"center"}
+                  >
                     <Link
                       to={`/profile/${props.userId}`}
                       style={{ textDecoration: "none" }}
                     >
-                      <Text color="primary.main" fontSize="17px">
-                        {props.author}
-                      </Text>
+                      <Text fontSize="17px">{props.author}</Text>
                     </Link>
-                    <Text fontSize="13px" fontWeight="400">
+                    {comment?.userBadges[0] && (
+                      <Text>
+                        <Chip
+                          label={
+                            comment?.userBadges[0].badgeName === "Lecturer"
+                              ? "Giảng viên"
+                              : comment?.userBadges[0].badgeName
+                          }
+                          size="small"
+                          sx={{
+                            minWidth: "50px",
+                            borderRadius: "5px",
+                            color: "primary.main",
+                          }}
+                        />
+                      </Text>
+                    )}
+                    <Text fontSize="12px" fontWeight="400">
                       {props.time}
                     </Text>
                   </Stack>
@@ -73,7 +93,7 @@ export default function Comment({
                 </Stack>
                 {!isEditing && (
                   <CommentMenuOptionListService
-                    comment={props.comment}
+                    comment={comment}
                     deleteComment={deleteComment}
                   />
                 )}
@@ -87,14 +107,14 @@ export default function Comment({
               auth={auth}
               edit
               initialText={props.content}
-              handleEdit={(e) => editComment(props.comment.commentId, e)}
+              handleEdit={(e) => editComment(comment.commentId, e)}
             />
           )}
           {!isEditing && (
             <Stack direction={"row"} spacing={2} alignItems={"center"}>
               <CommentInteractionService
-                vote={props.comment?.numOfUpvote - props.comment?.numOfDownvote}
-                comment={props.comment}
+                vote={comment?.numOfUpvote - comment?.numOfDownvote}
+                comment={comment}
               />
               <IconButton
                 disableFocusRipple
@@ -124,7 +144,7 @@ export default function Comment({
         props.replies.map((reply) => (
           <Comment
             key={reply.commentId}
-            ml={"55px"}
+            ml="55px"
             content={reply.content}
             author={reply.accountName}
             userId={reply.userId}
@@ -136,7 +156,7 @@ export default function Comment({
             deleteComment={deleteComment}
             replies={[]}
             comment={reply}
-            vote={props.comment?.numOfUpvote - props.comment?.numOfDownvote}
+            vote={comment?.numOfUpvote - comment?.numOfDownvote}
           />
         ))}
     </Stack>

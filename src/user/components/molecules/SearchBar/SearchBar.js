@@ -14,7 +14,7 @@ export default function SearchBar({
     if (e.keyCode === 13 && e.shiftKey === false && e.target.value !== "") {
       setAccountName(e.target.value);
       navigate(`/accounts/${e.target.value}`);
-      setAccountName("");
+      // setAccountName("");
     }
   };
   return (

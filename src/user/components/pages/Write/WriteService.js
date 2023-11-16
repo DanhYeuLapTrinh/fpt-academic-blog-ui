@@ -20,6 +20,8 @@ export default function WriteService() {
     wordcount,
     setCharCount,
     setFile,
+    setTopic,
+    skills,
   } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -92,6 +94,10 @@ export default function WriteService() {
         } else if (charCount < 30) {
           toast.error("Tiêu đề quá ngắn");
           return;
+        } else if (skills.length === 0) {
+          console.log(skills);
+          toast.error("Vui lòng chọn từ khóa");
+          return;
         }
         let apiCallURL =
           e.target.value === "draft"
@@ -100,6 +106,7 @@ export default function WriteService() {
         let slug = toSlug(title);
         let description = getFirstTagContent(contentTiny);
         let postCoverURL = tag !== "Q&A" ? coverURL : "";
+        let skillsArr = skills.map((item) => item.skillName);
         let response = await axiosPrivate.post(apiCallURL, {
           title: title,
           description: description,
@@ -110,6 +117,7 @@ export default function WriteService() {
           coverURL: postCoverURL,
           slug: slug,
           length: wordcount,
+          postSkill: skillsArr,
         });
         if (response.status === 200) {
           localStorage.removeItem("content");
@@ -131,7 +139,7 @@ export default function WriteService() {
         toast.error("Có lỗi trong quá trình xử lý");
       }
     },
-    [tagID, subjectID, contentTiny, title, coverURL, tag]
+    [tagID, subjectID, contentTiny, title, coverURL, tag, skills]
   );
 
   useEffect(() => {
@@ -153,8 +161,18 @@ export default function WriteService() {
         setTagList(tagList.data);
       } catch (error) {}
     };
-    fetchData();
-  }, []);
+    if (data) fetchData();
+  }, [data]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const topics = await axiosPrivate.get(process.env.REACT_APP_GET_TOPICS);
+        setTopic(topics.data);
+      } catch (error) {}
+    };
+    if (tagList) fetchData();
+  }, [tagList]);
 
   return (
     <Write

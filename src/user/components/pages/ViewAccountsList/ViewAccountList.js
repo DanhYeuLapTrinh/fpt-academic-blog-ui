@@ -10,21 +10,14 @@ import useHome from "../../../hooks/useHome";
 import SearchBar from "../../molecules/SearchBar/SearchBar";
 
 export default function ViewAccountList({
+  users,
   followAccount,
   unfollowAccount,
 }) {
   const auth = useAuth();
-  const { accountName, setAccountName, users } = useHome();
+  console.log(users);
   return (
-    <Container sx={{ mt: "37px", minHeight: "calc(100vh - 93px)" }}>
-      <Box mb={"20px"}>
-        <SearchBar
-          accountName={accountName}
-          setAccountName={setAccountName}
-          width="100%"
-          noRefresh
-        />
-      </Box>
+    <Box sx={{ mt: "37px", minHeight: "calc(100vh - 93px)" }}>
       <SectionTitle title="Mọi người" />
       <Stack spacing={2}>
         {users?.map((item) => (
@@ -80,6 +73,6 @@ export default function ViewAccountList({
           </Stack>
         ))}
       </Stack>
-    </Container>
+    </Box>
   );
 }

@@ -273,28 +273,21 @@ export default function ViewAPostService() {
       {!postDetail ? (
         <ViewAPostSkeleton />
       ) : (
-        <Container>
-          <Grid2 container>
-            <Grid2 xs={8}>
-              <ViewAPost
-                data={postDetail}
-                auth={auth}
-                isFollowing={isFollowing}
-                followAccount={followAccount}
-                unfollowAccount={unfollowAccount}
-                isFavored={isFavored}
-                addToFavorite={addToFavorite}
-                removeFromFavorite={removeFromFavorite}
-                vote={vote}
-                select={select}
-                setSelect={setSelect}
-                handleUpvote={handleUpvote}
-                handleDownvote={handleDownvote}
-              />
-            </Grid2>
-            <Grid2 xs={4}></Grid2>
-          </Grid2>
-        </Container>
+        <ViewAPost
+          data={postDetail}
+          auth={auth}
+          isFollowing={isFollowing}
+          followAccount={followAccount}
+          unfollowAccount={unfollowAccount}
+          isFavored={isFavored}
+          addToFavorite={addToFavorite}
+          removeFromFavorite={removeFromFavorite}
+          vote={vote}
+          select={select}
+          setSelect={setSelect}
+          handleUpvote={handleUpvote}
+          handleDownvote={handleDownvote}
+        />
       )}
     </>
   );
