@@ -8,10 +8,7 @@ import BanUnbanUser from "../../../utils/User/BanUnbanAction/BanUnbanAction";
 import { toast } from "react-toastify";
 import MuteModal from "../../atoms/MuteModal/MuteModal";
 import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
-import {
-  muteButtonSx,
-  unmuteButtonSx,
-} from "../../atoms/MuteUnmuteButtonColor";
+import { useUserContext } from "../../../context/UserContext";
 
 import TextField from "@mui/material/TextField";
 import SearchIcon from "@mui/icons-material/Search";
@@ -35,15 +32,14 @@ import {
 } from "@mui/material";
 
 import "./styles.scss";
+import { Link } from "react-router-dom";
 
 function UserResultList() {
   const axiosPrivate = useAxiosPrivate();
 
   const [isAddUserFormOpen, setAddUserFormOpen] = useState(false);
 
-  const [data, setData] = useState([]);
-
-  const [records, setRecords] = useState([]);
+  const { data, setData, records, setRecords } = useUserContext();
 
   const [showMuteModal, setShowMuteModal] = useState(false);
 
@@ -292,13 +288,6 @@ function UserResultList() {
 
   const columns = [
     {
-      field: "id",
-      headerClassName: "super-app-theme--header",
-      headerName: "ID",
-      sortable: false,
-      width: 100,
-    },
-    {
       field: "username",
       headerClassName: "super-app-theme--header",
       headerName: "Tài khoản",
@@ -385,7 +374,7 @@ function UserResultList() {
       headerClassName: "super-app-theme--header",
       headerName: "Hành động",
       sortable: false,
-      flex: 1,
+      width: 120,
       renderCell: (params) => (
         <Grid container direction="row" spacing={1}>
           <Grid item xs={12}>
@@ -399,6 +388,34 @@ function UserResultList() {
             />
           </Grid>
         </Grid>
+      ),
+    },
+
+    {
+      field: "detail",
+      headerClassName: "super-app-theme--header",
+      headerName: "",
+      sortable: false,
+      flex: 1,
+      renderCell: (params) => (
+        <Link to={`/users/view/${params.row.id}`}>
+          <Button
+            sx={{
+              backgroundColor: "#4caf50",
+              color: "#fff",
+              border: "none",
+              padding: "5px 10px",
+              borderRadius: "20px",
+              cursor: "pointer",
+              marginRight: "10px",
+              "&:hover": {
+                backgroundColor: "#357a38",
+              },
+            }}
+          >
+            Xem hồ sơ
+          </Button>
+        </Link>
       ),
     },
   ];
@@ -446,7 +463,6 @@ function UserResultList() {
               label="Role"
             >
               <MenuItem value="">Chọn vai trò</MenuItem>
-              <MenuItem value="admin">Admin</MenuItem>
               <MenuItem value="lecturer">Lecturer</MenuItem>
               <MenuItem value="mentor">Mentor</MenuItem>
               <MenuItem value="student">Student</MenuItem>
