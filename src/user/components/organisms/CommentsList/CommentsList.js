@@ -1,6 +1,6 @@
 import React from "react";
 import Comment from "../../molecules/Comment/Comment";
-import { Stack } from "@mui/material";
+import { Divider, Stack } from "@mui/material";
 import { timeConverter } from "../../../utils/StringMethod";
 import usePost from "../../../hooks/usePost";
 
