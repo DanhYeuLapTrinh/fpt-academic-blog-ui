@@ -7,13 +7,17 @@ import { Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
 import { useParams } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
+import useHome from "../../../hooks/useHome";
 
 export default function ViewAccoutListService() {
   const axiosPrivate = useAxiosPrivate();
-  const [users, setUsers] = useState([]);
+  const { users, setUsers, setAccountName } = useHome();
   const { id } = useParams();
   const auth = useAuth();
   let hasMoreUsers = true;
+  useEffect(() => {
+    setAccountName(id);
+  }, [id]);
   const fetchData = async (page, usersOfPage) => {
     let response = await axiosPrivate.post(
       process.env.REACT_APP_SEARCH_ACCOUNT,
@@ -26,6 +30,20 @@ export default function ViewAccoutListService() {
     return { users: [...response?.data], prevOffset: page };
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    const getUser = async () => {
+      try {
+        const data = await fetchData(1, 10);
+        console.log(data);
+        if (data) {
+          setUsers(data?.users);
+        }
+      } catch (error) {}
+    };
+    getUser();
+  }, [id]);
+
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["users"],
     queryFn: ({ pageParam = 1 }) => fetchData(pageParam, 10),
@@ -36,15 +54,6 @@ export default function ViewAccoutListService() {
       return lastPage.prevOffset + 1;
     },
   });
-
-  useEffect(() => {
-    setUsers(
-      data?.pages.reduce((acc, page) => {
-        return [...acc, ...page.users];
-      }, [])
-    );
-    window.scrollTo(0, 0);
-  }, [data]);
 
   const followAccount = async (inputId) => {
     try {
@@ -110,7 +119,6 @@ export default function ViewAccoutListService() {
       style={{ marginBottom: "20px" }}
     >
       <ViewAccountList
-        users={users}
         followAccount={followAccount}
         unfollowAccount={unfollowAccount}
       />

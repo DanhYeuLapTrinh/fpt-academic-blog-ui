@@ -5,7 +5,7 @@ import Text from "../../atoms/Text/Text";
 
 export default function PostInteraction(props) {
   return (
-    <div style={{ backgroundColor: "#f7f9fc", padding: "0 20px" }}>
+    <div>
       <Divider orientation="horizontal" />
       <Stack
         direction={"row"}

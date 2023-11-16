@@ -1,14 +1,22 @@
-import { IconButton, InputBase, Paper, TextField } from "@mui/material";
+import { IconButton, Paper, TextField } from "@mui/material";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import React from "react";
 import SearchPopperService from "../../organisms/SearchPopper/SearchPopperService";
+import { useNavigate } from "react-router-dom";
 
 export default function SearchBar({
-  handleSearchAccount,
   accountName,
   setAccountName,
   ...props
 }) {
+  const navigate = useNavigate();
+  const handleSearchAccount = (e) => {
+    if (e.keyCode === 13 && e.shiftKey === false && e.target.value !== "") {
+      setAccountName(e.target.value);
+      navigate(`/accounts/${e.target.value}`);
+      setAccountName("");
+    }
+  };
   return (
     <Paper
       elevation={3}

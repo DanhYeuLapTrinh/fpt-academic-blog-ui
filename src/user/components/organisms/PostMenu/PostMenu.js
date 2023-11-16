@@ -11,16 +11,16 @@ export default function PostMenu({ menu }) {
         <Stack
           sx={{
             bgcolor: "secondary.alt",
-            p: 5,
+            p: 3,
             borderRadius: "10px",
             m: "20px 0",
           }}
           spacing={1}
         >
-          <Text fontSize="26px" fontWeight="600">Đề mục</Text>
+          <Text fontSize="24px" fontWeight="600">Đề mục</Text>
           {headings.map((heading) => (
             <Stack direction={"row"} alignItems={"center"} spacing={"12px"}>
-              <Text fontSize="20px" color="primary.main">
+              <Text fontSize="18px" color="primary.main">
                 <a
                   style={{
                     textDecoration: "none",

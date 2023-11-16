@@ -5,13 +5,20 @@ import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import useAuth from "../../../../hooks/useAuth";
 import ViewAPostSkeleton from "../../../organisms/Skeleton/ViewAPostSkeleton/ViewAPostSkeleton";
 import usePost from "../../../../hooks/usePost";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { Container } from "@mui/material";
 
 export default function ViewAPostService() {
   const { slug } = useParams();
   const auth = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const { postDetail, setPostDetail, setVoteList, setReportReasons } =
-    usePost();
+  const {
+    postDetail,
+    setPostDetail,
+    setVoteList,
+    setReportReasons,
+    setHistoryDetail,
+  } = usePost();
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFavored, setIsFavored] = useState(false);
   const [vote, setVote] = useState(0);
@@ -30,13 +37,35 @@ export default function ViewAPostService() {
         );
         setPostDetail(response?.data);
         setVote(response?.data?.numOfUpVote - response?.data?.numOfDownVote);
+        if (response?.data?.is_edited) {
+          try {
+            const fetchData = async () => {
+              try {
+                let response = await axiosPrivate.post(
+                  process.env.REACT_APP_GET_POST_HISTORY,
+                  {
+                    postId: postDetail.postId,
+                  }
+                );
+                if (response?.data.length > 0) {
+                  setHistoryDetail(response?.data[0]);
+                }
+              } catch (error) {
+                console.log(error);
+              }
+            };
+            fetchData();
+          } catch (error) {}
+        } else {
+          setHistoryDetail(null);
+        }
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
     window.scrollTo(0, 0);
-  }, [slug]);
+  }, [slug, postDetail?.postId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,7 +85,7 @@ export default function ViewAPostService() {
       }
     };
     if (postDetail) fetchData();
-  }, [postDetail]);
+  }, [postDetail?.postId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,7 +108,7 @@ export default function ViewAPostService() {
       }
     };
     if (postDetail && auth.id !== postDetail?.userId) fetchData();
-  }, [postDetail]);
+  }, [postDetail?.postId]);
 
   const followAccount = async () => {
     try {
@@ -244,21 +273,28 @@ export default function ViewAPostService() {
       {!postDetail ? (
         <ViewAPostSkeleton />
       ) : (
-        <ViewAPost
-          data={postDetail}
-          auth={auth}
-          isFollowing={isFollowing}
-          followAccount={followAccount}
-          unfollowAccount={unfollowAccount}
-          isFavored={isFavored}
-          addToFavorite={addToFavorite}
-          removeFromFavorite={removeFromFavorite}
-          vote={vote}
-          select={select}
-          setSelect={setSelect}
-          handleUpvote={handleUpvote}
-          handleDownvote={handleDownvote}
-        />
+        <Container>
+          <Grid2 container>
+            <Grid2 xs={8}>
+              <ViewAPost
+                data={postDetail}
+                auth={auth}
+                isFollowing={isFollowing}
+                followAccount={followAccount}
+                unfollowAccount={unfollowAccount}
+                isFavored={isFavored}
+                addToFavorite={addToFavorite}
+                removeFromFavorite={removeFromFavorite}
+                vote={vote}
+                select={select}
+                setSelect={setSelect}
+                handleUpvote={handleUpvote}
+                handleDownvote={handleDownvote}
+              />
+            </Grid2>
+            <Grid2 xs={4}></Grid2>
+          </Grid2>
+        </Container>
       )}
     </>
   );
