@@ -44,6 +44,7 @@ export default function RewardedPostList() {
                     tagName={item?.tag.tagName}
                     tagID={item?.tag.tagId}
                     isRewarded={item?.is_rewarded}
+                    rewarder={item?.rewarder}
                     slug={"/view/" + item.slug}
                     userId={item?.userId}
                   />

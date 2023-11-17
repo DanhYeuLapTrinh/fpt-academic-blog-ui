@@ -29,6 +29,7 @@ export default function ViewProfileService() {
             userId: profileID,
           }
         );
+        console.log("View profile")
         setUser(profileInfo?.data);
       } catch (error) {}
     };

@@ -20,7 +20,7 @@ import { Link } from "react-router-dom";
 import usePost from "../../../hooks/usePost";
 import ViewAPost from "../../pages/ViewAPost/ViewAPost/ViewAPost";
 
-export default function PostMenuOptionList(props) {
+export default function PostMenuOptionList({postDetail, ...props}) {
   const [open, setOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const { historyDetail } = usePost();
@@ -81,7 +81,7 @@ export default function PostMenuOptionList(props) {
       <Box sx={{ position: "relative" }}>
         <Dialog open={open} maxWidth="lg">
           <DialogContent sx={{ p: 5 }}>
-            <ViewAPost previewHistory data={historyDetail}/>
+            <ViewAPost previewHistory postDetail={historyDetail}/>
           </DialogContent>
           <DialogActions sx={{ position: "absolute", right: 20, top: 20 }}>
             <IconButton
@@ -99,7 +99,7 @@ export default function PostMenuOptionList(props) {
       {isAuthor && (
         <>
           <Link
-            to={`/edit/${props.data.slug}`}
+            to={`/edit/${postDetail?.slug}`}
             style={{ textDecoration: "none" }}
           >
             <MenuItem onClick={handleClickOpen}>

@@ -10,6 +10,7 @@ export default function HomeService() {
     latestPosts,
     setLatestPosts,
     trendingPosts,
+    setTrendingPosts,
     rewardedPosts,
     setRewardedPosts,
     allPosts,
@@ -20,8 +21,9 @@ export default function HomeService() {
     setTrendingTags,
     qaList,
     setQAList,
+    categoryList,
   } = useHome();
-  const [trendingPostsHome, setTrendingPostsHome] = useState();
+  const { avatarURL } = useProfile();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,11 +31,11 @@ export default function HomeService() {
         let trendingPosts = await axiosPrivate.get(
           process.env.REACT_APP_TRENDING_POSTS
         );
-        setTrendingPostsHome(trendingPosts?.data?.slice(0, 4));
+        setTrendingPosts(trendingPosts?.data?.slice(0, 4));
       } catch (error) {}
     };
-    fetchData();
-  }, []);
+    if (avatarURL) fetchData();
+  }, [avatarURL]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,8 +46,8 @@ export default function HomeService() {
         setLatestPosts(latestPosts?.data);
       } catch (error) {}
     };
-    if (trendingPostsHome) fetchData();
-  }, [trendingPostsHome]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,21 +95,21 @@ export default function HomeService() {
     if (shortPosts) fetchData();
   }, [shortPosts]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let userAccounts = await axiosPrivate.get(
-          process.env.REACT_APP_ACCOUNTS_LIST
-        );
-        setUserAccounts(userAccounts?.data);
-      } catch (error) {}
-    };
-    if (qaList) fetchData();
-  }, [qaList]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       let userAccounts = await axiosPrivate.get(
+  //         process.env.REACT_APP_ACCOUNTS_LIST
+  //       );
+  //       setUserAccounts(userAccounts?.data);
+  //     } catch (error) {}
+  //   };
+  //   if (qaList) fetchData();
+  // }, [qaList]);
 
   return (
     <Home
-      trendingPostsHome={trendingPostsHome}
+      trendingPosts={trendingPosts}
       rewardedPosts={rewardedPosts}
       latestPosts={latestPosts}
       shortPosts={shortPosts}

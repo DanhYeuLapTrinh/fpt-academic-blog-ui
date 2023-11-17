@@ -1,6 +1,6 @@
 import React from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
-import { Box, Chip, Divider, IconButton, Stack } from "@mui/material";
+import { Box, Chip, IconButton, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 import { timeConverter } from "../../../utils/StringMethod";
@@ -66,13 +66,13 @@ export default function Comment({
                     >
                       <Text fontSize="17px">{props.author}</Text>
                     </Link>
-                    {comment?.userBadges[0] && (
+                    {comment?.userBadges?.map((item) => (
                       <Text>
                         <Chip
                           label={
-                            comment?.userBadges[0].badgeName === "Lecturer"
+                            item.badgeName === "Lecturer"
                               ? "Giảng viên"
-                              : comment?.userBadges[0].badgeName
+                              : item.badgeName
                           }
                           size="small"
                           sx={{
@@ -82,7 +82,7 @@ export default function Comment({
                           }}
                         />
                       </Text>
-                    )}
+                    ))}
                     <Text fontSize="12px" fontWeight="400">
                       {props.time}
                     </Text>

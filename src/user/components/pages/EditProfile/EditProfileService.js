@@ -17,6 +17,7 @@ export default function EditProfileService() {
           }
         );
         setProfile(profileInfo?.data);
+        console.log("Edit profile")
       } catch (error) {}
     };
     fetchData();

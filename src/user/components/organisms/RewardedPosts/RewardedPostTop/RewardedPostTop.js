@@ -24,6 +24,7 @@ export default function RewardedPostTop(props) {
           isRewarded={props.rewardedPosts[0]?.is_rewarded}
           slug={props.rewardedPosts[0]?.slug}
           userId={props.rewardedPosts[0]?.userId}
+          rewarder={props.rewardedPosts[0]?.rewarder}
           height="430px"
           clamp="3"
           title="32px"

@@ -34,6 +34,7 @@ export default function CommentBar({
             userId: auth.id,
           }
         );
+        console.log("Comment bar")
         if(profileInfo) {
           setAvatarURL(profileInfo?.data?.profileUrl)
         }
