@@ -26,6 +26,7 @@
     "date-fns": "^2.30.0",
     "firebase": "^10.6.0",
     "formik": "^2.4.5",
+    "framer-motion": "^10.16.5",
     "fs-extra": "^11.1.1",
     "material-ui-popup-state": "^5.0.10",
     "prop-types": "^15.8.1",

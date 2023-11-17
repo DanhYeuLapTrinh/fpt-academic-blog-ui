@@ -15,6 +15,7 @@ import AddNews from "../admin/components/pages/AddNews/AddNews";
 import DetailNew from "../admin/components/pages/DetailNew/DetailNew";
 import ReportedProfileDetail from "../admin/components/pages/ReportedProfileDetail/ReportedProfileDetail";
 import UserDetail from "../admin/components/pages/UserDetail/UserDetail";
+import SkillsPageService from "../admin/components/pages/Skills/SkillsPageService";
 
 import WriteService from "../user/components/pages/Write/WriteService";
 import PendingPostsService from "../user/components/pages/PendingPosts/PendingPostsService";
@@ -117,6 +118,8 @@ const loggedInAdminRoutes = [
   { path: "/news-admin", component: NewsPage },
   { path: "news/view/:id", component: DetailNew },
   { path: "/add-news", component: AddNews },
+  //Skills Page
+  { path: "/skills-list", component: SkillsPageService },
 ];
 
 export {

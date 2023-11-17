@@ -18,4 +18,11 @@ const BoxSx = {
   gap: 5,
 };
 
-export { PaperSx, BoxSx };
+const StackSx = {
+  display: "flex",
+  gap: 2,
+  marginTop: 5,
+  alignItems: "flex-end",
+};
+
+export { PaperSx, BoxSx, StackSx };
