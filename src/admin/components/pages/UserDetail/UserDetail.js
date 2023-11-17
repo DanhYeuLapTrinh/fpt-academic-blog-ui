@@ -1,15 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TitleHeader from "../../atoms/TitleHeader/TitleHeader";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Avatar, Box, Container, Grid, Paper, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useUserContext } from "../../../context/UserContext";
+import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import InformationDetail from "../../organisms/UserDetail/InformationDetail";
-
+import AvatarDetail from "../../organisms/UserDetail/AvatarDetail";
 function UserDetail() {
   const { id } = useParams();
-  const { getUserById } = useUserContext();
+
+  const axiosPrivate = useAxiosPrivate();
+
+  const { profileDetail, setProfileDetail, getUserById } = useUserContext();
+
+  const avatar = profileDetail.profileUrl;
 
   const user = getUserById(id);
+
+  const fetchData = async () => {
+    try {
+      const res = await axiosPrivate.post(process.env.REACT_APP_VIEW_PROFILE, {
+        userId: id,
+      });
+
+      setProfileDetail(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   if (!user) {
     return (
@@ -33,11 +55,11 @@ function UserDetail() {
       }}
     >
       <Container className="container">
-        <TitleHeader title="Hồ sơ" />
+        <TitleHeader title="Chi tiết hồ sơ" />
 
-        <Grid container spacing={2}>
+        <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
-            This is Avatar
+            <AvatarDetail avatar={avatar} profileDetail={profileDetail} />
           </Grid>
 
           <Grid item xs={12} md={8}>

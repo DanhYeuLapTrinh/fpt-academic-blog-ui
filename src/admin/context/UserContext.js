@@ -15,6 +15,8 @@ export const UserProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("data")) || []
   );
 
+  const [profileDetail, setProfileDetail] = useState({});
+
   const getUserById = (id) => {
     return data.find((user) => user.id === parseInt(id));
   };
@@ -29,6 +31,8 @@ export const UserProvider = ({ children }) => {
         data,
         getUserById,
         setData,
+        profileDetail,
+        setProfileDetail,
       }}
     >
       {children}
