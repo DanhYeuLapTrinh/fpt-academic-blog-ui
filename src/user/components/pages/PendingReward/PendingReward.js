@@ -1,6 +1,34 @@
-import { Container } from "@mui/material";
+import { Container, Stack } from "@mui/material";
 import React from "react";
-
-export default function PendingReward() {
-  return <Container>PendingReward</Container>;
+import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
+import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
+export default function PendingReward({ pendingReward }) {
+  return (
+    <Container sx={{ mt: "30px", minHeight: "calc(100vh - 93px - 30px)" }}>
+      <SectionTitle title="Danh sách chờ xét thưởng" />
+      <Stack p={"20px 0"}>
+        {pendingReward?.RewardPostList?.map((item) => (
+          <RewardedPostsUnder
+            key={item.postId}
+            userId={item.userId}
+            url={item.coverURL}
+            postPath={item.slug}
+            title={item.title}
+            description={item.description}
+            avatar={item.avatarURL}
+            label={item.accountName}
+            majorName={item?.category[0]?.categoryName}
+            majorID={item?.category[0]?.categoryId}
+            subjectName={item?.category[2]?.categoryName}
+            subjectID={item?.category[2]?.categoryId}
+            tagName={item?.tag.tagName}
+            tagID={item?.tag.tagId}
+            time={item.dateOfPost}
+            postId={item.postId}
+            slug={"/pending-reward/" + item.slug}
+          />
+        ))}
+      </Stack>
+    </Container>
+  );
 }

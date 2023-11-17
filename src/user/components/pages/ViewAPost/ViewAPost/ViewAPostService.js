@@ -18,7 +18,7 @@ export default function ViewAPostService() {
     setVoteList,
     setReportReasons,
     setHistoryDetail,
-    voteList,
+    setIsAllowComment,
   } = usePost();
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFavored, setIsFavored] = useState(false);
@@ -38,6 +38,7 @@ export default function ViewAPostService() {
           }
         );
         setPostDetail(response?.data);
+        setIsAllowComment(response?.data?.allowComment);
         setVote(response?.data?.numOfUpVote - response?.data?.numOfDownVote);
         if (response?.data?.is_edited) {
           try {

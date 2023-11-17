@@ -8,6 +8,7 @@ export default function PostProvider({ children }) {
   const [voteList, setVoteList] = useState([]);
   const [reportReasons, setReportReasons] = useState([]);
   const [isAuthor, setIsAuthor] = useState(false);
+  const [isAllowComment, setIsAllowComment] = useState(true);
   return (
     <PostContext.Provider
       value={{
@@ -25,6 +26,8 @@ export default function PostProvider({ children }) {
         setIsAuthor,
         historyDetail,
         setHistoryDetail,
+        isAllowComment,
+        setIsAllowComment,
       }}
     >
       {children}

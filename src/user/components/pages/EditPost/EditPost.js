@@ -56,6 +56,7 @@ export default function EditPost({ post, ...props }) {
         setTagID={props.setTagID}
         handleMajorChange={props.handleMajorChange}
         handleSemesterChange={props.handleSemesterChange}
+        editQA
       />
 
       <TitleField edited title />

@@ -188,6 +188,7 @@ export default function EditPostService() {
         setTitle("");
         setFile("");
         setCoverURL("");
+        setSkills([])
         window.scrollTo(0, 0);
         toast.success("Đăng bài thành công");
         navigate("/", { replace: true });
