@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Styles.module.scss";
 import Text from "../../../atoms/Text/Text";
-import { Box, Container, IconButton, Stack, Tooltip } from "@mui/material";
+import {
+  Box,
+  Chip,
+  Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Divider,
+  IconButton,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 import { Icon } from "@iconify/react";
 import AuthorPost from "../../../molecules/AuthorPost/AuthorPost";
 import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
@@ -10,13 +21,22 @@ import PostMenuOptionListService from "../../../organisms/PostMenuOptiopList/Pos
 import PostInteractionService from "../../../organisms/PostInteraction/PostInteractionService";
 import CommentSectionService from "../../../templates/CommentSection/CommentSectionService";
 import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
-import { Link } from "react-router-dom";
-import PopupEdit from "../../../organisms/PopupEdit/PopupEdit";
 import PostMenu from "../../../organisms/PostMenu/PostMenu";
-import usePost from "../../../../hooks/usePost";
-export default function ViewAPost(props) {
+import UserProfile from "../../../atoms/UserProfile/UserProfile";
+import { Link } from "react-router-dom";
+export default function ViewAPost({ postDetail, ...props }) {
+  const [open, setOpen] = useState(false);
   const parser = new DOMParser();
-  const doc = parser.parseFromString(props?.data?.content, "text/html");
+  const doc = parser.parseFromString(postDetail?.content, "text/html");
+  const handleClickRewarded = () => {
+    setOpen(true);
+  };
+
+  const handleCloseRewarded = (event, reason) => {
+    if (reason !== "backdropClick") {
+      setOpen(false);
+    }
+  };
   return (
     <Container
       sx={{
@@ -26,14 +46,14 @@ export default function ViewAPost(props) {
     >
       {!props.previewHistory && (
         <MyBread
-          input={props?.data?.category}
-          tag={props?.data?.tag}
+          input={postDetail?.category}
+          tag={postDetail?.tag}
           separator={<KeyboardDoubleArrowRightIcon sx={{ width: "16px" }} />}
         />
       )}
       <Text m="5px 0 20px">
         <p style={{ fontSize: "40px", lineHeight: "50px", fontWeight: "500" }}>
-          {props.data?.title}
+          {postDetail?.title}
         </p>
       </Text>
       {!props.previewHistory && (
@@ -43,11 +63,11 @@ export default function ViewAPost(props) {
           alignItems={"center"}
         >
           <AuthorPost
-            src={props.data?.avatarURL}
-            text={props.data?.accountName}
-            time={props.data?.dateOfPost}
-            userId={props.data?.userId}
-            comments={props?.data?.comments.length}
+            src={postDetail?.avatarURL}
+            text={postDetail?.accountName}
+            time={postDetail?.dateOfPost}
+            userId={postDetail?.userId}
+            comments={postDetail?.comments?.length}
             isFollowing={props.isFollowing}
             unfollowAccount={props.unfollowAccount}
             followAccount={props.followAccount}
@@ -55,7 +75,6 @@ export default function ViewAPost(props) {
             avatarHeight="40px"
             authorSize="16px"
           />
-
           <Stack direction={"row"} alignItems={"center"}>
             {!props.isFavored ? (
               <Tooltip title="Thêm danh sách yêu thích" placement="top">
@@ -75,43 +94,148 @@ export default function ViewAPost(props) {
               </Tooltip>
             )}
             <PostMenuOptionListService
-              userId={props.data?.userId}
-              postId={props.data?.postId}
-              allowComment={props.data?.allowComment}
-              isEdited={props.data?.is_edited}
-              data={props.data}
+              userId={postDetail?.userId}
+              postId={postDetail?.postId}
+              allowComment={postDetail?.allowComment}
+              isEdited={postDetail?.is_edited}
+              postDetail={postDetail}
             />
           </Stack>
         </Stack>
       )}
       {doc && !props.previewHistory && <PostMenu menu={doc} />}
       <div className={styles.contentWrapper}>
-        {props.data?.coverURL && (
+        {postDetail?.coverURL && (
           <Box sx={{ position: "relative" }}>
             <img
               style={{
-                marginBottom: props.data?.coverURL ? "30px" : "0px",
+                marginBottom: postDetail?.coverURL ? "30px" : "0px",
                 position: "relative",
               }}
-              src={props.data?.coverURL}
+              src={postDetail?.coverURL}
             />
-            {props.data?.is_rewarded && (
-              <Link to={"/rewarded"}>
-                <RewardBadge
-                  small
-                  position="absolute"
-                  top="30px"
-                  width="40px"
-                  height="40px"
-                  right="15px"
-                  zIndex="999"
-                />
-              </Link>
+            {postDetail?.is_rewarded && postDetail?.rewarder?.length >= 1 && (
+              <>
+                <Tooltip
+                  title={`Được trao thưởng bởi ${postDetail?.rewarder?.length} giảng viên`}
+                  placement="top"
+                >
+                  <IconButton
+                    sx={{ position: "absolute", top: "20px", right: "5px" }}
+                    disableFocusRipple
+                    disableTouchRipple
+                    disableRipple
+                    onClick={handleClickRewarded}
+                  >
+                    <RewardBadge
+                      small
+                      width="40px"
+                      height="40px"
+                      zIndex="999"
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Dialog
+                  disableEscapeKeyDown
+                  open={open}
+                  onClose={handleCloseRewarded}
+                  maxWidth="md"
+                >
+                  <DialogContent sx={{ p: 0 }}>
+                    <Stack
+                      direction={"row"}
+                      alignItems={"center"}
+                      sx={{ p: 2 }}
+                    >
+                      <Box
+                        sx={{
+                          width: "400px",
+                        }}
+                      >
+                        <Text fontSize="26px">Người trao thưởng</Text>
+                      </Box>
+                      <IconButton
+                        sx={{ p: 0 }}
+                        disableFocusRipple
+                        disableRipple
+                        disableTouchRipple
+                        onClick={handleCloseRewarded}
+                      >
+                        <Icon icon="uil:x" color="#444746" width="24" />
+                      </IconButton>
+                    </Stack>
+                    <Divider orientation="horizontal" />
+                    <Stack sx={{ p: 3 }}>
+                      {postDetail?.rewarder?.map((item) => (
+                        <Stack
+                          direction={"row"}
+                          spacing={2}
+                          alignItems={"center"}
+                        >
+                          <Link
+                            to={`/profile/${item.userId}`}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <UserProfile
+                              src={item.avatarURL}
+                              width="40px"
+                              height="40px"
+                            />
+                          </Link>
+                          <Stack>
+                            <Link
+                              to={`/profile/${item.userId}`}
+                              style={{ textDecoration: "none" }}
+                            >
+                              <Text>{item.fullName}</Text>
+                            </Link>
+                            <Stack direction={"row"} spacing={1}>
+                              {item.badges.map((badge) => (
+                                <Text>
+                                  <Chip
+                                    label={
+                                      badge.badgeName === "Lecturer"
+                                        ? "Giảng viên"
+                                        : badge.badgeName
+                                    }
+                                    size="small"
+                                    sx={{
+                                      minWidth: "50px",
+                                      borderRadius: "5px",
+                                      color: "primary.main",
+                                    }}
+                                  />
+                                </Text>
+                              ))}
+                            </Stack>
+                          </Stack>
+                        </Stack>
+                      ))}
+                    </Stack>
+                  </DialogContent>
+                </Dialog>
+              </>
             )}
           </Box>
         )}
-        <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
+        <div dangerouslySetInnerHTML={{ __html: postDetail?.content }} />
       </div>
+      <Stack direction={"row"} alignItems={"center"} spacing={1} mb={"20px"}>
+        {postDetail?.postSkill?.map((item) => (
+          <Text>
+            <Chip
+              label={item.skillName}
+              sx={{
+                minWidth: "50px",
+                borderRadius: "5px",
+                color: "secondary.main",
+                bgcolor: "primary.main",
+                fontSize: "16px",
+              }}
+            />
+          </Text>
+        ))}
+      </Stack>
       {!props.previewHistory && (
         <>
           <PostInteractionService
@@ -121,7 +245,7 @@ export default function ViewAPost(props) {
             handleUpvote={props.handleUpvote}
             handleDownvote={props.handleDownvote}
           />
-          <CommentSectionService comments={props.data.comments} />
+          <CommentSectionService comments={postDetail?.comments} />
         </>
       )}
     </Container>

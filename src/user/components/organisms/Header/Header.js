@@ -27,7 +27,7 @@ export default function Header() {
       } catch (error) {}
     };
     fetchData();
-  }, [avatarURL]);
+  }, []);
   return (
     <Container sx={{ padding: "15px 0" }}>
       <Stack

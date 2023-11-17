@@ -42,6 +42,7 @@ import EditDraftService from "../user/components/pages/EditDraft/EditDraftServic
 import FilterService from "../user/components/pages/Filter/FilterService";
 import ViewNewsService from "../user/components/pages/News/ViewNewsService";
 import ViewAccoutListService from "../user/components/pages/ViewAccountsList/ViewAccoutListService";
+import PendingRewardService from "../user/components/pages/PendingReward/PendingRewardService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -84,6 +85,7 @@ const lecturerRoutes = [
 
 const lecturerRoutesOther = [
   { path: "/pending-posts/:slug", component: ViewPendingPostService },
+  { path: "/pending-reward", component: PendingRewardService },
 ];
 
 const mentorRoutes = [

@@ -9,8 +9,9 @@ import { toast } from "react-toastify";
 export default function SearchPopperService() {
   const [inputTitle, setInputTitle] = useState(null);
   const [inputContent, setInputContent] = useState([]);
-  const [categoryList, setCategoryList] = useState([]);
-  const { searchPost, setSearchPost } = useHome();
+  const { setSearchPost, trendingPosts, categoryList, setCategoryList } =
+    useHome();
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
@@ -22,7 +23,6 @@ export default function SearchPopperService() {
       setOpen(false);
     }
   };
-  const axiosPrivate = useAxiosPrivate();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,14 +32,14 @@ export default function SearchPopperService() {
         setCategoryList(response?.data);
       } catch (error) {}
     };
-    fetchData();
-  }, []);
+    if (trendingPosts) fetchData();
+  }, [trendingPosts]);
 
   const handleSearch = async () => {
     try {
-      if(inputTitle === null && inputContent === "") {
-        toast.error("Vui lòng nhập tiêu đề hoặc chủ đề để tìm kiếm")
-        return
+      if (inputTitle === null && inputContent.length === 0) {
+        toast.error("Vui lòng nhập tiêu đề hoặc chủ đề để tìm kiếm");
+        return;
       }
       let response = await axiosPrivate.post(
         process.env.REACT_APP_FILTER_POSTS_HOME,

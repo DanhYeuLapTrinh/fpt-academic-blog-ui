@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePost from "../../../hooks/usePost";
-export default function PostMenuOptionListService(props) {
+export default function PostMenuOptionListService({postDetail, ...props}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const {isAuthor, setIsAuthor} = usePost()
   const axiosPrivate = useAxiosPrivate();
@@ -25,14 +25,14 @@ export default function PostMenuOptionListService(props) {
       setIsAuthor(true);
     }
     return () => setIsAuthor(false);
-  }, [props.userId, slug]);
+  }, [postDetail?.userId, slug]);
 
   const deletePost = async () => {
     try {
       let response = await axiosPrivate.post(
         process.env.REACT_APP_DELETE_POST,
         {
-          postId: props.postId,
+          postId: postDetail?.postId,
         }
       );
 
@@ -57,7 +57,7 @@ export default function PostMenuOptionListService(props) {
         allowComment={props.allowComment}
         isEdited={props.isEdited}
         deletePost={deletePost}
-        data={props.data}
+        postDetail={postDetail}
       />
     </>
   );
