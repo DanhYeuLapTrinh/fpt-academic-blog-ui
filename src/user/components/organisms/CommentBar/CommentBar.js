@@ -34,7 +34,6 @@ export default function CommentBar({
             userId: auth.id,
           }
         );
-        console.log("Comment bar")
         if(profileInfo) {
           setAvatarURL(profileInfo?.data?.profileUrl)
         }
@@ -73,6 +72,7 @@ export default function CommentBar({
           autoFocus={props.autoFocus}
           onChange={(e) => setText(e.target.value)}
           onKeyUp={onSubmit}
+          disabled={props.noComment}
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();

@@ -15,6 +15,24 @@ export default function EditDraftService() {
   const { title, contentTiny } =
     JSON.parse(localStorage.getItem("draftContent")) || "";
   const {
+    data,
+    setData,
+    tagList,
+    setTagList,
+    major,
+    setMajor,
+    semester,
+    setSemester,
+    subject,
+    setSubject,
+    tag,
+    setTag,
+    subjectID,
+    setSubjectID,
+    tagID,
+    setTagID,
+  } = usePostTag();
+  const {
     setTitle,
     charCount,
     coverURL,
@@ -22,9 +40,59 @@ export default function EditDraftService() {
     wordcount,
     setCharCount,
     setFile,
+    setTopic,
+    setSkills,
+    skills,
   } = useContent();
 
-  const { subjectID, setSubjectID, tagID, setTagID } = usePostTag();
+  const handleMajorChange = useCallback((e) => {
+    setMajor(e.target.value);
+    setSemester();
+    setSubject();
+    setSubjectID();
+    setTag();
+    setTagID();
+  }, []);
+
+  const handleSemesterChange = useCallback((e) => {
+    setSemester(e.target.value);
+    setSubject();
+    setSubjectID();
+    setTag();
+    setTagID();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axiosPrivate.get(
+          process.env.REACT_APP_CATEGORIES_API
+        );
+        setData(response.data);
+      } catch (error) {}
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
+        setTagList(tagList.data);
+      } catch (error) {}
+    };
+    if (data) fetchData();
+  }, [data]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const topics = await axiosPrivate.get(process.env.REACT_APP_GET_TOPICS);
+        setTopic(topics.data);
+      } catch (error) {}
+    };
+    if (tagList && skills) fetchData();
+  }, [tagList]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,8 +111,13 @@ export default function EditDraftService() {
         setTitle(draft?.data?.title);
         setCharCount(draft?.data?.title?.length);
         setCoverURL(draft?.data?.coverURL);
+        setMajor(draft?.data?.category[0]?.categoryName);
+        setSubject(draft?.data?.category[2]?.categoryName);
         setSubjectID(draft?.data?.category[2].categoryId);
+        setSemester(draft?.data?.category[1]?.categoryName);
+        setTag(draft?.data?.tag.tagName);
         setTagID(draft?.data?.tag.tagId);
+        setSkills(draft?.data?.postSkill);
       } catch (error) {}
     };
     fetchData();
@@ -70,8 +143,14 @@ export default function EditDraftService() {
   const handleSubmit = useCallback(
     async (e) => {
       try {
-        if (!title || charCount < 30 || wordcount < 30 || !coverURL || !contentTiny) {
-          console.log(title, charCount, wordcount, coverURL, contentTiny)
+        if (
+          !title ||
+          charCount < 30 ||
+          wordcount < 30 ||
+          !coverURL ||
+          !contentTiny
+        ) {
+          console.log(title, charCount, wordcount, coverURL, contentTiny);
           toast.error("Vui lòng điền đầy đủ thông tin");
           return;
         } else if (charCount >= 100) {
@@ -80,6 +159,9 @@ export default function EditDraftService() {
         } else if (charCount < 30) {
           toast.error("Tiêu đề quá ngắn");
           return;
+        } else if (skills.length === 0) {
+          toast.error("Vui lòng chọn từ khóa");
+          return;
         }
         let apiCallURL =
           e.target.value === "draft"
@@ -87,6 +169,7 @@ export default function EditDraftService() {
             : "drafts/send";
         let slug = toSlug(title);
         let description = getFirstTagContent(contentTiny);
+        let skillsArr = skills.map((item) => item.skillName);
         let response = await axiosPrivate.post(apiCallURL, {
           postId: draftDetail.postId,
           title: title,
@@ -98,12 +181,14 @@ export default function EditDraftService() {
           coverURL: coverURL,
           slug: slug,
           length: wordcount,
+          postSkill: skillsArr,
         });
         if (response.status === 200) {
           localStorage.removeItem("draftContent");
           setTitle("");
           setFile("");
           setCoverURL("");
+          setSkills([]);
           window.scrollTo(0, 0);
           toast.success(
             e.target.value === "draft" ? "Đã lưu nháp" : "Đăng bài thành công"
@@ -115,27 +200,44 @@ export default function EditDraftService() {
         toast.error("Có lỗi trong quá trình xử lý");
       }
     },
-    [tagID, subjectID, contentTiny, title, coverURL]
+    [tagID, subjectID, contentTiny, title, coverURL, skills]
   );
 
   const deleteDraft = async () => {
     try {
-      let response = await axiosPrivate.post(process.env.REACT_APP_REMOVE_DRAFT, {
-        postId: draftDetail.postId,
-      })
-      if(response) {
+      let response = await axiosPrivate.post(
+        process.env.REACT_APP_REMOVE_DRAFT,
+        {
+          postId: draftDetail.postId,
+        }
+      );
+      if (response) {
         navigate("/draft", { replace: true });
       }
-    } catch (error) {
-      
-    }
-  }
+    } catch (error) {}
+  };
   return (
     <EditDraft
       draft={draftDetail}
       handleSubmit={handleSubmit}
       handleImage={handleImage}
       deleteDraft={deleteDraft}
+      data={data}
+      setData={setData}
+      tagList={tagList}
+      setTagList={setTagList}
+      major={major}
+      setMajor={setMajor}
+      semester={semester}
+      setSemester={setSemester}
+      subject={subject}
+      setSubject={setSubject}
+      tag={tag}
+      setTag={setTag}
+      setSubjectID={setSubjectID}
+      setTagID={setTagID}
+      handleMajorChange={handleMajorChange}
+      handleSemesterChange={handleSemesterChange}
     />
   );
 }

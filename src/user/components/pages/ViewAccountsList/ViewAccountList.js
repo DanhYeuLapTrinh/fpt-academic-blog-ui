@@ -15,7 +15,6 @@ export default function ViewAccountList({
   unfollowAccount,
 }) {
   const auth = useAuth();
-  console.log(users);
   return (
     <Box sx={{ mt: "37px", minHeight: "calc(100vh - 93px)" }}>
       <SectionTitle title="Mọi người" />

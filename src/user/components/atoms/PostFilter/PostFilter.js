@@ -3,12 +3,13 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Text from "../../atoms/Text/Text";
-import {
-  FormHelperText,
-  Stack,
-} from "@mui/material";
+import { FormHelperText, Stack } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 export default function PostFilter(props) {
+  let filteredTagList = props.tagList;
+  if (props.editQA && props.tag !== "Q&A") {
+    filteredTagList = props.tagList?.filter((tag) => tag.tagName !== "Q&A");
+  }
   return (
     <Stack
       direction={"row"}
@@ -94,12 +95,14 @@ export default function PostFilter(props) {
             IconComponent={KeyboardArrowDownIcon}
             value={props.tag ?? "Thẻ"}
             onChange={(e) => props.setTag(e.target.value)}
-            disabled={!props.subject}
+            disabled={
+              props.editQA && props.tag === "Q&A" ? true : !props.subject
+            }
           >
             <MenuItem value="Thẻ" disabled>
               <Text fontSize="14px">Thẻ</Text>
             </MenuItem>
-            {props.tagList?.map((tag) => (
+            {filteredTagList?.map((tag) => (
               <MenuItem
                 key={tag.id}
                 value={tag.tagName}

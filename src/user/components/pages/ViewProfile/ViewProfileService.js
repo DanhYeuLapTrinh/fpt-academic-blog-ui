@@ -133,6 +133,7 @@ export default function ViewProfileService() {
       qaList={sortedQAList}
       userId={user?.userId}
       slug={id}
+      badges={user?.badges}
       followAccount={followAccount}
       unfollowAccount={unfollowAccount}
       isFollowing={isFollowing}

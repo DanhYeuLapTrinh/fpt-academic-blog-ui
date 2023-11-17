@@ -5,15 +5,18 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePost from "../../../hooks/usePost";
 import { toast } from "react-toastify";
+import { Box } from "@mui/material";
+import Text from "../../atoms/Text/Text";
 
 export default function CommentSection({ rootComments, getReplies }) {
   const axiosPrivate = useAxiosPrivate();
-  const { postDetail, setPostDetail, setActiveComment } = usePost();
+  const { postDetail, setPostDetail, setActiveComment, isAllowComment } =
+    usePost();
 
   const addComment = async (e, parentId = null) => {
     let value = e.target.value.trim();
     if (value === "") {
-      toast.error("Bình luận không thể trống") 
+      toast.error("Bình luận không thể trống");
       return;
     }
     try {
@@ -83,20 +86,39 @@ export default function CommentSection({ rootComments, getReplies }) {
         );
         newComments.push(response.data);
         setPostDetail({ ...postDetail, comments: newComments });
-        setActiveComment(null)
+        setActiveComment(null);
       }
     } catch (error) {}
   };
   return (
     <>
-      <CommentBar handleSubmit={addComment} />
-      <CommentsList
-        rootComments={rootComments}
-        getReplies={getReplies}
-        deleteComment={deleteComment}
-        addComment={addComment}
-        editComment={editComment}
-      />
+      {isAllowComment ? (
+        <>
+          <CommentBar handleSubmit={addComment} />
+          <CommentsList
+            rootComments={rootComments}
+            getReplies={getReplies}
+            deleteComment={deleteComment}
+            addComment={addComment}
+            editComment={editComment}
+          />
+        </>
+      ) : (
+        <>
+          <CommentBar handleSubmit={addComment} noComment />
+          <Box
+            width={"100%"}
+            display={"flex"}
+            justifyContent={"center"}
+            borderRadius={"10px"}
+            p={"10px 0"}
+          >
+            <Text color="middleText.main">
+              Tác giả đã tắt tính năng bình luận của bài viết này
+            </Text>
+          </Box>
+        </>
+      )}
     </>
   );
 }
