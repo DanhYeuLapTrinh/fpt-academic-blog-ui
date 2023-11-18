@@ -27,6 +27,15 @@ export default function QAList(props) {
             description={item.description}
             vote={item.numOfUpVote - item.numOfDownVote}
             text={item.numberOfComment}
+            majorName={item?.category[0]?.categoryName}
+            majorID={item?.category[0]?.categoryId}
+            subjectName={item?.category[2]?.categoryName}
+            subjectID={item?.category[2]?.categoryId}
+            tagName={item?.tag.tagName}
+            tagID={item?.tag.tagId}
+            isRewarded={item?.is_rewarded}
+            rewarder={item?.rewarder}
+            userId={item?.userId}
           />
         ))}
         <Box

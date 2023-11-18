@@ -33,6 +33,7 @@ export default function RewardedPostList() {
             if (index >= 1 && index <= 4) {
               return (
                 <div key={index}>
+                  {console.log(item.rewarder)}
                   <RewardedPostsUnder
                     key={item?.postId}
                     url={item?.coverURL}
@@ -48,7 +49,6 @@ export default function RewardedPostList() {
                     tagName={item?.tag.tagName}
                     tagID={item?.tag.tagId}
                     isRewarded={item?.is_rewarded}
-                    rewarder={item?.rewarder}
                     slug={"/view/" + item.slug}
                     userId={item?.userId}
                   />

@@ -16,7 +16,12 @@ import styles from "./Styles.module.scss";
 import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
-export default function ViewPendingReward({ rewardPost, giveReward }) {
+import PopupEdit from "../../organisms/PopupEdit/PopupEdit";
+export default function ViewPendingReward({
+  rewardPost,
+  giveReward,
+  dismissReward,
+}) {
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -51,15 +56,8 @@ export default function ViewPendingReward({ rewardPost, giveReward }) {
         <Text fontSize="40px">
           <h1 style={{ fontSize: "40px" }}>{rewardPost?.title}</h1>
         </Text>
-        <Button
-          variant="outlined"
-          size="small"
-          sx={{ textTransform: "none" }}
-          onClick={handleClickOpen}
-        >
-          Xem người trao thưởng
-        </Button>
-        <Dialog open={open} maxWidth="lg">
+        
+        {/* <Dialog open={open} maxWidth="lg">
           <DialogContent sx={{ p: 0 }}>
             <Stack
               direction={"row"}
@@ -129,7 +127,7 @@ export default function ViewPendingReward({ rewardPost, giveReward }) {
               ))}
             </Box>
           </DialogContent>
-        </Dialog>
+        </Dialog> */}
       </Stack>
       <div className={styles.contentWrapper}>
         <img style={{ margin: "0px 0 40px" }} src={rewardPost?.coverURL} />
@@ -137,12 +135,33 @@ export default function ViewPendingReward({ rewardPost, giveReward }) {
       </div>
       <Stack
         direction={"row"}
+        alignItems={"center"}
+        spacing={1}
+        m={"30px 0 20px"}
+      >
+        {rewardPost?.postSkill?.map((item) => (
+          <Text>
+            <Chip
+              label={item.skillName}
+              sx={{
+                minWidth: "50px",
+                borderRadius: "5px",
+                color: "secondary.main",
+                bgcolor: "primary.main",
+                fontSize: "16px",
+              }}
+            />
+          </Text>
+        ))}
+      </Stack>
+      <Stack
+        direction={"row"}
         justifyContent={"flex-end"}
         spacing={1}
-        padding={"0 0 30px"}
+        padding={"20px 0 30px"}
       >
         <Button
-          onClick={""}
+          onClick={dismissReward}
           sx={{ padding: "10px", textTransform: "none" }}
           variant="outlined"
           fullWidth
