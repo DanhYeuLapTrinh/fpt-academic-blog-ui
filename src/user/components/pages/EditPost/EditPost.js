@@ -28,8 +28,8 @@ export default function EditPost({ post, ...props }) {
   useEffect(() => {
     const filtered = topic.filter((t) => !skills?.find((s) => s.id === t.id));
     setTopic(filtered);
-    
   }, [skills]);
+  
   const handleAutocompleteChange = (event, value) => {
     setSkills(value);
     const removedItem = skills?.find((s) => !value?.find((v) => v.id === s.id));
@@ -37,7 +37,7 @@ export default function EditPost({ post, ...props }) {
       setTopic((prevTopic) => [...prevTopic, removedItem]);
     }
   };
-  console.log(skills);
+
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       <PostFilter
@@ -56,6 +56,7 @@ export default function EditPost({ post, ...props }) {
         setTagID={props.setTagID}
         handleMajorChange={props.handleMajorChange}
         handleSemesterChange={props.handleSemesterChange}
+        editQA
       />
 
       <TitleField edited title />

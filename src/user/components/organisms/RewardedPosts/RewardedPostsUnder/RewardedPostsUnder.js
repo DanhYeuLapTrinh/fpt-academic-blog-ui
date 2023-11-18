@@ -24,7 +24,7 @@ export default function RewardedPostsUnder(props) {
               position: "relative",
             }}
           >
-            {props.isRewarded && (
+            {props.isRewarded && props?.rewarder?.length >= 2 && (
               <Link to={"/rewarded"}>
                 <RewardBadge
                   small={true}

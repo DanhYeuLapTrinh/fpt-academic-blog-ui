@@ -18,6 +18,7 @@ export default function ViewAPostService() {
     setVoteList,
     setReportReasons,
     setHistoryDetail,
+    setIsAllowComment,
   } = usePost();
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFavored, setIsFavored] = useState(false);
@@ -26,6 +27,7 @@ export default function ViewAPostService() {
   const [select, setSelect] = useState("");
   // check xem đã vote chưa true false
   const [voted, setVoted] = useState();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,6 +38,7 @@ export default function ViewAPostService() {
           }
         );
         setPostDetail(response?.data);
+        setIsAllowComment(response?.data?.allowComment);
         setVote(response?.data?.numOfUpVote - response?.data?.numOfDownVote);
         if (response?.data?.is_edited) {
           try {
@@ -65,7 +68,32 @@ export default function ViewAPostService() {
     };
     fetchData();
     window.scrollTo(0, 0);
-  }, [slug, postDetail?.postId]);
+  }, [postDetail?.postId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let response = await axiosPrivate.post(
+          process.env.REACT_APP_CHECK_VOTE,
+          {
+            postId: postDetail?.postId,
+          }
+        );
+        if (response?.data) {
+          setVoteList(response?.data);
+          let item = response?.data.find((x) => x.commentId === null);
+          if (item?.typeOfVote === "up") {
+            setSelect("up");
+            setVoted(true);
+          } else if (item?.typeOfVote === "down") {
+            setSelect("down");
+            setVoted(true);
+          }
+        }
+      } catch (error) {}
+    };
+    fetchData();
+  }, [postDetail?.postId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -171,31 +199,6 @@ export default function ViewAPostService() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await axiosPrivate.post(
-          process.env.REACT_APP_CHECK_VOTE,
-          {
-            postId: postDetail?.postId,
-          }
-        );
-        if (response?.data) {
-          setVoteList(response?.data);
-          let item = response?.data.find((x) => x.commentId === null);
-          if (item?.typeOfVote === "up") {
-            setSelect("up");
-            setVoted(true);
-          } else if (item?.typeOfVote === "down") {
-            setSelect("down");
-            setVoted(true);
-          }
-        }
-      } catch (error) {}
-    };
-    if (vote) fetchData();
-  }, [vote]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
         let response = await axiosPrivate.get(
           process.env.REACT_APP_REPORT_REASONS
         );
@@ -274,7 +277,7 @@ export default function ViewAPostService() {
         <ViewAPostSkeleton />
       ) : (
         <ViewAPost
-          data={postDetail}
+          postDetail={postDetail}
           auth={auth}
           isFollowing={isFollowing}
           followAccount={followAccount}

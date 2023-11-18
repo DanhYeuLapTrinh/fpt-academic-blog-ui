@@ -86,11 +86,30 @@ export default function UserMenuOptionsList(props) {
           />
         </Link>
       )}
+      {props.auth.role === "lecturer" && (
+        <Link to={"/pending-reward"} style={{ textDecoration: "none" }}>
+          <UserMenuOption
+            icon={
+              <Icon
+                icon="material-symbols:rewarded-ads-outline-rounded"
+                color="#444746"
+                width="24"
+              />
+            }
+            handleClose={props.handleClose}
+            label="Danh sách chờ xét thưởng"
+          />
+        </Link>
+      )}
       {props.auth.role === "mentor" && (
         <Link to={"/pending-questions"} style={{ textDecoration: "none" }}>
           <UserMenuOption
             icon={
-              <Icon icon="akar-icons:chat-question" color="#444746" width="24" />
+              <Icon
+                icon="akar-icons:chat-question"
+                color="#444746"
+                width="24"
+              />
             }
             handleClose={props.handleClose}
             label="Quản lý câu hỏi"

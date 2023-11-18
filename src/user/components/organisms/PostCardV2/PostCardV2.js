@@ -41,7 +41,7 @@ export default function PostCardV2(props) {
             borderRadius: "10px",
           }}
         >
-          {props.isRewarded && (
+          {props.isRewarded && props?.rewarder?.length >= 2 && (
             <Link to={"/rewarded"}>
               <RewardBadge
                 small={props.small}
@@ -72,7 +72,7 @@ export default function PostCardV2(props) {
           </Text>
         </Wrapper>
         <Stack direction={"row"} spacing={"12px"} paddingTop={"15px"}>
-        <Link
+          <Link
             to={{
               pathname: "/categories",
               search: `?name=${toSlug(props.majorName, true)}&id=${

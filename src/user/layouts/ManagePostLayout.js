@@ -16,7 +16,7 @@ export default function ManagePostLayout() {
     }
   }, [type]);
   return (
-    <Container sx={{ mt: "30px", minHeight: "calc(100vh - 93px)" }}>
+    <Container sx={{ mt: "30px", minHeight: "calc(100vh - 93px - 30px)" }}>
       <Stack
         spacing={1}
         direction={"row"}

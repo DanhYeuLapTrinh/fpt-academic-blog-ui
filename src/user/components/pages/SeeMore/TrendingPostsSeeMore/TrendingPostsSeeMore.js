@@ -44,7 +44,7 @@ export default function TrendingPostsSeeMore(props) {
                     to={`/profile/${props.data[0]?.userId}`}
                     style={{ textDecoration: "none" }}
                   >
-                    <Text fontSize={"14px"}>{props.data[0].accountName}</Text>
+                    <Text fontSize={"14px"}>{props.data[0]?.accountName}</Text>
                   </Link>
                 </Box>
                 <Box flex={1}>
@@ -69,7 +69,7 @@ export default function TrendingPostsSeeMore(props) {
                     to={`/profile/${props.data[1]?.userId}`}
                     style={{ textDecoration: "none" }}
                   >
-                    <Text fontSize={"14px"}>{props.data[1].accountName}</Text>
+                    <Text fontSize={"14px"}>{props.data[1]?.accountName}</Text>
                   </Link>
                 </Box>
               </Stack>
@@ -113,7 +113,9 @@ export default function TrendingPostsSeeMore(props) {
                       to={`/profile/${props.data[2]?.userId}`}
                       style={{ textDecoration: "none" }}
                     >
-                      <Text fontSize={"14px"}>{props.data[2].accountName}</Text>
+                      <Text fontSize={"14px"}>
+                        {props.data[2]?.accountName}
+                      </Text>
                     </Link>
                   </Grid2>
                   <Grid2 item xs={4}>
@@ -138,7 +140,9 @@ export default function TrendingPostsSeeMore(props) {
                       to={`/profile/${props.data[3]?.userId}`}
                       style={{ textDecoration: "none" }}
                     >
-                      <Text fontSize={"14px"}>{props.data[3].accountName}</Text>
+                      <Text fontSize={"14px"}>
+                        {props.data[3]?.accountName}
+                      </Text>
                     </Link>
                   </Grid2>
                   <Grid2 item xs={4}>
@@ -163,7 +167,9 @@ export default function TrendingPostsSeeMore(props) {
                       to={`/profile/${props.data[4]?.userId}`}
                       style={{ textDecoration: "none" }}
                     >
-                      <Text fontSize={"14px"}>{props.data[4].accountName}</Text>
+                      <Text fontSize={"14px"}>
+                        {props.data[4]?.accountName}
+                      </Text>
                     </Link>
                   </Grid2>
                 </Grid2>

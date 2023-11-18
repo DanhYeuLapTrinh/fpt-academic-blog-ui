@@ -29,6 +29,7 @@ export default function ViewProfileService() {
             userId: profileID,
           }
         );
+        console.log("View profile")
         setUser(profileInfo?.data);
       } catch (error) {}
     };
@@ -132,6 +133,7 @@ export default function ViewProfileService() {
       qaList={sortedQAList}
       userId={user?.userId}
       slug={id}
+      badges={user?.badges}
       followAccount={followAccount}
       unfollowAccount={unfollowAccount}
       isFollowing={isFollowing}

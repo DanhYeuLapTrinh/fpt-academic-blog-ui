@@ -1,8 +1,7 @@
 import React from "react";
 import Comment from "../../molecules/Comment/Comment";
-import { Divider, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { timeConverter } from "../../../utils/StringMethod";
-import usePost from "../../../hooks/usePost";
 
 export default function CommentsList({
   rootComments,

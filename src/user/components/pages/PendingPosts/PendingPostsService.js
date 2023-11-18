@@ -9,12 +9,12 @@ export default function PendingPostsService() {
   const axiosPrivate = useAxiosPrivate();
   const { pendingPosts, setPendingPosts, sort, setAmount } = useManagePost();
   const { isLoading, setIsLoading } = useHome();
-  let sortedPending = pendingPosts.sort(
+  let sortedPending = pendingPosts?.sort(
     (a, b) =>
       new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
   );
   if (sort !== "Mới nhất") {
-    sortedPending = pendingPosts.sort(
+    sortedPending = pendingPosts?.sort(
       (a, b) =>
         new Date(a.dateOfPost).getTime() - new Date(b.dateOfPost).getTime()
     );

@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Chip,
   Divider,
   IconButton,
   Stack,
@@ -26,22 +27,22 @@ export default function ViewProfile(props) {
   const { avatarURL, profileCoverURL, selected } = useProfile();
   const auth = useAuth();
   let avatarUser =
-    (props.userId === auth.id && avatarURL) ||
-    props.profileUrl ||
+    (props?.userId === auth.id && avatarURL) ||
+    props?.profileUrl ||
     "/assets/img/blank.png";
   let coverUser =
-    (props.userId === auth.id && profileCoverURL) ||
-    props.coverUrl ||
+    (props?.userId === auth.id && profileCoverURL) ||
+    props?.coverUrl ||
     "/assets/img/blank-cover.jpg";
   return (
     <Box>
       <Box sx={{ bgcolor: "secondary.alt" }}>
         <Container>
-          <Box height={`calc(${props.height} + 90px)`}>
+          <Box height={`calc(${props?.height} + 90px)`}>
             <Box
               sx={{
                 width: "100%",
-                height: props.height,
+                height: props?.height,
                 backgroundImage: `url(${coverUser})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
@@ -54,7 +55,7 @@ export default function ViewProfile(props) {
                 position: "relative",
               }}
             >
-              {props.userId === auth.id && (
+              {props?.userId === auth.id && (
                 <IconButton
                   disableFocusRipple
                   disableTouchRipple
@@ -86,7 +87,7 @@ export default function ViewProfile(props) {
                   zIndex: 1,
                 }}
               >
-                {props.userId === auth.id && (
+                {props?.userId === auth.id && (
                   <Tooltip title="Đổi ảnh đại diện" placement="right">
                     <IconButton
                       sx={{
@@ -104,7 +105,7 @@ export default function ViewProfile(props) {
           </Box>
           <Stack alignItems={"center"}>
             <Text fontSize="24px" fontWeight="600">
-              {props.accountName}
+              {props?.accountName}
             </Text>
             <Stack spacing={"4px"}>
               <Stack
@@ -115,7 +116,7 @@ export default function ViewProfile(props) {
               >
                 <Text fontSize="12px" fontWeight="400">
                   Bài đã đăng:{" "}
-                  <span style={{ fontWeight: "600" }}>{props.numOfPost}</span>
+                  <span style={{ fontWeight: "600" }}>{props?.numOfPost}</span>
                 </Text>
                 <Text fontSize="24px" lineHeight="20px" color="text.main">
                   &middot;
@@ -123,17 +124,17 @@ export default function ViewProfile(props) {
                 <Text fontSize="12px" fontWeight="400">
                   Người theo dõi:{" "}
                   <span style={{ fontWeight: "600" }}>
-                    {props.numOfFollower}
+                    {props?.numOfFollower}
                   </span>
                 </Text>
               </Stack>
-              {auth.id !== props.userId && (
+              {auth.id !== props?.userId && (
                 <Stack direction={"row"} justifyContent={"space-between"}>
                   <Button
                     onClick={
-                      !props.isFollowing
-                        ? props.followAccount
-                        : props.unfollowAccount
+                      !props?.isFollowing
+                        ? props?.followAccount
+                        : props?.unfollowAccount
                     }
                     disableFocusRipple
                     disableRipple
@@ -143,18 +144,18 @@ export default function ViewProfile(props) {
                       textTransform: "none",
                       borderRadius: "5px",
                       flex: 1,
-                      bgcolor: props.isFollowing
+                      bgcolor: props?.isFollowing
                         ? "primary.main"
                         : "lightText.main",
-                      opacity: props.isFollowing ? "1" : "0.7",
+                      opacity: props?.isFollowing ? "1" : "0.7",
                       "&:hover": {
-                        backgroundColor: props.isFollowing
+                        backgroundColor: props?.isFollowing
                           ? "primary.main"
                           : "lightText.main",
                       },
                     }}
                     startIcon={
-                      props.isFollowing ? (
+                      props?.isFollowing ? (
                         <Icon
                           icon="fa-solid:user-check"
                           color="white"
@@ -171,10 +172,10 @@ export default function ViewProfile(props) {
                   >
                     <Text
                       fontSize="12px"
-                      fontWeight={props.isFollowing ? "500" : "400"}
-                      color={props.isFollowing && "secondary.main"}
+                      fontWeight={props?.isFollowing ? "500" : "400"}
+                      color={props?.isFollowing && "secondary.main"}
                     >
-                      {props.isFollowing ? "Đang theo dõi" : "Theo dõi"}
+                      {props?.isFollowing ? "Đang theo dõi" : "Theo dõi"}
                     </Text>
                   </Button>
                   <MyMenuOptionListService />
@@ -183,18 +184,56 @@ export default function ViewProfile(props) {
             </Stack>
             <Divider sx={{ width: "100%", mt: "30px " }} />
           </Stack>
-          <ProfileNavList slug={props.slug} />
+          <ProfileNavList slug={props?.slug} />
         </Container>
       </Box>
       <Box sx={{ m: "20px 0" }}>
         <Container>
           <Stack direction={"row"} gap={"20px"}>
-            <Box width={"320px"}>
-              <UserStoryService
-                userId={props.userId}
-                userStory={props.userStory}
-              />
-            </Box>
+            <Stack spacing={"20px"}>
+              <Box width={"320px"}>
+                <UserStoryService
+                  userId={props?.userId}
+                  userStory={props?.userStory}
+                />
+              </Box>
+              {props?.badges?.length > 0 && (
+                <Box
+                  sx={{
+                    width: "320px",
+                    minHeight: "120px",
+                    bgcolor: "secondary.alt",
+                    borderRadius: "10px",
+                    padding: "15px",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Text fontSize="23px" mb={2}>
+                    Danh hiệu
+                  </Text>
+                  <Stack direction={"row"} spacing={1}>
+                    {props?.badges?.map((badge) => (
+                      <Text>
+                        <Chip
+                          label={
+                            badge.badgeName === "Lecturer"
+                              ? "Giảng viên"
+                              : badge.badgeName
+                          }
+                          size="small"
+                          sx={{
+                            minWidth: "50px",
+                            borderRadius: "5px",
+                            color: "primary.main",
+                          }}
+                        />
+                      </Text>
+                    ))}
+                  </Stack>
+                </Box>
+              )}
+            </Stack>
             <Stack
               width={"calc(100% - 320px)"}
               sx={{
@@ -206,17 +245,13 @@ export default function ViewProfile(props) {
               spacing={"20px"}
             >
               {selected === "Bài viết" && (
-                <ProfilePostList postList={props.postList} />
+                <ProfilePostList postList={props?.postList} />
               )}
               {selected === "Câu hỏi" && (
-                <ProfileQuestionList qaList={props.qaList} />
+                <ProfileQuestionList qaList={props?.qaList} />
               )}
-              {selected === "Người theo dõi" && (
-                <ProfileFollowerListService />
-              )}
-              {selected === "Đang theo dõi" && (
-                <ProfileFollowingListService />
-              )}
+              {selected === "Người theo dõi" && <ProfileFollowerListService />}
+              {selected === "Đang theo dõi" && <ProfileFollowingListService />}
             </Stack>
           </Stack>
         </Container>

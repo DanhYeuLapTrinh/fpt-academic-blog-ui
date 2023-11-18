@@ -6,9 +6,10 @@ import { Icon } from "@iconify/react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePost from "../../../hooks/usePost";
-export default function PostMenuOptionListService(props) {
+export default function PostMenuOptionListService({postDetail, ...props}) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const {isAuthor, setIsAuthor} = usePost()
+  const {setIsAuthor, isAllowComment, setIsAllowComment} = usePost()
+
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
@@ -25,14 +26,14 @@ export default function PostMenuOptionListService(props) {
       setIsAuthor(true);
     }
     return () => setIsAuthor(false);
-  }, [props.userId, slug]);
+  }, [postDetail?.userId, slug]);
 
   const deletePost = async () => {
     try {
       let response = await axiosPrivate.post(
         process.env.REACT_APP_DELETE_POST,
         {
-          postId: props.postId,
+          postId: postDetail?.postId,
         }
       );
 
@@ -45,6 +46,22 @@ export default function PostMenuOptionListService(props) {
       }
     }
   };
+
+  const toggleComment = async () => {
+    try {
+      let response = await axiosPrivate.post(
+        process.env.REACT_APP_TOGGLE_COMMENT,
+        {
+          postId: postDetail?.postId,
+        }
+      );
+      if (response) {
+        setIsAllowComment(prev => !prev);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <>
       <IconButton onClick={handleClick}>
@@ -54,10 +71,11 @@ export default function PostMenuOptionListService(props) {
         handleClose={handleClose}
         anchorEl={anchorEl}
         open={open}
-        allowComment={props.allowComment}
+        isAllowComment={isAllowComment}
         isEdited={props.isEdited}
         deletePost={deletePost}
-        data={props.data}
+        postDetail={postDetail}
+        toggleComment={toggleComment}
       />
     </>
   );
