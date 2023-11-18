@@ -69,7 +69,13 @@ export default function EditDraftService() {
           process.env.REACT_APP_CATEGORIES_API
         );
         setData(response.data);
-      } catch (error) {}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, []);
@@ -79,7 +85,13 @@ export default function EditDraftService() {
       try {
         const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
         setTagList(tagList.data);
-      } catch (error) {}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     if (data) fetchData();
   }, [data]);
@@ -89,7 +101,13 @@ export default function EditDraftService() {
       try {
         const topics = await axiosPrivate.get(process.env.REACT_APP_GET_TOPICS);
         setTopic(topics.data);
-      } catch (error) {}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     if (tagList && skills) fetchData();
   }, [tagList]);
@@ -118,7 +136,13 @@ export default function EditDraftService() {
         setTag(draft?.data?.tag.tagName);
         setTagID(draft?.data?.tag.tagId);
         setSkills(draft?.data?.postSkill);
-      } catch (error) {}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
     return () => {
@@ -137,7 +161,11 @@ export default function EditDraftService() {
       );
       if (response.status === 200) return response?.data.link;
     } catch (error) {
-      console.log(error);
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
     }
   };
   const handleSubmit = useCallback(
@@ -170,19 +198,41 @@ export default function EditDraftService() {
         let slug = toSlug(title);
         let description = getFirstTagContent(contentTiny);
         let skillsArr = skills.map((item) => item.skillName);
-        let response = await axiosPrivate.post(apiCallURL, {
-          postId: draftDetail.postId,
-          title: title,
-          description: description,
-          content: contentTiny,
-          allowComment: true,
-          categoryId: subjectID,
-          tagId: tagID,
-          coverURL: coverURL,
-          slug: slug,
-          length: wordcount,
-          postSkill: skillsArr,
-        });
+        let response;
+        if (e.target.value === "draft") {
+          response = await axiosPrivate.post(apiCallURL, {
+            postId: draftDetail.postId,
+            title: title,
+            description: description,
+            content: contentTiny,
+            allowComment: true,
+            categoryId: subjectID,
+            tagId: tagID,
+            coverURL: coverURL,
+            slug: slug,
+            length: wordcount,
+            postSkill: skillsArr,
+          });
+        } else {
+          response = await axiosPrivate.post(process.env.REACT_APP_EDIT_DRAFT, {
+            postId: draftDetail.postId,
+            title: title,
+            description: description,
+            content: contentTiny,
+            allowComment: true,
+            categoryId: subjectID,
+            tagId: tagID,
+            coverURL: coverURL,
+            slug: slug,
+            length: wordcount,
+            postSkill: skillsArr,
+          });
+
+          response = await axiosPrivate.post(apiCallURL, {
+            postId: draftDetail.postId,
+          });
+        }
+
         if (response.status === 200) {
           localStorage.removeItem("draftContent");
           setTitle("");
@@ -196,8 +246,13 @@ export default function EditDraftService() {
           navigate("/draft", { replace: true });
         }
       } catch (error) {
-        console.log(error);
-        toast.error("Có lỗi trong quá trình xử lý");
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        } else {
+          toast.error("Có lỗi trong quá trình xử lý");
+        }
       }
     },
     [tagID, subjectID, contentTiny, title, coverURL, skills]
@@ -214,7 +269,13 @@ export default function EditDraftService() {
       if (response) {
         navigate("/draft", { replace: true });
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   return (
     <EditDraft

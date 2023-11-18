@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react'
 import EditProfile from './EditProfile'
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import useAuth from '../../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export default function EditProfileService() {
   const axiosPrivate = useAxiosPrivate();
   const [profile, setProfile] = useState({});
+  const navigate = useNavigate()
   const auth = useAuth()
   useEffect(() => {
     const fetchData = async () => {
@@ -17,8 +20,11 @@ export default function EditProfileService() {
           }
         );
         setProfile(profileInfo?.data);
-        console.log("Edit profile")
-      } catch (error) {}
+      } catch (error) {if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }}
     };
     fetchData();
   }, []);

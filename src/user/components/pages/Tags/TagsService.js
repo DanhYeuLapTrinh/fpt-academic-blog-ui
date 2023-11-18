@@ -1,8 +1,9 @@
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useEffect, useState } from "react";
 import useHome from "../../../hooks/useHome";
 import Tags from "./Tags";
+import { toast } from "react-toastify";
 
 export default function TagsService() {
   const [searchParams] = useSearchParams();
@@ -11,6 +12,7 @@ export default function TagsService() {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState();
   const { amount, setAmount } = useHome();
+  const navigate = useNavigate()
   window.scrollTo(0, 0);
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +25,11 @@ export default function TagsService() {
         );
         setData(response?.data);
         setAmount(response?.data?.length);
-      } catch (error) {}
+      } catch (error) {if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }}
     };
     fetchData();
   }, [id]);

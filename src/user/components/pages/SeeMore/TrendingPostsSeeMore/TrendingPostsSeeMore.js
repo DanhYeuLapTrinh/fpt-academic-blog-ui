@@ -19,7 +19,7 @@ export default function TrendingPostsSeeMore(props) {
       >
         <Container>
           <SectionTitle title="Trang xem bài thịnh hành" />
-          {props.data && (
+          {props?.data?.length >= 5 && (
             <Box width={"100%"}>
               <Stack direction={"row"} width={"100%"} spacing={"20px"} mb={2}>
                 <Box flex={1}>

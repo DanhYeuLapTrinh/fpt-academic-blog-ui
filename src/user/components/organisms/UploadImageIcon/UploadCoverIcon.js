@@ -8,10 +8,12 @@ import useProfile from "../../../hooks/useProfile";
 import useAuth from "../../../hooks/useAuth";
 import { Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
+import { useNavigate } from "react-router-dom";
 export default function UploadCoverIcon(props) {
   const axiosPrivate = useAxiosPrivate();
   const { setProfileCoverURL } = useProfile();
   const auth = useAuth();
+  const navigate = useNavigate()
   const handleSubmit = async (file) => {
     try {
       if (!file) return;
@@ -30,8 +32,13 @@ export default function UploadCoverIcon(props) {
       auth.coverURL = origin;
       localStorage.setItem("auth", JSON.stringify(auth));
       setProfileCoverURL(origin);
+      return () => setProfileCoverURL(null);
     } catch (error) {
-      console.log(error);
+      if(error?.response?.status === 405){
+        toast.error("Tài khoản của bạn đã bị khóa")
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth")
+      }
     }
   };
 

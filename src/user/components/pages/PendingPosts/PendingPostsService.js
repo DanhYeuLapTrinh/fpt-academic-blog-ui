@@ -4,10 +4,13 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { sortByPropertyName } from "../../../utils/StringMethod";
 import useHome from "../../../hooks/useHome";
 import useManagePost from "../../../hooks/useManagePost";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function PendingPostsService() {
   const axiosPrivate = useAxiosPrivate();
   const { pendingPosts, setPendingPosts, sort, setAmount } = useManagePost();
+  const navigate = useNavigate()
   const { isLoading, setIsLoading } = useHome();
   let sortedPending = pendingPosts?.sort(
     (a, b) =>
@@ -29,7 +32,11 @@ export default function PendingPostsService() {
         setPendingPosts(response?.data);
         setAmount(response?.data?.length);
       } catch (error) {
-        console.log(error);
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
       }
     };
     fetchData();

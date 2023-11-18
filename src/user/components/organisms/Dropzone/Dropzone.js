@@ -9,10 +9,12 @@ import { Icon } from "@iconify/react";
 import useContent from "../../../hooks/useContent";
 import useHome from "../../../hooks/useHome";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 export default function Dropzone() {
   // functon onDrop chỉ chạy khi người dùng bỏ ảnh vào
   // useCallback để tránh tình trạng bị rerender khi component Dropzone rerender
   // chỉ rerender khi có ảnh thôi
+  const navigate = useNavigate()
   const { isLoading, setIsLoading } = useHome();
   const { file, setFile, setCoverURL, coverURL } = useContent();
   const handleSubmit = async (file) => {
@@ -34,7 +36,11 @@ export default function Dropzone() {
       setIsLoading(false);
       setCoverURL(origin);
     } catch (error) {
-      console.log(error)
+      if(error?.response?.status === 405){
+        toast.error("Tài khoản của bạn đã bị khóa")
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth")
+      }
     }
   };
   const onDrop = useCallback((acceptedFiles, rejectedFiles) => {

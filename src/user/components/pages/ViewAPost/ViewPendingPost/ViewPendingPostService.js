@@ -2,13 +2,14 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import ViewPendingPost from "./ViewPendingPost";
+import { toast } from "react-toastify";
 
 export default function ViewPendingPostService() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState();
-  const [oldLink, setOldLink] = useState(null)
+  const [oldLink, setOldLink] = useState(null);
   const [open, setOpen] = useState();
   const [isRewaded, setIsRewarded] = useState();
 
@@ -24,8 +25,8 @@ export default function ViewPendingPostService() {
     setOpen(true);
   };
   useEffect(() => {
-    try {
-      const fetchData = async () => {
+    const fetchData = async () => {
+      try {
         const response = await axiosPrivate.post(
           process.env.REACT_APP_VIEW_A_POST,
           {
@@ -33,7 +34,7 @@ export default function ViewPendingPostService() {
           }
         );
         setData(response?.data);
-        if(response?.data?.originSlug) {
+        if (response?.data?.originSlug) {
           const origin = await axiosPrivate.post(
             process.env.REACT_APP_VIEW_A_POST,
             {
@@ -42,11 +43,15 @@ export default function ViewPendingPostService() {
           );
           setOldLink(origin.data);
         }
-      };
-      fetchData();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
+    };
+    fetchData();
   }, []);
 
   const handleSubmit = async () => {
@@ -62,7 +67,11 @@ export default function ViewPendingPostService() {
         });
       }
     } catch (error) {
-      console.log(error);
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
     }
   };
 
@@ -75,7 +84,11 @@ export default function ViewPendingPostService() {
       window.scrollTo(0, 0);
       navigate("/pending-posts", { replace: true });
     } catch (error) {
-      console.log(error);
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
     }
   };
   return (

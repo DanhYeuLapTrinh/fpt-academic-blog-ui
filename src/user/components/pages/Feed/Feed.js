@@ -174,27 +174,29 @@ export default function Feed(props) {
       <Container>
         <Grid2 container>
           <Grid2 item xs={8} direction={"column"}>
-            {props?.data?.slice(5)?.map((item, index) => (
-              <Post
-                key={index}
-                url={item?.coverURL}
-                title={item?.title}
-                description={item?.description}
-                author={item?.accountName}
-                src={item?.avatarURL}
-                time={item?.dateOfPost}
-                majorName={item?.category[0]?.categoryName}
-                majorID={item?.category[0]?.categoryId}
-                subjectName={item?.category[2]?.categoryName}
-                subjectID={item?.category[2]?.categoryId}
-                tagName={item?.tag.tagName}
-                tagID={item?.tag.tagId}
-                isRewarded={item?.is_rewarded}
-                small
-                slug={item?.slug}
-                tagColor="primary.main"
-              />
-            ))}
+            {props?.data
+              ?.slice(props?.data?.length >= 5 ? 5 : 0)
+              ?.map((item, index) => (
+                <Post
+                  key={index}
+                  url={item?.coverURL}
+                  title={item?.title}
+                  description={item?.description}
+                  author={item?.accountName}
+                  src={item?.avatarURL}
+                  time={item?.dateOfPost}
+                  majorName={item?.category[0]?.categoryName}
+                  majorID={item?.category[0]?.categoryId}
+                  subjectName={item?.category[2]?.categoryName}
+                  subjectID={item?.category[2]?.categoryId}
+                  tagName={item?.tag.tagName}
+                  tagID={item?.tag.tagId}
+                  isRewarded={item?.is_rewarded}
+                  small
+                  slug={item?.slug}
+                  tagColor="primary.main"
+                />
+              ))}
           </Grid2>
         </Grid2>
       </Container>

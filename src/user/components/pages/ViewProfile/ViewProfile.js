@@ -190,49 +190,66 @@ export default function ViewProfile(props) {
       <Box sx={{ m: "20px 0" }}>
         <Container>
           <Stack direction={"row"} gap={"20px"}>
-            <Stack spacing={"20px"}>
-              <Box width={"320px"}>
+            <Stack spacing={"20px"} width={"320px"}>
+              <Box width={"100%"}>
                 <UserStoryService
                   userId={props?.userId}
                   userStory={props?.userStory}
                 />
               </Box>
-              {props?.badges?.length > 0 && (
-                <Box
-                  sx={{
-                    width: "320px",
-                    minHeight: "120px",
-                    bgcolor: "secondary.alt",
-                    borderRadius: "10px",
-                    padding: "15px",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Text fontSize="23px" mb={2}>
-                    Danh hiệu
-                  </Text>
-                  <Stack direction={"row"} spacing={1}>
-                    {props?.badges?.map((badge) => (
-                      <Text>
-                        <Chip
-                          label={
-                            badge.badgeName === "Lecturer"
-                              ? "Giảng viên"
-                              : badge.badgeName
-                          }
-                          size="small"
-                          sx={{
-                            minWidth: "50px",
-                            borderRadius: "5px",
-                            color: "primary.main",
-                          }}
-                        />
-                      </Text>
-                    ))}
-                  </Stack>
-                </Box>
-              )}
+              {(props?.user?.skills?.length > 0 ||
+                props?.user?.badges?.length > 0) && (
+                  <Box
+                    sx={{
+                      width: "320px",
+                      minHeight: "120px",
+                      bgcolor: "secondary.alt",
+                      borderRadius: "10px",
+                      padding: "15px",
+                    }}
+                  >
+                    <Text fontSize="23px" mb={2}>
+                      Danh hiệu
+                    </Text>
+                    <Stack
+                      direction={"row"}
+                      gap={1}
+                      width={"100%"}
+                      flexWrap={"wrap"}
+                    >
+                      {props?.badges?.map((badge) => (
+                        <Text>
+                          <Chip
+                            label={
+                              badge.badgeName === "Lecturer"
+                                ? "Giảng viên"
+                                : badge.badgeName
+                            }
+                            size="small"
+                            sx={{
+                              minWidth: "50px",
+                              borderRadius: "5px",
+                              color: "primary.main",
+                            }}
+                          />
+                        </Text>
+                      ))}
+                      {props?.user?.skills?.map((badge) => (
+                        <Text>
+                          <Chip
+                            label={badge}
+                            size="small"
+                            sx={{
+                              minWidth: "50px",
+                              borderRadius: "5px",
+                              color: "primary.main",
+                            }}
+                          />
+                        </Text>
+                      ))}
+                    </Stack>
+                  </Box>
+                )}
             </Stack>
             <Stack
               width={"calc(100% - 320px)"}

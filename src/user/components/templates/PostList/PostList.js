@@ -7,15 +7,26 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Text from "../../atoms/Text/Text";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function PostList() {
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
   const fetchData = async (page, postsPerPage) => {
-    let response = await axiosPrivate.post(process.env.REACT_APP_ALL_POSTS, {
-      page: page,
-      postOfPage: postsPerPage,
-    });
-    return { ...response?.data, prevOffset: page };
+    try {
+      let response = await axiosPrivate.post(process.env.REACT_APP_ALL_POSTS, {
+        page: page,
+        postOfPage: postsPerPage,
+      });
+      return { ...response?.data, prevOffset: page };
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   let hasMorePosts = true;
   const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
@@ -47,7 +58,7 @@ export default function PostList() {
             </Stack>
           )
         }
-        style={{marginBottom: "20px"}}
+        style={{ marginBottom: "20px" }}
       >
         {posts?.map((item, index) => (
           <Post

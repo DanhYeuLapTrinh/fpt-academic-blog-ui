@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import UserStory from "./UserStory";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useContent from "../../../hooks/useContent";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function UserStoryService(props) {
   const [userStory, setUserStory] = useState();
@@ -10,6 +12,7 @@ export default function UserStoryService(props) {
   const [focus, setFocus] = useState(false);
   const {charCount, setCharCount} = useContent();
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate()
   const maxCharLimit = 100;
   useEffect(() => {
     setUserStory(props.userStory);
@@ -37,7 +40,11 @@ export default function UserStoryService(props) {
           setIsEditing(false);
         }
       } catch (error) {
-        console.log(error);
+        if(error?.response?.status === 405){
+          toast.error("Tài khoản của bạn đã bị khóa")
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth")
+        }
       }
     }
   };

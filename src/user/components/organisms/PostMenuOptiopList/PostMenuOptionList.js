@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
   IconButton,
   ListItemIcon,
   Menu,
@@ -76,7 +75,10 @@ export default function PostMenuOptionList({
       transformOrigin={{ horizontal: "right", vertical: "top" }}
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
-      <MenuItem disabled={!props.isEdited} onClick={handleClickOpen}>
+      <MenuItem
+        disabled={!props.isEdited && !historyDetail?.length > 0}
+        onClick={handleClickOpen}
+      >
         <ListItemIcon>
           <Icon icon="ph:eye-bold" color="#444746" width="24" />
         </ListItemIcon>
@@ -87,7 +89,13 @@ export default function PostMenuOptionList({
           <DialogContent sx={{ p: 5 }}>
             <ViewAPost previewHistory postDetail={historyDetail} />
           </DialogContent>
-          <DialogActions sx={{ position: "absolute", right: 20, top: 20 }}>
+          <DialogActions
+            sx={{
+              position: "absolute",
+              right: historyDetail?.length > 0 ? 20 : 5,
+              top: historyDetail?.length > 0 ? 20 : 5,
+            }}
+          >
             <IconButton
               sx={{ p: 0 }}
               disableFocusRipple

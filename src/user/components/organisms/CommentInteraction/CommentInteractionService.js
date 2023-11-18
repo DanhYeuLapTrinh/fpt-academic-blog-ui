@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import CommentInteraction from "./CommentInteraction";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePost from "../../../hooks/usePost";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function CommentInteractionService({ comment, ...props }) {
   const [vote, setVote] = useState(props.vote);
@@ -9,6 +11,7 @@ export default function CommentInteractionService({ comment, ...props }) {
   const [voted, setVoted] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { postDetail, voteList } = usePost();
+  const navigate = useNavigate()
   useEffect(() => {
     if (voteList) {
       let item = voteList.find((x) => x.commentId === comment.commentId);
@@ -55,7 +58,13 @@ export default function CommentInteractionService({ comment, ...props }) {
         setVoted(true);
         setVote(vote + 2);
       }
-    } catch (error) {}
+    } catch (error) {
+      if(error?.response?.status === 405){
+        toast.error("Tài khoản của bạn đã bị khóa")
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth")
+      }
+    }
   };
 
   const handleDownvoteComment = async () => {
@@ -91,7 +100,13 @@ export default function CommentInteractionService({ comment, ...props }) {
         setVoted(true);
         setVote(vote - 2);
       }
-    } catch (error) {}
+    } catch (error) {
+      if(error?.response?.status === 405){
+        toast.error("Tài khoản của bạn đã bị khóa")
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth")
+      }
+    }
   };
   return (
     <CommentInteraction

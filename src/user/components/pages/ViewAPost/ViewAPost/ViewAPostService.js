@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
 import ViewAPost from "./ViewAPost";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import useAuth from "../../../../hooks/useAuth";
 import ViewAPostSkeleton from "../../../organisms/Skeleton/ViewAPostSkeleton/ViewAPostSkeleton";
 import usePost from "../../../../hooks/usePost";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Container } from "@mui/material";
+import { toast } from "react-toastify";
+
 
 export default function ViewAPostService() {
   const { slug } = useParams();
   const auth = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate()
   const {
     postDetail,
     setPostDetail,
@@ -54,16 +55,30 @@ export default function ViewAPostService() {
                   setHistoryDetail(response?.data[0]);
                 }
               } catch (error) {
-                console.log(error);
+                if (error?.response?.status === 405) {
+                  toast.error("Tài khoản của bạn đã bị khóa");
+                  navigate("/login", { replace: true });
+                  localStorage.removeItem("auth");
+                }
               }
             };
             fetchData();
-          } catch (error) {}
+          } catch (error) {
+            if (error?.response?.status === 405) {
+              toast.error("Tài khoản của bạn đã bị khóa");
+              navigate("/login", { replace: true });
+              localStorage.removeItem("auth");
+            }
+          }
         } else {
           setHistoryDetail(null);
         }
       } catch (error) {
-        console.log(error);
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
       }
     };
     fetchData();
@@ -90,7 +105,13 @@ export default function ViewAPostService() {
             setVoted(true);
           }
         }
-      } catch (error) {}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, [postDetail?.postId]);
@@ -109,7 +130,11 @@ export default function ViewAPostService() {
           setIsFavored(isFavored);
         }
       } catch (error) {
-        console.log(error);
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
       }
     };
     if (postDetail) fetchData();
@@ -132,7 +157,11 @@ export default function ViewAPostService() {
           setIsFollowing(isFollowingUser);
         }
       } catch (error) {
-        console.log(error);
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
       }
     };
     if (postDetail && auth.id !== postDetail?.userId) fetchData();
@@ -150,7 +179,13 @@ export default function ViewAPostService() {
       if (response) {
         setIsFollowing(true);
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
 
   const unfollowAccount = async () => {
@@ -165,7 +200,13 @@ export default function ViewAPostService() {
       if (response) {
         setIsFollowing(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
 
   const addToFavorite = async () => {
@@ -179,7 +220,13 @@ export default function ViewAPostService() {
       if (response) {
         setIsFavored(true);
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
 
   const removeFromFavorite = async () => {
@@ -193,7 +240,13 @@ export default function ViewAPostService() {
       if (response) {
         setIsFavored(false);
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
 
   useEffect(() => {
@@ -203,7 +256,13 @@ export default function ViewAPostService() {
           process.env.REACT_APP_REPORT_REASONS
         );
         setReportReasons(response?.data);
-      } catch (error) {}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, []);
@@ -237,7 +296,13 @@ export default function ViewAPostService() {
         setVoted(true);
         setVote(vote + 2);
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
 
   const handleDownvote = async () => {
@@ -269,7 +334,13 @@ export default function ViewAPostService() {
         setVoted(true);
         setVote(vote - 2);
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   return (
     <>

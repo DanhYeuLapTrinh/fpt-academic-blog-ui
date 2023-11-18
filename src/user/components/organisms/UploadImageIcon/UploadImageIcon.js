@@ -5,10 +5,12 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { Icon } from "@iconify/react";
 import useProfile from "../../../hooks/useProfile";
 import useAuth from "../../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 export default function UploadImageIcon(props) {
   const axiosPrivate = useAxiosPrivate();
   const { setAvatarURL } = useProfile();
   const auth = useAuth();
+  const navigate = useNavigate()
   const handleSubmit = async (file) => {
     try {
       if (!file) return;
@@ -28,7 +30,11 @@ export default function UploadImageIcon(props) {
       localStorage.setItem("auth", JSON.stringify(auth));
       setAvatarURL(origin);
     } catch (error) {
-      console.log(error);
+      if(error?.response?.status === 405){
+        toast.error("Tài khoản của bạn đã bị khóa")
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth")
+      }
     }
   };
 

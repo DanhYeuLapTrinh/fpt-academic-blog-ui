@@ -6,12 +6,13 @@ import useAuth from "../../../hooks/useAuth";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
 import useProfile from "../../../hooks/useProfile";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 export default function MyMenuOptionListService(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [reportReasons, setReportReasons] = useState([]);
   const [reportId, setReportId] = useState(null);
   const [openReport, setOpenReport] = useState(false);
+  const navigate = useNavigate()
   const { id } = useParams();
   const axiosPrivate = useAxiosPrivate();
   const auth = useAuth();
@@ -57,7 +58,11 @@ export default function MyMenuOptionListService(props) {
       toast.success("Báo cáo tài khoản người dùng thành công");
       setOpenReport(false);
       setReportId(null);
-    } catch (error) {}
+    } catch (error) {if(error?.response?.status === 405){
+      toast.error("Tài khoản của bạn đã bị khóa")
+      navigate("/login", { replace: true });
+      localStorage.removeItem("auth")
+    }}
   };
   return (
     <>

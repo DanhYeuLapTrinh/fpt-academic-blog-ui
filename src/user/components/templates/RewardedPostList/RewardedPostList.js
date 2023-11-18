@@ -1,4 +1,4 @@
-import { Container, Divider } from "@mui/material";
+import { Box, Container, Divider, Stack } from "@mui/material";
 import React from "react";
 import RewardedPostTop from "../../organisms/RewardedPosts/RewardedPostTop/RewardedPostTop";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
@@ -13,19 +13,23 @@ export default function RewardedPostList() {
   return (
     <Container sx={{ marginBottom: "59px" }}>
       <SectionTitle title="Lựa chọn bởi giảng viên" see link="/rewarded" />
-      <RewardedPostTop rewardedPosts={rewardedPosts} />
-      {!rewardedPosts
-        ? Array(4)
-            .fill(null)
-            .map((_, i) => (
-              <>
-                <NormalPostSkeleton key={i} />
-                {i < 3 && (
-                  <Divider sx={{ width: "100%" }} orientation="horizontal" />
-                )}
-              </>
-            ))
-        : sortedRewardedPosts?.map((item, index) => {
+      <Box mb={"20px"}>
+        <RewardedPostTop rewardedPosts={rewardedPosts} />
+      </Box>
+      {!rewardedPosts ? (
+        Array(4)
+          .fill(null)
+          .map((_, i) => (
+            <>
+              <NormalPostSkeleton key={i} />
+              {i < 3 && (
+                <Divider sx={{ width: "100%" }} orientation="horizontal" />
+              )}
+            </>
+          ))
+      ) : (
+        <Stack spacing={"20px"}>
+          {sortedRewardedPosts?.map((item, index) => {
             if (index >= 1 && index <= 4) {
               return (
                 <div key={index}>
@@ -49,12 +53,17 @@ export default function RewardedPostList() {
                     userId={item?.userId}
                   />
                   {index < 4 && (
-                    <Divider sx={{ width: "100%" }} orientation="horizontal" />
+                    <Divider
+                      sx={{ width: "100%", paddingTop: "20px" }}
+                      orientation="horizontal"
+                    />
                   )}
                 </div>
               );
             }
           })}
+        </Stack>
+      )}
     </Container>
   );
 }

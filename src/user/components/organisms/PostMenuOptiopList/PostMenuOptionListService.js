@@ -6,6 +6,7 @@ import { Icon } from "@iconify/react";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePost from "../../../hooks/usePost";
+import { toast } from "react-toastify";
 export default function PostMenuOptionListService({postDetail, ...props}) {
   const [anchorEl, setAnchorEl] = useState(null);
   const {setIsAuthor, isAllowComment, setIsAllowComment} = usePost()
@@ -41,9 +42,14 @@ export default function PostMenuOptionListService({postDetail, ...props}) {
         navigate(`/profile/${auth.id}`, { replace: true });
       }
     } catch (error) {
-      if(error.response.status === 404){
+      if(error?.response?.status === 404){
         navigate("/unauthorized", { replace: true });
+      } else if(error?.response?.status === 405){
+        toast.error("Tài khoản của bạn đã bị khóa")
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth")
       }
+
     }
   };
 
@@ -59,7 +65,11 @@ export default function PostMenuOptionListService({postDetail, ...props}) {
         setIsAllowComment(prev => !prev);
       }
     } catch (error) {
-      console.log(error);
+      if(error?.response?.status === 405){
+        toast.error("Tài khoản của bạn đã bị khóa")
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth")
+      }
     }
   }
   return (

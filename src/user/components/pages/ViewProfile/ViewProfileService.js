@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import ViewProfile from "./ViewProfile";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { sortByPropertyName } from "../../../utils/StringMethod";
 import useAuth from "../../../hooks/useAuth";
 import useProfile from "../../../hooks/useProfile";
 import { async } from "q";
+import { toast } from "react-toastify";
 
 export default function ViewProfileService() {
   const { id } = useParams();
   const profileID = Number(id);
   const axiosPrivate = useAxiosPrivate();
-  const { followerList, setFollowerList, user, setUser, setSelected } =
-    useProfile();
+  const { setFollowerList, user, setUser, setSelected } = useProfile();
+  const navigate = useNavigate();
   const [isFollowing, setIsFollowing] = useState(false);
   const auth = useAuth();
   useEffect(() => {
@@ -29,9 +30,21 @@ export default function ViewProfileService() {
             userId: profileID,
           }
         );
-        console.log("View profile")
         setUser(profileInfo?.data);
-      } catch (error) {}
+        if (profileInfo?.data) {
+          let skills = await axiosPrivate.get("users/skills");
+          setUser((prevUser) => ({
+            ...prevUser,
+            skills: skills?.data,
+          }));
+        }
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, [id]);
@@ -52,7 +65,13 @@ export default function ViewProfileService() {
           );
           setIsFollowing(isFollowingUser);
         }
-      } catch (error) {}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     if (profileID !== auth.id) fetchData();
   }, [profileID]);
@@ -91,7 +110,13 @@ export default function ViewProfileService() {
           },
         ]);
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
 
   const unfollowAccount = async () => {
@@ -116,7 +141,13 @@ export default function ViewProfileService() {
           return newFollowerList;
         });
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
 
   return (
@@ -134,6 +165,7 @@ export default function ViewProfileService() {
       userId={user?.userId}
       slug={id}
       badges={user?.badges}
+      user={user}
       followAccount={followAccount}
       unfollowAccount={unfollowAccount}
       isFollowing={isFollowing}
