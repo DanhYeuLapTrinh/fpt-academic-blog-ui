@@ -7,12 +7,13 @@ import usePost from "../../../hooks/usePost";
 import { toast } from "react-toastify";
 import { Box } from "@mui/material";
 import Text from "../../atoms/Text/Text";
+import { useNavigate } from "react-router-dom";
 
 export default function CommentSection({ rootComments, getReplies }) {
   const axiosPrivate = useAxiosPrivate();
   const { postDetail, setPostDetail, setActiveComment, isAllowComment } =
     usePost();
-
+  const navigate = useNavigate();
   const addComment = async (e, parentId = null) => {
     let value = e.target.value.trim();
     if (value === "") {
@@ -50,7 +51,13 @@ export default function CommentSection({ rootComments, getReplies }) {
           setPostDetail({ ...postDetail, comments: comments });
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   const deleteComment = async (commentId) => {
     try {
@@ -67,10 +74,15 @@ export default function CommentSection({ rootComments, getReplies }) {
         );
         setPostDetail({ ...postDetail, comments: newComments });
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   const editComment = async (commentId, content) => {
-    console.log(commentId, content);
     try {
       let response = await axiosPrivate.post(
         process.env.REACT_APP_EDIT_COMMENT,
@@ -88,7 +100,13 @@ export default function CommentSection({ rootComments, getReplies }) {
         setPostDetail({ ...postDetail, comments: newComments });
         setActiveComment(null);
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   return (
     <>

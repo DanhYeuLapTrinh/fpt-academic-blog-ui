@@ -2,7 +2,7 @@ import React, { createContext, useState } from "react";
 const PostContext = createContext();
 export default function PostProvider({ children }) {
   const [postDetail, setPostDetail] = useState();
-  const [historyDetail, setHistoryDetail] = useState();
+  const [historyDetail, setHistoryDetail] = useState([]);
   const [activeComment, setActiveComment] = useState(null);
   const [tagName, setTagName] = useState(null);
   const [voteList, setVoteList] = useState([]);

@@ -1,17 +1,19 @@
 import { Box, Button, Stack } from "@mui/material";
 import React from "react";
 import Text from "../../atoms/Text/Text";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useProfile from "../../../hooks/useProfile";
 import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 export default function UserFollowProfile(props) {
   const axiosPrivate = useAxiosPrivate();
   const { followingList, setFollowingList } = useProfile();
   const auth = useAuth();
   const { id } = useParams();
+  const navigate = useNavigate()
   const unfollow = async (inputId) => {
     try {
       let response = await axiosPrivate.post(
@@ -27,7 +29,11 @@ export default function UserFollowProfile(props) {
         );
         setFollowingList(newFollowerList);
       }
-    } catch (error) {}
+    } catch (error) {if(error.response.status === 405){
+      toast.error("Tài khoản của bạn đã bị khóa")
+      navigate("/login", { replace: true });
+      localStorage.removeItem("auth")
+    }}
   };
   return (
     <Box sx={{ width: "calc((100% - 20px)/2)" }}>

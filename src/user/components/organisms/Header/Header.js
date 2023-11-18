@@ -2,15 +2,17 @@ import React, { useEffect } from "react";
 import UserTab from "../UserTab/UserTab";
 import { Container, Divider, Stack } from "@mui/material";
 import Text from "../../atoms/Text/Text";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavList from "../../molecules/Navigation/NavList";
 import useProfile from "../../../hooks/useProfile";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 export default function Header() {
-  const { avatarURL, setAvatarURL } = useProfile();
+  const {  setAvatarURL, setUser } = useProfile();
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate()
   const auth = useAuth();
   useEffect(() => {
     const fetchData = async () => {
@@ -21,10 +23,19 @@ export default function Header() {
             userId: auth.id,
           }
         );
-        if(profileInfo) {
-          setAvatarURL(profileInfo?.data?.profileUrl)
+        if (profileInfo?.data) {
+          setAvatarURL(profileInfo?.data?.profileUrl);
+          let skills = await axiosPrivate.get("users/skills");
+          setUser((prevUser) => ({
+            ...prevUser,
+            skills: skills?.data,
+          }));
         }
-      } catch (error) {}
+      } catch (error) {if(error.response.status === 405){
+        toast.error("Tài khoản của bạn đã bị khóa")
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth")
+      }}
     };
     fetchData();
   }, []);

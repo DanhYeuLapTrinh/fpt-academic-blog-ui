@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CommentMenuOptionList from "./CommentMenuOptionList";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
 import { IconButton } from "@mui/material";
-import Text from "../../atoms/Text/Text";
 import usePost from "../../../hooks/usePost";
 import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
 
-export default function CommentMenuOptionListService({ comment, deleteComment }) {
+export default function CommentMenuOptionListService({
+  comment,
+  deleteComment,
+}) {
+  const navigate = useNavigate()
   const { reportReasons } = usePost();
   const [anchorEl, setAnchorEl] = useState(null);
   const [reportId, setReportId] = useState(null);
@@ -44,7 +48,13 @@ export default function CommentMenuOptionListService({ comment, deleteComment })
       toast.success("Báo cáo bình luận thành công");
       setOpenReport(false);
       setReportId(null);
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   return (
     <>

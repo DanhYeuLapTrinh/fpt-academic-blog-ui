@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ViewPendingQuestion from "./ViewPendingQuestion";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
+import { toast } from "react-toastify";
 
 export default function ViewPendingQuestionService() {
   const { slug } = useParams();
@@ -21,7 +22,11 @@ export default function ViewPendingQuestionService() {
       };
       fetchData();
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
     }
   }, []);
 
@@ -33,7 +38,11 @@ export default function ViewPendingQuestionService() {
       window.scrollTo(0, 0);
       navigate("/pending-questions", { replace: true });
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
     }
   };
 
@@ -45,7 +54,11 @@ export default function ViewPendingQuestionService() {
       window.scrollTo(0, 0);
       navigate("/pending-questions", { replace: true });
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
     }
   };
 

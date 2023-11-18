@@ -1,11 +1,12 @@
 import { Box, Button, Stack, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import usePost from "../../../hooks/usePost";
 import useProfile from "../../../hooks/useProfile";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import { toast } from "react-toastify";
 
 export default function CommentBar({
   handleSubmit,
@@ -13,12 +14,12 @@ export default function CommentBar({
   initialText = "",
   ...props
 }) {
-  
   const [text, setText] = useState(initialText);
   const { setActiveComment } = usePost();
   const { avatarURL, setAvatarURL } = useProfile();
   const auth = useAuth();
-  const axiosPrivate = useAxiosPrivate()
+  const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
   const onSubmit = (e) => {
     if (e.keyCode === 13 && e.shiftKey === false) {
       handleSubmit(e);
@@ -34,10 +35,16 @@ export default function CommentBar({
             userId: auth.id,
           }
         );
-        if(profileInfo) {
-          setAvatarURL(profileInfo?.data?.profileUrl)
+        if (profileInfo) {
+          setAvatarURL(profileInfo?.data?.profileUrl);
         }
-      } catch (error) {}
+      } catch (error) {
+        if (error.response.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, [avatarURL]);

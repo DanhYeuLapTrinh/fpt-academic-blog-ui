@@ -4,6 +4,8 @@ import useManagePost from "../../../hooks/useManagePost";
 import useHome from "../../../hooks/useHome";
 import { sortByPropertyName } from "../../../utils/StringMethod";
 import ApprovedPost from "./ApprovedPost";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function ApprovedPostService() {
   const axiosPrivate = useAxiosPrivate();
@@ -17,6 +19,7 @@ export default function ApprovedPostService() {
     setIsRewarded,
   } = useManagePost();
   const { isLoading, setIsLoading } = useHome();
+  const navigate = useNavigate()
   let sortedApprove = approvedPosts?.sort(
     (a, b) =>
       new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
@@ -37,7 +40,11 @@ export default function ApprovedPostService() {
         setApprovedPosts(response?.data);
         setApprovedAmount(response?.data?.length);
       } catch (error) {
-        console.log(error);
+        if(error.response.status === 405){
+          toast.error("Tài khoản của bạn đã bị khóa")
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth")
+        }
       }
     };
     fetchData();
