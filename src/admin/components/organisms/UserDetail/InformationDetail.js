@@ -2,41 +2,33 @@ import React, { useEffect, useState } from "react";
 import { useUserContext } from "../../../context/UserContext";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import InformationDetailChildren from "../../molecules/InformationDetail/InformationDetail";
 import { toast } from "react-toastify";
 import {
   Box,
   Paper,
-  Stack,
   TextField,
   Autocomplete,
   Button,
   Chip,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Typography,
 } from "@mui/material";
 
-import AddIcon from "@mui/icons-material/Add";
-
-import { PaperSx, BoxSx } from "./StylesSx";
+import { PaperSx, BoxSx, chipStyles } from "./StylesSx";
 
 function InformationDetail() {
+  const axiosPrivate = useAxiosPrivate();
+
   const { id } = useParams();
 
-  const { getUserById } = useUserContext();
+  const { getUserById, data, setData } = useUserContext();
 
   const user = getUserById(id);
 
-  const [majors, setMajors] = useState([]);
-
-  const [skills, setSkills] = useState([]);
-
-  const [selectedSkills, setSelectedSkills] = useState([]);
-
   const [open, setOpen] = useState(false);
+
+  //---------------------------------------------------------------------------------------
+
+  const [majors, setMajors] = useState([]);
 
   const [selectedMajor, setSelectedMajor] = useState(user.major);
 
@@ -48,9 +40,17 @@ function InformationDetail() {
 
   const prevMajorId = prevMajor ?? defaultPrevMajor;
 
+  //---------------------------------------------------------------------------------------
+
+  const [skills, setSkills] = useState([]);
+
+  const [selectedSkills, setSelectedSkills] = useState([]);
+
+  const [filteredSkills, setFilteredSkills] = useState([]);
+
   const [prevSkills, setPrevSkills] = useState([]);
 
-  const axiosPrivate = useAxiosPrivate();
+  //---------------------------------------------------------------------------------------
 
   const getMajorName = (majors) => {
     if (!majors) return "Chưa có chuyên ngành";
@@ -88,6 +88,18 @@ function InformationDetail() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (skills.length && user.skills.length) {
+      const userSkillNames = user.skills.map((skill) => skill.skillName);
+      const newSkills = skills.filter(
+        (skill) => !userSkillNames.includes(skill.skillName)
+      );
+      setFilteredSkills(newSkills);
+    } else {
+      setFilteredSkills(skills);
+    }
+  }, [skills, user.skills]);
+
   //---------------------------------------------------------------------------------------
 
   const handleSkillOpen = () => {
@@ -98,16 +110,26 @@ function InformationDetail() {
     setOpen(false);
   };
 
-  const handleSkillAdd = (skill) => {
+  const handleDialogSkillAdd = (skill) => {
     setSelectedSkills((prev) => [...prev, skill]);
-    setPrevSkills((prev) => [...prev, skill.id]);
-    setSkills((prev) => prev.filter((s) => s !== skill));
+    setFilteredSkills((prev) => prev.filter((s) => s.id !== skill.id));
   };
 
   const handleSkillRemove = (skill) => {
-    setSelectedSkills((prev) => prev.filter((s) => s !== skill));
-    setPrevSkills((prev) => prev.filter((s) => s !== skill.id));
-    setSkills((prev) => [...prev, skill]);
+    const { id: userId } = user;
+    const { id: skillId } = skill;
+
+    const isSkillSelected = selectedSkills.some(
+      (selected) => selected.id === skill.id
+    );
+
+    if (isSkillSelected) {
+      setSelectedSkills((prev) => prev.filter((s) => s.id !== skill.id));
+      setPrevSkills((prev) => prev.filter((s) => s !== skill.id));
+      setSkills((prev) => [...prev, skill]);
+    } else if (window.confirm("Bạn có chắc chắn muốn xóa kỹ năng này?")) {
+      handleConfirmRemove(userId, skillId);
+    }
   };
 
   const updateSkills = async (userId, skillList) => {
@@ -141,20 +163,9 @@ function InformationDetail() {
   };
 
   const handleMajorChange = (event, newValue) => {
-    setPrevMajor(newValue.id || defaultPrevMajor);
+    console.log("newValue:", newValue);
     setSelectedMajor(newValue);
-  };
-
-  const handleSubmit = () => {
-    const userId = user.id;
-    const selectedMajorId = selectedMajor.id;
-    const skillList = selectedSkills.map((skill) => skill.id);
-
-    updateMajor(userId, selectedMajorId);
-
-    if (!arraysEqual(skillList, prevSkills)) {
-      updateSkills(userId, skillList);
-    }
+    // setPrevMajor(newValue.id || defaultPrevMajor);
   };
 
   const arraysEqual = (a, b) => {
@@ -163,6 +174,75 @@ function InformationDetail() {
       if (a[i] !== b[i]) return false;
     }
     return true;
+  };
+
+  const handleSubmit = () => {
+    const userId = user.id;
+    const selectedMajorId = selectedMajor.id;
+    const skillList = selectedSkills.map((skill) => skill.id);
+
+    const isMajorChanged = selectedMajorId !== prevMajorId;
+    const areSkillsChanged = !arraysEqual(skillList, prevSkills);
+
+    if (isMajorChanged) {
+      updateMajor(userId, selectedMajorId);
+    } else if (areSkillsChanged) {
+      updateSkills(userId, skillList);
+    } else if (!isMajorChanged && !areSkillsChanged) {
+      toast.info("Không có thay đổi nào được cập nhật.");
+    }
+  };
+
+  const handleConfirmRemove = async (userId, skillId) => {
+    try {
+      const res = await axiosPrivate.post(
+        process.env.REACT_APP_REMOVE_USER_SKILL,
+        { userId, skillId }
+      );
+      if (res.status === 200) {
+        toast.success("Kỹ năng đã được xóa thành công!");
+
+        const updatedData = data.map((user) => {
+          if (user.id === userId) {
+            const updatedSkills = user.skills.filter(
+              (skill) => skill.id !== skillId
+            );
+            return { ...user, skills: updatedSkills };
+          }
+          return user;
+        });
+        setData(updatedData);
+      }
+    } catch (error) {
+      toast.error("Có lỗi xảy ra khi xóa kỹ năng:", error);
+    }
+  };
+
+  //---------------------------------------------------------------------------------------
+
+  const renderSelectedSkills = () => {
+    const allSkills = [...user.skills, ...selectedSkills];
+    return allSkills.map((skill) => (
+      <Chip
+        key={skill.id}
+        label={skill.skillName}
+        onDelete={() => handleSkillRemove(skill)}
+        sx={chipStyles}
+      />
+    ));
+  };
+
+  const renderDialogSkills = () => {
+    return filteredSkills.map((skill) => {
+      if (!selectedSkills.some((selected) => selected.id === skill.id)) {
+        return (
+          <Button key={skill.id} onClick={() => handleDialogSkillAdd(skill)}>
+            {skill.skillName}
+          </Button>
+        );
+      }
+      return null;
+    });
   };
 
   //---------------------------------------------------------------------------------------
@@ -178,7 +258,8 @@ function InformationDetail() {
           options={majors}
           getOptionLabel={(option) => option.majorName}
           value={selectedMajor}
-          getOptionSelected={(option, value) => option.id === value.id}
+          disableClearable
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           onChange={handleMajorChange}
           renderInput={(params) => (
             <TextField {...params} label={majorDefault} />
@@ -189,61 +270,13 @@ function InformationDetail() {
       </Box>
 
       {user.role.roleName === "lecturer" && (
-        <>
-          <Typography variant="h6" mt={4}>
-            Kỹ năng
-          </Typography>
-          <Stack
-            direction="row"
-            spacing={2}
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{
-              padding: "1rem",
-              border: "1px solid #ccc",
-              mt: 0.5,
-              borderRadius: 1,
-            }}
-          >
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              {selectedSkills.map((skill) => (
-                <Chip
-                  key={skill.id}
-                  label={skill.skillName}
-                  onDelete={() => handleSkillRemove(skill)}
-                  sx={{ mr: 1, mb: 1 }}
-                />
-              ))}
-            </Box>
-
-            <IconButton onClick={handleSkillOpen}>
-              <AddIcon />
-            </IconButton>
-
-            <Dialog
-              open={open}
-              onClose={handleSkillClose}
-              sx={{
-                "& .MuiDialog-paper": {
-                  p: 2,
-                  maxWidth: "xs",
-                },
-              }}
-            >
-              <DialogTitle>Chọn kỹ năng</DialogTitle>
-              <DialogContent>
-                {skills.map((skill) => (
-                  <Button key={skill.id} onClick={() => handleSkillAdd(skill)}>
-                    {skill.skillName}
-                  </Button>
-                ))}
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleSkillClose}>Đóng</Button>
-              </DialogActions>
-            </Dialog>
-          </Stack>
-        </>
+        <InformationDetailChildren
+          open={open}
+          handleSkillOpen={handleSkillOpen}
+          handleSkillClose={handleSkillClose}
+          renderSelectedSkills={renderSelectedSkills}
+          renderDialogSkills={renderDialogSkills}
+        />
       )}
 
       <Button

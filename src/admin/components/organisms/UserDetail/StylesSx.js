@@ -25,4 +25,11 @@ const StackSx = {
   alignItems: "flex-end",
 };
 
-export { PaperSx, BoxSx, StackSx };
+const chipStyles = {
+  margin: "4px 2px",
+  maxWidth: "46%",
+  marginRight: 1,
+  marginBottom: 1,
+};
+
+export { PaperSx, BoxSx, StackSx, chipStyles };

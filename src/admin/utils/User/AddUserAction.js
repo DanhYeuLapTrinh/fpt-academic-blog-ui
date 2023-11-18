@@ -82,8 +82,8 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
         hasError = true;
       }
 
-      if (!values.majorId) {
-        formik.setFieldError("majorId", "Vui lòng chọn ngành");
+      if (!values.majorID) {
+        formik.setFieldError("majorID", "Vui lòng chọn ngành");
         hasError = true;
       }
 
@@ -91,7 +91,7 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
         onAddUser({
           ...values,
           role: selectedRole || "",
-          majorId: values.majorId || null,
+          majorID: values.majorID || null,
         });
 
         onClose();
@@ -217,11 +217,11 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
         <FormControl required fullWidth sx={{ paddingTop: "5px" }}>
           <InputLabel>Ngành</InputLabel>
           <Select
-            name="majorId"
+            name="majorID"
             onChange={formik.handleChange}
-            value={formik.values.majorId}
-            error={formik.errors.majorId}
-            helpertext={formik.errors.majorId}
+            value={formik.values.majorID}
+            error={formik.errors.majorID}
+            helpertext={formik.errors.majorID}
           >
             <MenuItem value="">
               <em>Chọn ngành</em>
