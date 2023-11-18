@@ -16,72 +16,74 @@ import {
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
 
-export const EditTag = () => {
+export const EditSkill = () => {
   const axiosPrivate = useAxiosPrivate();
-  const [tag, setTag] = useState({
-    tagId: "",
-    tagName: "",
+  const [skill, setSkill] = useState({
+    id: "",
+    skillName: "",
   });
 
-  const [tagList, setTagList] = useState([]);
+  const [skillList, setSkillList] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleInput = (e) => {
-    setTag({ ...tag, [e.target.name]: e.target.value });
+    setSkill({ ...skill, [e.target.name]: e.target.value });
+  };
+
+  const fetchData = async () => {
+    const res = await axiosPrivate.get(process.env.REACT_APP_VIEW_SKILLS_LIST);
+    setSkillList(res.data);
   };
 
   useEffect(() => {
-    axiosPrivate
-      .get(process.env.REACT_APP_TAGS_LIST)
-      .then((res) => {
-        setTagList(res.data);
-      })
-      .catch((err) => console.log(err));
+    fetchData();
   }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (!tag.tagId) {
-      setErrorMessage("Vui lòng chọn một thẻ trước khi cập nhật.");
+    if (!skill.id) {
+      setErrorMessage("Vui lòng chọn một kỹ năng trước khi cập nhật.");
       return;
     }
 
-    if (!tag.tagName) {
-      setErrorMessage("Vui lòng nhập thông tin mới cho thẻ.");
+    if (!skill.skillName) {
+      setErrorMessage("Vui lòng nhập thông tin mới cho kỹ năng.");
       return;
     }
 
-    const isDuplicate = tagList.some((t) => t.tagName === tag.tagName);
+    const isDuplicate = skillList.some(
+      (sk) => sk.skillName === skill.skillName
+    );
     if (isDuplicate) {
-      setErrorMessage("Tên thẻ đã tồn tại.");
+      setErrorMessage("Kỹ năng đã tồn tại.");
       return;
     }
     axiosPrivate
-      .post(process.env.REACT_APP_EDIT_TAG, tag)
+      .post(process.env.REACT_APP_EDIT_SKILL, skill)
       .then((res) => {
-        const updatedTagList = [...tagList];
-        const index = updatedTagList.findIndex((t) => t.id === tag.tagId);
+        const updatedSkillList = [...skillList];
+        const index = updatedSkillList.findIndex((sk) => sk.id === skill.id);
         if (index !== -1) {
-          updatedTagList[index].tagName = tag.tagName;
+          updatedSkillList[index].skillName = skill.skillName;
         }
-        setTagList(updatedTagList);
-        setTag({ tagId: "", tagName: "" });
-        toast.success("Chỉnh sửa thẻ thành công");
+        setSkillList(updatedSkillList);
+        setSkill({ id: "", skillName: "" });
+        toast.success("Chỉnh sửa kỹ năng thành công");
       })
       .catch((err) => {
         console.log(err);
-        toast.success("Chỉnh sửa thẻ thất bại");
+        toast.success("Chỉnh sửa kỹ năng thất bại");
       });
   }
-  const handleTagSelect = () => {
-    if (errorMessage === "Vui lòng chọn một thẻ trước khi cập nhật.") {
+  const handleSkillSelect = () => {
+    if (errorMessage === "Vui lòng chọn một kỹ năng trước khi cập nhật.") {
       setErrorMessage("");
     }
   };
 
-  const handleTagInput = () => {
-    if (errorMessage === "Vui lòng nhập thông tin mới cho thẻ.") {
+  const handleSkillInput = () => {
+    if (errorMessage === "Vui lòng nhập thông tin mới cho kỹ năng.") {
       setErrorMessage("");
     }
   };
@@ -101,42 +103,42 @@ export const EditTag = () => {
           component="h2"
           sx={{ mb: 4, fontWeight: "bold" }}
         >
-          Cập nhật thẻ
+          Cập nhật kỹ năng
         </Typography>
 
         <Grid container spacing={3}>
           <Grid item xs={6}>
-            <InputLabel>Danh sách thẻ đã có: </InputLabel>
+            <InputLabel>Danh sách kỹ năng đã có: </InputLabel>
             <Select
               fullWidth
               variant="outlined"
-              name="tagId"
-              value={tag.tagId}
+              name="id"
+              value={skill.id}
               onChange={handleInput}
-              onFocus={handleTagSelect}
+              onFocus={handleSkillSelect}
             >
               <MenuItem disabled value="">
-                Chọn một thẻ
+                Chọn một kỹ năng
               </MenuItem>
-              {tagList.map((t) => (
-                <MenuItem key={t.id} value={t.id}>
-                  {t.tagName}
+              {skillList.map((sk) => (
+                <MenuItem key={sk.id} value={sk.id}>
+                  {sk.skillName}
                 </MenuItem>
               ))}
             </Select>
           </Grid>
 
           <Grid item xs={6}>
-            <InputLabel>Nội dung thẻ mới: </InputLabel>
+            <InputLabel>Nội dung kỹ năng mới: </InputLabel>
             <TextField
               fullWidth
               variant="outlined"
               type="text"
-              placeholder="Nhập nội dung thay đổi thẻ"
-              name="tagName"
-              value={tag.tagName}
+              placeholder="Nhập nội dung thay đổi kỹ năng"
+              name="skillName"
+              value={skill.skillName}
               onChange={handleInput}
-              onFocus={handleTagInput}
+              onFocus={handleSkillInput}
             />
           </Grid>
         </Grid>
@@ -152,7 +154,7 @@ export const EditTag = () => {
           onClick={handleSubmit}
           sx={{ mt: 3, borderRadius: 20 }}
         >
-          Cập nhật thẻ
+          Cập nhật kỹ năng
         </Button>
       </Paper>
     </Container>

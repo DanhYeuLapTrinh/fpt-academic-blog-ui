@@ -5,6 +5,7 @@ import { Chip, Box, Typography } from "@mui/material";
 import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import AddSkillForm from "../../molecules/Skills/AddSkillForm";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import ConfirmDialog from "../../molecules/ReportedComment/ConfirmDialog";
 import { toast } from "react-toastify";
 import {
   skillsContainer,
@@ -14,14 +15,18 @@ import {
   divHeader,
 } from "./StylesSx";
 
-const SkillsPage = ({ skillsData, setSkillsData }) => {
+const SkillsPage = ({ skillsData, setSkillsData, fetchData }) => {
   const axiosPrivate = useAxiosPrivate();
 
   const [open, setOpen] = useState(false);
 
+  const [idToDelete, setIdToDelete] = useState(null);
+
   const [newSkillName, setNewSkillName] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -33,7 +38,7 @@ const SkillsPage = ({ skillsData, setSkillsData }) => {
     setErrorMessage("");
   };
 
-  const handleAddSkill = () => {
+  const handleAddSkill = async () => {
     if (newSkillName.trim() === "") {
       setErrorMessage("Kỹ năng không được bỏ trống.");
       return;
@@ -42,23 +47,62 @@ const SkillsPage = ({ skillsData, setSkillsData }) => {
     const isDuplicate = skillsData.some(
       (skill) => skill.skillName === newSkillName
     );
+
     if (isDuplicate) {
       setErrorMessage("Kỹ năng đã tồn tại.");
       return;
     }
 
-    axiosPrivate
+    await axiosPrivate
       .post(process.env.REACT_APP_ADD_SKILL, { skillName: newSkillName })
       .then((response) => {
+        toast.success(`Thêm thẻ "${newSkill.skillName}" thành công`);
         const newSkill = response.data;
         setSkillsData([...skillsData, newSkill]);
+        fetchData();
         handleClose();
-        toast.success(`Thêm thẻ "${newSkillName}" thành công`);
       })
       .catch((error) => {
         console.error("Error adding tag: " + error);
         toast.error(`Thêm thẻ "${newSkillName}" không thành công`);
       });
+  };
+
+  const handleDeleteSkill = async () => {
+    try {
+      await axiosPrivate
+        .post(process.env.REACT_APP_DELETE_SKILL, { id: idToDelete })
+        .then((response) => {
+          if (response.status === 200) {
+            toast.success(`Xóa thẻ thành công`);
+            setSkillsData(
+              skillsData.filter((skill) => skill.id !== idToDelete)
+            );
+          }
+          setDeleteDialogOpen(false);
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            toast.error(`Không tìm thấy kỹ năng`);
+          } else if (error.response.status === 409) {
+            toast.error(`Không thể xóa do kỹ năng đã được sử dụng`);
+          } else {
+            toast.error(`Xóa thẻ không thành công`);
+          }
+        });
+    } catch (error) {
+      console.error("Error deleting skill: " + error);
+      toast.error(`Xóa thẻ không thành công`);
+    }
+  };
+
+  const openDelete = (id) => {
+    setIdToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleCancel = () => {
+    setDeleteDialogOpen(false);
   };
 
   return (
@@ -84,11 +128,28 @@ const SkillsPage = ({ skillsData, setSkillsData }) => {
         >
           {skillsData.map((skill) => (
             <motion.li variants={item} key={skill.id}>
-              <Chip style={skillItem} label={skill.skillName} />
+              <Chip
+                style={skillItem}
+                label={skill.skillName}
+                onDelete={() => openDelete(skill.id)}
+              />
             </motion.li>
           ))}
         </motion.ul>
       </Box>
+
+      <ConfirmDialog
+        open={deleteDialogOpen}
+        onConfirm={handleDeleteSkill}
+        onCancel={handleCancel}
+        title="Xóa kỹ năng"
+        content={
+          <span>
+            Bạn có chắc chắn <span style={{ fontWeight: "bolder" }}>XÓA</span>{" "}
+            kỹ năng này?
+          </span>
+        }
+      />
     </>
   );
 };
