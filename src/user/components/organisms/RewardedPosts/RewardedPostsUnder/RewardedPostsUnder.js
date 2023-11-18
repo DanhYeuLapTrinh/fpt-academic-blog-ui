@@ -10,7 +10,7 @@ import LecturerMenuService from "../../LecturerMenu/LecturerMenuService";
 import { getFirstChar, toSlug } from "../../../../utils/StringMethod";
 export default function RewardedPostsUnder(props) {
   return (
-    <div style={{ width: "100%", padding: "20px 0" }}>
+    <div style={{ width: "100%" }}>
       <Stack direction={"row"}>
         <Link to={`${props?.slug}`} style={{ textDecoration: "none" }}>
           <Box

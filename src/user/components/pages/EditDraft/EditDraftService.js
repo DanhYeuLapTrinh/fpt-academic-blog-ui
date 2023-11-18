@@ -70,7 +70,7 @@ export default function EditDraftService() {
         );
         setData(response.data);
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -86,7 +86,7 @@ export default function EditDraftService() {
         const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
         setTagList(tagList.data);
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -102,7 +102,7 @@ export default function EditDraftService() {
         const topics = await axiosPrivate.get(process.env.REACT_APP_GET_TOPICS);
         setTopic(topics.data);
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -137,7 +137,7 @@ export default function EditDraftService() {
         setTagID(draft?.data?.tag.tagId);
         setSkills(draft?.data?.postSkill);
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -161,7 +161,7 @@ export default function EditDraftService() {
       );
       if (response.status === 200) return response?.data.link;
     } catch (error) {
-      if (error.response.status === 405) {
+      if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
@@ -246,7 +246,7 @@ export default function EditDraftService() {
           navigate("/draft", { replace: true });
         }
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -270,7 +270,7 @@ export default function EditDraftService() {
         navigate("/draft", { replace: true });
       }
     } catch (error) {
-      if (error.response.status === 405) {
+      if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");

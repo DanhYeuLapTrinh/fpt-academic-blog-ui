@@ -135,7 +135,7 @@ export default function WriteService() {
           navigate("/", { replace: true });
         }
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -154,7 +154,7 @@ export default function WriteService() {
           process.env.REACT_APP_CATEGORIES_API
         );
         setData(response.data);
-      } catch (error) {if (error.response.status === 405) {
+      } catch (error) {if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
@@ -168,7 +168,7 @@ export default function WriteService() {
       try {
         const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
         setTagList(tagList.data);
-      } catch (error) {if (error.response.status === 405) {
+      } catch (error) {if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
@@ -182,7 +182,7 @@ export default function WriteService() {
       try {
         const topics = await axiosPrivate.get(process.env.REACT_APP_GET_TOPICS);
         setTopic(topics.data);
-      } catch (error) {if (error.response.status === 405) {
+      } catch (error) {if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");

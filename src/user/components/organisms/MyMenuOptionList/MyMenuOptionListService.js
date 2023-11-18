@@ -58,7 +58,7 @@ export default function MyMenuOptionListService(props) {
       toast.success("Báo cáo tài khoản người dùng thành công");
       setOpenReport(false);
       setReportId(null);
-    } catch (error) {if(error.response.status === 405){
+    } catch (error) {if(error?.response?.status === 405){
       toast.error("Tài khoản của bạn đã bị khóa")
       navigate("/login", { replace: true });
       localStorage.removeItem("auth")

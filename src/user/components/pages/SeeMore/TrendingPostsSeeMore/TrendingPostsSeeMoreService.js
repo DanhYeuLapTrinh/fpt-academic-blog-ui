@@ -17,7 +17,7 @@ export default function TrendingPostsSeeMoreService() {
           process.env.REACT_APP_TRENDING_POSTS
         );
         setTrendingPosts(trendingPosts?.data);
-      } catch (error) {if (error.response.status === 405) {
+      } catch (error) {if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");

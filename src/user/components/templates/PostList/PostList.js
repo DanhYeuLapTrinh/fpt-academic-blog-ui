@@ -21,7 +21,7 @@ export default function PostList() {
       });
       return { ...response?.data, prevOffset: page };
     } catch (error) {
-      if (error.response.status === 405) {
+      if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");

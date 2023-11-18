@@ -17,7 +17,7 @@ export default function DraftService() {
         let draft = await axiosPrivate.get(process.env.REACT_APP_VIEW_DRAFT);
         setDraft(draft?.data);
       } catch (error) {
-        if(error.response.status === 405){
+        if(error?.response?.status === 405){
           toast.error("Tài khoản của bạn đã bị khóa")
           navigate("/login", { replace: true });
           localStorage.removeItem("auth")

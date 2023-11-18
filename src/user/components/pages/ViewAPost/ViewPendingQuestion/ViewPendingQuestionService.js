@@ -22,7 +22,7 @@ export default function ViewPendingQuestionService() {
       };
       fetchData();
     } catch (error) {
-      if (error.response.status === 405) {
+      if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
@@ -38,7 +38,7 @@ export default function ViewPendingQuestionService() {
       window.scrollTo(0, 0);
       navigate("/pending-questions", { replace: true });
     } catch (error) {
-      if (error.response.status === 405) {
+      if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
@@ -54,7 +54,7 @@ export default function ViewPendingQuestionService() {
       window.scrollTo(0, 0);
       navigate("/pending-questions", { replace: true });
     } catch (error) {
-      if (error.response.status === 405) {
+      if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
