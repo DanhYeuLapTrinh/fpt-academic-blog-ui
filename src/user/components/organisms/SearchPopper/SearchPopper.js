@@ -74,7 +74,7 @@ export default function SearchPopper({
                     />
                   </Box>
                 </Stack>
-              </FormControl>
+            </FormControl>
             </Stack>
           </Box>
         </DialogContent>

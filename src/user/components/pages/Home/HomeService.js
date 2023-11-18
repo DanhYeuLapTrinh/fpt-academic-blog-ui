@@ -35,7 +35,7 @@ export default function HomeService() {
         );
         setTrendingPosts(trendingPosts?.data?.slice(0, 4));
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -53,7 +53,7 @@ export default function HomeService() {
         );
         setLatestPosts(latestPosts?.data);
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -71,7 +71,7 @@ export default function HomeService() {
         );
         setRewardedPosts(rewardedPosts?.data);
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -89,7 +89,7 @@ export default function HomeService() {
         );
         setTrendingTags(trendingTags?.data);
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -107,7 +107,7 @@ export default function HomeService() {
         );
         setShortPosts(shortPosts?.data);
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
@@ -123,7 +123,7 @@ export default function HomeService() {
         let qaList = await axiosPrivate.get(process.env.REACT_APP_QA_LIST);
         setQAList(qaList?.data);
       } catch (error) {
-        if (error.response.status === 405) {
+        if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");

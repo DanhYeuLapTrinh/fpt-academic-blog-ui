@@ -52,7 +52,7 @@ export default function CommentSection({ rootComments, getReplies }) {
         }
       }
     } catch (error) {
-      if (error.response.status === 405) {
+      if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
@@ -75,7 +75,7 @@ export default function CommentSection({ rootComments, getReplies }) {
         setPostDetail({ ...postDetail, comments: newComments });
       }
     } catch (error) {
-      if (error.response.status === 405) {
+      if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
@@ -101,7 +101,7 @@ export default function CommentSection({ rootComments, getReplies }) {
         setActiveComment(null);
       }
     } catch (error) {
-      if (error.response.status === 405) {
+      if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");

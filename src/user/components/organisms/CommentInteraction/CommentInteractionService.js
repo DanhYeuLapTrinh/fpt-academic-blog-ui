@@ -59,7 +59,7 @@ export default function CommentInteractionService({ comment, ...props }) {
         setVote(vote + 2);
       }
     } catch (error) {
-      if(error.response.status === 405){
+      if(error?.response?.status === 405){
         toast.error("Tài khoản của bạn đã bị khóa")
         navigate("/login", { replace: true });
         localStorage.removeItem("auth")
@@ -101,7 +101,7 @@ export default function CommentInteractionService({ comment, ...props }) {
         setVote(vote - 2);
       }
     } catch (error) {
-      if(error.response.status === 405){
+      if(error?.response?.status === 405){
         toast.error("Tài khoản của bạn đã bị khóa")
         navigate("/login", { replace: true });
         localStorage.removeItem("auth")

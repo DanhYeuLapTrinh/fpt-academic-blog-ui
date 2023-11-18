@@ -19,7 +19,7 @@ export default function ViewPendingRewardService() {
           }
         );
         setRewardPost(response.data);
-      } catch (error) {if (error.response.status === 405) {
+      } catch (error) {if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
@@ -35,7 +35,7 @@ export default function ViewPendingRewardService() {
       if(response) {
         navigate("/pending-reward", { replace: true });
       }
-    } catch (error) {if (error.response.status === 405) {
+    } catch (error) {if (error?.response?.status === 405) {
       toast.error("Tài khoản của bạn đã bị khóa");
       navigate("/login", { replace: true });
       localStorage.removeItem("auth");
