@@ -11,7 +11,7 @@ function AvatarDetail({ profileDetail, avatar }) {
         borderRadius: 4,
       }}
     >
-      <Box sx={{ height: 350 }}>
+      <Box sx={{ height: 250 }}>
         <Avatar
           sx={{
             width: "150px",
