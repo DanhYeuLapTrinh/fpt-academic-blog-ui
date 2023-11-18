@@ -135,8 +135,13 @@ export default function WriteService() {
           navigate("/", { replace: true });
         }
       } catch (error) {
-        console.log(error);
-        toast.error("Có lỗi trong quá trình xử lý");
+        if (error.response.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        } else {
+          toast.error("Có lỗi trong quá trình xử lý");
+        }
       }
     },
     [tagID, subjectID, contentTiny, title, coverURL, tag, skills]
@@ -149,7 +154,11 @@ export default function WriteService() {
           process.env.REACT_APP_CATEGORIES_API
         );
         setData(response.data);
-      } catch (error) {}
+      } catch (error) {if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }}
     };
     fetchData();
   }, []);
@@ -159,7 +168,11 @@ export default function WriteService() {
       try {
         const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
         setTagList(tagList.data);
-      } catch (error) {}
+      } catch (error) {if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }}
     };
     if (data) fetchData();
   }, [data]);
@@ -169,7 +182,11 @@ export default function WriteService() {
       try {
         const topics = await axiosPrivate.get(process.env.REACT_APP_GET_TOPICS);
         setTopic(topics.data);
-      } catch (error) {}
+      } catch (error) {if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }}
     };
     if (tagList) fetchData();
   }, [tagList]);

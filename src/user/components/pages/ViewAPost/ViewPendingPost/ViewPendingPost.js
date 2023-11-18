@@ -1,17 +1,31 @@
 import {
+  Box,
   Button,
+  Chip,
   Container,
+  Dialog,
+  DialogContent,
+  Divider,
   FormControlLabel,
+  IconButton,
   Stack,
   Switch,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Text from "../../../atoms/Text/Text";
 import styles from "./Styles.module.scss";
 import AccountInfoBar from "../../../organisms/AccountInfoBar/AccountInfoBar";
-import PopupEdit from "../../../organisms/PopupEdit/PopupEdit";
 import PopUpDialog from "../../../organisms/PopUpDialog/PopUpDialog";
+import { Icon } from "@iconify/react";
 export default function ViewPendingPost(props) {
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+  };
   return (
     <Container>
       <AccountInfoBar
@@ -27,24 +41,75 @@ export default function ViewPendingPost(props) {
         tagID={props.data?.tag?.tagId}
         userId={props.data?.userId}
       />
-      {props.data?.reasonOfDecline && (
-        <PopupEdit
-          bgcolor="primary.main"
-          label="Bài viết này đã từng bị từ chối vì lý do"
-          content={props.data?.reasonOfDecline}
-          color="secondary.main"
-        />
-      )}
-      <div className={styles.contentWrapper}>
-        <Text>
-          <h1 style={{ fontSize: "40px", lineHeight: "50px" }}>
-            {props.data?.title}
-          </h1>
+      <Stack
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        mt={"20px"}
+      >
+        <Text fontSize="40px">
+          <h1 style={{ fontSize: "40px" }}>{props.data?.title}</h1>
         </Text>
-        <img style={{ margin: "10px 0 40px" }} src={props.data?.coverURL} />
+        {props.data?.reasonOfDecline && (
+          <Button
+            variant="outlined"
+            size="small"
+            sx={{ textTransform: "none" }}
+            onClick={handleClickOpen}
+          >
+            Xem lý do từ chối
+          </Button>
+        )}
+        <Dialog open={open} maxWidth="lg">
+          <DialogContent sx={{ p: 0 }}>
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              p={2}
+              sx={{ minWidth: "400px" }}
+              justifyContent={"space-between"}
+            >
+              <Text fontSize="26px">Lý do từ chối</Text>
+              <IconButton
+                sx={{ p: 0 }}
+                disableFocusRipple
+                disableRipple
+                disableTouchRipple
+                onClick={handleCloseDialog}
+              >
+                <Icon icon="uil:x" color="#444746" width="24" />
+              </IconButton>
+            </Stack>
+            <Divider orientation="horizontal" />
+            <Box sx={{ p: 2 }}>{props.data?.reasonOfDecline}</Box>
+          </DialogContent>
+        </Dialog>
+      </Stack>
+      <div className={styles.contentWrapper}>
+        <img style={{ margin: "0px 0 40px" }} src={props.data?.coverURL} />
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
-
+      <Stack
+        direction={"row"}
+        alignItems={"center"}
+        spacing={1}
+        m={"30px 0 20px"}
+      >
+        {props.data?.postSkill?.map((item) => (
+          <Text>
+            <Chip
+              label={item.skillName}
+              sx={{
+                minWidth: "50px",
+                borderRadius: "5px",
+                color: "secondary.main",
+                bgcolor: "primary.main",
+                fontSize: "16px",
+              }}
+            />
+          </Text>
+        ))}
+      </Stack>
       <FormControlLabel
         control={<Switch color="warning" onChange={props.handleGiveReward} />}
         label={<Text>Trao thưởng</Text>}

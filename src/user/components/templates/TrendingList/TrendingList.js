@@ -8,14 +8,13 @@ import PostCardV2Skeleton from "../../organisms/Skeleton/PostCardV2Skeleton/Post
 
 export default function TrendingList(props) {
   return (
-      <Grid2 container xs={12} columnGap={"20px"} paddingTop={"37px"}>
-        <Grid2 item xs={12}>
-          <SectionTitle title="Thịnh hành" see link="/trending" />
-        </Grid2>
-        <Grid2 item xs>
-          {!props.trendingPosts ? (
-            <PostCardV1Skeleton desc />
-          ) : (
+    <Grid2 container xs={12} columnGap={"20px"} paddingTop={"37px"}>
+      <Grid2 item xs={12}>
+        <SectionTitle title="Thịnh hành" see link="/trending" />
+      </Grid2>
+      {props?.trendingPosts?.length >= 4 ? (
+        <>
+          <Grid2 item xs>
             <PostCardV1
               url={props?.trendingPosts[1]?.coverURL}
               src={props?.trendingPosts[1]?.avatarURL}
@@ -25,9 +24,7 @@ export default function TrendingList(props) {
               description={props?.trendingPosts[1]?.description}
               majorName={props?.trendingPosts[1]?.category[0]?.categoryName}
               majorID={props?.trendingPosts[1].category[0]?.categoryId}
-              subjectName={
-                props?.trendingPosts[1]?.category[2]?.categoryName
-              }
+              subjectName={props?.trendingPosts[1]?.category[2]?.categoryName}
               subjectID={props?.trendingPosts[1].category[2]?.categoryId}
               tagName={props?.trendingPosts[1]?.tag.tagName}
               tagID={props?.trendingPosts[1]?.tag.tagId}
@@ -39,12 +36,8 @@ export default function TrendingList(props) {
               hasDescription={true}
               title="21px"
             />
-          )}
-        </Grid2>
-        <Grid2 item xs={5}>
-          {!props.trendingPosts ? (
-            <PostCardV2Skeleton height={492} />
-          ) : (
+          </Grid2>
+          <Grid2 item xs={5}>
             <PostCardV2
               url={props?.trendingPosts[0]?.coverURL}
               src={props?.trendingPosts[0]?.avatarURL}
@@ -54,9 +47,7 @@ export default function TrendingList(props) {
               description={props?.trendingPosts[0]?.description}
               majorName={props?.trendingPosts[0]?.category[0]?.categoryName}
               majorID={props?.trendingPosts[0].category[0]?.categoryId}
-              subjectName={
-                props?.trendingPosts[0]?.category[2]?.categoryName
-              }
+              subjectName={props?.trendingPosts[0]?.category[2]?.categoryName}
               subjectID={props?.trendingPosts[0].category[2]?.categoryId}
               tagName={props?.trendingPosts[0]?.tag.tagName}
               tagID={props?.trendingPosts[0]?.tag.tagId}
@@ -68,14 +59,10 @@ export default function TrendingList(props) {
               clamp="4"
               title="30px"
             />
-          )}
-        </Grid2>
-        <Grid2 item xs>
-          <Grid2 container direction={"column"} rowGap={"20px"}>
-            <Grid2 item xs style={{ height: "50%" }}>
-              {!props.trendingPosts ? (
-                <PostCardV1Skeleton />
-              ) : (
+          </Grid2>
+          <Grid2 item xs>
+            <Grid2 container direction={"column"} rowGap={"20px"}>
+              <Grid2 item xs style={{ height: "50%" }}>
                 <PostCardV1
                   url={props?.trendingPosts[2]?.coverURL}
                   src={props?.trendingPosts[2]?.avatarURL}
@@ -83,16 +70,12 @@ export default function TrendingList(props) {
                   time={props?.trendingPosts[2]?.dateOfPost}
                   postTitle={props?.trendingPosts[2]?.title}
                   description={props?.trendingPosts[2]?.description}
-                  majorName={
-                    props?.trendingPosts[2]?.category[0]?.categoryName
-                  }
+                  majorName={props?.trendingPosts[2]?.category[0]?.categoryName}
                   majorID={props?.trendingPosts[2].category[0]?.categoryId}
                   subjectName={
                     props?.trendingPosts[2]?.category[2]?.categoryName
                   }
-                  subjectID={
-                    props?.trendingPosts[2].category[2]?.categoryId
-                  }
+                  subjectID={props?.trendingPosts[2].category[2]?.categoryId}
                   isRewarded={props?.trendingPosts[2]?.is_rewarded}
                   tagName={props?.trendingPosts[2]?.tag.tagName}
                   tagID={props?.trendingPosts[2]?.tag.tagId}
@@ -103,12 +86,8 @@ export default function TrendingList(props) {
                   title="16px"
                   small={true}
                 />
-              )}
-            </Grid2>
-            <Grid2 item xs style={{ height: "50%" }}>
-              {!props.trendingPosts ? (
-                <PostCardV1Skeleton />
-              ) : (
+              </Grid2>
+              <Grid2 item xs style={{ height: "50%" }}>
                 <PostCardV1
                   url={props?.trendingPosts[3]?.coverURL}
                   src={props?.trendingPosts[3]?.avatarURL}
@@ -116,16 +95,12 @@ export default function TrendingList(props) {
                   time={props?.trendingPosts[3]?.dateOfPost}
                   postTitle={props?.trendingPosts[3]?.title}
                   description={props?.trendingPosts[3]?.description}
-                  majorName={
-                    props?.trendingPosts[3]?.category[0]?.categoryName
-                  }
+                  majorName={props?.trendingPosts[3]?.category[0]?.categoryName}
                   majorID={props?.trendingPosts[3].category[0]?.categoryId}
                   subjectName={
                     props?.trendingPosts[3]?.category[2]?.categoryName
                   }
-                  subjectID={
-                    props?.trendingPosts[3].category[2]?.categoryId
-                  }
+                  subjectID={props?.trendingPosts[3].category[2]?.categoryId}
                   isRewarded={props?.trendingPosts[3]?.is_rewarded}
                   tagName={props?.trendingPosts[3]?.tag.tagName}
                   tagID={props?.trendingPosts[3]?.tag.tagId}
@@ -136,10 +111,30 @@ export default function TrendingList(props) {
                   title="16px"
                   small={true}
                 />
-              )}
+              </Grid2>
             </Grid2>
           </Grid2>
-        </Grid2>
-      </Grid2>
+        </>
+      ) : (
+        <>
+          <Grid2 item xs>
+            <PostCardV1Skeleton desc />
+          </Grid2>
+          <Grid2 item xs={5}>
+            <PostCardV2Skeleton height={492} />
+          </Grid2>
+          <Grid2 item xs>
+            <Grid2 container direction={"column"} rowGap={"20px"}>
+              <Grid2 item xs style={{ height: "50%" }}>
+                <PostCardV1Skeleton />
+              </Grid2>
+              <Grid2 item xs style={{ height: "50%" }}>
+                <PostCardV1Skeleton />
+              </Grid2>
+            </Grid2>
+          </Grid2>
+        </>
+      )}
+    </Grid2>
   );
 }

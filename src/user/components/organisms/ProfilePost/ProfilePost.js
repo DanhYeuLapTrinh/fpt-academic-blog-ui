@@ -39,7 +39,7 @@ export default function ProfilePost(props) {
           )}
         </Box>
         <Box width={"calc(100% - 261px)"}>
-          <Stack justifyContent={"space-between"} height={"100%"}>
+          <Stack justifyContent={"space-around"} height={"100%"}>
             <Wrapper WebkitLineClamp="2">
               <Text
                 fontSize={props.title}

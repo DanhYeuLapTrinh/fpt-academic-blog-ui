@@ -114,7 +114,7 @@ export default function ViewAPost({ postDetail, ...props }) {
               }}
               src={postDetail?.coverURL}
             />
-            {postDetail?.is_rewarded && postDetail?.rewarder?.length >= 1 && (
+            {postDetail?.is_rewarded && postDetail?.rewarder?.length >= 2 && (
               <>
                 <Tooltip
                   title={`Được trao thưởng bởi ${postDetail?.rewarder?.length} giảng viên`}
@@ -152,7 +152,9 @@ export default function ViewAPost({ postDetail, ...props }) {
                           width: "400px",
                         }}
                       >
-                        <Text fontSize="26px">Người trao thưởng</Text>
+                        <Text fontSize="26px">
+                          Người trao thưởng ({postDetail?.rewarder?.length})
+                        </Text>
                       </Box>
                       <IconButton
                         sx={{ p: 0 }}
@@ -165,7 +167,7 @@ export default function ViewAPost({ postDetail, ...props }) {
                       </IconButton>
                     </Stack>
                     <Divider orientation="horizontal" />
-                    <Stack sx={{ p: 3 }}>
+                    <Stack sx={{ p: 3 }} spacing={3}>
                       {postDetail?.rewarder?.map((item) => (
                         <Stack
                           direction={"row"}
@@ -220,7 +222,12 @@ export default function ViewAPost({ postDetail, ...props }) {
         )}
         <div dangerouslySetInnerHTML={{ __html: postDetail?.content }} />
       </div>
-      <Stack direction={"row"} alignItems={"center"} spacing={1} mb={"20px"}>
+      <Stack
+        direction={"row"}
+        alignItems={"center"}
+        spacing={1}
+        m={"30px 0 20px"}
+      >
         {postDetail?.postSkill?.map((item) => (
           <Text>
             <Chip

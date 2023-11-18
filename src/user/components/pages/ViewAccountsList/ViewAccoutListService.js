@@ -1,54 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ViewAccountList from "./ViewAccountList";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { Box, Container, Stack } from "@mui/material";
-import Text from "../../atoms/Text/Text";
-import { useParams } from "react-router-dom";
+import { Box, Container } from "@mui/material";
+import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import useHome from "../../../hooks/useHome";
 import SearchBar from "../../molecules/SearchBar/SearchBar";
+import { toast } from "react-toastify";
 
 export default function ViewAccoutListService() {
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
   const { users, setUsers, setAccountName, accountName } = useHome();
   const { id } = useParams();
   const auth = useAuth();
-  let hasMoreUsers = true;
-  useEffect(() => {
-    setAccountName(id);
-  }, [id]);
-
-  const fetchData = async (page, usersOfPage) => {
-    let response = await axiosPrivate.post(
-      process.env.REACT_APP_SEARCH_ACCOUNT,
-      {
-        page: page,
-        usersOfPage: usersOfPage,
-        search: accountName,
+  const handleSearchAccount = async (e) => {
+    if (e.keyCode === 13 && e.shiftKey === false && e.target.value !== "") {
+      try {
+        let response = await axiosPrivate.post(
+          process.env.REACT_APP_SEARCH_ACCOUNT,
+          {
+            search: e.target.value,
+          }
+        );
+        if (response?.data) {
+          window.scrollTo(0, 0);
+          navigate(`/accounts/${e.target.value}`);
+          setUsers(response?.data);
+        }
+      } catch (error) {
+        if (error.response.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
       }
-    );
-    return { users: [...response?.data], prevOffset: page };
+    }
   };
 
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["users"],
-    queryFn: ({ pageParam = 1 }) => fetchData(pageParam, 10),
-    getNextPageParam: (lastPage) => {
-      if (lastPage.prevOffset * 5 >= lastPage.users.length) {
-        hasMoreUsers = false;
-      }
-      return lastPage.prevOffset + 1;
-    },
-  });
-
-  let user = data?.pages?.reduce((acc, page) => {
-    return [...acc, ...page.users];
-  }, [])
   useEffect(() => {
-    console.log(user)
-  }, [user])
+    setAccountName(id);
+    handleSearchAccount({
+      keyCode: 13,
+      shiftKey: false,
+      target: { value: id },
+    });
+    return () => setAccountName("");
+  }, []);
 
   const followAccount = async (inputId) => {
     try {
@@ -72,7 +70,13 @@ export default function ViewAccoutListService() {
           )
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
 
   const unfollowAccount = async (inputId) => {
@@ -97,10 +101,16 @@ export default function ViewAccoutListService() {
           )
         );
       }
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   return (
-    <Container>
+    <Container sx={{ mt: "37px" }}>
       <Box mb={"20px"}>
         <SearchBar
           accountName={accountName}
@@ -108,25 +118,11 @@ export default function ViewAccoutListService() {
           width="100%"
         />
       </Box>
-      <InfiniteScroll
-        dataLength={users ? users.length : 0}
-        next={() => fetchNextPage()}
-        hasMore={hasNextPage}
-        loader={
-          hasMoreUsers && (
-            <Stack width={"100%"} sx={{ textAlign: "center", m: "20px 0" }}>
-              <Text>...đang tải...</Text>
-            </Stack>
-          )
-        }
-        style={{ marginBottom: "20px" }}
-      >
-        <ViewAccountList
-          followAccount={followAccount}
-          unfollowAccount={unfollowAccount}
-          users={user}
-        />
-      </InfiniteScroll>
+      <ViewAccountList
+        followAccount={followAccount}
+        unfollowAccount={unfollowAccount}
+        users={users}
+      />
     </Container>
   );
 }

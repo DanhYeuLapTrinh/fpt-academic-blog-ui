@@ -41,7 +41,7 @@ export default function PostCardV2(props) {
             borderRadius: "10px",
           }}
         >
-          {props.isRewarded && props?.rewarder?.length >= 2 && (
+          {props.isRewarded && (
             <Link to={"/rewarded"}>
               <RewardBadge
                 small={props.small}

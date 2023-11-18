@@ -9,16 +9,16 @@ import Post from "../../../organisms/Post/Post";
 
 export default function RewardedPostsSeeMore(props) {
   return (
-    <Box mb={"20px"}>
+    <Box mb={"20px"} minHeight={"calc(100vh - 93px - 20px)"}>
       <Box
         sx={{
-          p: "37px 0 57px",
-          bgcolor: "secondary.alt",
+          p: props?.data?.length >= 5 ? "37px 0 57px" : "37px 0 0",
+          bgcolor: props?.data?.length >= 5 ? "secondary.alt" : "",
         }}
       >
         <Container>
           <SectionTitle title="Trang xem bài được trao thưởng" />
-          {props.data && (
+          {props?.data?.length >= 5 && (
             <Box width={"100%"}>
               <Stack direction={"row"} width={"100%"} spacing={"20px"} mb={2}>
                 <Box flex={1}>
@@ -174,27 +174,29 @@ export default function RewardedPostsSeeMore(props) {
       <Container>
         <Grid2 container>
           <Grid2 item xs={8} direction={"column"}>
-            {props?.data?.slice(5)?.map((item, index) => (
-              <Post
-                key={index}
-                url={item?.coverURL}
-                title={item?.title}
-                description={item?.description}
-                author={item?.accountName}
-                src={item?.avatarURL}
-                time={item?.dateOfPost}
-                majorName={item?.category[0]?.categoryName}
-                majorID={item?.category[0]?.categoryId}
-                subjectName={item?.category[2]?.categoryName}
-                subjectID={item?.category[2]?.categoryId}
-                tagName={item?.tag.tagName}
-                tagID={item?.tag.tagId}
-                isRewarded={item?.is_rewarded}
-                small
-                slug={item?.slug}
-                tagColor="primary.main"
-              />
-            ))}
+            {props?.data
+              ?.slice(props?.data?.length >= 5 ? 5 : 0)
+              ?.map((item, index) => (
+                <Post
+                  key={index}
+                  url={item?.coverURL}
+                  title={item?.title}
+                  description={item?.description}
+                  author={item?.accountName}
+                  src={item?.avatarURL}
+                  time={item?.dateOfPost}
+                  majorName={item?.category[0]?.categoryName}
+                  majorID={item?.category[0]?.categoryId}
+                  subjectName={item?.category[2]?.categoryName}
+                  subjectID={item?.category[2]?.categoryId}
+                  tagName={item?.tag.tagName}
+                  tagID={item?.tag.tagId}
+                  isRewarded={item?.is_rewarded}
+                  small
+                  slug={item?.slug}
+                  tagColor="primary.main"
+                />
+              ))}
           </Grid2>
         </Grid2>
       </Container>
