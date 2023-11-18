@@ -16,7 +16,11 @@ function SkillsPageService() {
   }, []);
 
   return (
-    <SkillsPageHandle skillsData={skillsData} setSkillsData={setSkillsData} />
+    <SkillsPageHandle
+      skillsData={skillsData}
+      setSkillsData={setSkillsData}
+      fetchData={fetchData}
+    />
   );
 }
 

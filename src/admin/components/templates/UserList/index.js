@@ -71,6 +71,8 @@ function UserResultList() {
 
   const [banStatusChanged, setBanStatusChanged] = useState(false);
 
+  const [setRoleChanged, setSetRoleChanged] = useState(false);
+
   const [value, setValue] = useState(0);
 
   const [filterRole, setFilterRole] = useState("");
@@ -119,7 +121,7 @@ function UserResultList() {
 
   useEffect(() => {
     fetchData();
-  }, [isMutedChanged]);
+  }, [setRoleChanged]);
 
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -198,6 +200,7 @@ function UserResultList() {
       .then((res) => {
         setEditingUserId(null);
         updateRecordRole(userId, newRole);
+        setSetRoleChanged(!setRoleChanged);
         toast.success("Sửa vai trò thành công");
       })
       .catch((error) => {

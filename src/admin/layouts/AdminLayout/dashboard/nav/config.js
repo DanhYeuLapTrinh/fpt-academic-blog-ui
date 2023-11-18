@@ -6,8 +6,7 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
-import AccessibleForwardIcon from "@mui/icons-material/AccessibleForward";
-
+import HubIcon from "@mui/icons-material/Hub";
 // ----------------------------------------------------------------------
 
 const navConfig = [
@@ -77,7 +76,7 @@ const navConfig = [
   },
   {
     title: "Quản lý kỹ năng của giảng viên",
-    icon: <AccessibleForwardIcon />,
+    icon: <HubIcon />,
     items: [
       {
         title: "Danh sách kỹ năng",
