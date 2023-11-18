@@ -76,15 +76,18 @@ export default function ViewProfileService() {
     if (profileID !== auth.id) fetchData();
   }, [profileID]);
 
-  const sortedPostsList = user?.postList?.sort(
-    (a, b) =>
-      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
-  );
-
-  const sortedQAList = user?.qaList?.sort(
-    (a, b) =>
-      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
-  );
+  let sortedPostsList;
+  let sortedQAList;
+  // if (user?.postList && user?.qaList) {
+  //   sortedPostsList = user?.postList?.sort(
+  //     (a, b) =>
+  //       new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  //   );
+  //   sortedQAList = user?.qaList?.sort(
+  //     (a, b) =>
+  //       new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  //   );
+  // }
 
   const followAccount = async () => {
     try {
