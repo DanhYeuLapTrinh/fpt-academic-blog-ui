@@ -8,39 +8,165 @@ import {
   Divider,
   FormControlLabel,
   IconButton,
+  Paper,
   Stack,
   Switch,
 } from "@mui/material";
 import React, { useState } from "react";
 import Text from "../../../atoms/Text/Text";
 import styles from "./Styles.module.scss";
-import AccountInfoBar from "../../../organisms/AccountInfoBar/AccountInfoBar";
 import PopUpDialog from "../../../organisms/PopUpDialog/PopUpDialog";
 import { Icon } from "@iconify/react";
-export default function ViewPendingPost(props) {
+import AuthorPost from "../../../molecules/AuthorPost/AuthorPost";
+import AccountInfoBar from "../../../organisms/AccountInfoBar/AccountInfoBar";
+import { Link } from "react-router-dom";
+import UserProfile from "../../../atoms/UserProfile/UserProfile";
+export default function ViewPendingPost({
+  setHasGiveReward,
+  hasGiveReward,
+  ...props
+}) {
   const [open, setOpen] = useState(false);
+  const [openReward, setOpenReward] = useState(false);
+  const [openNoti, setOpenNoti] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleCloseDialog = () => {
     setOpen(false);
   };
+  const handleClickRewarded = () => {
+    setOpenReward(true);
+  };
+  const handleCloseRewarded = (event, reason) => {
+    if (reason !== "backdropClick") {
+      setOpenReward(false);
+    }
+  };
   return (
-    <Container>
-      <AccountInfoBar
-        src={props.data?.avatarURL}
-        color="secondary.main"
-        text={props.data?.accountName}
-        time={props.data?.dateOfPost}
-        majorName={props.data?.category[0]?.categoryName}
-        majorID={props.data?.category[0]?.categoryId}
-        subjectName={props.data?.category[2]?.categoryName}
-        subjectID={props.data?.category[2]?.categoryId}
-        tagName={props.data?.tag?.tagName}
-        tagID={props.data?.tag?.tagId}
-        userId={props.data?.userId}
-      />
+    <Container sx={{minHeight: "calc(150vh - 93px)"}}>
+      {hasGiveReward && !openNoti && (
+        <Paper sx={{ mt: 3 }}>
+          <Stack>
+            <Stack direction={"row"} justifyContent={"space-between"}>
+              <Text fontSize="26px" padding="16px 16px 8px 16px">
+                Thông báo
+              </Text>
+              <IconButton
+                sx={{
+                  p: "10px",
+                  mr: "10px",
+                }}
+                disableFocusRipple
+                disableRipple
+                disableTouchRipple
+                onClick={() => setOpenNoti(true)}
+              >
+                <Icon icon="octicon:x-12" color="#444746 " width="20" />
+              </IconButton>
+            </Stack>
+            <Divider orientation="horizontal" />
+            <Text padding="16px">
+              {props?.data?.rewarder?.length === 1
+                ? "Bài viết này đã được trao thưởng bởi bạn trước đó"
+                : `Bài viết này đã được trao thưởng bởi bạn và ${
+                    props.data?.rewarder?.length - 1
+                  } người khác trước đó`}
+            </Text>
+            <Button
+              onClick={handleClickRewarded}
+              sx={{ textTransform: "none", borderRadius: "0 0 5px 5px" }}
+              variant="contained"
+            >
+              Nhấn để xem
+            </Button>
+            <Dialog
+              disableEscapeKeyDown
+              open={openReward}
+              onClose={handleCloseRewarded}
+              maxWidth="md"
+            >
+              <Stack
+                direction={"row"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                sx={{ p: "14px", minWidth: "500px" }}
+              >
+                <Box />
+                <Text fontSize="20px">Người trao thưởng</Text>
+                <IconButton
+                  sx={{
+                    p: "8px",
+                  }}
+                  disableFocusRipple
+                  disableRipple
+                  disableTouchRipple
+                  onClick={handleCloseRewarded}
+                >
+                  <Icon icon="octicon:x-12" color="#444746 " width="20" />
+                </IconButton>
+              </Stack>
+              <Divider orientation="horizontal" />
+              <DialogContent sx={{ p: 0 }}>
+                <Stack sx={{ p: 3 }} spacing={4} width={"100%"}>
+                  {props?.data?.rewarder?.map((item) => (
+                    <Stack
+                      direction={"row"}
+                      spacing={2}
+                      alignItems={"center"}
+                      width={"100%"}
+                      flexWrap={"wrap"}
+                    >
+                      <Link
+                        to={`/profile/${item.userId}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <UserProfile
+                          src={item.avatarURL}
+                          width="40px"
+                          height="40px"
+                        />
+                      </Link>
+                      <Stack>
+                        <Link
+                          to={`/profile/${item.userId}`}
+                          style={{ textDecoration: "none" }}
+                        >
+                          <Text>{item.fullName}</Text>
+                        </Link>
+                        <Stack
+                          direction={"row"}
+                          spacing={1}
+                          flexWrap={"wrap"}
+                          width={"100%"}
+                        >
+                          {item.badges.map((badge) => (
+                            <Text>
+                              <Chip
+                                label={
+                                  badge.badgeName === "Lecturer"
+                                    ? "Giảng viên"
+                                    : badge.badgeName
+                                }
+                                size="small"
+                                sx={{
+                                  minWidth: "50px",
+                                  borderRadius: "5px",
+                                  color: "primary.main",
+                                }}
+                              />
+                            </Text>
+                          ))}
+                        </Stack>
+                      </Stack>
+                    </Stack>
+                  ))}
+                </Stack>
+              </DialogContent>
+            </Dialog>
+          </Stack>
+        </Paper>
+      )}
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
@@ -85,6 +211,35 @@ export default function ViewPendingPost(props) {
           </DialogContent>
         </Dialog>
       </Stack>
+      <Stack
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        m={"10px 0"}
+      >
+        <AuthorPost
+          src={props.data?.avatarURL}
+          text={props.data?.accountName}
+          time={props.data?.dateOfPost}
+          userId={props.data?.userId}
+          comments={props.data?.comments?.length}
+          isFollowing={props.isFollowing}
+          unfollowAccount={props.unfollowAccount}
+          followAccount={props.followAccount}
+          avatarWidth="45px"
+          avatarHeight="45px"
+          authorSize="16px"
+          previewHistory
+        />
+        <AccountInfoBar
+          majorName={props.data?.category[0]?.categoryName}
+          majorID={props.data?.category[0]?.categoryId}
+          subjectName={props.data?.category[2]?.categoryName}
+          subjectID={props.data?.category[2]?.categoryId}
+          tagName={props.data?.tag.tagName}
+          tagID={props.data?.tag.tagId}
+        />
+      </Stack>
       <div className={styles.contentWrapper}>
         <img style={{ margin: "0px 0 40px" }} src={props.data?.coverURL} />
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
@@ -110,10 +265,12 @@ export default function ViewPendingPost(props) {
           </Text>
         ))}
       </Stack>
-      <FormControlLabel
-        control={<Switch color="warning" onChange={props.handleGiveReward} />}
-        label={<Text>Trao thưởng</Text>}
-      />
+      {!hasGiveReward && (
+        <FormControlLabel
+          control={<Switch color="warning" onChange={props.handleGiveReward} />}
+          label={<Text>Trao thưởng</Text>}
+        />
+      )}
       <Stack
         direction={"row"}
         justifyContent={"flex-end"}

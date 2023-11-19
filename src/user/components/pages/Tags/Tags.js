@@ -28,26 +28,28 @@ export default function Tags(props) {
             </Stack>
             <Text fontSize="13px">Tổng số bài viết: {props.amount}</Text>
           </Stack>
-          {props.data?.map((item, index) => (
-            <RewardedPostsUnder
-              key={index}
-              url={item?.coverURL}
-              title={item?.title}
-              description={item?.description}
-              time={item?.dateOfPost}
-              avatar={item?.avatarURL}
-              label={item?.accountName}
-              majorName={item?.category[0]?.categoryName}
-              majorID={item?.category[0]?.categoryId}
-              subjectName={item?.category[2]?.categoryName}
-              subjectID={item?.category[2]?.categoryId}
-              tagName={item?.tag.tagName}
-              tagID={item?.tag.tagId}
-              isRewarded={item?.is_rewarded}
-              slug={"/view/" + item.slug}
-              userId={item?.userId}
-            />
-          ))}
+          <Stack spacing={"20px"}>
+            {props.data?.map((item, index) => (
+              <RewardedPostsUnder
+                key={index}
+                url={item?.coverURL}
+                title={item?.title}
+                description={item?.description}
+                time={item?.dateOfPost}
+                avatar={item?.avatarURL}
+                label={item?.accountName}
+                majorName={item?.category[0]?.categoryName}
+                majorID={item?.category[0]?.categoryId}
+                subjectName={item?.category[2]?.categoryName}
+                subjectID={item?.category[2]?.categoryId}
+                tagName={item?.tag.tagName}
+                tagID={item?.tag.tagId}
+                isRewarded={item?.is_rewarded}
+                slug={"/view/" + item.slug}
+                userId={item?.userId}
+              />
+            ))}
+          </Stack>
         </>
       ) : null}
     </Container>

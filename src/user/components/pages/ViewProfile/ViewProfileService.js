@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import ViewProfile from "./ViewProfile";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import { sortByPropertyName } from "../../../utils/StringMethod";
 import useAuth from "../../../hooks/useAuth";
 import useProfile from "../../../hooks/useProfile";
-import { async } from "q";
 import { toast } from "react-toastify";
 
 export default function ViewProfileService() {
@@ -76,12 +74,22 @@ export default function ViewProfileService() {
     if (profileID !== auth.id) fetchData();
   }, [profileID]);
 
-  const sortedPostsList = user?.postList?.sort(
+  let sortedApprovedPostsList = user?.postList?.ApprovedPost?.sort(
     (a, b) =>
       new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
   );
 
-  const sortedQAList = user?.qaList?.sort(
+  let sortedApprovedQAList = user?.qaList?.ApprovedQA?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
+
+  let sortedPendingPostsList = user?.postList?.PendingPost?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
+
+  let sortedPendingQAList = user?.qaList?.PendingQA?.sort(
     (a, b) =>
       new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
   );
@@ -160,8 +168,9 @@ export default function ViewProfileService() {
       userStory={user?.userStory}
       profileUrl={user?.profileUrl}
       coverUrl={user?.coverUrl}
-      postList={sortedPostsList}
-      qaList={sortedQAList}
+      approvedQAList={sortedApprovedQAList}
+      approvedPostsList={sortedApprovedPostsList}
+      sortedPendingPostsList={sortedPendingPostsList}
       userId={user?.userId}
       slug={id}
       badges={user?.badges}

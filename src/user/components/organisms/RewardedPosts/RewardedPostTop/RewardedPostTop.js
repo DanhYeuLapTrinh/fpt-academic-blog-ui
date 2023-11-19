@@ -5,7 +5,7 @@ import PostCardV2Skeleton from "../../Skeleton/PostCardV2Skeleton/PostCardV2Skel
 export default function RewardedPostTop(props) {
   return (
     <div>
-      {!props.rewardedPosts ? (
+      {!props?.rewardedPosts?.length > 0 ? (
         <PostCardV2Skeleton height={430} />
       ) : (
         <PostCardV2

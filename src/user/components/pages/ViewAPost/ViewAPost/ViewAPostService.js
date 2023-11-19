@@ -7,12 +7,11 @@ import ViewAPostSkeleton from "../../../organisms/Skeleton/ViewAPostSkeleton/Vie
 import usePost from "../../../../hooks/usePost";
 import { toast } from "react-toastify";
 
-
 export default function ViewAPostService() {
   const { slug } = useParams();
   const auth = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const {
     postDetail,
     setPostDetail,

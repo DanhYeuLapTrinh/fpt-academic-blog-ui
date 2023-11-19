@@ -21,7 +21,10 @@ export default function AuthorPost(props) {
       </Link>
       <Stack spacing={"4px"}>
         <Stack direction={"row"} sx={{ alignItems: "center" }} spacing={"14px"}>
-          <Link to={`/profile/${props.userId}`} style={{textDecoration: "none"}}>
+          <Link
+            to={`/profile/${props.userId}`}
+            style={{ textDecoration: "none" }}
+          >
             <Text
               fontSize={props.authorSize ? props.authorSize : "12px"}
               color={props.color ? props.color : "text.main"}
@@ -29,7 +32,7 @@ export default function AuthorPost(props) {
               {props.text}
             </Text>
           </Link>
-          {auth?.id !== props.userId ? (
+          {auth?.id !== props.userId && !props.previewHistory ? (
             <Button
               sx={{ textTransform: "none", borderRadius: "20px" }}
               size="small"
@@ -64,21 +67,25 @@ export default function AuthorPost(props) {
           >
             {timeConverter(props.time)}
           </Text>
-          <Text
-            fontSize="24px"
-            lineHeight="20px"
-            color={props.color ? props.color : "text.main"}
-          >
-            &middot;
-          </Text>
-          <Text
-            fontSize="12px"
-            lineHeight="12px"
-            color={props.color ? props.color : "text.main"}
-          >
-            Phản hồi:{" "}
-            <span style={{ fontWeight: "600" }}>{props.comments}</span>
-          </Text>
+          {!props.previewHistory && (
+            <>
+              <Text
+                fontSize="24px"
+                lineHeight="20px"
+                color={props.color ? props.color : "text.main"}
+              >
+                &middot;
+              </Text>
+              <Text
+                fontSize="12px"
+                lineHeight="12px"
+                color={props.color ? props.color : "text.main"}
+              >
+                Phản hồi:{" "}
+                <span style={{ fontWeight: "600" }}>{props.comments}</span>
+              </Text>
+            </>
+          )}
         </Stack>
       </Stack>
     </Stack>

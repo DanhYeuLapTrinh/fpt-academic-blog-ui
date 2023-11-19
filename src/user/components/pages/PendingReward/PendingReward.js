@@ -3,11 +3,15 @@ import React from "react";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
 export default function PendingReward({ pendingReward }) {
+  let sortedPendingReward = pendingReward?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
   return (
     <Container sx={{ mt: "30px", minHeight: "calc(100vh - 93px - 30px)" }}>
       <SectionTitle title="Danh sách chờ xét thưởng" />
-      <Stack>
-        {pendingReward?.map((item) => (
+      <Stack spacing={"20px"}>
+        {sortedPendingReward?.map((item) => (
           <RewardedPostsUnder
             key={item.postId}
             userId={item.userId}

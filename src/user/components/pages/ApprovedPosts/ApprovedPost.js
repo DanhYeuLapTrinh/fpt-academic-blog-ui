@@ -4,7 +4,7 @@ import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder
 
 export default function ApprovedPost(props) {
   return (
-    <Stack p={"20px 0"}>
+    <Stack p={"20px 0"} spacing={"20px"}>
       {props?.approvedPosts?.map((item) => (
         <RewardedPostsUnder
           key={item.postId}
