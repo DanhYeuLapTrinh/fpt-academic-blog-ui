@@ -10,9 +10,9 @@ export default function UserStoryService(props) {
   const [editedStory, setEditedStory] = useState();
   const [isEditing, setIsEditing] = useState(false);
   const [focus, setFocus] = useState(false);
-  const {charCount, setCharCount} = useContent();
+  const { charCount, setCharCount } = useContent();
   const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const maxCharLimit = 100;
   useEffect(() => {
     setUserStory(props.userStory);
@@ -23,11 +23,10 @@ export default function UserStoryService(props) {
   const handleInputChange = (event) => {
     setEditedStory(event.target.value);
     setCharCount(event.target.value.length);
-  }
-
+  };
 
   const handleSave = async () => {
-    if(charCount < maxCharLimit) {
+    if (charCount < maxCharLimit && editedStory.trim().length > 0) {
       try {
         let response = await axiosPrivate.post(
           process.env.REACT_APP_EDIT_PROFILE,
@@ -40,12 +39,16 @@ export default function UserStoryService(props) {
           setIsEditing(false);
         }
       } catch (error) {
-        if(error?.response?.status === 405){
-          toast.error("Tài khoản của bạn đã bị khóa")
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
-          localStorage.removeItem("auth")
+          localStorage.removeItem("auth");
         }
       }
+    } else if (editedStory.trim().length === 0) {
+      toast.error("Vui lòng nhập nội dung trước khi lưu");
+    } else if (charCount >= maxCharLimit) {
+      toast.error("Nội dung vượt quá giới hạn ký tự");
     }
   };
 

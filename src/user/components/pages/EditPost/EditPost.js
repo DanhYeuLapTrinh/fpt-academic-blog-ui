@@ -24,20 +24,19 @@ export default function EditPost({ post, ...props }) {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const navigate = useNavigate();
-
   useEffect(() => {
-    const filtered = topic.filter((t) => !skills?.find((s) => s.id === t.id));
-    setTopic(filtered);
+    const filteredTopics = topic.filter(
+      (topic) => !skills.map((s) => s.id).includes(topic.id)
+    );
+    setTopic(filteredTopics);
   }, [skills]);
-  
-  const handleAutocompleteChange = (event, value) => {
+  const handleSelect = (e, value) => {
     setSkills(value);
-    const removedItem = skills?.find((s) => !value?.find((v) => v.id === s.id));
+    let removedItem = skills?.find((s) => !value?.find((v) => v.id === s.id));
     if (removedItem) {
       setTopic((prevTopic) => [...prevTopic, removedItem]);
     }
   };
-
   return (
     <Container sx={{ padding: "0 0 40px" }}>
       <PostFilter
@@ -87,7 +86,7 @@ export default function EditPost({ post, ...props }) {
               <Text>{option.skillName}</Text>
             </Text>
           )}
-          onChange={(event, value) => handleAutocompleteChange(event, value)}
+          onChange={(event, value) => handleSelect(event, value)}
           renderInput={(params) => (
             <TextField
               {...params}

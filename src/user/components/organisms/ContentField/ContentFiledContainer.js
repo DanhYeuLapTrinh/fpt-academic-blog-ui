@@ -23,6 +23,8 @@ export default function ContentFiledContainer() {
         toast.error("Tài khoản của bạn đã bị khóa")
         navigate("/login", { replace: true });
         localStorage.removeItem("auth")
+      } else {
+        toast.error("Đã có lỗi xảy ra")
       }
     }
   };

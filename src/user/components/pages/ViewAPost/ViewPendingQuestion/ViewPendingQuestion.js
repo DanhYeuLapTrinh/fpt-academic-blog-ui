@@ -3,28 +3,45 @@ import React from "react";
 import AccountInfoBar from "../../../organisms/AccountInfoBar/AccountInfoBar";
 import Text from "../../../atoms/Text/Text";
 import styles from "./Styles.module.scss";
+import AuthorPost from "../../../molecules/AuthorPost/AuthorPost";
 export default function ViewPendingQuestion(props) {
   return (
-    <Container>
-      <AccountInfoBar
-        src={props.data?.avatarURL}
-        color="secondary.main"
-        text={props.data?.accountName}
-        time={props.data?.dateOfPost}
-        majorName={props.data?.category[0]?.categoryName}
-        majorID={props.data?.category[0]?.categoryId}
-        subjectName={props.data?.category[2]?.categoryName}
-        subjectID={props.data?.category[2]?.categoryId}
-        tagName={props.data?.tag?.tagName}
-        tagID={props.data?.tag?.tagId}
-        userId={props.data?.userId}
-      />
+    <Container sx={{mt: 3, minHeight: "calc(120vh - 93px)"}}>
+      <Text>
+        <h1 style={{ fontSize: "40px", lineHeight: "50px" }}>
+          {props.data?.title}
+        </h1>
+      </Text>
+      <Stack
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        m={"20px 0"}
+      >
+        <AuthorPost
+          src={props.data?.avatarURL}
+          text={props.data?.accountName}
+          time={props.data?.dateOfPost}
+          userId={props.data?.userId}
+          comments={props.data?.comments?.length}
+          isFollowing={props.isFollowing}
+          unfollowAccount={props.unfollowAccount}
+          followAccount={props.followAccount}
+          avatarWidth="45px"
+          avatarHeight="45px"
+          authorSize="16px"
+          previewHistory
+        />
+        <AccountInfoBar
+          majorName={props.data?.category[0]?.categoryName}
+          majorID={props.data?.category[0]?.categoryId}
+          subjectName={props.data?.category[2]?.categoryName}
+          subjectID={props.data?.category[2]?.categoryId}
+          tagName={props.data?.tag.tagName}
+          tagID={props.data?.tag.tagId}
+        />
+      </Stack>
       <div className={styles.contentWrapper}>
-        <Text>
-          <h1 style={{ fontSize: "40px", lineHeight: "50px" }}>
-            {props.data?.title}
-          </h1>
-        </Text>
         <div dangerouslySetInnerHTML={{ __html: props.data?.content }} />
       </div>
       <Stack

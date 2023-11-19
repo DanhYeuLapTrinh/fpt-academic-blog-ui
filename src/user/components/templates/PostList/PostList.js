@@ -33,15 +33,15 @@ export default function PostList() {
     queryKey: ["posts"],
     queryFn: ({ pageParam = 1 }) => fetchData(pageParam, 5),
     getNextPageParam: (lastPage) => {
-      if (lastPage.prevOffset * 6 >= lastPage.TotalPost) {
+      if (lastPage?.prevOffset * 6 >= lastPage?.TotalPost) {
         hasMorePosts = false;
       }
-      return lastPage.prevOffset + 1;
+      return lastPage?.prevOffset + 1;
     },
   });
 
   const posts = data?.pages?.reduce((acc, page) => {
-    return [...acc, ...page.Posts];
+    return [...acc, ...page?.Posts];
   }, []);
 
   return (

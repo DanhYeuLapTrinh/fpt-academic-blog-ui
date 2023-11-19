@@ -10,9 +10,9 @@ import useAuth from "../../../hooks/useAuth";
 import { toast } from "react-toastify";
 
 export default function Header() {
-  const {  setAvatarURL, setUser } = useProfile();
+  const { setAvatarURL, setUser } = useProfile();
   const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const auth = useAuth();
   useEffect(() => {
     const fetchData = async () => {
@@ -31,11 +31,13 @@ export default function Header() {
             skills: skills?.data,
           }));
         }
-      } catch (error) {if(error?.response?.status === 405){
-        toast.error("Tài khoản của bạn đã bị khóa")
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth")
-      }}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, []);

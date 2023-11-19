@@ -22,6 +22,7 @@ export default function WriteService() {
     setFile,
     setTopic,
     skills,
+    setSkills
   } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -128,6 +129,7 @@ export default function WriteService() {
           setTitle("");
           setFile("");
           setCoverURL("");
+          setSkills([])
           window.scrollTo(0, 0);
           toast.success(
             e.target.value === "draft" ? "Đã lưu nháp" : "Đăng bài thành công"

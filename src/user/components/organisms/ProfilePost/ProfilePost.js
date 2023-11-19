@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 export default function ProfilePost(props) {
   return (
-    <Link to={`/view/${props.slug}`} style={{ textDecoration: "none" }}>
+    <Link to={props.link} style={{ textDecoration: "none" }}>
       <Stack direction={"row"} gap={"20px"}>
         <Box
           sx={{
