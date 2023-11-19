@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useUserContext } from "../../../context/UserContext";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import ConfirmDialog from "../../molecules/ReportedComment/ConfirmDialog";
 import InformationDetailChildren from "../../molecules/InformationDetail/InformationDetail";
 import { toast } from "react-toastify";
 import {
@@ -26,6 +27,8 @@ function InformationDetail() {
 
   const [open, setOpen] = useState(false);
 
+  const [openDelete, setOpenDelete] = useState(false);
+
   //---------------------------------------------------------------------------------------
 
   const [majors, setMajors] = useState([]);
@@ -45,6 +48,8 @@ function InformationDetail() {
   const [skills, setSkills] = useState([]);
 
   const [selectedSkills, setSelectedSkills] = useState([]);
+
+  const [skillToDelete, setSkillToDelete] = useState(null);
 
   const [filteredSkills, setFilteredSkills] = useState([]);
 
@@ -115,7 +120,7 @@ function InformationDetail() {
     setFilteredSkills((prev) => prev.filter((s) => s.id !== skill.id));
   };
 
-  const handleSkillRemove = (skill) => {
+  const openSkillRemove = (skill) => {
     const { id: userId } = user;
     const { id: skillId } = skill;
 
@@ -126,9 +131,12 @@ function InformationDetail() {
     if (isSkillSelected) {
       setSelectedSkills((prev) => prev.filter((s) => s.id !== skill.id));
       setPrevSkills((prev) => prev.filter((s) => s !== skill.id));
-      setSkills((prev) => [...prev, skill]);
-    } else if (window.confirm("Bạn có chắc chắn muốn xóa kỹ năng này?")) {
-      handleConfirmRemove(userId, skillId);
+
+      setFilteredSkills((prev) => [...prev, skill]);
+    } else {
+      const newSkillToDelete = { userId, skillId };
+      setSkillToDelete(newSkillToDelete);
+      setOpenDelete(true);
     }
   };
 
@@ -178,22 +186,29 @@ function InformationDetail() {
 
   const handleSubmit = () => {
     const userId = user.id;
-    const selectedMajorId = selectedMajor.id;
+    const selectedMajorId = selectedMajor?.id;
     const skillList = selectedSkills.map((skill) => skill.id);
 
     const isMajorChanged = selectedMajorId !== prevMajorId;
     const areSkillsChanged = !arraysEqual(skillList, prevSkills);
 
-    if (isMajorChanged) {
-      updateMajor(userId, selectedMajorId);
-    } else if (areSkillsChanged) {
-      updateSkills(userId, skillList);
-    } else if (!isMajorChanged && !areSkillsChanged) {
+    console.log("selectedMajorId:", selectedMajorId);
+    console.log("prevMajorId:", prevMajorId);
+
+    if (isMajorChanged || areSkillsChanged) {
+      if (isMajorChanged) {
+        updateMajor(userId, selectedMajorId);
+        setPrevMajor(selectedMajorId);
+      } else if (areSkillsChanged) {
+        updateSkills(userId, skillList);
+      }
+    } else {
       toast.info("Không có thay đổi nào được cập nhật.");
     }
   };
 
-  const handleConfirmRemove = async (userId, skillId) => {
+  const handleConfirmRemove = async (skillToDelete) => {
+    const { userId, skillId } = skillToDelete;
     try {
       const res = await axiosPrivate.post(
         process.env.REACT_APP_REMOVE_USER_SKILL,
@@ -212,9 +227,11 @@ function InformationDetail() {
           return user;
         });
         setData(updatedData);
+        setOpenDelete(false);
       }
     } catch (error) {
       toast.error("Có lỗi xảy ra khi xóa kỹ năng:", error);
+      setOpenDelete(false);
     }
   };
 
@@ -226,7 +243,7 @@ function InformationDetail() {
       <Chip
         key={skill.id}
         label={skill.skillName}
-        onDelete={() => handleSkillRemove(skill)}
+        onDelete={() => openSkillRemove(skill)}
         sx={chipStyles}
       />
     ));
@@ -291,6 +308,19 @@ function InformationDetail() {
       >
         Lưu thay đổi
       </Button>
+
+      <ConfirmDialog
+        open={openDelete}
+        onConfirm={() => handleConfirmRemove(skillToDelete)}
+        onCancel={() => setOpenDelete(false)}
+        title="Xóa kỹ năng"
+        content={
+          <span>
+            Bạn có chắc chắn <span style={{ fontWeight: "bolder" }}>XÓA</span>{" "}
+            kỹ năng này?
+          </span>
+        }
+      />
     </Paper>
   );
 }

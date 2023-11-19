@@ -13,7 +13,7 @@ import React from "react";
 function BodyContent() {
   const { reportedProfile } = useReportedProfileContext();
 
-  const postList = reportedProfile.postList || [];
+  const postList = reportedProfile.postList.ApprovedPost || [];
 
   return (
     <Stack sx={{ display: "flex", flexDirection: "column", gap: 5 }}>

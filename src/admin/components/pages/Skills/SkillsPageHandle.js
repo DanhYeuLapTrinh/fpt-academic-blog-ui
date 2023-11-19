@@ -56,15 +56,15 @@ const SkillsPage = ({ skillsData, setSkillsData, fetchData }) => {
     await axiosPrivate
       .post(process.env.REACT_APP_ADD_SKILL, { skillName: newSkillName })
       .then((response) => {
-        toast.success(`Thêm thẻ "${newSkill.skillName}" thành công`);
         const newSkill = response.data;
         setSkillsData([...skillsData, newSkill]);
+        toast.success(`Thêm thẻ thành công`);
         fetchData();
         handleClose();
       })
       .catch((error) => {
         console.error("Error adding tag: " + error);
-        toast.error(`Thêm thẻ "${newSkillName}" không thành công`);
+        toast.error(`Thêm thẻ không thành công`);
       });
   };
 
@@ -89,10 +89,12 @@ const SkillsPage = ({ skillsData, setSkillsData, fetchData }) => {
           } else {
             toast.error(`Xóa thẻ không thành công`);
           }
+          setDeleteDialogOpen(false);
         });
     } catch (error) {
       console.error("Error deleting skill: " + error);
       toast.error(`Xóa thẻ không thành công`);
+      setDeleteDialogOpen(false);
     }
   };
 
