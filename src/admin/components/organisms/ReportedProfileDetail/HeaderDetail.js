@@ -28,7 +28,7 @@ function HeaderDetail({ id }) {
 
   const navigate = useNavigate();
 
-  const postList = reportedProfile.postList || [];
+  const postList = reportedProfile.postList.ApprovedPost || [];
 
   const fullName = reportedProfile.fullname || "";
 
