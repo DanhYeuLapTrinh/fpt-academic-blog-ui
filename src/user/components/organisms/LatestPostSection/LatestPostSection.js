@@ -4,7 +4,7 @@ import PostCardV1 from "../PostCardV1/PostCardV1";
 import ArrowForwardIosRoundedIcon from "@mui/icons-material/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@mui/icons-material/ArrowBackIosRounded";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
-import { getFirstChar } from "../../../utils/StringMethod";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
 import LatestPostSkeleton from "../Skeleton/LatestPostSkeleton/LatestPostSkeleton";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -32,7 +32,7 @@ export default function LatestPostSection(props) {
   return (
     <>
       <Container>
-        <SectionTitle title="Mới đăng gần đây" see link="/latest"/>
+        <SectionTitle title="Mới đăng gần đây" see link="/latest" />
       </Container>
       <Box
         sx={{
@@ -46,13 +46,12 @@ export default function LatestPostSection(props) {
         <Container>
           <Carousel
             responsive={responsive}
-            autoPlay={true}
-            autoPlaySpeed={1000 * 20}
-            className="hello"
             arrows
-            centerMode={false}
+            autoPlaySpeed={1000 * 10}
+            className="hello"
+            sliderClass=""
             slidesToSlide={4}
-            renderButtonGroupOutside={true}
+            swipeable
           >
             {!props.latestPosts
               ? Array(4)
