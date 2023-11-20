@@ -17,6 +17,7 @@ import { Icon } from "@iconify/react";
 import { Link } from "react-router-dom";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import PopupEdit from "../../organisms/PopupEdit/PopupEdit";
+import AuthorPost from "../../molecules/AuthorPost/AuthorPost";
 export default function ViewPendingReward({
   rewardPost,
   giveReward,
@@ -31,21 +32,37 @@ export default function ViewPendingReward({
     setOpen(false);
   };
   return (
-    <Container>
-      {rewardPost.category && (
-        <AccountInfoBar
-          src={rewardPost?.avatarURL}
-          color="secondary.main"
-          text={rewardPost?.accountName}
-          time={rewardPost?.dateOfPost}
-          majorName={rewardPost?.category[0]?.categoryName}
-          majorID={rewardPost?.category[0]?.categoryId}
-          subjectName={rewardPost?.category[2]?.categoryName}
-          subjectID={rewardPost?.category[2]?.categoryId}
-          tagName={rewardPost?.tag?.tagName}
-          tagID={rewardPost?.tag?.tagId}
-          userId={rewardPost?.userId}
-        />
+    <Container sx={{mt: "37px"}}>
+      <Text fontSize="40px">
+        <h1 style={{ fontSize: "40px" }}>{rewardPost?.title}</h1>
+      </Text>
+      {rewardPost?.category && (
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          m={"10px 0"}
+        >
+          <AuthorPost
+            src={rewardPost?.avatarURL}
+            text={rewardPost?.accountName}
+            time={rewardPost?.dateOfPost}
+            userId={rewardPost?.userId}
+            comments={rewardPost?.comments?.length}
+            avatarWidth="45px"
+            avatarHeight="45px"
+            authorSize="16px"
+            previewHistory
+          />
+          <AccountInfoBar
+            majorName={rewardPost?.category[0]?.categoryName}
+            majorID={rewardPost?.category[0]?.categoryId}
+            subjectName={rewardPost?.category[2]?.categoryName}
+            subjectID={rewardPost?.category[2]?.categoryId}
+            tagName={rewardPost?.tag.tagName}
+            tagID={rewardPost?.tag.tagId}
+          />
+        </Stack>
       )}
       <Stack
         direction={"row"}
@@ -53,10 +70,6 @@ export default function ViewPendingReward({
         alignItems={"center"}
         mt={"20px"}
       >
-        <Text fontSize="40px">
-          <h1 style={{ fontSize: "40px" }}>{rewardPost?.title}</h1>
-        </Text>
-        
         {/* <Dialog open={open} maxWidth="lg">
           <DialogContent sx={{ p: 0 }}>
             <Stack
@@ -158,7 +171,7 @@ export default function ViewPendingReward({
         direction={"row"}
         justifyContent={"flex-end"}
         spacing={1}
-        padding={"20px 0 30px"}
+        padding={"20px 0 100px"}
       >
         <Button
           onClick={dismissReward}

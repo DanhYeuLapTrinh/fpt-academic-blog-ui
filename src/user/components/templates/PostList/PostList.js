@@ -79,6 +79,8 @@ export default function PostList() {
             tagName={item?.tag.tagName}
             tagID={item?.tag.tagId}
             slug={item?.slug}
+            isRewarded={item?.is_rewarded}
+            small
           />
         ))}
       </InfiniteScroll>

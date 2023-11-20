@@ -44,7 +44,7 @@ export default function ViewPendingPost({
     }
   };
   return (
-    <Container sx={{minHeight: "calc(150vh - 93px)"}}>
+    <Container sx={{ minHeight: "calc(130vh - 93px)" }}>
       {hasGiveReward && !openNoti && (
         <Paper sx={{ mt: 3 }}>
           <Stack>
@@ -170,44 +170,41 @@ export default function ViewPendingPost({
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
-        alignItems={"center"} 
+        alignItems={"center"}
         mt={"20px"}
       >
         <Text fontSize="40px">
           <h1 style={{ fontSize: "40px" }}>{props.data?.title}</h1>
         </Text>
-        {props.data?.reasonOfDecline && (
-          <Button
-            variant="outlined"
-            size="small"
-            sx={{ textTransform: "none" }}
-            onClick={handleClickOpen}
-          >
-            Xem lý do từ chối
-          </Button>
-        )}
         <Dialog open={open} maxWidth="lg">
           <DialogContent sx={{ p: 0 }}>
             <Stack
               direction={"row"}
               alignItems={"center"}
               p={2}
-              sx={{ minWidth: "400px" }}
+              sx={{ minWidth: "500px" }}
               justifyContent={"space-between"}
             >
-              <Text fontSize="26px">Lý do từ chối</Text>
+              <Text fontSize="26px">Bài viết này đã từng bị từ chối</Text>
               <IconButton
-                sx={{ p: 0 }}
+                sx={{
+                  p: "8px",
+                }}
                 disableFocusRipple
                 disableRipple
                 disableTouchRipple
                 onClick={handleCloseDialog}
               >
-                <Icon icon="uil:x" color="#444746" width="24" />
+                <Icon icon="octicon:x-12" color="#444746 " width="20" />
               </IconButton>
             </Stack>
             <Divider orientation="horizontal" />
-            <Box sx={{ p: 2 }}>{props.data?.reasonOfDecline}</Box>
+            <Box sx={{ p: 2 }}>
+              <Text>
+                <span style={{ fontWeight: "400" }}>Lý do:</span>{" "}
+                {props.data?.reasonOfDecline}
+              </Text>
+            </Box>
           </DialogContent>
         </Dialog>
       </Stack>
@@ -231,14 +228,26 @@ export default function ViewPendingPost({
           authorSize="16px"
           previewHistory
         />
-        <AccountInfoBar
-          majorName={props.data?.category[0]?.categoryName}
-          majorID={props.data?.category[0]?.categoryId}
-          subjectName={props.data?.category[2]?.categoryName}
-          subjectID={props.data?.category[2]?.categoryId}
-          tagName={props.data?.tag.tagName}
-          tagID={props.data?.tag.tagId}
-        />
+        <Stack direction={"row"} spacing={1}>
+          <AccountInfoBar
+            majorName={props.data?.category[0]?.categoryName}
+            majorID={props.data?.category[0]?.categoryId}
+            subjectName={props.data?.category[2]?.categoryName}
+            subjectID={props.data?.category[2]?.categoryId}
+            tagName={props.data?.tag.tagName}
+            tagID={props.data?.tag.tagId}
+          />
+          {props.data?.reasonOfDecline && (
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{ textTransform: "none" }}
+              onClick={handleClickOpen}
+            >
+              Xem lý do từ chối
+            </Button>
+          )}
+        </Stack>
       </Stack>
       <div className={styles.contentWrapper}>
         <img style={{ margin: "0px 0 40px" }} src={props.data?.coverURL} />
@@ -275,7 +284,7 @@ export default function ViewPendingPost({
         direction={"row"}
         justifyContent={"flex-end"}
         spacing={1}
-        padding={"0 0 30px"}
+        padding={"30px 0 100px"}
       >
         <Button
           onClick={props.handleClickOpen}

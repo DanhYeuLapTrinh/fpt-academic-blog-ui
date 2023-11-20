@@ -158,6 +158,36 @@ export default function ViewProfileService() {
     }
   };
 
+  const removePost = async (postId) => {
+    try {
+      let response = await axiosPrivate.post(
+        process.env.REACT_APP_DELETE_POST,
+        {
+          postId: postId,
+        }
+      );
+      if (response?.status === 200) {
+        toast.success("Xóa bài viết thành công");
+        let newPendingPost = sortedPendingPostsList.filter((item) => {
+          return item?.postId !== postId;
+        });
+        setUser((prevUser) => ({
+          ...prevUser,
+          postList: {
+            ...prevUser.postList,
+            PendingPost: newPendingPost,
+          },
+        }));
+      }
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
+  };
+
   return (
     <ViewProfile
       url={user?.coverURL}
@@ -171,6 +201,7 @@ export default function ViewProfileService() {
       approvedQAList={sortedApprovedQAList}
       approvedPostsList={sortedApprovedPostsList}
       sortedPendingPostsList={sortedPendingPostsList}
+      sortedPendingQAList={sortedPendingQAList}
       userId={user?.userId}
       slug={id}
       badges={user?.badges}
@@ -178,6 +209,7 @@ export default function ViewProfileService() {
       followAccount={followAccount}
       unfollowAccount={unfollowAccount}
       isFollowing={isFollowing}
+      removePost={removePost}
     />
   );
 }

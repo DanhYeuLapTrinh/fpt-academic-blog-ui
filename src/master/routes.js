@@ -136,5 +136,5 @@ export {
   mentorRoutes,
   lecturerRoutesOther,
   mentorRoutesOther,
-  loggedInUserRoutesOther
+  loggedInUserRoutesOther,
 };
