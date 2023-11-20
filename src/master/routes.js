@@ -60,7 +60,7 @@ const loggedInUserRoutes = [
   { path: "/", component: HomeService },
   { path: "/feed", component: FeedService },
   { path: "/news", component: NewsService },
-  { path: "/write", component: WriteService },
+
   { path: "/favorite", component: FavoriteService },
   { path: "/trending", component: TrendingPostsSeeMoreService },
   { path: "/latest", component: LatestPostsSeeMoreService },
@@ -75,11 +75,15 @@ const loggedInUserRoutes = [
   { path: "/profile/:id/question", component: ViewProfileService },
   { path: "/profile/:id/follower", component: ViewProfileService },
   { path: "/profile/:id/following", component: ViewProfileService },
-  { path: "/edit/:slug", component: EditPostService },
-  { path: "/edit-draft/:slug", component: EditDraftService },
   { path: "/filter", component: FilterService },
   { path: "/news/:id", component: ViewNewsService },
   { path: "/accounts/:id", component: ViewAccoutListService },
+];
+
+const loggedInUserRoutesOther = [
+  { path: "/write", component: WriteService },
+  { path: "/edit/:slug", component: EditPostService },
+  { path: "/edit-draft/:slug", component: EditDraftService },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },
@@ -137,4 +141,5 @@ export {
   mentorRoutes,
   lecturerRoutesOther,
   mentorRoutesOther,
+  loggedInUserRoutesOther,
 };

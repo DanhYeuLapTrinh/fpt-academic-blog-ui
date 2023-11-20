@@ -26,6 +26,7 @@ export default function PendingRewardService() {
       }
     };
     fetchData();
+    window.scrollTo(0, 0);
   }, []);
   return <PendingReward pendingReward={pendingReward} />;
 }

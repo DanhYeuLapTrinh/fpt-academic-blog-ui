@@ -14,6 +14,7 @@ export default function EditPostService() {
   const navigate = useNavigate();
   const { title, contentTiny } =
     JSON.parse(localStorage.getItem("editedContent")) || "";
+  const content = JSON.parse(localStorage.getItem("editedContent")) || "";
   const [oldSlug, setOldSlug] = useState();
   const [oldTitle, setOldTitle] = useState();
   const {
@@ -46,7 +47,6 @@ export default function EditPostService() {
     setSkills,
     skills,
   } = useContent();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -90,6 +90,14 @@ export default function EditPostService() {
     fetchData();
     return () => {
       localStorage.removeItem("editedContent");
+      setMajor(undefined);
+      setSemester(undefined);
+      setSubject(undefined);
+      setTag(undefined);
+      setTitle("");
+      setFile("");
+      setCoverURL("");
+      setSkills([]);
     };
   }, [slug]);
 
@@ -100,8 +108,8 @@ export default function EditPostService() {
         setTagList(tagList.data);
       } catch (error) {}
     };
-    if (data) fetchData();
-  }, [data]);
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,8 +118,8 @@ export default function EditPostService() {
         setTopic(topics.data);
       } catch (error) {}
     };
-    if (tagList && skills) fetchData();
-  }, [tagList]);
+    fetchData();
+  }, []);
 
   const handleMajorChange = useCallback((e) => {
     setMajor(e.target.value);
@@ -185,13 +193,17 @@ export default function EditPostService() {
       });
       if (response.status === 200) {
         localStorage.removeItem("editedContent");
+        setMajor(undefined);
+        setSemester(undefined);
+        setSubject(undefined);
+        setTag(undefined);
         setTitle("");
         setFile("");
         setCoverURL("");
-        setSkills([])
+        setSkills([]);
         window.scrollTo(0, 0);
         toast.success("Đăng bài thành công");
-        navigate("/", { replace: true });
+        navigate(-2, { replace: true });
       }
     } catch (error) {
       console.log(error);

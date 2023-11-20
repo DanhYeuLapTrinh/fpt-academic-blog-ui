@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   IconButton,
   ListItemIcon,
   Menu,
@@ -15,19 +16,28 @@ import {
 import React, { useState } from "react";
 import { Icon } from "@iconify/react";
 import Text from "../../atoms/Text/Text";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import usePost from "../../../hooks/usePost";
 import ViewAPost from "../../pages/ViewAPost/ViewAPost/ViewAPost";
+import useProfile from "../../../hooks/useProfile";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import { toast } from "react-toastify";
+import useAuth from "../../../hooks/useAuth";
 
 export default function PostMenuOptionList({
   postDetail,
   toggleComment,
+  hasPermission,
+  setHasPermisson,
   ...props
 }) {
   const [open, setOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
   const { historyDetail } = usePost();
   const { isAuthor } = usePost();
+  const auth = useAuth();
   const handleClickDelete = () => {
     setIsDelete(true);
   };
@@ -40,6 +50,28 @@ export default function PostMenuOptionList({
 
   const handleCloseDialog = () => {
     setOpen(false);
+  };
+  const giveReward = async () => {
+    try {
+      if (hasPermission) {
+        let response = await axiosPrivate.post(
+          process.env.REACT_APP_GIVE_REWARD,
+          {
+            postId: postDetail?.postId,
+          }
+        );
+        if (response) {
+          setHasPermisson(false);
+          props.handleClose();
+        }
+      }
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   return (
     <Menu
@@ -76,7 +108,7 @@ export default function PostMenuOptionList({
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
       <MenuItem
-        disabled={!props.isEdited && !historyDetail?.length > 0}
+        disabled={historyDetail?.length === 0 || !props.isEdited}
         onClick={handleClickOpen}
       >
         <ListItemIcon>
@@ -84,30 +116,36 @@ export default function PostMenuOptionList({
         </ListItemIcon>
         <Text fontSize="14px">Xem lịch sử chỉnh sửa</Text>
       </MenuItem>
-      <Box sx={{ position: "relative" }}>
-        <Dialog open={open} maxWidth="lg">
-          <DialogContent sx={{ p: 5 }}>
-            <ViewAPost previewHistory postDetail={historyDetail} />
-          </DialogContent>
-          <DialogActions
+      <Dialog open={open} maxWidth="lg">
+        <Stack
+          direction={"row"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+          sx={{ p: "14px" }}
+        >
+          <Box />
+          <Text fontSize="20px">Lịch sử chỉnh sửa</Text>
+          <IconButton
             sx={{
-              position: "absolute",
-              right: historyDetail?.length > 0 ? 20 : 5,
-              top: historyDetail?.length > 0 ? 20 : 5,
+              p: "8px",
             }}
+            disableFocusRipple
+            disableRipple
+            disableTouchRipple
+            onClick={handleCloseDialog}
           >
-            <IconButton
-              sx={{ p: 0 }}
-              disableFocusRipple
-              disableRipple
-              disableTouchRipple
-              onClick={handleCloseDialog}
-            >
-              <Icon icon="uil:x" color="#444746" width="24" />
-            </IconButton>
-          </DialogActions>
-        </Dialog>
-      </Box>
+            <Icon icon="octicon:x-12" color="#444746 " width="20" />
+          </IconButton>
+        </Stack>
+        <Divider orientation="horizontal" />
+        <DialogContent
+          sx={{
+            p: "20px 0 0",
+          }}
+        >
+          <ViewAPost previewHistory postDetail={historyDetail} />
+        </DialogContent>
+      </Dialog>
       {isAuthor && (
         <>
           <Link
@@ -131,11 +169,7 @@ export default function PostMenuOptionList({
             </ListItemIcon>
             <Text fontSize="14px">Xóa bài viết</Text>
           </MenuItem>
-          <Dialog
-            open={isDelete}
-            aria-labelledby="alert-dialog-title"
-            aria-describedby="alert-dialog-description"
-          >
+          <Dialog open={isDelete}>
             <DialogTitle id="alert-dialog-title">
               {"Bạn muốn xóa bài viết này?"}
             </DialogTitle>
@@ -178,6 +212,18 @@ export default function PostMenuOptionList({
             </MenuItem>
           )}
         </>
+      )}
+      {!isAuthor && hasPermission && auth?.role === "lecturer" && (
+        <MenuItem onClick={giveReward}>
+          <ListItemIcon>
+            <Icon
+              icon="material-symbols:rewarded-ads-outline-rounded"
+              color="#444746"
+              width="24"
+            />
+          </ListItemIcon>
+          <Text fontSize="14px">Trao thưởng bài viết</Text>
+        </MenuItem>
       )}
     </Menu>
   );

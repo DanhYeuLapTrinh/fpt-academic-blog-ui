@@ -7,15 +7,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import usePost from "../../../hooks/usePost";
 import { toast } from "react-toastify";
-export default function PostMenuOptionListService({postDetail, ...props}) {
+import useProfile from "../../../hooks/useProfile";
+export default function PostMenuOptionListService({ ...props }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const {setIsAuthor, isAllowComment, setIsAllowComment} = usePost()
-
+  const { setIsAuthor, isAllowComment, setIsAllowComment, postDetail } =
+    usePost();
+  const [hasPermission, setHasPermisson] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
+  const { user } = useProfile();
   const auth = useAuth();
-  const {slug} = useParams()
+  const { slug } = useParams();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -39,17 +42,16 @@ export default function PostMenuOptionListService({postDetail, ...props}) {
       );
 
       if (response) {
-        navigate(`/profile/${auth.id}`, { replace: true });
+        navigate(-1, { replace: true });
       }
     } catch (error) {
-      if(error?.response?.status === 404){
+      if (error?.response?.status === 404) {
         navigate("/unauthorized", { replace: true });
-      } else if(error?.response?.status === 405){
-        toast.error("Tài khoản của bạn đã bị khóa")
+      } else if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
-        localStorage.removeItem("auth")
+        localStorage.removeItem("auth");
       }
-
     }
   };
 
@@ -62,16 +64,28 @@ export default function PostMenuOptionListService({postDetail, ...props}) {
         }
       );
       if (response) {
-        setIsAllowComment(prev => !prev);
+        setIsAllowComment((prev) => !prev);
       }
     } catch (error) {
-      if(error?.response?.status === 405){
-        toast.error("Tài khoản của bạn đã bị khóa")
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
-        localStorage.removeItem("auth")
+        localStorage.removeItem("auth");
       }
     }
-  }
+  };
+  let found = postDetail?.rewarder?.find((item) => item?.userId === auth?.id);
+  let containsAll = postDetail?.postSkill?.every((obj) =>
+    user?.skills?.includes(obj.skillName)
+  );
+
+  useEffect(() => {
+    found = found === undefined ? false : true;
+    if (!found && containsAll) {
+      setHasPermisson(true);
+    }
+  }, [postDetail?.postId]);
+
   return (
     <>
       <IconButton onClick={handleClick}>
@@ -86,6 +100,8 @@ export default function PostMenuOptionListService({postDetail, ...props}) {
         deletePost={deletePost}
         postDetail={postDetail}
         toggleComment={toggleComment}
+        hasPermission={hasPermission}
+        setHasPermisson={setHasPermisson}
       />
     </>
   );

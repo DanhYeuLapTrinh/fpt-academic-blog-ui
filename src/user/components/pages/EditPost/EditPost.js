@@ -24,22 +24,21 @@ export default function EditPost({ post, ...props }) {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   const navigate = useNavigate();
-
   useEffect(() => {
-    const filtered = topic.filter((t) => !skills?.find((s) => s.id === t.id));
-    setTopic(filtered);
+    const filteredTopics = topic.filter(
+      (topic) => !skills.map((s) => s.id).includes(topic.id)
+    );
+    setTopic(filteredTopics);
   }, [skills]);
-  
-  const handleAutocompleteChange = (event, value) => {
+  const handleSelect = (e, value) => {
     setSkills(value);
-    const removedItem = skills?.find((s) => !value?.find((v) => v.id === s.id));
+    let removedItem = skills?.find((s) => !value?.find((v) => v.id === s.id));
     if (removedItem) {
       setTopic((prevTopic) => [...prevTopic, removedItem]);
     }
   };
-
   return (
-    <Container sx={{ padding: "0 0 40px" }}>
+    <Container sx={{ padding: "0 0 40px", minHeight: "calc(130vh - 93px)" }}>
       <PostFilter
         data={props.data}
         setData={props.setData}
@@ -58,9 +57,8 @@ export default function EditPost({ post, ...props }) {
         handleSemesterChange={props.handleSemesterChange}
         editQA
       />
-
       <TitleField edited title />
-      <Dropzone />
+      {props.tag !== "Q&A" && <Dropzone />}
       <ContentField
         edited
         setIsSaving={setIsSaving}
@@ -87,7 +85,7 @@ export default function EditPost({ post, ...props }) {
               <Text>{option.skillName}</Text>
             </Text>
           )}
-          onChange={(event, value) => handleAutocompleteChange(event, value)}
+          onChange={(event, value) => handleSelect(event, value)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -101,7 +99,7 @@ export default function EditPost({ post, ...props }) {
         direction={"row"}
         justifyContent={"flex-end"}
         spacing={2}
-        paddingTop={"30px"}
+        padding={"30px 0 100px"}
       >
         <Button
           fullWidth

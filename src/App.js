@@ -15,21 +15,25 @@ import {
   mentorRoutes,
   lecturerRoutesOther,
   mentorRoutesOther,
+  loggedInUserRoutesOther,
 } from "./master/routes";
 import ManagePostLayout from "./user/layouts/ManagePostLayout";
 import ManageQuestionLayout from "./user/layouts/ManageQuestionLayout";
 import HasAuth from "./user/utils/HasAuth";
+import NoFooterLayout from "./user/layouts/NoFooterLayout";
 function App() {
   return (
     <div>
       <BrowserRouter>
         <Routes>
           {/* Puclic routes */}
-          <Route element={<HasAuth/>}>
+          <Route element={<HasAuth />}>
             <Route element={<LoginLayout />}>
               {publicRoutes.map((item, index) => {
                 const Page = item.component;
-                return <Route key={index} path={item.path} element={<Page />} />;
+                return (
+                  <Route key={index} path={item.path} element={<Page />} />
+                );
               })}
             </Route>
             {/* Reset password routes */}
@@ -59,8 +63,23 @@ function App() {
               })}
             </Route>
           </Route>
+          {/* Logged in user routes no footer*/}
+          <Route element={<NoFooterLayout />}>
+            <Route
+              element={
+                <RequireAuth allowRoles={["student", "mentor", "lecturer"]} />
+              }
+            >
+              {loggedInUserRoutesOther.map((item, index) => {
+                const Page = item.component;
+                return (
+                  <Route key={index} path={item.path} element={<Page />} />
+                );
+              })}
+            </Route>
+          </Route>
           {/* Logged in lecturer routes */}
-          <Route element={<HomeLayout />}>
+          <Route element={<NoFooterLayout />}>
             <Route element={<ManagePostLayout />}>
               <Route element={<RequireAuth allowRoles={["lecturer"]} />}>
                 {lecturerRoutes.map((item, index) => {

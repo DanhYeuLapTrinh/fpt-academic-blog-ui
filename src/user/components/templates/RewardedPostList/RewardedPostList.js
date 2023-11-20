@@ -20,12 +20,12 @@ export default function RewardedPostList() {
         Array(4)
           .fill(null)
           .map((_, i) => (
-            <>
-              <NormalPostSkeleton key={i} />
+            <div key={i}>
+              <NormalPostSkeleton />
               {i < 3 && (
                 <Divider sx={{ width: "100%" }} orientation="horizontal" />
               )}
-            </>
+            </div>
           ))
       ) : (
         <Stack spacing={"20px"}>
@@ -34,7 +34,6 @@ export default function RewardedPostList() {
               return (
                 <div key={index}>
                   <RewardedPostsUnder
-                    key={item?.postId}
                     url={item?.coverURL}
                     title={item?.title}
                     description={item?.description}
@@ -48,16 +47,9 @@ export default function RewardedPostList() {
                     tagName={item?.tag.tagName}
                     tagID={item?.tag.tagId}
                     isRewarded={item?.is_rewarded}
-                    rewarder={item?.rewarder}
                     slug={"/view/" + item.slug}
                     userId={item?.userId}
                   />
-                  {index < 4 && (
-                    <Divider
-                      sx={{ width: "100%", paddingTop: "20px" }}
-                      orientation="horizontal"
-                    />
-                  )}
                 </div>
               );
             }

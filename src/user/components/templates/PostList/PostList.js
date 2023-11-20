@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import { Box, Stack } from "@mui/material";
 import Post from "../../organisms/Post/Post";
@@ -33,17 +33,19 @@ export default function PostList() {
     queryKey: ["posts"],
     queryFn: ({ pageParam = 1 }) => fetchData(pageParam, 5),
     getNextPageParam: (lastPage) => {
-      if (lastPage.prevOffset * 6 >= lastPage.TotalPost) {
+      if (lastPage?.prevOffset * 6 >= lastPage?.TotalPost) {
         hasMorePosts = false;
       }
-      return lastPage.prevOffset + 1;
+      return lastPage?.prevOffset + 1;
     },
   });
+  let posts;
 
-  const posts = data?.pages?.reduce((acc, page) => {
-    return [...acc, ...page.Posts];
-  }, []);
-
+  if (data && data.pages && data.pages.length > 0) {
+    posts = data.pages.reduce((acc, page) => {
+      return [...acc, ...(page?.Posts || [])];
+    }, []);
+  }
   return (
     <Box width={"740px"} sx={{ marginTop: "59px" }}>
       <SectionTitle title="Bài viết" />
@@ -77,6 +79,8 @@ export default function PostList() {
             tagName={item?.tag.tagName}
             tagID={item?.tag.tagId}
             slug={item?.slug}
+            isRewarded={item?.is_rewarded}
+            small
           />
         ))}
       </InfiniteScroll>

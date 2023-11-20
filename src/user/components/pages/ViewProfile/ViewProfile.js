@@ -23,7 +23,7 @@ import UploadCoverIcon from "../../organisms/UploadImageIcon/UploadCoverIcon";
 import ProfileFollowerListService from "../../organisms/ProfileDetail/ProfileFollowerList/ProfileFollowerListService";
 import ProfileFollowingListService from "../../organisms/ProfileDetail/ProfileFollowingList/ProfileFollowingListService";
 
-export default function ViewProfile(props) {
+export default function ViewProfile({ removePost, ...props }) {
   const { avatarURL, profileCoverURL, selected } = useProfile();
   const auth = useAuth();
   let avatarUser =
@@ -187,7 +187,7 @@ export default function ViewProfile(props) {
           <ProfileNavList slug={props?.slug} />
         </Container>
       </Box>
-      <Box sx={{ m: "20px 0" }}>
+      <Box sx={{ m: "20px 0", minHeight: "100vh" }}>
         <Container>
           <Stack direction={"row"} gap={"20px"}>
             <Stack spacing={"20px"} width={"320px"}>
@@ -197,59 +197,75 @@ export default function ViewProfile(props) {
                   userStory={props?.userStory}
                 />
               </Box>
-              {(props?.user?.skills?.length > 0 ||
-                props?.user?.badges?.length > 0) && (
-                  <Box
-                    sx={{
-                      width: "320px",
-                      minHeight: "120px",
-                      bgcolor: "secondary.alt",
-                      borderRadius: "10px",
-                      padding: "15px",
-                    }}
+              {props?.user?.skills?.length > 0 && (
+                <Box
+                  sx={{
+                    width: "320px",
+                    minHeight: "120px",
+                    bgcolor: "secondary.alt",
+                    borderRadius: "10px",
+                    padding: "15px",
+                  }}
+                >
+                  <Text fontSize="23px" mb={2}>
+                    Danh hiệu
+                  </Text>
+                  <Stack direction={"row"} flexWrap={"wrap"} gap={1}>
+                    {props?.badges?.map((badge) => (
+                      <Text>
+                        <Chip
+                          label={
+                            badge.badgeName === "Lecturer"
+                              ? "Giảng viên"
+                              : badge.badgeName
+                          }
+                          size="small"
+                          sx={{
+                            minWidth: "50px",
+                            borderRadius: "5px",
+                            color: "primary.main",
+                          }}
+                        />
+                      </Text>
+                    ))}
+                  </Stack>
+                </Box>
+              )}
+              {props?.user?.skills?.length > 0 && (
+                <Box
+                  sx={{
+                    width: "320px",
+                    minHeight: "120px",
+                    bgcolor: "secondary.alt",
+                    borderRadius: "10px",
+                    padding: "15px",
+                  }}
+                >
+                  <Text fontSize="23px" mb={1}>
+                    Kỹ năng
+                  </Text>
+                  <Stack
+                    direction={"row"}
+                    flexWrap={"wrap"}
+                    gap={1}
+                    paddingTop={"10px"}
                   >
-                    <Text fontSize="23px" mb={2}>
-                      Danh hiệu
-                    </Text>
-                    <Stack
-                      direction={"row"}
-                      gap={1}
-                      width={"100%"}
-                      flexWrap={"wrap"}
-                    >
-                      {props?.badges?.map((badge) => (
-                        <Text>
-                          <Chip
-                            label={
-                              badge.badgeName === "Lecturer"
-                                ? "Giảng viên"
-                                : badge.badgeName
-                            }
-                            size="small"
-                            sx={{
-                              minWidth: "50px",
-                              borderRadius: "5px",
-                              color: "primary.main",
-                            }}
-                          />
-                        </Text>
-                      ))}
-                      {props?.user?.skills?.map((badge) => (
-                        <Text>
-                          <Chip
-                            label={badge}
-                            size="small"
-                            sx={{
-                              minWidth: "50px",
-                              borderRadius: "5px",
-                              color: "primary.main",
-                            }}
-                          />
-                        </Text>
-                      ))}
-                    </Stack>
-                  </Box>
-                )}
+                    {props?.user?.skills?.map((badge) => (
+                      <Text>
+                        <Chip
+                          label={badge}
+                          size="small"
+                          sx={{
+                            minWidth: "50px",
+                            borderRadius: "5px",
+                            color: "primary.main",
+                          }}
+                        />
+                      </Text>
+                    ))}
+                  </Stack>
+                </Box>
+              )}
             </Stack>
             <Stack
               width={"calc(100% - 320px)"}
@@ -262,10 +278,19 @@ export default function ViewProfile(props) {
               spacing={"20px"}
             >
               {selected === "Bài viết" && (
-                <ProfilePostList postList={props?.postList} />
+                <ProfilePostList
+                  postList={props?.approvedPostsList}
+                  pendingPostList={props?.sortedPendingPostsList}
+                  userId={props?.userId}
+                  removePost={removePost}
+                />
               )}
               {selected === "Câu hỏi" && (
-                <ProfileQuestionList qaList={props?.qaList} />
+                <ProfileQuestionList
+                  qaList={props?.approvedQAList}
+                  pendingQAList={props?.sortedPendingQAList}
+                  userId={props?.userId}
+                />
               )}
               {selected === "Người theo dõi" && <ProfileFollowerListService />}
               {selected === "Đang theo dõi" && <ProfileFollowingListService />}

@@ -40,8 +40,8 @@ export default function ViewAPost({ postDetail, ...props }) {
   return (
     <Container
       sx={{
-        mb: 10,
-        minHeight: !props.previewHistory && "calc(100vh - 93px - 80px)",
+        mb: !props.previewHistory ? 5 : 0,
+        minHeight: !props.previewHistory && "calc(100vh - 93px)",
       }}
     >
       {!props.previewHistory && (
@@ -51,16 +51,17 @@ export default function ViewAPost({ postDetail, ...props }) {
           separator={<KeyboardDoubleArrowRightIcon sx={{ width: "16px" }} />}
         />
       )}
-      <Text m="5px 0 20px">
+      <Text m={!props.previewHistory ? "5px 0 20px" : "5px 0 10px"}>
         <p style={{ fontSize: "40px", lineHeight: "50px", fontWeight: "500" }}>
           {postDetail?.title}
         </p>
       </Text>
-      {!props.previewHistory && (
+      {props.previewHistory && (
         <Stack
           direction={"row"}
           justifyContent={"space-between"}
-          alignItems={"center"}
+          width={"100%"}
+          p={"5px 0"}
         >
           <AuthorPost
             src={postDetail?.avatarURL}
@@ -71,8 +72,47 @@ export default function ViewAPost({ postDetail, ...props }) {
             isFollowing={props.isFollowing}
             unfollowAccount={props.unfollowAccount}
             followAccount={props.followAccount}
-            avatarWidth="40px"
-            avatarHeight="40px"
+            avatarWidth="45px"
+            avatarHeight="45px"
+            authorSize="16px"
+            previewHistory
+          />
+          <Stack direction={"row"} alignItems={"center"} spacing={1}>
+            {postDetail?.postSkill?.map((item) => (
+              <Text>
+                <Chip
+                  label={item.skillName}
+                  sx={{
+                    minWidth: "50px",
+                    borderRadius: "5px",
+                    color: "secondary.main",
+                    bgcolor: "primary.main",
+                    fontSize: "16px",
+                  }}
+                />
+              </Text>
+            ))}
+          </Stack>
+        </Stack>
+      )}
+      {!props.previewHistory && (
+        <Stack
+          direction={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          mb={"20px"}
+        >
+          <AuthorPost
+            src={postDetail?.avatarURL}
+            text={postDetail?.accountName}
+            time={postDetail?.dateOfPost}
+            userId={postDetail?.userId}
+            comments={postDetail?.comments?.length}
+            isFollowing={props.isFollowing}
+            unfollowAccount={props.unfollowAccount}
+            followAccount={props.followAccount}
+            avatarWidth="45px"
+            avatarHeight="45px"
             authorSize="16px"
           />
           <Stack direction={"row"} alignItems={"center"}>
@@ -121,7 +161,7 @@ export default function ViewAPost({ postDetail, ...props }) {
                   placement="top"
                 >
                   <IconButton
-                    sx={{ position: "absolute", top: "20px", right: "5px" }}
+                    sx={{ position: "absolute", top: "15px", right: "5px" }}
                     disableFocusRipple
                     disableTouchRipple
                     disableRipple
@@ -141,38 +181,36 @@ export default function ViewAPost({ postDetail, ...props }) {
                   onClose={handleCloseRewarded}
                   maxWidth="md"
                 >
-                  <DialogContent sx={{ p: 0 }}>
-                    <Stack
-                      direction={"row"}
-                      alignItems={"center"}
-                      sx={{ p: 2 }}
+                  <Stack
+                    direction={"row"}
+                    alignItems={"center"}
+                    justifyContent={"space-between"}
+                    sx={{ p: "14px", minWidth: "500px" }}
+                  >
+                    <Box />
+                    <Text fontSize="20px">Người trao thưởng</Text>
+                    <IconButton
+                      sx={{
+                        p: "8px",
+                      }}
+                      disableFocusRipple
+                      disableRipple
+                      disableTouchRipple
+                      onClick={handleCloseRewarded}
                     >
-                      <Box
-                        sx={{
-                          width: "400px",
-                        }}
-                      >
-                        <Text fontSize="26px">
-                          Người trao thưởng ({postDetail?.rewarder?.length})
-                        </Text>
-                      </Box>
-                      <IconButton
-                        sx={{ p: 0 }}
-                        disableFocusRipple
-                        disableRipple
-                        disableTouchRipple
-                        onClick={handleCloseRewarded}
-                      >
-                        <Icon icon="uil:x" color="#444746" width="24" />
-                      </IconButton>
-                    </Stack>
-                    <Divider orientation="horizontal" />
-                    <Stack sx={{ p: 3 }} spacing={3}>
+                      <Icon icon="octicon:x-12" color="#444746 " width="20" />
+                    </IconButton>
+                  </Stack>
+                  <Divider orientation="horizontal" />
+                  <DialogContent sx={{ p: 0 }}>
+                    <Stack sx={{ p: 3 }} spacing={4} width={"100%"}>
                       {postDetail?.rewarder?.map((item) => (
                         <Stack
                           direction={"row"}
                           spacing={2}
                           alignItems={"center"}
+                          width={"100%"}
+                          flexWrap={"wrap"}
                         >
                           <Link
                             to={`/profile/${item.userId}`}
@@ -191,7 +229,7 @@ export default function ViewAPost({ postDetail, ...props }) {
                             >
                               <Text>{item.fullName}</Text>
                             </Link>
-                            <Stack direction={"row"} spacing={1}>
+                            <Stack direction={"row"} spacing={1} flexWrap={"wrap"} width={"100%"}>
                               {item.badges.map((badge) => (
                                 <Text>
                                   <Chip
@@ -222,27 +260,30 @@ export default function ViewAPost({ postDetail, ...props }) {
         )}
         <div dangerouslySetInnerHTML={{ __html: postDetail?.content }} />
       </div>
-      <Stack
-        direction={"row"}
-        alignItems={"center"}
-        spacing={1}
-        m={"30px 0 20px"}
-      >
-        {postDetail?.postSkill?.map((item) => (
-          <Text>
-            <Chip
-              label={item.skillName}
-              sx={{
-                minWidth: "50px",
-                borderRadius: "5px",
-                color: "secondary.main",
-                bgcolor: "primary.main",
-                fontSize: "16px",
-              }}
-            />
-          </Text>
-        ))}
-      </Stack>
+      {!props.previewHistory && (
+        <Stack
+          direction={"row"}
+          alignItems={"center"}
+          gap={1}
+          m={"30px 0 20px"}
+          flexWrap={"wrap"}
+        >
+          {postDetail?.postSkill?.map((item) => (
+            <Text>
+              <Chip
+                label={item.skillName}
+                sx={{
+                  minWidth: "50px",
+                  borderRadius: "5px",
+                  color: "secondary.main",
+                  bgcolor: "primary.main",
+                  fontSize: "16px",
+                }}
+              />
+            </Text>
+          ))}
+        </Stack>
+      )}
       {!props.previewHistory && (
         <>
           <PostInteractionService

@@ -1,5 +1,12 @@
-import { Box, Stack } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Stack,
+} from "@mui/material";
+import React, { useState } from "react";
 import RewardBadge from "../../atoms/RewardBadge/RewardBadge";
 import Wrapper from "../../atoms/Wrapper/Wrapper";
 import Text from "../../atoms/Text/Text";
@@ -10,11 +17,20 @@ import {
   toSlug,
 } from "../../../utils/StringMethod";
 import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react";
 
-export default function ProfilePost(props) {
+export default function ProfilePost({removePost, ...props}) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
-    <Link to={`/view/${props.slug}`} style={{ textDecoration: "none" }}>
-      <Stack direction={"row"} gap={"20px"}>
+    <Stack direction={"row"} gap={"20px"}>
+      <Link to={props.link} style={{ textDecoration: "none" }}>
         <Box
           sx={{
             width: "241px",
@@ -38,8 +54,10 @@ export default function ProfilePost(props) {
             </Link>
           )}
         </Box>
-        <Box width={"calc(100% - 261px)"}>
-          <Stack justifyContent={"space-around"} height={"100%"}>
+      </Link>
+      <Box width={"calc(100% - 261px)"}>
+        <Stack justifyContent={"space-around"} height={"100%"}>
+          <Link to={props.link} style={{ textDecoration: "none" }}>
             <Wrapper WebkitLineClamp="2">
               <Text
                 fontSize={props.title}
@@ -49,13 +67,17 @@ export default function ProfilePost(props) {
                 {props.postTitle}
               </Text>
             </Wrapper>
+          </Link>
+          <Link to={props.link} style={{ textDecoration: "none" }}>
             <Wrapper WebkitLineClamp="2">
               <Text fontWeight="400" fontSize="14px">
                 {props.description}
               </Text>
             </Wrapper>
-            <Stack direction={"row"} justifyContent={"space-between"}>
-              <Stack direction={"row"} spacing={1}>
+          </Link>
+          <Stack direction={"row"} justifyContent={"space-between"}>
+            <Stack direction={"row"} spacing={2} alignItems={"center"}>
+              <Stack direction={"row"} spacing={1} alignItems={"center"}>
                 <Text fontSize="12px">Nằm trong: </Text>
                 <Link
                   to={{
@@ -100,11 +122,86 @@ export default function ProfilePost(props) {
                   />
                 </Link>
               </Stack>
-              <Text fontSize="12px">{timeConverter(props.time)}</Text>
+              {props.pending && (
+                <>
+                  <IconButton
+                    sx={{
+                      p: "3px 10px",
+                      bgcolor: "#e5e6ed",
+                      borderRadius: "5px",
+                    }}
+                    onClick={handleClick}
+                  >
+                    <Icon icon="bi:three-dots" color="#444746" width="16" />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    id="account-menu"
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    PaperProps={{
+                      elevation: 0,
+                      sx: {
+                        overflow: "visible",
+                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                        mt: 1.5,
+                        "& .MuiAvatar-root": {
+                          width: 32,
+                          height: 32,
+                          ml: -0.5,
+                          mr: 1,
+                        },
+                        "&:before": {
+                          content: '""',
+                          display: "block",
+                          position: "absolute",
+                          top: 0,
+                          right: 25,
+                          width: 10,
+                          height: 10,
+                          bgcolor: "background.paper",
+                          transform: "translateY(-50%) rotate(45deg)",
+                          zIndex: 0,
+                        },
+                      },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    <Link
+                      to={props?.link}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                          <Icon icon="uil:edit" color="#444746" width="24" />
+                        </ListItemIcon>
+                        <Text fontSize="14px">
+                          Sửa bài viết
+                        </Text>
+                      </MenuItem>
+                    </Link>
+                    <MenuItem onClick={() => removePost(props.postId)}>
+                      <ListItemIcon>
+                        <Icon
+                          icon="ant-design:delete-outlined"
+                          color="red"
+                          width="24"
+                        />
+                      </ListItemIcon>
+                      <Text fontSize="14px" color="red">
+                        Xóa
+                      </Text>
+                    </MenuItem>
+                  </Menu>
+                </>
+              )}
             </Stack>
+            <Text fontSize="12px">{timeConverter(props.time)}</Text>
           </Stack>
-        </Box>
-      </Stack>
-    </Link>
+        </Stack>
+      </Box>
+    </Stack>
   );
 }

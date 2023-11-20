@@ -78,7 +78,8 @@ export default function Comment({
                           sx={{
                             minWidth: "50px",
                             borderRadius: "5px",
-                            color: "primary.main",
+                            color: "#FF8300",
+                            bgcolor: "#FFEDCB",
                           }}
                         />
                       </Text>

@@ -147,6 +147,14 @@ export default function EditDraftService() {
     fetchData();
     return () => {
       localStorage.removeItem("draftContent");
+      setMajor(undefined);
+      setSemester(undefined);
+      setSubject(undefined);
+      setTag(undefined);
+      setTitle("");
+      setFile("");
+      setCoverURL("");
+      setSkills([]);
     };
   }, [slug]);
 
@@ -235,6 +243,10 @@ export default function EditDraftService() {
 
         if (response.status === 200) {
           localStorage.removeItem("draftContent");
+          setMajor(undefined);
+          setSemester(undefined);
+          setSubject(undefined);
+          setTag(undefined);
           setTitle("");
           setFile("");
           setCoverURL("");

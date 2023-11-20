@@ -3,15 +3,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import ViewPendingPost from "./ViewPendingPost";
 import { toast } from "react-toastify";
+import useAuth from "../../../../hooks/useAuth";
 
 export default function ViewPendingPostService() {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const auth = useAuth()
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState();
   const [oldLink, setOldLink] = useState(null);
   const [open, setOpen] = useState();
   const [isRewaded, setIsRewarded] = useState();
+  const [hasGiveReward, setHasGiveReward] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason !== "backdropClick") {
@@ -91,6 +94,13 @@ export default function ViewPendingPostService() {
       }
     }
   };
+  let found = data?.rewarder?.find((item) => item?.userId === auth?.id);
+  useEffect(() => {
+    found = found === undefined ? false : true;
+    if (found) {
+      setHasGiveReward(true);
+    }
+  }, [data?.postId])
   return (
     <ViewPendingPost
       data={data}
@@ -101,6 +111,8 @@ export default function ViewPendingPostService() {
       handleClose={handleClose}
       handleGiveReward={handleGiveReward}
       oldLink={oldLink}
+      hasGiveReward={hasGiveReward}
+      setHasGiveReward={setHasGiveReward}
     />
   );
 }

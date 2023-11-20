@@ -45,7 +45,11 @@ export default function GoogleLoginButton({ children, ...props }) {
         localStorage.setItem("auth", JSON.stringify(auth));
         navigate("/", { replace: true });
       } catch (error) {
-        toast.error("Đăng nhập thất bại");
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
       }
     },
   });

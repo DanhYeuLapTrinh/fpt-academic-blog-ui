@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import ViewProfile from "./ViewProfile";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import { sortByPropertyName } from "../../../utils/StringMethod";
 import useAuth from "../../../hooks/useAuth";
 import useProfile from "../../../hooks/useProfile";
-import { async } from "q";
 import { toast } from "react-toastify";
 
 export default function ViewProfileService() {
@@ -76,12 +74,22 @@ export default function ViewProfileService() {
     if (profileID !== auth.id) fetchData();
   }, [profileID]);
 
-  const sortedPostsList = user?.postList?.sort(
+  let sortedApprovedPostsList = user?.postList?.ApprovedPost?.sort(
     (a, b) =>
       new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
   );
 
-  const sortedQAList = user?.qaList?.sort(
+  let sortedApprovedQAList = user?.qaList?.ApprovedQA?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
+
+  let sortedPendingPostsList = user?.postList?.PendingPost?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
+
+  let sortedPendingQAList = user?.qaList?.PendingQA?.sort(
     (a, b) =>
       new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
   );
@@ -150,6 +158,36 @@ export default function ViewProfileService() {
     }
   };
 
+  const removePost = async (postId) => {
+    try {
+      let response = await axiosPrivate.post(
+        process.env.REACT_APP_DELETE_POST,
+        {
+          postId: postId,
+        }
+      );
+      if (response?.status === 200) {
+        toast.success("Xóa bài viết thành công");
+        let newPendingPost = sortedPendingPostsList.filter((item) => {
+          return item?.postId !== postId;
+        });
+        setUser((prevUser) => ({
+          ...prevUser,
+          postList: {
+            ...prevUser.postList,
+            PendingPost: newPendingPost,
+          },
+        }));
+      }
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
+  };
+
   return (
     <ViewProfile
       url={user?.coverURL}
@@ -160,8 +198,10 @@ export default function ViewProfileService() {
       userStory={user?.userStory}
       profileUrl={user?.profileUrl}
       coverUrl={user?.coverUrl}
-      postList={sortedPostsList}
-      qaList={sortedQAList}
+      approvedQAList={sortedApprovedQAList}
+      approvedPostsList={sortedApprovedPostsList}
+      sortedPendingPostsList={sortedPendingPostsList}
+      sortedPendingQAList={sortedPendingQAList}
       userId={user?.userId}
       slug={id}
       badges={user?.badges}
@@ -169,6 +209,7 @@ export default function ViewProfileService() {
       followAccount={followAccount}
       unfollowAccount={unfollowAccount}
       isFollowing={isFollowing}
+      removePost={removePost}
     />
   );
 }

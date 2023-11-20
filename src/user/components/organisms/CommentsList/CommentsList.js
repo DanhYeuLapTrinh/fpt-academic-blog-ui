@@ -12,7 +12,7 @@ export default function CommentsList({
   ...props
 }) {
   return (
-    <Stack>
+    <Stack sx={{minHeight: "500px"}}>
       {rootComments?.map((comment) => (
         <Comment
           key={comment.commentId}
