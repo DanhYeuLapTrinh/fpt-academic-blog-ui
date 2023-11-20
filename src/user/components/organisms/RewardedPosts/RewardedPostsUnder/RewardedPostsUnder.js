@@ -1,16 +1,42 @@
-import { Box, Stack } from "@mui/material";
-import React from "react";
+import {
+  Box,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Stack,
+} from "@mui/material";
+import React, { useState } from "react";
 import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
 import Text from "../../../atoms/Text/Text";
 import Author from "../../../molecules/Author/Author";
 import PostTag from "../../../atoms/PostTag/PostTag";
 import Wrapper from "../../../atoms/Wrapper/Wrapper";
 import { Link } from "react-router-dom";
-import LecturerMenuService from "../../LecturerMenu/LecturerMenuService";
 import { getFirstChar, toSlug } from "../../../../utils/StringMethod";
-export default function RewardedPostsUnder(props) {
+import { Icon } from "@iconify/react";
+export default function RewardedPostsUnder({
+  removeDraft,
+  removePost,
+  ...props
+}) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
-    <div style={{ width: "100%" }}>
+    <div
+      style={{
+        width: "100%",
+        backgroundColor: "#f7f9fc",
+        padding: "15px",
+        borderRadius: "10px",
+      }}
+    >
       <Stack direction={"row"}>
         <Link to={`${props?.slug}`} style={{ textDecoration: "none" }}>
           <Box
@@ -65,8 +91,14 @@ export default function RewardedPostsUnder(props) {
               author={true}
               text={props.label}
               profile={props.userId}
+              favorite={props.favorite}
             />
-            <Stack direction={"row"} spacing={"12px"} paddingTop={"5px"}>
+            <Stack
+              direction={"row"}
+              spacing={"12px"}
+              paddingTop={"5px"}
+              alignItems={"center"}
+            >
               <Link
                 to={{
                   pathname: "/categories",
@@ -79,6 +111,9 @@ export default function RewardedPostsUnder(props) {
                 <PostTag
                   text={getFirstChar(props.majorName)}
                   color={props.tagColor ? props.tagColor : "primary.main"}
+                  bgcolor={props.draft ? "primary.main" : ""}
+                  padding={props.draft && "5px 10px"}
+                  borderRadius={props.draft && "5px"}
                 />
               </Link>
               <Link
@@ -93,6 +128,9 @@ export default function RewardedPostsUnder(props) {
                 <PostTag
                   text={props.subjectName}
                   color={props.tagColor ? props.tagColor : "primary.main"}
+                  bgcolor={props.draft ? "primary.main" : ""}
+                  padding={props.draft && "5px 10px"}
+                  borderRadius={props.draft && "5px"}
                 />
               </Link>
               <Link
@@ -107,8 +145,87 @@ export default function RewardedPostsUnder(props) {
                 <PostTag
                   text={props.tagName}
                   color={props.tagColor ? props.tagColor : "primary.main"}
+                  bgcolor={props.draft ? "primary.main" : ""}
+                  padding={props.draft && "5px 10px"}
+                  borderRadius={props.draft && "5px"}
                 />
               </Link>
+              {props.draft && (
+                <IconButton
+                  sx={{
+                    p: "5px 20px",
+                    bgcolor: "#e5e6ed",
+                    borderRadius: "5px",
+                  }}
+                  onClick={handleClick}
+                >
+                  <Icon icon="bi:three-dots" color="#444746" width="22" />
+                </IconButton>
+              )}
+              <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "&:before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 25,
+                      width: 10,
+                      height: 10,
+                      bgcolor: "background.paper",
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+              >
+                <Link to={`${props?.slug}`} style={{textDecoration: "none"}}>
+                  <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                      <Icon icon="uil:edit" color="#444746" width="24" />
+                    </ListItemIcon>
+                    <Text fontSize="14px">
+                      Sửa {props.declined ? "bài viết" : "bản nháp"}
+                    </Text>
+                  </MenuItem>
+                </Link>
+                <MenuItem
+                  onClick={
+                    !props.declined
+                      ? () => removeDraft(props?.postId)
+                      : () => removePost(props?.postId)
+                  }
+                >
+                  <ListItemIcon>
+                    <Icon
+                      icon="ant-design:delete-outlined"
+                      color="red"
+                      width="24"
+                    />
+                  </ListItemIcon>
+                  <Text fontSize="14px" color="red">
+                    Xóa
+                  </Text>
+                </MenuItem>
+              </Menu>
             </Stack>
           </Stack>
         </Box>

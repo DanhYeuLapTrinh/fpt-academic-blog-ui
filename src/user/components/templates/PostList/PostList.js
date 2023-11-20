@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import { Box, Stack } from "@mui/material";
 import Post from "../../organisms/Post/Post";
@@ -39,11 +39,13 @@ export default function PostList() {
       return lastPage?.prevOffset + 1;
     },
   });
+  let posts;
 
-  const posts = data?.pages?.reduce((acc, page) => {
-    return [...acc, ...page?.Posts];
-  }, []);
-
+  if (data && data.pages && data.pages.length > 0) {
+    posts = data.pages.reduce((acc, page) => {
+      return [...acc, ...(page?.Posts || [])];
+    }, []);
+  }
   return (
     <Box width={"740px"} sx={{ marginTop: "59px" }}>
       <SectionTitle title="Bài viết" />

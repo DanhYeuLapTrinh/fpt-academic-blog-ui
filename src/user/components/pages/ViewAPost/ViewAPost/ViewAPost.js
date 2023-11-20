@@ -161,7 +161,7 @@ export default function ViewAPost({ postDetail, ...props }) {
                   placement="top"
                 >
                   <IconButton
-                    sx={{ position: "absolute", top: "20px", right: "5px" }}
+                    sx={{ position: "absolute", top: "15px", right: "5px" }}
                     disableFocusRipple
                     disableTouchRipple
                     disableRipple

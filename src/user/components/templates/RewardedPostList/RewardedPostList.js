@@ -50,12 +50,6 @@ export default function RewardedPostList() {
                     slug={"/view/" + item.slug}
                     userId={item?.userId}
                   />
-                  {index < 4 && (
-                    <Divider
-                      sx={{ width: "100%", paddingTop: "20px" }}
-                      orientation="horizontal"
-                    />
-                  )}
                 </div>
               );
             }

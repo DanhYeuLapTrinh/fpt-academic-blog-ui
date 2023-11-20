@@ -13,6 +13,9 @@ export default function NavList() {
         <Link to={"/feed"} style={{ textDecoration: "none" }}>
           <NavOption padding="10px">Bảng tin</NavOption>
         </Link>
+        <Link to={"/news"} style={{ textDecoration: "none" }}>
+          <NavOption padding="10px">Tin tức</NavOption>
+        </Link>
       </Stack>
     </List>
   );

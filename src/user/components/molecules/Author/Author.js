@@ -12,19 +12,26 @@ export default function Author(props) {
       <Link to={`/profile/${props.profile}`} style={{ textDecoration: "none" }}>
         <Stack direction={"row"} alignItems={"center"} spacing={"10px"}>
           <UserProfile
-            width={props.avatarWidth ? props.avatarWidth : "28px"}
-            height={props.avatarHeight ? props.avatarHeight : "28px"}
+            width={props.avatarWidth ? props.avatarWidth : "32px"}
+            height={props.avatarHeight ? props.avatarHeight : "32px"}
             src={props.src}
             alt="User"
           />
-          <Wrapper WebkitLineClamp="1">
-            <Text
-              fontSize={props.authorSize ? props.authorSize : "12px"}
-              color={props.color ? props.color : "text.main"}
-            >
-              {props.text}
-            </Text>
-          </Wrapper>
+          <Stack direction={"row"} spacing={"4px"}>
+            {props.favorite && (
+              <Text fontSize="12px" fontWeight="400">
+                Đã lưu từ bài viết của
+              </Text>
+            )}
+            <Wrapper WebkitLineClamp="1">
+              <Text
+                fontSize={props.authorSize ? props.authorSize : "12px"}
+                color={props.color ? props.color : "text.main"}
+              >
+                {props.text}
+              </Text>
+            </Wrapper>
+          </Stack>
         </Stack>
       </Link>
       <Stack>

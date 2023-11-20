@@ -24,7 +24,7 @@ export default function Write({ ...props }) {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   return (
-    <Container sx={{ padding: "0 0 40px" }}>
+    <Container sx={{ padding: "0 0 40px", minHeight: "calc(120vh - 93px)" }}>
       <PostFilter
         data={props.data}
         setData={props.setData}

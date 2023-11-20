@@ -57,9 +57,8 @@ export default function EditPost({ post, ...props }) {
         handleSemesterChange={props.handleSemesterChange}
         editQA
       />
-
       <TitleField edited title />
-      <Dropzone />
+      {props.tag !== "Q&A" && <Dropzone />}
       <ContentField
         edited
         setIsSaving={setIsSaving}

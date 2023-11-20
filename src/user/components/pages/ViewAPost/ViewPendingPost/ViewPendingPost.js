@@ -170,7 +170,7 @@ export default function ViewPendingPost({
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
-        alignItems={"center"}
+        alignItems={"center"} 
         mt={"20px"}
       >
         <Text fontSize="40px">
