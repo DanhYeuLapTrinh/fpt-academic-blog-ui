@@ -63,10 +63,16 @@ function InformationDetail() {
     return majors.majorName;
   };
 
-  const getMajorId = (majors) => {
-    if (!majors) return null;
+  const getMajorNameToUpdate = (majorId) => {
+    const major = majors.find((major) => major.id === majorId);
+    return major ? major.majorName : "";
+  };
 
-    return majors.id;
+  const getSkillNames = (skillIds) => {
+    return skillIds.map((skillId) => {
+      const skill = skills.find((skill) => skill.id === skillId);
+      return skill ? skill.skillName : "";
+    });
   };
 
   const majorDefault = getMajorName(user.major);
@@ -149,6 +155,17 @@ function InformationDetail() {
 
       if (res.status === 200) {
         toast.success("Cập nhật kỹ năng thành công!");
+
+        // Tải lại dữ liệu từ API sau khi cập nhật thành công
+        const updatedUser = await getUserById(userId);
+        const updatedData = data.map((user) => {
+          if (user.id === userId) {
+            return updatedUser;
+          }
+          return user;
+        });
+
+        setData(updatedData);
       }
     } catch (error) {
       toast.error("Có lỗi xảy ra khi cập nhật kỹ năng:", error);
@@ -164,6 +181,17 @@ function InformationDetail() {
 
       if (res.status === 200) {
         toast.success("Cập nhật ngành thành công!");
+
+        const majorName = getMajorNameToUpdate(majorID);
+
+        const updatedData = data.map((user) => {
+          if (user.id === userId) {
+            return { ...user, major: { id: majorID, majorName } };
+          }
+          return user;
+        });
+
+        setData(updatedData);
       }
     } catch (error) {
       toast.error("Có lỗi xảy ra khi cập nhật ngành", error);
@@ -185,15 +213,12 @@ function InformationDetail() {
   };
 
   const handleSubmit = () => {
-    const userId = user.id;
+    const userId = user?.id;
     const selectedMajorId = selectedMajor?.id;
-    const skillList = selectedSkills.map((skill) => skill.id);
+    const skillList = selectedSkills.map((skill) => skill?.id);
 
     const isMajorChanged = selectedMajorId !== prevMajorId;
     const areSkillsChanged = !arraysEqual(skillList, prevSkills);
-
-    console.log("selectedMajorId:", selectedMajorId);
-    console.log("prevMajorId:", prevMajorId);
 
     if (isMajorChanged || areSkillsChanged) {
       if (isMajorChanged) {
@@ -201,6 +226,7 @@ function InformationDetail() {
         setPrevMajor(selectedMajorId);
       } else if (areSkillsChanged) {
         updateSkills(userId, skillList);
+        setPrevSkills(skillList);
       }
     } else {
       toast.info("Không có thay đổi nào được cập nhật.");
@@ -239,9 +265,9 @@ function InformationDetail() {
 
   const renderSelectedSkills = () => {
     const allSkills = [...user.skills, ...selectedSkills];
-    return allSkills.map((skill) => (
+    return allSkills.map((skill, index) => (
       <Chip
-        key={skill.id}
+        key={index}
         label={skill.skillName}
         onDelete={() => openSkillRemove(skill)}
         sx={chipStyles}
@@ -278,9 +304,7 @@ function InformationDetail() {
           disableClearable
           isOptionEqualToValue={(option, value) => option.id === value.id}
           onChange={handleMajorChange}
-          renderInput={(params) => (
-            <TextField {...params} label={majorDefault} />
-          )}
+          renderInput={(params) => <TextField {...params} />}
         />
 
         <TextField label="Vai trò" value={user.role.roleName} disabled />
