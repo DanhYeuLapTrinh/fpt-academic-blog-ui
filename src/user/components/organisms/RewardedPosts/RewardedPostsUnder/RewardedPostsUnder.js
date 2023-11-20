@@ -150,7 +150,7 @@ export default function RewardedPostsUnder({
                   borderRadius={props.draft && "5px"}
                 />
               </Link>
-              {props.draft && (
+              {props.draft && !props.favorite && (
                 <IconButton
                   sx={{
                     p: "5px 20px",

@@ -23,7 +23,7 @@ import UploadCoverIcon from "../../organisms/UploadImageIcon/UploadCoverIcon";
 import ProfileFollowerListService from "../../organisms/ProfileDetail/ProfileFollowerList/ProfileFollowerListService";
 import ProfileFollowingListService from "../../organisms/ProfileDetail/ProfileFollowingList/ProfileFollowingListService";
 
-export default function ViewProfile(props) {
+export default function ViewProfile({ removePost, ...props }) {
   const { avatarURL, profileCoverURL, selected } = useProfile();
   const auth = useAuth();
   let avatarUser =
@@ -282,10 +282,15 @@ export default function ViewProfile(props) {
                   postList={props?.approvedPostsList}
                   pendingPostList={props?.sortedPendingPostsList}
                   userId={props?.userId}
+                  removePost={removePost}
                 />
               )}
               {selected === "Câu hỏi" && (
-                <ProfileQuestionList qaList={props?.approvedQAList} />
+                <ProfileQuestionList
+                  qaList={props?.approvedQAList}
+                  pendingQAList={props?.sortedPendingQAList}
+                  userId={props?.userId}
+                />
               )}
               {selected === "Người theo dõi" && <ProfileFollowerListService />}
               {selected === "Đang theo dõi" && <ProfileFollowingListService />}

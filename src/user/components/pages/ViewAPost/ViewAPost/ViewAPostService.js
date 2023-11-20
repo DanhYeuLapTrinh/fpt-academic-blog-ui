@@ -40,38 +40,6 @@ export default function ViewAPostService() {
         setPostDetail(response?.data);
         setIsAllowComment(response?.data?.allowComment);
         setVote(response?.data?.numOfUpVote - response?.data?.numOfDownVote);
-        if (response?.data?.is_edited) {
-          try {
-            const fetchData = async () => {
-              try {
-                let response = await axiosPrivate.post(
-                  process.env.REACT_APP_GET_POST_HISTORY,
-                  {
-                    postId: postDetail.postId,
-                  }
-                );
-                if (response?.data.length > 0) {
-                  setHistoryDetail(response?.data[0]);
-                }
-              } catch (error) {
-                if (error?.response?.status === 405) {
-                  toast.error("Tài khoản của bạn đã bị khóa");
-                  navigate("/login", { replace: true });
-                  localStorage.removeItem("auth");
-                }
-              }
-            };
-            fetchData();
-          } catch (error) {
-            if (error?.response?.status === 405) {
-              toast.error("Tài khoản của bạn đã bị khóa");
-              navigate("/login", { replace: true });
-              localStorage.removeItem("auth");
-            }
-          }
-        } else {
-          setHistoryDetail(null);
-        }
       } catch (error) {
         if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
@@ -82,6 +50,34 @@ export default function ViewAPostService() {
     };
     fetchData();
     window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let response = await axiosPrivate.post(
+          process.env.REACT_APP_GET_POST_HISTORY,
+          {
+            postId: postDetail.postId,
+          }
+        );
+        if (response?.data.length > 0) {
+          setHistoryDetail(response?.data[0]);
+        }
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
+    };
+    if (postDetail?.is_edited) {
+      fetchData();
+    } else {
+      setHistoryDetail([]);
+    }
+    return () => setHistoryDetail([]);
   }, [postDetail?.postId]);
 
   useEffect(() => {

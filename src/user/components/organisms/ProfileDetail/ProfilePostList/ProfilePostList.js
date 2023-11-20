@@ -5,12 +5,12 @@ import { MenuItem, Select, Stack } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Icon } from "@iconify/react";
 import useAuth from "../../../../hooks/useAuth";
-export default function ProfilePostList(props) {
+import useProfile from "../../../../hooks/useProfile";
+import { useParams } from "react-router-dom";
+export default function ProfilePostList({ removePost, ...props }) {
   const [type, setType] = useState("Bài viết của tôi");
   const auth = useAuth();
-  useEffect(() => {
-    return () => setType("Bài viết của tôi");
-  }, []);
+  const { id } = useParams();
   return (
     <>
       <Stack direction="row" justifyContent="space-between">
@@ -54,25 +54,30 @@ export default function ProfilePostList(props) {
           />
         ))}
       {type === "Bài viết đang chờ" &&
+        id !== auth.id &&
         props?.pendingPostList?.map((item, index) => (
-          <ProfilePost
-            key={index}
-            url={item.coverURL}
-            isRewarded={item.is_rewarded}
-            postTitle={item.title}
-            description={item.description}
-            majorName={item?.category[0]?.categoryName}
-            majorID={item?.category[0]?.categoryId}
-            subjectName={item?.category[2]?.categoryName}
-            subjectID={item?.category[2]?.categoryId}
-            tagName={item?.tag.tagName}
-            tagID={item?.tag.tagId}
-            time={item.dateOfPost}
-            link={`/edit/${item?.slug}`}
-            title="22px"
-            small
-            pending
-          />
+          <>
+            <ProfilePost
+              key={index}
+              url={item.coverURL}
+              postId={item.postId}
+              isRewarded={item.is_rewarded}
+              postTitle={item.title}
+              description={item.description}
+              majorName={item?.category[0]?.categoryName}
+              majorID={item?.category[0]?.categoryId}
+              subjectName={item?.category[2]?.categoryName}
+              subjectID={item?.category[2]?.categoryId}
+              tagName={item?.tag.tagName}
+              tagID={item?.tag.tagId}
+              time={item.dateOfPost}
+              link={`/edit/${item?.slug}`}
+              removePost={removePost}
+              title="22px"
+              small
+              pending
+            />
+          </>
         ))}
       {!props?.pendingPostList?.length > 0 && type === "Bài viết đang chờ" && (
         <Stack justifyContent="center" alignItems="center" height="100%">
@@ -98,9 +103,7 @@ export default function ProfilePostList(props) {
               width="50"
               height="50"
             />
-            <Text color="lightText.main">
-              Người dùng chưa đăng bài nào
-            </Text>
+            <Text color="lightText.main">Người dùng chưa đăng bài nào</Text>
           </Stack>
         </Stack>
       )}

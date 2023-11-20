@@ -79,7 +79,7 @@ function App() {
             </Route>
           </Route>
           {/* Logged in lecturer routes */}
-          <Route element={<HomeLayout />}>
+          <Route element={<NoFooterLayout />}>
             <Route element={<ManagePostLayout />}>
               <Route element={<RequireAuth allowRoles={["lecturer"]} />}>
                 {lecturerRoutes.map((item, index) => {

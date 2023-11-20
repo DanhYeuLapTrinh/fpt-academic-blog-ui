@@ -86,7 +86,6 @@ export default function PostMenuOptionListService({ ...props }) {
     }
   }, [postDetail?.postId]);
 
-  
   return (
     <>
       <IconButton onClick={handleClick}>

@@ -24,7 +24,7 @@ export default function Write({ ...props }) {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   return (
-    <Container sx={{ padding: "0 0 40px", minHeight: "calc(120vh - 93px)" }}>
+    <Container sx={{ padding: "0 0 40px", minHeight: "calc(130vh - 93px)" }}>
       <PostFilter
         data={props.data}
         setData={props.setData}
@@ -88,7 +88,7 @@ export default function Write({ ...props }) {
         direction={"row"}
         justifyContent={"flex-end"}
         spacing={2}
-        paddingTop={"30px"}
+        padding={"30px 0 100px"}
       >
         {tag !== "Q&A" && (
           <Button

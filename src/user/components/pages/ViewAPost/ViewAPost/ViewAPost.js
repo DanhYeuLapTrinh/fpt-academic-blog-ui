@@ -41,7 +41,7 @@ export default function ViewAPost({ postDetail, ...props }) {
     <Container
       sx={{
         mb: !props.previewHistory ? 5 : 0,
-        minHeight: !props.previewHistory && "calc(150vh - 93px - 80px)",
+        minHeight: !props.previewHistory && "calc(100vh - 93px)",
       }}
     >
       {!props.previewHistory && (

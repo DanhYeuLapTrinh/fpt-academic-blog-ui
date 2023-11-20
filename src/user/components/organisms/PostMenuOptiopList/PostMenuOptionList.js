@@ -108,7 +108,7 @@ export default function PostMenuOptionList({
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
       <MenuItem
-        disabled={!props.isEdited || historyDetail?.length === 0}
+        disabled={historyDetail?.length === 0 || !props.isEdited}
         onClick={handleClickOpen}
       >
         <ListItemIcon>
@@ -213,7 +213,7 @@ export default function PostMenuOptionList({
           )}
         </>
       )}
-      {(!isAuthor && hasPermission && auth?.role === "lecturer") && (
+      {!isAuthor && hasPermission && auth?.role === "lecturer" && (
         <MenuItem onClick={giveReward}>
           <ListItemIcon>
             <Icon
