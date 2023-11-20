@@ -71,6 +71,7 @@ export default function ProfilePostList(props) {
             link={`/edit/${item?.slug}`}
             title="22px"
             small
+            pending
           />
         ))}
       {!props?.pendingPostList?.length > 0 && type === "Bài viết đang chờ" && (

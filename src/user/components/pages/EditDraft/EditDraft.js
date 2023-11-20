@@ -50,7 +50,15 @@ export default function EditDraft({ draft, ...props }) {
     }
   };
   return (
-    <Container sx={{ padding: "0 0 40px" }}>
+    <Container sx={{ padding: "0 0 40px", minHeight: "calc(120vh - 93px)" }}>
+      {draft?.reasonOfDecline && (
+        <PopupEdit
+          bgcolor="primary.main"
+          label="Lý do từ chối"
+          content={draft.reasonOfDecline}
+          color="secondary.main"
+        />
+      )}
       <PostFilter
         data={props.data}
         setData={props.setData}
@@ -69,15 +77,6 @@ export default function EditDraft({ draft, ...props }) {
         handleSemesterChange={props.handleSemesterChange}
         editQA
       />
-
-      {draft.reasonOfDecline && (
-        <PopupEdit
-          bgcolor="primary.main"
-          label="Lý do từ chối"
-          content={draft.reasonOfDecline}
-          color="secondary.main"
-        />
-      )}
       <TitleField draft title />
       <Dropzone />
       <ContentField

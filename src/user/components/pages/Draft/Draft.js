@@ -4,7 +4,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Text from "../../atoms/Text/Text";
 import useManagePost from "../../../hooks/useManagePost";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
-export default function Draft({ draft, declined }) {
+export default function Draft({ removePost, removeDraft, draft, declined }) {
   const { sort, setSort, draftType, setDraftType } = useManagePost();
   return (
     <Container sx={{ mt: "30px", minHeight: "calc(100vh - 93px)" }}>
@@ -13,6 +13,7 @@ export default function Draft({ draft, declined }) {
         direction={"row"}
         alignItems={"center"}
         justifyContent={"space-between"}
+        pb={"20px"}
       >
         <Stack direction={"row"} spacing={1}>
           <FormControl>
@@ -47,7 +48,7 @@ export default function Draft({ draft, declined }) {
           </FormControl>
         </Stack>
       </Stack>
-      <Stack p={"20px 0"} spacing={"20px"}>
+      <Stack spacing={"20px"}>
         {draftType === "Nháp" &&
           draft?.map((item) => (
             <RewardedPostsUnder
@@ -68,10 +69,13 @@ export default function Draft({ draft, declined }) {
               time={item.dateOfPost}
               postId={item.postId}
               slug={"/edit-draft/" + item.slug}
+              draft
+              tagColor="secondary.main"
+              removeDraft={removeDraft}
             />
           ))}
       </Stack>
-      <Stack p={"20px 0"} spacing={"20px"}>
+      <Stack spacing={"20px"}>
         {draftType === "Bài viết bị từ chối" &&
           declined?.map((item) => (
             <RewardedPostsUnder
@@ -92,6 +96,10 @@ export default function Draft({ draft, declined }) {
               time={item.dateOfPost}
               postId={item.postId}
               slug={"/edit-draft/" + item.slug}
+              draft
+              declined
+              removePost={removePost}
+              tagColor="secondary.main"
             />
           ))}
       </Stack>

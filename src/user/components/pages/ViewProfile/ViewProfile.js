@@ -231,7 +231,7 @@ export default function ViewProfile(props) {
                   </Stack>
                 </Box>
               )}
-              {props?.user?.badges?.length > 0 && (
+              {props?.user?.skills?.length > 0 && (
                 <Box
                   sx={{
                     width: "320px",

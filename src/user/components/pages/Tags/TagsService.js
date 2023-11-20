@@ -12,24 +12,37 @@ export default function TagsService() {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState();
   const { amount, setAmount } = useHome();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   window.scrollTo(0, 0);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await axiosPrivate.post(
-          process.env.REACT_APP_FILTER_POSTS,
-          {
-            tagId: Number(id),
-          }
-        );
+        let response;
+        if (name !== "qa") {
+          response = await axiosPrivate.post(
+            process.env.REACT_APP_FILTER_POSTS,
+            {
+              tagId: Number(id),
+            }
+          );
+        } else {
+          response = await axiosPrivate.post(
+            process.env.REACT_APP_FILTER_QA,
+            {
+              tagId: Number(id),
+            }
+          );
+        }
+        console.log(response?.data)
         setData(response?.data);
         setAmount(response?.data?.length);
-      } catch (error) {if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, [id]);

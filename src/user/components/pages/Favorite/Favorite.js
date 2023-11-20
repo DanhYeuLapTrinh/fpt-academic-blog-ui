@@ -27,6 +27,9 @@ export default function Favorite({ favorite }) {
             time={item.saveAt}
             postId={item.postListDto.postId}
             slug={"/view/" + item.postListDto.slug}
+            draft
+            favorite
+            tagColor="secondary.main"
           />
         ))}
       </Stack>

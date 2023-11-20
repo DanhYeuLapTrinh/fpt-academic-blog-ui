@@ -23,7 +23,6 @@ export default function HomeService() {
     setTrendingTags,
     qaList,
     setQAList,
-    categoryList,
   } = useHome();
   const { avatarURL } = useProfile();
   const navigate = useNavigate()
