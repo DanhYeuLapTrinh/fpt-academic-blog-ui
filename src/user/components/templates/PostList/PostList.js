@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
-import { Box, Stack } from "@mui/material";
+import { Box, Skeleton, Stack } from "@mui/material";
 import Post from "../../organisms/Post/Post";
 import { getFirstChar } from "../../../utils/StringMethod";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
@@ -10,7 +10,7 @@ import Text from "../../atoms/Text/Text";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export default function PostList() {
+export default function PostList({ qaList }) {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const fetchData = async (page, postsPerPage) => {
@@ -54,7 +54,7 @@ export default function PostList() {
         next={() => fetchNextPage()}
         hasMore={hasNextPage}
         loader={
-          hasMorePosts && (
+          qaList && hasMorePosts && (
             <Stack width={"100%"} sx={{ textAlign: "center", m: "20px 0" }}>
               <Text>...đang tải...</Text>
             </Stack>
@@ -62,27 +62,44 @@ export default function PostList() {
         }
         style={{ marginBottom: "20px" }}
       >
-        {posts?.map((item, index) => (
-          <Post
-            key={index}
-            url={item?.coverURL}
-            title={item?.title}
-            description={item?.description}
-            userId={item?.userId}
-            author={item?.accountName}
-            src={item?.avatarURL}
-            time={item?.dateOfPost}
-            majorName={item?.category[0]?.categoryName}
-            majorID={item?.category[0]?.categoryId}
-            subjectName={item?.category[2]?.categoryName}
-            subjectID={item?.category[2]?.categoryId}
-            tagName={item?.tag.tagName}
-            tagID={item?.tag.tagId}
-            slug={item?.slug}
-            isRewarded={item?.is_rewarded}
-            small
-          />
-        ))}
+        <Stack spacing={"20px"}>
+          {!qaList &&
+            Array(5)
+              .fill(null)
+              .map((_, i) => (
+                <div key={i}>
+                  <Skeleton
+                    animation="wave"
+                    variant="rectangular"
+                    width={740}
+                    height={149}
+                    sx={{ borderRadius: "10px" }}
+                  />
+                </div>
+              ))}
+        </Stack>
+        {qaList &&
+          posts?.map((item, index) => (
+            <Post
+              key={index}
+              url={item?.coverURL}
+              title={item?.title}
+              description={item?.description}
+              userId={item?.userId}
+              author={item?.accountName}
+              src={item?.avatarURL}
+              time={item?.dateOfPost}
+              majorName={item?.category[0]?.categoryName}
+              majorID={item?.category[0]?.categoryId}
+              subjectName={item?.category[2]?.categoryName}
+              subjectID={item?.category[2]?.categoryId}
+              tagName={item?.tag.tagName}
+              tagID={item?.tag.tagId}
+              slug={item?.slug}
+              isRewarded={item?.is_rewarded}
+              small
+            />
+          ))}
       </InfiniteScroll>
     </Box>
   );

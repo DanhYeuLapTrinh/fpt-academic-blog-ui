@@ -3,12 +3,21 @@ import PostCardShort from "../../organisms/PostCardShort/PostCardShort";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { sortByPropertyName } from "../../../utils/StringMethod";
+import { Skeleton } from "@mui/material";
 
 export default function ShortList(props) {
-  let sortedShortPosts = sortByPropertyName(props.shortPosts, "", "postId")
+  let sortedShortPosts = sortByPropertyName(props.shortPosts, "", "postId");
   return (
     <div>
-      <SectionTitle fontSize="20px" title="Lướt nhanh" see link="/shorts"/>
+      <SectionTitle fontSize="20px" title="Lướt nhanh" see link="/shorts" />
+      {!props.shortPosts && (
+        <Skeleton
+          variant="rectangular"
+          width={"100%"}
+          height={620}
+          sx={{ borderRadius: "10px" }}
+        />
+      )}
       {sortedShortPosts && (
         <Grid2 container xs={12} gap={"20px"}>
           <Grid2 container direction={"column"} xs rowGap={"20px"}>

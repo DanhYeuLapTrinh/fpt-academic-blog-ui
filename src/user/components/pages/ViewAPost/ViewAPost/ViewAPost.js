@@ -116,23 +116,24 @@ export default function ViewAPost({ postDetail, ...props }) {
             authorSize="16px"
           />
           <Stack direction={"row"} alignItems={"center"}>
-            {!props.isFavored ? (
-              <Tooltip title="Thêm danh sách yêu thích" placement="top">
-                <IconButton onClick={props.addToFavorite}>
-                  <Icon
-                    icon="ion:bookmark-outline"
-                    width={"24px"}
-                    color="#444746"
-                  />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip title="Xóa khỏi danh sách yêu thích" placement="top">
-                <IconButton onClick={props.removeFromFavorite}>
-                  <Icon icon="ion:bookmark" width={"24px"} color="#5927e5" />
-                </IconButton>
-              </Tooltip>
-            )}
+            {postDetail?.tag?.tagName !== "Q&A" &&
+              (!props.isFavored ? (
+                <Tooltip title="Thêm danh sách yêu thích" placement="top">
+                  <IconButton onClick={props.addToFavorite}>
+                    <Icon
+                      icon="ion:bookmark-outline"
+                      width={"24px"}
+                      color="#444746"
+                    />
+                  </IconButton>
+                </Tooltip>
+              ) : (
+                <Tooltip title="Xóa khỏi danh sách yêu thích" placement="top">
+                  <IconButton onClick={props.removeFromFavorite}>
+                    <Icon icon="ion:bookmark" width={"24px"} color="#5927e5" />
+                  </IconButton>
+                </Tooltip>
+              ))}
             <PostMenuOptionListService
               userId={postDetail?.userId}
               postId={postDetail?.postId}
@@ -167,12 +168,7 @@ export default function ViewAPost({ postDetail, ...props }) {
                     disableRipple
                     onClick={handleClickRewarded}
                   >
-                    <RewardBadge
-                      small
-                      width="40px"
-                      height="40px"
-                      zIndex="999"
-                    />
+                    <RewardBadge small width="40px" height="40px" zIndex="1" />
                   </IconButton>
                 </Tooltip>
                 <Dialog
@@ -229,7 +225,12 @@ export default function ViewAPost({ postDetail, ...props }) {
                             >
                               <Text>{item.fullName}</Text>
                             </Link>
-                            <Stack direction={"row"} spacing={1} flexWrap={"wrap"} width={"100%"}>
+                            <Stack
+                              direction={"row"}
+                              spacing={1}
+                              flexWrap={"wrap"}
+                              width={"100%"}
+                            >
                               {item.badges.map((badge) => (
                                 <Text>
                                   <Chip

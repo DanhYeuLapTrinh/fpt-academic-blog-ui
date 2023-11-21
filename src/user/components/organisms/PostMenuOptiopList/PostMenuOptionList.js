@@ -213,18 +213,21 @@ export default function PostMenuOptionList({
           )}
         </>
       )}
-      {!isAuthor && hasPermission && auth?.role === "lecturer" && (
-        <MenuItem onClick={giveReward}>
-          <ListItemIcon>
-            <Icon
-              icon="material-symbols:rewarded-ads-outline-rounded"
-              color="#444746"
-              width="24"
-            />
-          </ListItemIcon>
-          <Text fontSize="14px">Trao thưởng bài viết</Text>
-        </MenuItem>
-      )}
+      {!isAuthor &&
+        hasPermission &&
+        auth?.role === "lecturer" &&
+        postDetail?.tag?.tagName !== "Q&A" && (
+          <MenuItem onClick={giveReward}>
+            <ListItemIcon>
+              <Icon
+                icon="material-symbols:rewarded-ads-outline-rounded"
+                color="#444746"
+                width="24"
+              />
+            </ListItemIcon>
+            <Text fontSize="14px">Trao thưởng bài viết</Text>
+          </MenuItem>
+        )}
     </Menu>
   );
 }

@@ -32,7 +32,7 @@ export default function PostCardV1(props) {
                 position="absolute"
                 top="10px"
                 right="10px"
-                zIndex="999"
+                zIndex="1"
               />
             </Link>
           )}
