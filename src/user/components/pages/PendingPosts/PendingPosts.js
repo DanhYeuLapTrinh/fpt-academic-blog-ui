@@ -3,7 +3,7 @@ import React from "react";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
 export default function PendingPosts(props) {
   return (
-    <Stack p={"20px 0"} spacing={"20px"}>
+    <Stack p={"20px 0"} spacing={"20px"} mb={"300px"}>
       {props?.pendingPosts?.map((item) => (
         <RewardedPostsUnder
           key={item.postId}

@@ -10,7 +10,7 @@ export default function PendingReward({ pendingReward }) {
   return (
     <Container sx={{ mt: "30px", minHeight: "calc(100vh - 93px - 30px)" }}>
       <SectionTitle title="Danh sách chờ xét thưởng" />
-      <Stack spacing={"20px"}>
+      <Stack spacing={"20px"} mb={"300px"}>
         {sortedPendingReward?.map((item) => (
           <RewardedPostsUnder
             key={item.postId}
