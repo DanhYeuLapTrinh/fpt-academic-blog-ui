@@ -84,6 +84,7 @@ export default function PostMenuOptionListService({ ...props }) {
     if (!found && containsAll) {
       setHasPermisson(true);
     }
+    return () => setHasPermisson(false);
   }, [postDetail?.postId]);
 
   return (

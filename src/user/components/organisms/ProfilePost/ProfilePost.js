@@ -49,7 +49,7 @@ export default function ProfilePost({removePost, ...props}) {
                 position="absolute"
                 top="15px"
                 right="15px"
-                zIndex="999"
+                zIndex="1"
               />
             </Link>
           )}

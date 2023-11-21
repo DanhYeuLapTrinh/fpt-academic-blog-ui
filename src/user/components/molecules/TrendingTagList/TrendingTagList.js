@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Skeleton, Stack } from "@mui/material";
 import React from "react";
 import PostTag from "../../atoms/PostTag/PostTag";
 import { Link } from "react-router-dom";
@@ -7,6 +7,14 @@ import { toSlug } from "../../../utils/StringMethod";
 export default function TrendingTagList(props) {
   return (
     <Stack direction={"row"} gap={1} flexWrap={"wrap"}>
+      {!props?.trendingTags && (
+        <Skeleton
+          variant="rectangular"
+          width={"100%"}
+          height={100}
+          sx={{ borderRadius: "10px" }}
+        />
+      )}
       {props?.trendingTags?.slice(0, 12)?.map((tag, index) => (
         <Link
           to={{
@@ -15,7 +23,7 @@ export default function TrendingTagList(props) {
               tag.categoryId
             }`,
           }}
-          style={{textDecoration: "none"}}
+          style={{ textDecoration: "none" }}
         >
           <PostTag
             key={index}

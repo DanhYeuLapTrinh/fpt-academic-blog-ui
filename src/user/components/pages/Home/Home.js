@@ -25,12 +25,12 @@ export default function Home({ qaList, ...props }) {
         <Grid2 container xs={12} columnGap={"20px"}>
           <Grid2 item xs={8}>
             <QAList qaList={qaList} />
-            {qaList && <PostList />}
+            <PostList qaList={qaList} />
           </Grid2>
           <Grid2 item xs>
             <Stack spacing={12}>
               <TrendingTagSection trendingTags={props.trendingTags} />
-              {props.shortPosts && <ShortList shortPosts={props.shortPosts} />}
+              <ShortList shortPosts={props.shortPosts} />
             </Stack>
           </Grid2>
         </Grid2>
