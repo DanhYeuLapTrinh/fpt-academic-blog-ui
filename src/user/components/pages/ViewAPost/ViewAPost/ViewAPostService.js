@@ -45,6 +45,8 @@ export default function ViewAPostService() {
           toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
+        } else if (error?.response?.status === 404) {
+          navigate("/404-not-found", { replace: true });
         }
       }
     };
