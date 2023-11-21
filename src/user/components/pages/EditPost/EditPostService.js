@@ -126,16 +126,12 @@ export default function EditPostService() {
     setSemester();
     setSubject();
     setSubjectID();
-    setTag();
-    setTagID();
   }, []);
 
   const handleSemesterChange = useCallback((e) => {
     setSemester(e.target.value);
     setSubject();
     setSubjectID();
-    setTag();
-    setTagID();
   }, []);
 
   const handleImage = async (blobInfo) => {

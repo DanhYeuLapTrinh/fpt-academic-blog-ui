@@ -19,6 +19,8 @@ import { toast } from "react-toastify";
 function HeaderDetail({ id }) {
   const { reportedProfile } = useReportedProfileContext();
 
+  console.log("Reported Profile: ", reportedProfile);
+
   const coverURL = reportedProfile.coverUrl;
 
   const defaultCoverURL =
@@ -28,7 +30,7 @@ function HeaderDetail({ id }) {
 
   const navigate = useNavigate();
 
-  const postList = reportedProfile.postList || [];
+  const postList = reportedProfile?.postList?.ApprovedPost || [];
 
   const fullName = reportedProfile.fullname || "";
 

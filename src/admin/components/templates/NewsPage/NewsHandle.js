@@ -5,14 +5,25 @@ import { LinearProgress, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import DeleteNewHandle from "../DeleteNewHandle/DeleteNewHandle";
 import { useNewsContext } from "../../../context/NewsContext";
+import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
 function NewsHandle() {
   const axiosPrivate = useAxiosPrivate();
 
   const { news, setNews } = useNewsContext();
 
+  const [loading, setLoading] = useState(false);
+
+  const [noRows, setNoRows] = useState(false);
+
   const fetchData = async () => {
     const newsRes = await axiosPrivate.get("news/list");
+
+    if (!newsRes.length) {
+      setNoRows(true);
+    }
+
     setNews(newsRes.data);
+    setLoading(false);
     console.log(newsRes.data);
   };
 
@@ -21,10 +32,11 @@ function NewsHandle() {
   }, []);
 
   const columns = [
-    { field: "newsAt", headerName: "Thời gian", width: 160 },
+    { field: "newsAt", headerName: "Thời gian", sortable: false, width: 160 },
     {
       field: "title",
       headerName: "Tiêu đề",
+      sortable: false,
       flex: 1,
       renderCell: (params) => (
         <Link to={`/news/view/${params.row.newsId}`}>
@@ -37,6 +49,7 @@ function NewsHandle() {
     {
       field: "",
       headrName: "",
+      sortable: false,
       width: 100,
       renderCell: (params) => (
         <DeleteNewHandle id={params.row.newsId} fetchData={fetchData} />
@@ -59,7 +72,6 @@ function NewsHandle() {
         Danh sách tin tức
       </Typography>
       <DataGrid
-        loading={news.length === 0}
         rows={news}
         getRowId={(row) => row.newsId}
         columns={columns}
@@ -71,16 +83,25 @@ function NewsHandle() {
           },
         }}
         sx={{
+          "& .MuiDataGrid-cell": {
+            display: "flex",
+            padding: "8px",
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+          },
           "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
             outline: "none !important",
           },
         }}
         slots={{
-          loadingOverlay: LinearProgress,
+          noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+          loadingOverlay: () => loading && <LinearProgress />,
         }}
         pageSizeOptions={[5, 10, 25]}
         autoHeight
         disableRowSelectionOnClick
+        disableColumnMenu
+        disableColumnFilter
       />
     </>
   );

@@ -7,6 +7,7 @@ import Header from "./header";
 import Nav from "./nav";
 import ThemeProvider from "../../../components/theme";
 import { NewsProvider } from "../../../context/NewsContext";
+import { UserProvider } from "../../../context/UserContext";
 import { ReportedProfileProvider } from "../../../context/ReportedProfileContext";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -39,21 +40,23 @@ export default function AdminLayout() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
-      <ReportedProfileProvider>
-        <NewsProvider>
-          <ThemeProvider>
-            <StyledRoot>
-              <Header onOpenNav={() => setOpen(true)} />
+      <UserProvider>
+        <ReportedProfileProvider>
+          <NewsProvider>
+            <ThemeProvider>
+              <StyledRoot>
+                <Header onOpenNav={() => setOpen(true)} />
 
-              <Nav openNav={open} onCloseNav={() => setOpen(false)} />
+                <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
-              <Main>
-                <Outlet />
-              </Main>
-            </StyledRoot>
-          </ThemeProvider>
-        </NewsProvider>
-      </ReportedProfileProvider>
+                <Main>
+                  <Outlet />
+                </Main>
+              </StyledRoot>
+            </ThemeProvider>
+          </NewsProvider>
+        </ReportedProfileProvider>
+      </UserProvider>
     </LocalizationProvider>
   );
 }

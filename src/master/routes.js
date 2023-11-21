@@ -14,6 +14,9 @@ import NewsPage from "../admin/components/pages/NewsPage/NewsPage";
 import AddNews from "../admin/components/pages/AddNews/AddNews";
 import DetailNew from "../admin/components/pages/DetailNew/DetailNew";
 import ReportedProfileDetail from "../admin/components/pages/ReportedProfileDetail/ReportedProfileDetail";
+import UserDetail from "../admin/components/pages/UserDetail/UserDetail";
+import SkillsPageService from "../admin/components/pages/Skills/SkillsPageService";
+import EditSkillPage from "../admin/components/pages/EditSkill/EditSkillPage";
 
 import WriteService from "../user/components/pages/Write/WriteService";
 import PendingPostsService from "../user/components/pages/PendingPosts/PendingPostsService";
@@ -107,7 +110,7 @@ const loggedInAdminRoutes = [
   { path: "/welcome", component: Welcome },
   //User
   { path: "/users", component: UserList },
-
+  { path: "/users/view/:id", component: UserDetail },
   //Categories Page
   { path: "/categories-list", component: CategoriesListPage },
   //Tags Page
@@ -120,11 +123,13 @@ const loggedInAdminRoutes = [
     component: ReportedProfileDetail,
   },
   { path: "/reported-comment", component: ReportedCommentPage },
-
   //News Page
   { path: "/news-admin", component: NewsPage },
   { path: "news/view/:id", component: DetailNew },
   { path: "/add-news", component: AddNews },
+  //Skills Page
+  { path: "/skills-list", component: SkillsPageService },
+  { path: "/edit-skill", component: EditSkillPage },
 ];
 
 export {

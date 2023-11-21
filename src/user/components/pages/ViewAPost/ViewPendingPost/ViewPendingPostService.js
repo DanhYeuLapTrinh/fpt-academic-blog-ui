@@ -8,7 +8,7 @@ import useAuth from "../../../../hooks/useAuth";
 export default function ViewPendingPostService() {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const auth = useAuth()
+  const auth = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState();
   const [oldLink, setOldLink] = useState(null);
@@ -62,13 +62,13 @@ export default function ViewPendingPostService() {
       await axiosPrivate.post(process.env.REACT_APP_APPROVE_POST, {
         postId: data?.postId,
       });
-      window.scrollTo(0, 0);
-      navigate("/pending-posts", { replace: true });
       if (isRewaded) {
         await axiosPrivate.post(process.env.REACT_APP_GIVE_REWARD, {
           postId: data?.postId,
         });
       }
+      window.scrollTo(0, 0);
+      navigate("/pending-posts", { replace: true });
     } catch (error) {
       if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
@@ -100,7 +100,7 @@ export default function ViewPendingPostService() {
     if (found) {
       setHasGiveReward(true);
     }
-  }, [data?.postId])
+  }, [data?.postId]);
   return (
     <ViewPendingPost
       data={data}

@@ -16,6 +16,8 @@ export default function HomeProvider({ children }) {
   const [searchPost, setSearchPost] = useState("");
   const [users, setUsers] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadNotifications, setUnreadNotifications] = useState([]);
   return (
     <HomeContext.Provider
       value={{
@@ -49,6 +51,10 @@ export default function HomeProvider({ children }) {
         setUsers,
         categoryList,
         setCategoryList,
+        notifications,
+        setNotifications,
+        unreadNotifications,
+        setUnreadNotifications,
       }}
     >
       {children}

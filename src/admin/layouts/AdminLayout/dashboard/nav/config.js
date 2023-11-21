@@ -6,7 +6,7 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
-
+import HubIcon from "@mui/icons-material/Hub";
 // ----------------------------------------------------------------------
 
 const navConfig = [
@@ -70,6 +70,22 @@ const navConfig = [
       {
         title: "Thêm tin tức",
         path: "/add-news",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+    ],
+  },
+  {
+    title: "Quản lý kỹ năng của giảng viên",
+    icon: <HubIcon />,
+    items: [
+      {
+        title: "Danh sách kỹ năng",
+        path: "/skills-list",
+        icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
+      },
+      {
+        title: "Chỉnh sửa kỹ năng",
+        path: "/edit-skill",
         icon: <FiberManualRecordIcon sx={{ fontSize: "small" }} />,
       },
     ],

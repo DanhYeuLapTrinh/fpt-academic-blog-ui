@@ -137,7 +137,7 @@ export default function Comment({
           autoFocus
           auth={auth}
           reply
-          handleSubmit={(e) => addComment(e, replyId)}
+          handleSubmit={(e) => addComment(e, replyId, props?.commentId, props?.userId)}
         />
       )}
 

@@ -48,7 +48,6 @@ export default function SimpleCharts({ totalVisit }) {
           label="Ngày bắt đầu"
           value={startDate}
           onChange={setStartDate}
-          minDate={oneWeekAgo}
           maxDate={endDate}
           sx={{ ml: 1 }}
         />

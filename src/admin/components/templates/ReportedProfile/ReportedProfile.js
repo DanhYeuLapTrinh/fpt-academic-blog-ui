@@ -15,6 +15,7 @@ function ReportedProfile() {
   const [loading, setLoading] = useState(false);
 
   const [noRows, setNoRows] = useState(false);
+
   //----------------------------------------------------------------
 
   const fetchData = async () => {
@@ -24,6 +25,7 @@ function ReportedProfile() {
     if (!reportedProfilesRes.length) {
       setNoRows(true);
     }
+
     setReportedProfiles(reportedProfilesRes.data);
     setLoading(false);
     console.log(reportedProfilesRes.data);
@@ -99,7 +101,6 @@ function ReportedProfile() {
         Danh sách các hồ sơ bị báo cáo
       </Typography>
       <DataGrid
-        loading={reportedProfiles.length === 0}
         getRowId={(row) => row.reportedUserId}
         rows={reportedProfiles}
         columns={columns}

@@ -52,7 +52,15 @@ export default function NavSection({ data = [], ...other }) {
                     {item.items.map((subItem) => (
                       <ListItemButton
                         key={subItem.title}
-                        sx={{ pl: 4 }}
+                        sx={{
+                          "&.active": {
+                            color: "text.primary",
+                            bgcolor: "action.selected",
+                            fontWeight: "fontWeightBold",
+                            borderRadius: "15px",
+                            pl: 4,
+                          },
+                        }}
                         component={RouterLink}
                         to={subItem.path}
                       >
