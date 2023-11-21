@@ -14,15 +14,21 @@ export default function CommentSection({ rootComments, getReplies }) {
   const { postDetail, setPostDetail, setActiveComment, isAllowComment } =
     usePost();
   const navigate = useNavigate();
-  const addComment = async (e, parentId = null) => {
+  const auth = useAuth();
+  const addComment = async (
+    e,
+    parentId = null,
+    commentId = null,
+    userId = null
+  ) => {
     let value = e.target.value.trim();
     if (value === "") {
       toast.error("Bình luận không thể trống");
       return;
     }
-    try {
-      e.preventDefault();
-      if (parentId) {
+    e.preventDefault();
+    if (parentId && commentId && userId) {
+      try {
         let response = await axiosPrivate.post(
           process.env.REACT_APP_REPLY_COMMENT,
           {
@@ -37,7 +43,47 @@ export default function CommentSection({ rootComments, getReplies }) {
           setPostDetail({ ...postDetail, comments: comments });
           setActiveComment(null);
         }
-      } else {
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
+      try {
+        if (userId !== auth?.id) {
+          await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
+            content: `đã phản hồi bình luận của bạn: ${value}`,
+            relatedId: commentId,
+            type: "comment",
+            userId: userId,
+          });
+        }
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
+      try {
+        if (auth.id !== postDetail?.userId && userId !== postDetail?.userId) {
+          await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
+            content: `đã bình luận về bài viết của bạn: ${value}`,
+            relatedId: postDetail?.postId,
+            type: "post",
+            userId: postDetail?.userId,
+          });
+        }
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
+    } else {
+      try {
         let response = await axiosPrivate.post(
           process.env.REACT_APP_CREATE_COMMENT,
           {
@@ -50,12 +96,28 @@ export default function CommentSection({ rootComments, getReplies }) {
           comments.push(response.data);
           setPostDetail({ ...postDetail, comments: comments });
         }
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
       }
-    } catch (error) {
-      if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
+      try {
+        if (auth.id !== postDetail?.userId) {
+          await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
+            content: `đã bình luận về bài viết của bạn: ${value}`,
+            relatedId: postDetail?.postId,
+            type: "post",
+            userId: postDetail?.userId,
+          });
+        }
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
       }
     }
   };
