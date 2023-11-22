@@ -52,7 +52,7 @@ export default function ViewAPostService() {
     };
     fetchData();
     window.scrollTo(0, 0);
-  }, []);
+  }, [slug]);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -50,6 +50,9 @@ export default function PostInteraction(props) {
               backgroundColor: "transparent",
             },
           }}
+          disableFocusRipple
+          disableRipple
+          disableTouchRipple
         >
           <Icon icon="fa6-regular:comment" width={"24px"} color="#444746" />
           <Text ml="6px">Bình luận</Text>
