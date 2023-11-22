@@ -18,4 +18,5 @@ export const addUserSchema = Yup.object().shape({
     .matches(/^0[0-9]{9}$/, "Số điện thoại không hợp lệ (tối đa 10 số)")
     .required("Số điện thoại không được bỏ trống"),
   role: Yup.string().required("Vai trò không được bỏ trống"),
+  majorID: Yup.string().required("Ngành không được bỏ trống"),
 });
