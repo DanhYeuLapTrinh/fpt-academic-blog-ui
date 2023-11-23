@@ -94,7 +94,8 @@ function NewsHandle() {
           },
         }}
         slots={{
-          noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+          noRowsOverlay: () =>
+            noRows && <CustomNoRowsOverlay title="Không có dữ liệu" />,
           loadingOverlay: () => loading && <LinearProgress />,
         }}
         pageSizeOptions={[5, 10, 25]}
