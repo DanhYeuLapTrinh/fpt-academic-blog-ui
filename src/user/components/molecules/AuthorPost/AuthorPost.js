@@ -7,7 +7,7 @@ import Text from "../../atoms/Text/Text";
 import { timeConverter } from "../../../utils/StringMethod";
 import { Link } from "react-router-dom";
 
-export default function AuthorPost(props) {
+export default function AuthorPost({ handleActions, ...props }) {
   const auth = useAuth();
   return (
     <Stack direction={"row"} sx={{ alignItems: "center" }} spacing={"10px"}>
@@ -37,7 +37,9 @@ export default function AuthorPost(props) {
               sx={{ textTransform: "none", borderRadius: "20px" }}
               size="small"
               onClick={
-                props.isFollowing ? props.unfollowAccount : props.followAccount
+                props.isFollowing
+                  ? () => handleActions("unfollow")
+                  : () => handleActions("follow")
               }
               startIcon={
                 props.isFollowing ? (

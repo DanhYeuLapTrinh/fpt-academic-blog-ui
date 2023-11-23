@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 export default function SearchPopperService() {
   const [inputTitle, setInputTitle] = useState(null);
   const [inputContent, setInputContent] = useState([]);
-  const { setSearchPost, trendingPosts, categoryList, setCategoryList } =
+  const { setSearchPost, categoryList } =
     useHome();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -23,17 +23,7 @@ export default function SearchPopperService() {
       setOpen(false);
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let response = await axiosPrivate.get(
-          process.env.REACT_APP_GET_CATEGORY
-        );
-        setCategoryList(response?.data);
-      } catch (error) {}
-    };
-    if (trendingPosts) fetchData();
-  }, [trendingPosts]);
+
 
   const handleSearch = async () => {
     try {

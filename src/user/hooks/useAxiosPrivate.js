@@ -38,6 +38,6 @@ export default function useAxiosPrivate() {
       axiosPrivate.interceptors.response.eject(responseInterceptor);
       axiosPrivate.interceptors.response.eject(requestInterceptor);
     };
-  }, [auth, refresh]);
+  }, [auth?.token, refresh]);
   return axiosPrivate;
 }

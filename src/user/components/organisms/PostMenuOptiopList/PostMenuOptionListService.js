@@ -78,14 +78,14 @@ export default function PostMenuOptionListService({ ...props }) {
   let containsAll = postDetail?.postSkill?.every((obj) =>
     user?.skills?.includes(obj.skillName)
   );
-
   useEffect(() => {
     found = found === undefined ? false : true;
+
     if (!found && containsAll) {
       setHasPermisson(true);
     }
     return () => setHasPermisson(false);
-  }, [postDetail?.postId, slug]);
+  }, [postDetail?.rewarder, user?.skills, postDetail?.postSkill]);
 
   return (
     <>

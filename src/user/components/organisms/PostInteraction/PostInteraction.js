@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 import React from "react";
 import Text from "../../atoms/Text/Text";
 
-export default function PostInteraction(props) {
+export default function PostInteraction({ handleActions, ...props }) {
   return (
     <div>
       <Divider orientation="horizontal" />
@@ -14,7 +14,7 @@ export default function PostInteraction(props) {
         m={"3px 0"}
       >
         <Stack direction={"row"} alignItems={"center"}>
-          <IconButton onClick={props.handleUpvote}>
+          <IconButton onClick={() => handleActions("upvote")}>
             {props.select === "up" ? (
               <Icon
                 icon="tabler:arrow-big-up-filled"
@@ -28,7 +28,7 @@ export default function PostInteraction(props) {
             )}
           </IconButton>
           <Text>{props.vote}</Text>
-          <IconButton onClick={props.handleDownvote}>
+          <IconButton onClick={() => handleActions("downvote")}>
             {props.select === "down" ? (
               <Icon
                 icon="tabler:arrow-big-up-filled"
