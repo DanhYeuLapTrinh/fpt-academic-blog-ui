@@ -18,7 +18,7 @@ export default function Comment({
   ...props
 }) {
   const auth = useAuth();
-  const { activeComment, setActiveComment, isAllowComment } = usePost();
+  const { activeComment, setActiveComment } = usePost();
   const isReplying =
     activeComment &&
     activeComment.id === props.commentId &&

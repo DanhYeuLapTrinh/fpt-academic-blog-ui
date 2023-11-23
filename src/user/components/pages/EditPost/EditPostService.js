@@ -202,7 +202,6 @@ export default function EditPostService() {
         navigate(-2, { replace: true });
       }
     } catch (error) {
-      console.log(error);
       toast.error("Có lỗi trong quá trình xử lý");
     }
   }, [tagID, subjectID, contentTiny, title, coverURL, skills]);

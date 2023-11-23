@@ -9,6 +9,13 @@ export default function PostProvider({ children }) {
   const [reportReasons, setReportReasons] = useState([]);
   const [isAuthor, setIsAuthor] = useState(false);
   const [isAllowComment, setIsAllowComment] = useState(true);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFavored, setIsFavored] = useState(false);
+  const [vote, setVote] = useState(0);
+  // check xem vote gì trước up down ""
+  const [select, setSelect] = useState("");
+  // check xem đã vote chưa true false
+  const [voted, setVoted] = useState();
   return (
     <PostContext.Provider
       value={{
@@ -28,6 +35,16 @@ export default function PostProvider({ children }) {
         setHistoryDetail,
         isAllowComment,
         setIsAllowComment,
+        isFollowing,
+        setIsFollowing,
+        isFavored,
+        setIsFavored,
+        vote,
+        setVote,
+        select,
+        setSelect,
+        voted,
+        setVoted,
       }}
     >
       {children}

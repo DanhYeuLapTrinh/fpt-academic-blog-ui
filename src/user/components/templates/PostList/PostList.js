@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import { Box, Skeleton, Stack } from "@mui/material";
 import Post from "../../organisms/Post/Post";
-import { getFirstChar } from "../../../utils/StringMethod";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import InfiniteScroll from "react-infinite-scroll-component";

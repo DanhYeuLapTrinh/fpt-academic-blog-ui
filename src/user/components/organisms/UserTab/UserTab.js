@@ -3,8 +3,10 @@ import React from "react";
 import Text from "../../atoms/Text/Text";
 import { Link } from "react-router-dom";
 import UserMenuOptionsListContainer from "../UserMenuOptionsList/UserMenuOptionsListContainer";
+import useHome from "../../../hooks/useHome";
 
-export default function UserTab({ handleClick, unreadNotifications }) {
+export default function UserTab({ handleClick }) {
+  const { unreadNotifications } = useHome();
   return (
     <Box>
       <Stack direction={"row"} alignItems={"center"} spacing={3}>

@@ -20,20 +20,19 @@ import Menu from "@mui/material/Menu";
 import useHome from "../../../hooks/useHome";
 import NotificationItem from "../NotificationItem/NotificationItem";
 import { Icon } from "@iconify/react";
+import useHomeAPI from "../../pages/Home";
 
 export default function Header() {
-  const { setAvatarURL, setUser } = useProfile();
   const {
     notifications,
     setNotifications,
     unreadNotifications,
     setUnreadNotifications,
   } = useHome();
+  const { getNotifications, setUserAvatar } = useHomeAPI();
   const [filter, setFilter] = useState("Tất cả");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
   const auth = useAuth();
 
   useWebSocket(process.env.REACT_APP_WEBSOCKET_URL + auth.id, {
@@ -42,73 +41,23 @@ export default function Header() {
         (a, b) =>
           new Date(b.notifyTime).getTime() - new Date(a.notifyTime).getTime()
       );
+      let unreadNotifications = updated?.filter((item) => item?.read === false);
+      setUnreadNotifications(unreadNotifications);
       setNotifications(updated);
     },
     shouldReconnect: () => true,
   });
-
   useEffect(() => {
-    loadNotifications();
+    getNotifications();
+    setUserAvatar();
   }, []);
-
   const handleClick = (event) => {
-    loadNotifications();
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const loadNotifications = async () => {
-    try {
-      let notifications = await axiosPrivate.get(
-        process.env.REACT_APP_VIEW_NOTIFICATION
-      );
-      notifications = notifications?.data?.sort(
-        (a, b) =>
-          new Date(b.notifyTime).getTime() - new Date(a.notifyTime).getTime()
-      );
-      let unreadNotifications = notifications?.filter(
-        (item) => item?.read === false
-      );
-      setUnreadNotifications(unreadNotifications);
-      setNotifications(notifications);
-    } catch (error) {
-      if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }
-    }
-  };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let profileInfo = await axiosPrivate.post(
-          process.env.REACT_APP_VIEW_PROFILE,
-          {
-            userId: auth.id,
-          }
-        );
-        if (profileInfo?.data) {
-          setAvatarURL(profileInfo?.data?.profileUrl);
-          let skills = await axiosPrivate.get("users/skills");
-          setUser((prevUser) => ({
-            ...prevUser,
-            skills: skills?.data,
-          }));
-        }
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    fetchData();
-  }, []);
 
   return (
     <Container sx={{ padding: "15px 0" }}>
@@ -126,10 +75,7 @@ export default function Header() {
           <Divider orientation="vertical" sx={{ height: "25px" }} />
           <NavList />
         </Stack>
-        <UserTab
-          handleClick={handleClick}
-          unreadNotifications={unreadNotifications}
-        />
+        <UserTab handleClick={handleClick} />
         <Menu
           anchorEl={anchorEl}
           open={open}
