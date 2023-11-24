@@ -48,12 +48,17 @@ export default function usePostAPI() {
     });
     setVoteList(postVote?.data);
     let item = postVote?.data?.find((x) => x.commentId === null);
-    if (item?.typeOfVote === "up") {
-      setSelect("up");
-      setVoted(true);
-    } else if (item?.typeOfVote === "down") {
-      setSelect("down");
-      setVoted(true);
+    if (!item) {
+      setSelect("");
+      setVoted(false);
+    } else {
+      if (item?.typeOfVote == "up") {
+        setSelect("up");
+        setVoted(true);
+      } else if (item?.typeOfVote == "down") {
+        setSelect("down");
+        setVoted(true);
+      }
     }
   };
 
@@ -62,7 +67,7 @@ export default function usePostAPI() {
     let isFavored = favorList?.data?.some(
       (favor) => favor?.postListDto?.postId === postId
     );
-    return isFavored
+    return isFavored;
   };
 
   const checkIsFollowing = async (userId) => {

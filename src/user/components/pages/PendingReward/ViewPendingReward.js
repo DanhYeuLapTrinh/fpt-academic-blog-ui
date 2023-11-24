@@ -23,14 +23,6 @@ export default function ViewPendingReward({
   giveReward,
   dismissReward,
 }) {
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpen(false);
-  };
   return (
     <Container sx={{mt: "37px"}}>
       <Text fontSize="40px">
@@ -64,84 +56,6 @@ export default function ViewPendingReward({
           />
         </Stack>
       )}
-      <Stack
-        direction={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
-        mt={"20px"}
-      >
-        {/* <Dialog open={open} maxWidth="lg">
-          <DialogContent sx={{ p: 0 }}>
-            <Stack
-              direction={"row"}
-              alignItems={"center"}
-              p={2}
-              sx={{ minWidth: "400px" }}
-              justifyContent={"space-between"}
-            >
-              <Text fontSize="26px">Số người đã trao thưởng</Text>
-              <IconButton
-                sx={{ p: 0 }}
-                disableFocusRipple
-                disableRipple
-                disableTouchRipple
-                onClick={handleCloseDialog}
-              >
-                <Icon icon="uil:x" color="#444746" width="24" />
-              </IconButton>
-            </Stack>
-            <Divider orientation="horizontal" />
-            <Box sx={{ p: 2 }}>
-              {rewardPost?.rewarder?.map((item) => (
-                <Stack
-                  direction={"row"}
-                  spacing={2}
-                  alignItems={"center"}
-                  width={"400px"}
-                >
-                  <Link
-                    to={`/profile/${item.userId}`}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <UserProfile
-                      src={item.avatarURL}
-                      width="40px"
-                      height="40px"
-                    />
-                  </Link>
-                  <Stack>
-                    <Link
-                      to={`/profile/${item.userId}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Text>{item.fullName}</Text>
-                    </Link>
-                    <Stack direction={"row"} spacing={1}>
-                      {item.badges.map((badge) => (
-                        <Text>
-                          <Chip
-                            label={
-                              badge.badgeName === "Lecturer"
-                                ? "Giảng viên"
-                                : badge.badgeName
-                            }
-                            size="small"
-                            sx={{
-                              minWidth: "50px",
-                              borderRadius: "5px",
-                              color: "primary.main",
-                            }}
-                          />
-                        </Text>
-                      ))}
-                    </Stack>
-                  </Stack>
-                </Stack>
-              ))}
-            </Box>
-          </DialogContent>
-        </Dialog> */}
-      </Stack>
       <div className={styles.contentWrapper}>
         <img style={{ margin: "0px 0 40px" }} src={rewardPost?.coverURL} />
         <div dangerouslySetInnerHTML={{ __html: rewardPost?.content }} />

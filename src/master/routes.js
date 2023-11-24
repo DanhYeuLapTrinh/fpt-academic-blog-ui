@@ -69,21 +69,21 @@ const loggedInUserRoutes = [
   { path: "/shorts", component: ShortPostSeeMoreService },
   { path: "/categories", component: CategoriesService },
   { path: "/tags", component: TagsService },
-  { path: "/profile/edit", component: EditProfileService },
   { path: "/view/:slug", component: ViewAPostService },
-  { path: "/profile/:id", component: ViewProfileService },
-  { path: "/profile/:id/question", component: ViewProfileService },
-  { path: "/profile/:id/follower", component: ViewProfileService },
-  { path: "/profile/:id/following", component: ViewProfileService },
-  { path: "/filter", component: FilterService },
   { path: "/news/:id", component: ViewNewsService },
-  { path: "/accounts/:id", component: ViewAccoutListService },
 ];
 
 const loggedInUserRoutesOther = [
   { path: "/write", component: WriteService },
   { path: "/edit/:slug", component: EditPostService },
   { path: "/edit-draft/:slug", component: EditDraftService },
+  { path: "/profile/edit", component: EditProfileService },
+  { path: "/accounts/:id", component: ViewAccoutListService },
+  { path: "/filter", component: FilterService },
+  { path: "/profile/:id", component: ViewProfileService },
+  { path: "/profile/:id/question", component: ViewProfileService },
+  { path: "/profile/:id/follower", component: ViewProfileService },
+  { path: "/profile/:id/following", component: ViewProfileService },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },

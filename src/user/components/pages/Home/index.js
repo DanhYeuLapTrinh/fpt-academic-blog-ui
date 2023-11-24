@@ -1,24 +1,17 @@
-import React from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import useAuth from "../../../hooks/useAuth";
 import useProfile from "../../../hooks/useProfile";
 import useHome from "../../../hooks/useHome";
 
 export default function useHomeAPI() {
   const axiosPrivate = useAxiosPrivate();
-  const auth = useAuth();
-  const { setAvatarURL, setUser } = useProfile();
+  const { setAvatarURL, setUser, setMyUser } = useProfile();
   const { setUnreadNotifications, setNotifications } = useHome();
 
   const setUserAvatar = async () => {
-    let profileAvatar = await axiosPrivate.post(
-      process.env.REACT_APP_VIEW_PROFILE,
-      {
-        userId: auth.id,
-      }
+    let profileAvatar = await axiosPrivate.get(
+      process.env.REACT_APP_GET_USER_INFORMATION
     );
-    setAvatarURL(profileAvatar?.data?.profileUrl);
-    setUser(profileAvatar?.data);
+    setAvatarURL(profileAvatar?.data?.avatarUrl);
   };
 
   const getUserSkills = async () => {
@@ -45,7 +38,7 @@ export default function useHomeAPI() {
     ]);
   };
 
-  const getTrendigPosts = async () => {
+  const getTrendingPosts = async () => {
     let trendingPosts = await axiosPrivate.get(
       process.env.REACT_APP_TRENDING_POSTS
     );
@@ -88,7 +81,7 @@ export default function useHomeAPI() {
     setUserAvatar,
     getNotifications,
     getCategories,
-    getTrendigPosts,
+    getTrendingPosts,
     getLatestPosts,
     getRewardedPosts,
     getTrendingTags,

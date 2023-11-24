@@ -12,24 +12,36 @@ export default function SearchBar({ accountName, setAccountName, ...props }) {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const handleSearchAccount = async (e) => {
-    if (e.keyCode === 13 && e.shiftKey === false && e.target.value !== "") {
+    if (
+      e.keyCode === 13 &&
+      e.shiftKey === false &&
+      e.target.value.trim() === ""
+    ) {
+      toast.error("Vui lòng nhập tên tài khoản");
+      return;
+    }
+    if (
+      e.keyCode === 13 &&
+      e.shiftKey === false &&
+      e.target.value.trim() !== ""
+    ) {
       try {
         let response = await axiosPrivate.post(
           process.env.REACT_APP_SEARCH_ACCOUNT,
           {
-            search: e.target.value,
+            search: e.target.value.trim(),
           }
         );
         if (response?.data) {
           window.scrollTo(0, 0);
-          navigate(`/accounts/${e.target.value}`);
+          navigate(`/accounts/${e.target.value.trim()}`);
           setUsers(response?.data);
         }
       } catch (error) {
-        if(error?.response?.status === 405){
-          toast.error("Tài khoản của bạn đã bị khóa")
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
           navigate("/login", { replace: true });
-          localStorage.removeItem("auth")
+          localStorage.removeItem("auth");
         }
       }
     }
