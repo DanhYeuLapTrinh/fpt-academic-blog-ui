@@ -21,12 +21,11 @@ export default function HomeService() {
     setTrendingTags,
     qaList,
     setQAList,
-    setNotifications,
     setCategoryList,
   } = useHome();
   const navigate = useNavigate();
   const {
-    getTrendigPosts,
+    getTrendingPosts,
     getCategories,
     getLatestPosts,
     getRewardedPosts,
@@ -37,7 +36,7 @@ export default function HomeService() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const trendingPosts = await getTrendigPosts();
+        const trendingPosts = await getTrendingPosts();
         setTrendingPosts(trendingPosts);
         const categories = await getCategories();
         setCategoryList(categories);

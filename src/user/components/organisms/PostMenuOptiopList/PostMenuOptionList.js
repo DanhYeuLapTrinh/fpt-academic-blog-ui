@@ -38,6 +38,7 @@ export default function PostMenuOptionList({
   const { historyDetail } = usePost();
   const { isAuthor } = usePost();
   const auth = useAuth();
+  const { user } = useProfile();
   const handleClickDelete = () => {
     setIsDelete(true);
   };
@@ -60,6 +61,14 @@ export default function PostMenuOptionList({
             postId: postDetail?.postId,
           }
         );
+        if (postDetail?.rewarder?.length >= 2) {
+          await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
+            content: `đã trao thưởng cho bài viết ${postDetail?.title} của bạn`,
+            relatedId: postDetail?.postId,
+            type: "post",
+            userId: postDetail?.userId,
+          });
+        }
         if (response) {
           setHasPermisson(false);
           props.handleClose();

@@ -48,6 +48,7 @@ export default function ViewAPostService() {
         setPostDetail(postDetails);
         const isFavored = await checkFavoredPost(postDetails?.postId);
         setIsFavored(isFavored);
+        await checkPostVote(postDetails?.postId);
         if (auth?.id !== postDetails?.userId) {
           await checkIsFollowing(postDetails?.userId);
         }
@@ -57,7 +58,6 @@ export default function ViewAPostService() {
         }
         await getUserSkills();
         await getReportReasons();
-        await checkPostVote(postDetails?.postId);
       } catch (error) {
         if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");

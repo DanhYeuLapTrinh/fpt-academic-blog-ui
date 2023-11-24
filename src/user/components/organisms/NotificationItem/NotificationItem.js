@@ -12,7 +12,7 @@ import { Icon } from "@iconify/react";
 export default function NotificationItem({ handleClose, notification }) {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
-  const { setUnreadNotifications } = useHome();
+  const { setUnreadNotifications, notifications, setNotifications } = useHome();
   const readNotification = async () => {
     try {
       handleClose();
@@ -24,6 +24,14 @@ export default function NotificationItem({ handleClose, notification }) {
           (item) => item?.notificationId !== notification?.notificationId
         )
       );
+      let readNotification = notifications?.find(
+        (item) => item?.notificationId === notification?.notificationId
+      );
+      readNotification.read = true;
+      let newNotification = notifications?.filter(
+        (item) => item?.notificationId !== notification?.notificationId
+      );
+      setNotifications([readNotification, ...newNotification]);
     } catch (error) {
       if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
@@ -69,11 +77,46 @@ export default function NotificationItem({ handleClose, notification }) {
               height="50px"
               src={
                 notification?.content?.includes("được duyệt") ||
-                notification?.content?.includes("từ chối")
+                notification?.content?.includes("từ chối") ||
+                notification?.content?.includes("xét thưởng")
                   ? null
                   : notification?.avatarOfTriggerUser
               }
             />
+            {notification?.content?.includes("xét thưởng") && (
+              <IconButton
+                sx={{
+                  bgcolor: "secondary.alt",
+                  position: "absolute",
+                  p: "5px",
+                  bottom: -5,
+                  right: -5,
+                }}
+              >
+                <Icon
+                  icon="material-symbols:rewarded-ads"
+                  color="#5927e5"
+                  width="17"
+                />
+              </IconButton>
+            )}
+            {notification?.content?.includes("trao thưởng") && (
+              <IconButton
+                sx={{
+                  bgcolor: "secondary.alt",
+                  position: "absolute",
+                  p: "5px",
+                  bottom: -5,
+                  right: -5,
+                }}
+              >
+                <Icon
+                  icon="material-symbols:rewarded-ads"
+                  color="#5927e5"
+                  width="17"
+                />
+              </IconButton>
+            )}
             {notification?.content?.includes("được duyệt") && (
               <IconButton
                 sx={{
@@ -101,7 +144,9 @@ export default function NotificationItem({ handleClose, notification }) {
               </IconButton>
             )}
             {!notification?.content?.includes("từ chối") &&
-              !notification?.content?.includes("được duyệt") && (
+              !notification?.content?.includes("được duyệt") &&
+              !notification?.content?.includes("xét thưởng") &&
+              !notification?.content?.includes("trao thưởng") && (
                 <IconButton
                   sx={{
                     bgcolor: "secondary.alt",

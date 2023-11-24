@@ -37,6 +37,12 @@ export default function ViewPendingRewardService() {
           postId: rewardPost?.postId,
         }
       );
+      await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
+        content: `Bài viết của bạn đã đủ điều kiện xét thưởng: ${rewardPost?.title}`,
+        relatedId: rewardPost?.postId,
+        type: "post",
+        userId: rewardPost?.userId,
+      });
       if (response) {
         navigate("/pending-reward", { replace: true });
       }
