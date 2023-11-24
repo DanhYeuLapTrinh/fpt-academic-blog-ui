@@ -67,6 +67,12 @@ export default function ViewPendingPostService() {
           postId: data?.postId,
         });
       }
+      await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
+        content: `Bài viết của bạn đã được duyệt: ${data?.title}`,
+        relatedId: data?.postId,
+        type: "post",
+        userId: data?.userId,
+      });
       window.scrollTo(0, 0);
       navigate("/pending-posts", { replace: true });
     } catch (error) {
@@ -83,6 +89,12 @@ export default function ViewPendingPostService() {
       await axiosPrivate.post(process.env.REACT_APP_DECLINE_POST, {
         postId: data?.postId,
         reasonOfDecline: reason,
+      });
+      await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
+        content: `Bài viết của bạn đã bị từ chối: ${data?.title}`,
+        relatedId: data?.postId,
+        type: "post",
+        userId: data?.userId,
       });
       window.scrollTo(0, 0);
       navigate("/pending-posts", { replace: true });

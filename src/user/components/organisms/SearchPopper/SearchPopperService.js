@@ -1,40 +1,36 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchPopper from "./SearchPopper";
-import usePostTag from "../../../hooks/usePostTag";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import useHome from "../../../hooks/useHome";
 import { toast } from "react-toastify";
+import useHomeAPI from "../../pages/Home";
 
 export default function SearchPopperService() {
   const [inputTitle, setInputTitle] = useState(null);
   const [inputContent, setInputContent] = useState([]);
-  const { setSearchPost, trendingPosts, categoryList, setCategoryList } =
-    useHome();
+  const { setSearchPost, categoryList, setCategoryList } = useHome();
+  const { getCategories } = useHomeAPI();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const categories = await getCategories();
+        setCategoryList(categories);
+      } catch (error) {}
+    };
+    fetchData();
+  }, []);
   const handleClose = (event, reason) => {
     if (reason !== "backdropClick") {
       setOpen(false);
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let response = await axiosPrivate.get(
-          process.env.REACT_APP_GET_CATEGORY
-        );
-        setCategoryList(response?.data);
-      } catch (error) {}
-    };
-    if (trendingPosts) fetchData();
-  }, [trendingPosts]);
-
   const handleSearch = async () => {
     try {
       if (inputTitle === null && inputContent.length === 0) {
@@ -48,10 +44,23 @@ export default function SearchPopperService() {
           listTagsAndCategories: inputContent,
         }
       );
-      setSearchPost(response?.data);
+      setSearchPost([...response?.data?.postList, ...response?.data?.qaList]);
       setOpen(false);
-      navigate("/filter");
-    } catch (error) {}
+      let params = inputContent?.join("-");
+      if (inputTitle === null) {
+        navigate(`/filter?c=${params}`);
+      } else if (inputContent.length === 0) {
+        navigate(`/filter?s=${inputTitle}`);
+      } else {
+        navigate(`/filter?s=${inputTitle}&c=${params}`);
+      }
+    } catch (error) {
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
+        navigate("/login", { replace: true });
+        localStorage.removeItem("auth");
+      }
+    }
   };
   return (
     <SearchPopper

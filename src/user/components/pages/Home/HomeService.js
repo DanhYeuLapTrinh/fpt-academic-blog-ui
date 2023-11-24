@@ -5,9 +5,9 @@ import useHome from "../../../hooks/useHome";
 import useProfile from "../../../hooks/useProfile";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import useHomeAPI from ".";
 
 export default function HomeService() {
-  const axiosPrivate = useAxiosPrivate();
   const {
     latestPosts,
     setLatestPosts,
@@ -15,42 +15,41 @@ export default function HomeService() {
     setTrendingPosts,
     rewardedPosts,
     setRewardedPosts,
-    allPosts,
     shortPosts,
     setShortPosts,
-    setUserAccounts,
     trendingTags,
     setTrendingTags,
     qaList,
     setQAList,
+    setCategoryList,
   } = useHome();
-  const { avatarURL } = useProfile();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const {
+    getTrendingPosts,
+    getCategories,
+    getLatestPosts,
+    getRewardedPosts,
+    getTrendingTags,
+    getShortPosts,
+    getQAList,
+  } = useHomeAPI();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let trendingPosts = await axiosPrivate.get(
-          process.env.REACT_APP_TRENDING_POSTS
-        );
-        setTrendingPosts(trendingPosts?.data?.slice(0, 4));
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    if (avatarURL) fetchData();
-  }, [avatarURL]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let latestPosts = await axiosPrivate.get(
-          process.env.REACT_APP_LATEST_POSTS
-        );
-        setLatestPosts(latestPosts?.data);
+        const trendingPosts = await getTrendingPosts();
+        setTrendingPosts(trendingPosts);
+        const categories = await getCategories();
+        setCategoryList(categories);
+        const latestPosts = await getLatestPosts();
+        setLatestPosts(latestPosts);
+        const rewardedPosts = await getRewardedPosts();
+        setRewardedPosts(rewardedPosts);
+        const trendingTags = await getTrendingTags();
+        setTrendingTags(trendingTags);
+        const shortPosts = await getShortPosts();
+        setShortPosts(shortPosts);
+        const qaList = await getQAList();
+        setQAList(qaList);
       } catch (error) {
         if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
@@ -61,88 +60,6 @@ export default function HomeService() {
     };
     fetchData();
   }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let rewardedPosts = await axiosPrivate.get(
-          process.env.REACT_APP_REWARDED_POSTS
-        );
-        setRewardedPosts(rewardedPosts?.data);
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    if (latestPosts) fetchData();
-  }, [latestPosts]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let trendingTags = await axiosPrivate.get(
-          process.env.REACT_APP_TRENDING_TAGS
-        );
-        setTrendingTags(trendingTags?.data);
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    if (rewardedPosts) fetchData();
-  }, [rewardedPosts]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let shortPosts = await axiosPrivate.get(
-          process.env.REACT_APP_SHORT_POSTS
-        );
-        setShortPosts(shortPosts?.data);
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    if (trendingTags) fetchData();
-  }, [trendingTags]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let qaList = await axiosPrivate.get(process.env.REACT_APP_QA_LIST);
-        setQAList(qaList?.data);
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    if (shortPosts) fetchData();
-  }, [shortPosts]);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       let userAccounts = await axiosPrivate.get(
-  //         process.env.REACT_APP_ACCOUNTS_LIST
-  //       );
-  //       setUserAccounts(userAccounts?.data);
-  //     } catch (error) {}
-  //   };
-  //   if (qaList) fetchData();
-  // }, [qaList]);
 
   return (
     <Home

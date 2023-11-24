@@ -24,7 +24,7 @@ import RewardBadge from "../../../atoms/RewardBadge/RewardBadge";
 import PostMenu from "../../../organisms/PostMenu/PostMenu";
 import UserProfile from "../../../atoms/UserProfile/UserProfile";
 import { Link } from "react-router-dom";
-export default function ViewAPost({ postDetail, ...props }) {
+export default function ViewAPost({ postDetail, handleActions, ...props }) {
   const [open, setOpen] = useState(false);
   const parser = new DOMParser();
   const doc = parser.parseFromString(postDetail?.content, "text/html");
@@ -70,8 +70,7 @@ export default function ViewAPost({ postDetail, ...props }) {
             userId={postDetail?.userId}
             comments={postDetail?.comments?.length}
             isFollowing={props.isFollowing}
-            unfollowAccount={props.unfollowAccount}
-            followAccount={props.followAccount}
+            handleActions={handleActions}
             avatarWidth="45px"
             avatarHeight="45px"
             authorSize="16px"
@@ -109,8 +108,7 @@ export default function ViewAPost({ postDetail, ...props }) {
             userId={postDetail?.userId}
             comments={postDetail?.comments?.length}
             isFollowing={props.isFollowing}
-            unfollowAccount={props.unfollowAccount}
-            followAccount={props.followAccount}
+            handleActions={handleActions}
             avatarWidth="45px"
             avatarHeight="45px"
             authorSize="16px"
@@ -119,7 +117,7 @@ export default function ViewAPost({ postDetail, ...props }) {
             {postDetail?.tag?.tagName !== "Q&A" &&
               (!props.isFavored ? (
                 <Tooltip title="Thêm danh sách yêu thích" placement="top">
-                  <IconButton onClick={props.addToFavorite}>
+                  <IconButton onClick={() => handleActions("save")}>
                     <Icon
                       icon="ion:bookmark-outline"
                       width={"24px"}
@@ -129,7 +127,7 @@ export default function ViewAPost({ postDetail, ...props }) {
                 </Tooltip>
               ) : (
                 <Tooltip title="Xóa khỏi danh sách yêu thích" placement="top">
-                  <IconButton onClick={props.removeFromFavorite}>
+                  <IconButton onClick={() => handleActions("unsave")}>
                     <Icon icon="ion:bookmark" width={"24px"} color="#5927e5" />
                   </IconButton>
                 </Tooltip>
@@ -291,8 +289,7 @@ export default function ViewAPost({ postDetail, ...props }) {
             vote={props.vote}
             select={props.select}
             setSelect={props.setSelect}
-            handleUpvote={props.handleUpvote}
-            handleDownvote={props.handleDownvote}
+            handleActions={handleActions}
           />
           <CommentSectionService comments={postDetail?.comments} />
         </>

@@ -1,45 +1,63 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ViewAPost from "./ViewAPost";
 import { useNavigate, useParams } from "react-router-dom";
-import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import useAuth from "../../../../hooks/useAuth";
 import ViewAPostSkeleton from "../../../organisms/Skeleton/ViewAPostSkeleton/ViewAPostSkeleton";
 import usePost from "../../../../hooks/usePost";
 import { toast } from "react-toastify";
+import usePostAPI from ".";
+import useHomeAPI from "../../Home";
 
 export default function ViewAPostService() {
   const { slug } = useParams();
   const auth = useAuth();
-  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const {
     postDetail,
     setPostDetail,
-    setVoteList,
-    setReportReasons,
+    isFollowing,
     setHistoryDetail,
-    setIsAllowComment,
+    isFavored,
+    vote,
+    select,
+    setSelect,
+    setIsFavored,
   } = usePost();
-  const [isFollowing, setIsFollowing] = useState(false);
-  const [isFavored, setIsFavored] = useState(false);
-  const [vote, setVote] = useState(0);
-  // check xem vote gì trước up down ""
-  const [select, setSelect] = useState("");
-  // check xem đã vote chưa true false
-  const [voted, setVoted] = useState();
+
+  const {
+    getPostDetails,
+    getPostEditHistory,
+    checkPostVote,
+    checkFavoredPost,
+    checkIsFollowing,
+    followAccount,
+    unfollowAccount,
+    addToFavorite,
+    removeFromFavorite,
+    handleUpvote,
+    handleDownvote,
+    getReportReasons,
+  } = usePostAPI();
+  const { getUserSkills } = useHomeAPI();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let response = await axiosPrivate.post(
-          process.env.REACT_APP_VIEW_A_POST,
-          {
-            slug: slug,
-          }
-        );
-        setPostDetail(response?.data);
-        setIsAllowComment(response?.data?.allowComment);
-        setVote(response?.data?.numOfUpVote - response?.data?.numOfDownVote);
+        const postDetails = await getPostDetails(slug);
+        window.scrollTo(0, 0);
+        setPostDetail(postDetails);
+        const isFavored = await checkFavoredPost(postDetails?.postId);
+        setIsFavored(isFavored);
+        await checkPostVote(postDetails?.postId);
+        if (auth?.id !== postDetails?.userId) {
+          await checkIsFollowing(postDetails?.userId);
+        }
+        if (postDetails?.is_edited) {
+          const postEditHistory = await getPostEditHistory(postDetails?.postId);
+          setHistoryDetail(postEditHistory[0]);
+        }
+        await getUserSkills();
+        await getReportReasons();
       } catch (error) {
         if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
@@ -51,285 +69,29 @@ export default function ViewAPostService() {
       }
     };
     fetchData();
-    window.scrollTo(0, 0);
-  }, [slug]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let response = await axiosPrivate.post(
-          process.env.REACT_APP_GET_POST_HISTORY,
-          {
-            postId: postDetail.postId,
-          }
-        );
-        if (response?.data.length > 0) {
-          setHistoryDetail(response?.data[0]);
-        }
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    if (postDetail?.is_edited) {
-      fetchData();
-    } else {
-      setHistoryDetail([]);
-    }
-    return () => setHistoryDetail([]);
-  }, [postDetail?.postId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let response = await axiosPrivate.post(
-          process.env.REACT_APP_CHECK_VOTE,
-          {
-            postId: postDetail?.postId,
-          }
-        );
-        if (response?.data) {
-          setVoteList(response?.data);
-          let item = response?.data.find((x) => x.commentId === null);
-          if (item?.typeOfVote === "up") {
-            setSelect("up");
-            setVoted(true);
-          } else if (item?.typeOfVote === "down") {
-            setSelect("down");
-            setVoted(true);
-          }
-        }
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    fetchData();
-  }, [postDetail?.postId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let favorList = await axiosPrivate.get(
-          process.env.REACT_APP_VIEW_FAVORITE
-        );
-
-        if (favorList) {
-          let isFavored = favorList?.data?.some(
-            (favor) => favor?.postListDto?.postId === postDetail.postId
-          );
-          setIsFavored(isFavored);
-        }
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    if (postDetail) fetchData();
-  }, [postDetail?.postId]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let followersList = await axiosPrivate.post(
-          process.env.REACT_APP_VIEW_FOLLOWERS,
-          {
-            userId: postDetail?.userId,
-          }
-        );
-
-        if (followersList) {
-          let isFollowingUser = followersList?.data?.some(
-            (follower) => follower.id === auth.id
-          );
-          setIsFollowing(isFollowingUser);
-        }
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    if (postDetail && auth.id !== postDetail?.userId) fetchData();
-  }, [postDetail?.postId]);
-
-  const followAccount = async () => {
-    try {
-      let response = await axiosPrivate.post(
-        process.env.REACT_APP_FOLLOW_ACCOUNT,
-        {
-          followedBy: auth?.id,
-          userId: postDetail?.userId,
-        }
-      );
-      if (response) {
-        setIsFollowing(true);
-      }
-    } catch (error) {
-      if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }
-    }
-  };
-
-  const unfollowAccount = async () => {
-    try {
-      let response = await axiosPrivate.post(
-        process.env.REACT_APP_UNFOLLOW_ACCOUNT,
-        {
-          followedBy: auth?.id,
-          userId: postDetail?.userId,
-        }
-      );
-      if (response) {
-        setIsFollowing(false);
-      }
-    } catch (error) {
-      if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }
-    }
-  };
-
-  const addToFavorite = async () => {
-    try {
-      let response = await axiosPrivate.post(
-        process.env.REACT_APP_ADD_TO_FAVORITE,
-        {
-          postId: postDetail?.postId,
-        }
-      );
-      if (response) {
-        setIsFavored(true);
-      }
-    } catch (error) {
-      if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }
-    }
-  };
-
-  const removeFromFavorite = async () => {
-    try {
-      let response = await axiosPrivate.post(
-        process.env.REACT_APP_REMOVE_FROM_FAVORITE,
-        {
-          postId: postDetail?.postId,
-        }
-      );
-      if (response) {
-        setIsFavored(false);
-      }
-    } catch (error) {
-      if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }
-    }
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let response = await axiosPrivate.get(
-          process.env.REACT_APP_REPORT_REASONS
-        );
-        setReportReasons(response?.data);
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    fetchData();
   }, []);
 
-  const handleUpvote = async () => {
+  const handleActions = async (action) => {
     try {
-      if (!voted) {
-        await axiosPrivate.post(process.env.REACT_APP_ADD_VOTE, {
-          postId: postDetail?.postId,
-          typeOfVote: "up",
-        });
-        setSelect("up");
-        setVoted(true);
-        setVote(vote + 1);
-      } else if (select === "up") {
-        await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
-          postId: postDetail?.postId,
-        });
-        setSelect("");
-        setVoted(false);
-        setVote(vote - 1);
-      } else if (select === "down") {
-        await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
-          postId: postDetail?.postId,
-        });
-        await axiosPrivate.post(process.env.REACT_APP_ADD_VOTE, {
-          postId: postDetail?.postId,
-          typeOfVote: "up",
-        });
-        setSelect("up");
-        setVoted(true);
-        setVote(vote + 2);
-      }
-    } catch (error) {
-      if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }
-    }
-  };
-
-  const handleDownvote = async () => {
-    try {
-      if (!voted) {
-        await axiosPrivate.post(process.env.REACT_APP_ADD_VOTE, {
-          postId: postDetail?.postId,
-          typeOfVote: "down",
-        });
-        setSelect("down");
-        setVoted(true);
-        setVote(vote - 1);
-      } else if (select === "down") {
-        await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
-          postId: postDetail?.postId,
-        });
-        setSelect("");
-        setVoted(false);
-        setVote(vote + 1);
-      } else if (select === "up") {
-        await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
-          postId: postDetail?.postId,
-        });
-        await axiosPrivate.post(process.env.REACT_APP_ADD_VOTE, {
-          postId: postDetail?.postId,
-          typeOfVote: "down",
-        });
-        setSelect("down");
-        setVoted(true);
-        setVote(vote - 2);
+      switch (action) {
+        case "follow":
+          await followAccount(auth?.id, postDetail?.userId);
+          break;
+        case "unfollow":
+          await unfollowAccount(auth?.id, postDetail?.userId);
+          break;
+        case "save":
+          await addToFavorite(postDetail?.postId);
+          break;
+        case "unsave":
+          await removeFromFavorite(postDetail?.postId);
+          break;
+        case "upvote":
+          await handleUpvote(postDetail?.postId);
+          break;
+        case "downvote":
+          await handleDownvote(postDetail?.postId);
+          break;
       }
     } catch (error) {
       if (error?.response?.status === 405) {
@@ -346,18 +108,12 @@ export default function ViewAPostService() {
       ) : (
         <ViewAPost
           postDetail={postDetail}
-          auth={auth}
           isFollowing={isFollowing}
-          followAccount={followAccount}
-          unfollowAccount={unfollowAccount}
           isFavored={isFavored}
-          addToFavorite={addToFavorite}
-          removeFromFavorite={removeFromFavorite}
           vote={vote}
           select={select}
           setSelect={setSelect}
-          handleUpvote={handleUpvote}
-          handleDownvote={handleDownvote}
+          handleActions={handleActions}
         />
       )}
     </>

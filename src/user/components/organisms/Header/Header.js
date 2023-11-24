@@ -20,21 +20,21 @@ import Menu from "@mui/material/Menu";
 import useHome from "../../../hooks/useHome";
 import NotificationItem from "../NotificationItem/NotificationItem";
 import { Icon } from "@iconify/react";
+import useHomeAPI from "../../pages/Home";
 
 export default function Header() {
-  const { setAvatarURL, setUser } = useProfile();
   const {
     notifications,
     setNotifications,
     unreadNotifications,
     setUnreadNotifications,
   } = useHome();
+  const { getNotifications, setUserAvatar } = useHomeAPI();
   const [filter, setFilter] = useState("Tất cả");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
   const auth = useAuth();
+  const navigate = useNavigate();
 
   useWebSocket(process.env.REACT_APP_WEBSOCKET_URL + auth.id, {
     onMessage: (newNotification) => {
@@ -42,63 +42,17 @@ export default function Header() {
         (a, b) =>
           new Date(b.notifyTime).getTime() - new Date(a.notifyTime).getTime()
       );
+      let unreadNotifications = updated?.filter((item) => item?.read === false);
+      setUnreadNotifications(unreadNotifications);
       setNotifications(updated);
     },
     shouldReconnect: () => true,
   });
-
-  useEffect(() => {
-    loadNotifications();
-  }, []);
-
-  const handleClick = (event) => {
-    loadNotifications();
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const loadNotifications = async () => {
-    try {
-      let notifications = await axiosPrivate.get(
-        process.env.REACT_APP_VIEW_NOTIFICATION
-      );
-      notifications = notifications?.data?.sort(
-        (a, b) =>
-          new Date(b.notifyTime).getTime() - new Date(a.notifyTime).getTime()
-      );
-      let unreadNotifications = notifications?.filter(
-        (item) => item?.read === false
-      );
-      setUnreadNotifications(unreadNotifications);
-      setNotifications(notifications);
-    } catch (error) {
-      if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }
-    }
-  };
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let profileInfo = await axiosPrivate.post(
-          process.env.REACT_APP_VIEW_PROFILE,
-          {
-            userId: auth.id,
-          }
-        );
-        if (profileInfo?.data) {
-          setAvatarURL(profileInfo?.data?.profileUrl);
-          let skills = await axiosPrivate.get("users/skills");
-          setUser((prevUser) => ({
-            ...prevUser,
-            skills: skills?.data,
-          }));
-        }
+        await getNotifications();
+        await setUserAvatar();
       } catch (error) {
         if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
@@ -109,6 +63,13 @@ export default function Header() {
     };
     fetchData();
   }, []);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Container sx={{ padding: "15px 0" }}>
@@ -126,10 +87,7 @@ export default function Header() {
           <Divider orientation="vertical" sx={{ height: "25px" }} />
           <NavList />
         </Stack>
-        <UserTab
-          handleClick={handleClick}
-          unreadNotifications={unreadNotifications}
-        />
+        <UserTab handleClick={handleClick} />
         <Menu
           anchorEl={anchorEl}
           open={open}
@@ -240,7 +198,14 @@ export default function Header() {
                 }}
                 spacing={1}
               >
-                <Icon icon="el:inbox-box" color="#c3c3c3" width="50" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="50px"
+                  viewBox="0 0 512 512"
+                  fill="#c3c3c3"
+                >
+                  <path d="M121 32C91.6 32 66 52 58.9 80.5L1.9 308.4C.6 313.5 0 318.7 0 323.9V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V323.9c0-5.2-.6-10.4-1.9-15.5l-57-227.9C446 52 420.4 32 391 32H121zm0 64H391l48 192H387.8c-12.1 0-23.2 6.8-28.6 17.7l-14.3 28.6c-5.4 10.8-16.5 17.7-28.6 17.7H195.8c-12.1 0-23.2-6.8-28.6-17.7l-14.3-28.6c-5.4-10.8-16.5-17.7-28.6-17.7H73L121 96z" />
+                </svg>
                 <Text color="lightText.main" fontWeight="400" fontSize="14px">
                   Chưa có thông báo mới
                 </Text>
@@ -255,7 +220,14 @@ export default function Header() {
                 }}
                 spacing={1}
               >
-                <Icon icon="el:inbox-box" color="#c3c3c3" width="50" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="50px"
+                  viewBox="0 0 512 512"
+                  fill="#c3c3c3"
+                >
+                  <path d="M121 32C91.6 32 66 52 58.9 80.5L1.9 308.4C.6 313.5 0 318.7 0 323.9V416c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V323.9c0-5.2-.6-10.4-1.9-15.5l-57-227.9C446 52 420.4 32 391 32H121zm0 64H391l48 192H387.8c-12.1 0-23.2 6.8-28.6 17.7l-14.3 28.6c-5.4 10.8-16.5 17.7-28.6 17.7H195.8c-12.1 0-23.2-6.8-28.6-17.7l-14.3-28.6c-5.4-10.8-16.5-17.7-28.6-17.7H73L121 96z" />
+                </svg>
                 <Text color="lightText.main" fontWeight="400" fontSize="14px">
                   Bạn đã đọc hết thông báo
                 </Text>

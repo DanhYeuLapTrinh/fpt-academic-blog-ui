@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, IconButton, Stack } from "@mui/material";
 import React from "react";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import Text from "../../atoms/Text/Text";
@@ -8,10 +8,11 @@ import { Link, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
 import useHome from "../../../hooks/useHome";
+import { Icon } from "@iconify/react";
 export default function NotificationItem({ handleClose, notification }) {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
-  const { setUnreadNotifications } = useHome();
+  const { setUnreadNotifications, notifications, setNotifications } = useHome();
   const readNotification = async () => {
     try {
       handleClose();
@@ -23,6 +24,14 @@ export default function NotificationItem({ handleClose, notification }) {
           (item) => item?.notificationId !== notification?.notificationId
         )
       );
+      let readNotification = notifications?.find(
+        (item) => item?.notificationId === notification?.notificationId
+      );
+      readNotification.read = true;
+      let newNotification = notifications?.filter(
+        (item) => item?.notificationId !== notification?.notificationId
+      );
+      setNotifications([readNotification, ...newNotification]);
     } catch (error) {
       if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
@@ -31,9 +40,14 @@ export default function NotificationItem({ handleClose, notification }) {
       }
     }
   };
+
   return (
     <Link
-      to={`/view/${notification?.relatedUrl}`}
+      to={
+        notification?.content?.includes("từ chối")
+          ? `/edit-draft/${notification?.relatedUrl}`
+          : `/view/${notification?.relatedUrl}`
+      }
       style={{ textDecoration: "none" }}
       onClick={readNotification}
     >
@@ -44,18 +58,117 @@ export default function NotificationItem({ handleClose, notification }) {
         spacing={"12px"}
         bgcolor={!notification?.read ? "secondary.alt" : "secondary.main"}
       >
-        <Stack direction={"row"} flex={1} alignItems={"center"} spacing={1}>
-          <UserProfile
-            width="50px"
-            height="50px"
-            src={notification?.avatarOfTriggerUser}
-          />
-        </Stack>
+        <Link
+          to={
+            !notification?.content?.includes("được duyệt") &&
+            !notification?.content?.includes("từ chối") &&
+            `/profile/${notification?.triggerUser}`
+          }
+        >
+          <Stack
+            direction={"row"}
+            flex={1}
+            alignItems={"center"}
+            spacing={1}
+            sx={{ position: "relative" }}
+          >
+            <UserProfile
+              width="50px"
+              height="50px"
+              src={
+                notification?.content?.includes("được duyệt") ||
+                notification?.content?.includes("từ chối") ||
+                notification?.content?.includes("xét thưởng")
+                  ? null
+                  : notification?.avatarOfTriggerUser
+              }
+            />
+            {notification?.content?.includes("xét thưởng") && (
+              <IconButton
+                sx={{
+                  bgcolor: "secondary.alt",
+                  position: "absolute",
+                  p: "5px",
+                  bottom: -5,
+                  right: -5,
+                }}
+              >
+                <Icon
+                  icon="material-symbols:rewarded-ads"
+                  color="#5927e5"
+                  width="17"
+                />
+              </IconButton>
+            )}
+            {notification?.content?.includes("trao thưởng") && (
+              <IconButton
+                sx={{
+                  bgcolor: "secondary.alt",
+                  position: "absolute",
+                  p: "5px",
+                  bottom: -5,
+                  right: -5,
+                }}
+              >
+                <Icon
+                  icon="material-symbols:rewarded-ads"
+                  color="#5927e5"
+                  width="17"
+                />
+              </IconButton>
+            )}
+            {notification?.content?.includes("được duyệt") && (
+              <IconButton
+                sx={{
+                  bgcolor: "secondary.alt",
+                  position: "absolute",
+                  p: "5px",
+                  bottom: -5,
+                  right: -5,
+                }}
+              >
+                <Icon icon="mdi:check-bold" color="#5927e5" width="14" />
+              </IconButton>
+            )}
+            {notification?.content?.includes("từ chối") && (
+              <IconButton
+                sx={{
+                  bgcolor: "secondary.alt",
+                  position: "absolute",
+                  p: "5px",
+                  bottom: -5,
+                  right: -5,
+                }}
+              >
+                <Icon icon="ph:x-fill" color="red" width="16" />
+              </IconButton>
+            )}
+            {!notification?.content?.includes("từ chối") &&
+              !notification?.content?.includes("được duyệt") &&
+              !notification?.content?.includes("xét thưởng") &&
+              !notification?.content?.includes("trao thưởng") && (
+                <IconButton
+                  sx={{
+                    bgcolor: "secondary.alt",
+                    position: "absolute",
+                    p: "5px",
+                    bottom: -5,
+                    right: -5,
+                  }}
+                >
+                  <Icon icon="majesticons:comment" color="#5927e5" width="14" />
+                </IconButton>
+              )}
+          </Stack>
+        </Link>
         <Stack justifyContent={"space-evenly"} height={"64px"} flex={10}>
           <Wrapper WebkitLineClamp="2">
             <Text fontSize="15px" fontWeight="400" lineHeight="20px">
               <span style={{ fontWeight: "500" }}>
-                {notification?.fullNameOfTriggerUser}
+                {notification?.content?.includes("được duyệt") ||
+                notification?.content?.includes("từ chối")
+                  ? ""
+                  : notification?.fullNameOfTriggerUser}
               </span>{" "}
               {notification?.content}
             </Text>

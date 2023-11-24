@@ -90,6 +90,9 @@ export default function ViewProfile({ removePost, ...props }) {
                 {props?.userId === auth.id && (
                   <Tooltip title="Đổi ảnh đại diện" placement="right">
                     <IconButton
+                      disableFocusRipple
+                      disableTouchRipple
+                      disableRipple
                       sx={{
                         position: "absolute",
                         bottom: "-10px",
@@ -116,7 +119,9 @@ export default function ViewProfile({ removePost, ...props }) {
               >
                 <Text fontSize="12px" fontWeight="400">
                   Bài đã đăng:{" "}
-                  <span style={{ fontWeight: "600" }}>{props?.numOfPost}</span>
+                  <span style={{ fontWeight: "600" }}>
+                    {props?.user?.numOfPost}
+                  </span>
                 </Text>
                 <Text fontSize="24px" lineHeight="20px" color="text.main">
                   &middot;
@@ -197,7 +202,7 @@ export default function ViewProfile({ removePost, ...props }) {
                   userStory={props?.userStory}
                 />
               </Box>
-              {props?.user?.skills?.length > 0 && (
+              {props?.user?.badges?.length > 0 && (
                 <Box
                   sx={{
                     width: "320px",

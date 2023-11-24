@@ -1,34 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import EditProfile from './EditProfile'
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
-import useAuth from '../../../hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import EditProfile from "./EditProfile";
+import useProfile from "../../../hooks/useProfile";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function EditProfileService() {
+  const { myUser, setMyUser } = useProfile();
+  const [updatedName, setUpdatedName] = useState();
+  const [updatedEmail, setUpdatedEmail] = useState();
   const axiosPrivate = useAxiosPrivate();
-  const [profile, setProfile] = useState({});
-  const navigate = useNavigate()
-  const auth = useAuth()
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let profileInfo = await axiosPrivate.post(
-          process.env.REACT_APP_VIEW_PROFILE,
-          {
-            userId: auth.id,
-          }
+        let userInfo = await axiosPrivate.get(
+          process.env.REACT_APP_GET_USER_INFORMATION
         );
-        setProfile(profileInfo?.data);
-      } catch (error) {if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }}
+        setMyUser(userInfo?.data);
+        setUpdatedName(userInfo?.data?.fullName);
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, []);
-  return (
-    <EditProfile profile={profile}/>
-  )
+  return <EditProfile profile={myUser} updatedName={updatedName} />;
 }

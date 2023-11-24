@@ -13,7 +13,7 @@ export default function HomeProvider({ children }) {
   const [isLoading, setIsLoading] = useState(false);
   const [accountList, setAccountList] = useState([]);
   const [accountName, setAccountName] = useState("");
-  const [searchPost, setSearchPost] = useState("");
+  const [searchPost, setSearchPost] = useState([]);
   const [users, setUsers] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [notifications, setNotifications] = useState([]);

@@ -26,28 +26,7 @@ export default function CommentBar({
       !props.reply && setText("");
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let profileInfo = await axiosPrivate.post(
-          process.env.REACT_APP_VIEW_PROFILE,
-          {
-            userId: auth.id,
-          }
-        );
-        if (profileInfo) {
-          setAvatarURL(profileInfo?.data?.profileUrl);
-        }
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    fetchData();
-  }, [avatarURL]);
+  
   return (
     <Stack
       spacing={2}
