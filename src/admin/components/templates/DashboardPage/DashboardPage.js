@@ -102,14 +102,18 @@ function DashboardPage() {
 
         <Grid item xs={12} sm={6} md={6}>
           {loadingBox ? (
-            <CustomNoRowsOverlay />
+            <CustomNoRowsOverlay title="Đang tải dữ liệu" />
           ) : (
             <SimpleCharts totalVisit={data.total_visit} />
           )}
         </Grid>
 
         <Grid item xs={12} sm={6} md={6}>
-          {loadingBox ? <CustomNoRowsOverlay /> : <ActivityLogService />}
+          {loadingBox ? (
+            <CustomNoRowsOverlay title="Đang tải dữ liệu" />
+          ) : (
+            <ActivityLogService />
+          )}
         </Grid>
       </Grid>
     </Container>

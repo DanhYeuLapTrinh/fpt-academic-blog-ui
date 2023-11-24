@@ -82,7 +82,7 @@ function ViewCategoriesList({
                 <>
                   <EditIcon
                     onClick={() => openEditCategoryModal(category)}
-                    sx={{ cursor: "pointer", color: "#357a38" }}
+                    sx={{ cursor: "pointer", color: "primary.main" }}
                   />
                   <DeleteIcon
                     onClick={() => openDeleteModal(category)}
@@ -152,10 +152,16 @@ function ViewCategoriesList({
                     sx={{ flexGrow: 1 }}
                   />
                   {selectedRadioSubject === subject.id && (
-                    <DeleteIcon
-                      onClick={() => openDeleteSubjectModal(subject)}
-                      sx={{ cursor: "pointer", color: "error.main" }}
-                    />
+                    <>
+                      <EditIcon
+                        onClick={() => openEditCategoryModal(subject)}
+                        sx={{ cursor: "pointer", color: "primary.main" }}
+                      />
+                      <DeleteIcon
+                        onClick={() => openDeleteSubjectModal(subject)}
+                        sx={{ cursor: "pointer", color: "error.main" }}
+                      />
+                    </>
                   )}
                 </ListItem>
               ))}
