@@ -5,7 +5,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Text from "../../atoms/Text/Text";
-
+import styles from "./Styles.module.scss";
 export default function AutocompleteSearchObj({
   categoryList,
   setInputContent,

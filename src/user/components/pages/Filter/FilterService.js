@@ -4,11 +4,13 @@ import useHome from "../../../hooks/useHome";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import usePost from "../../../hooks/usePost";
 
 export default function FilterService() {
   const { setSearchPost, accountName, setAccountName } = useHome();
   const axiosPrivate = useAxiosPrivate();
   const [searchParams] = useSearchParams();
+  const { setInputTitle, setInputContent, setInputKeywords } = usePost();
   const navigate = useNavigate();
   let s = searchParams.get("s") || null;
   let c = searchParams.get("c")?.split("-") || [];
@@ -23,6 +25,9 @@ export default function FilterService() {
         }
       );
       setSearchPost([...response?.data?.postList, ...response?.data?.qaList]);
+      setInputTitle(null);
+      setInputContent([]);
+      setInputKeywords([]);
     } catch (error) {
       if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
@@ -35,6 +40,6 @@ export default function FilterService() {
     window.scrollTo(0, 0);
     fetchData();
   }, [searchParams]);
-  
+
   return <Filter accountName={accountName} setAccountName={setAccountName} />;
 }

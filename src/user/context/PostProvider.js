@@ -16,6 +16,9 @@ export default function PostProvider({ children }) {
   const [select, setSelect] = useState("");
   // check xem đã vote chưa true false
   const [voted, setVoted] = useState();
+  const [inputTitle, setInputTitle] = useState(null);
+  const [inputContent, setInputContent] = useState([]);
+  const [inputKeywords, setInputKeywords] = useState([]);
   return (
     <PostContext.Provider
       value={{
@@ -45,6 +48,12 @@ export default function PostProvider({ children }) {
         setSelect,
         voted,
         setVoted,
+        inputTitle,
+        setInputTitle,
+        inputContent,
+        setInputContent,
+        inputKeywords,
+        setInputKeywords,
       }}
     >
       {children}

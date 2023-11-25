@@ -19,7 +19,6 @@ import Text from "../../atoms/Text/Text";
 import { Link, useNavigate } from "react-router-dom";
 import usePost from "../../../hooks/usePost";
 import ViewAPost from "../../pages/ViewAPost/ViewAPost/ViewAPost";
-import useProfile from "../../../hooks/useProfile";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
 import useAuth from "../../../hooks/useAuth";
@@ -38,7 +37,6 @@ export default function PostMenuOptionList({
   const { historyDetail } = usePost();
   const { isAuthor } = usePost();
   const auth = useAuth();
-  const { user } = useProfile();
   const handleClickDelete = () => {
     setIsDelete(true);
   };

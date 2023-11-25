@@ -53,7 +53,7 @@ export default function ProfilePost({ removePost, ...props }) {
   return (
     <Stack direction={"row"} gap={"20px"}>
       <Link to={props.link} style={{ textDecoration: "none" }}>
-        <Box  
+        <Box
           sx={{
             width: "241px",
             height: "149px",

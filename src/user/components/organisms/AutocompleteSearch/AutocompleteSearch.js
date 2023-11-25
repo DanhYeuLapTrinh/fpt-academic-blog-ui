@@ -5,6 +5,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Text from "../../atoms/Text/Text";
+import styles from "./Styles.module.scss";
 export default function AutocompleteSearch({ categoryList, setInputContent }) {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
@@ -14,6 +15,7 @@ export default function AutocompleteSearch({ categoryList, setInputContent }) {
       options={categoryList}
       disableCloseOnSelect
       fullWidth
+      className={styles.chip}
       getOptionLabel={(option) => option}
       renderOption={(props, option, { selected }) => (
         <Text {...props}>
