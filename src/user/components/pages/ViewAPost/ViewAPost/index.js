@@ -12,12 +12,14 @@ export default function usePostAPI() {
     setIsAllowComment,
     setIsFollowing,
     setIsFavored,
-    setVote,
     setSelect,
     setVoted,
     voted,
+    upvote,
+    downvote,
     select,
-    vote,
+    setUpVote,
+    setDownVote,
     setReportReasons,
   } = usePost();
   const getPostDetails = async (slug) => {
@@ -28,7 +30,8 @@ export default function usePostAPI() {
       }
     );
     setIsAllowComment(postDetails?.data?.allowComment);
-    setVote(postDetails?.data?.numOfUpVote - postDetails?.data?.numOfDownVote);
+    setUpVote(postDetails?.data?.numOfUpVote);
+    setDownVote(postDetails?.data?.numOfDownVote);
     return postDetails?.data;
   };
 
@@ -136,14 +139,14 @@ export default function usePostAPI() {
       });
       setSelect("up");
       setVoted(true);
-      setVote(vote + 1);
+      setUpVote(upvote + 1);
     } else if (select === "up") {
       await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
         postId: postId,
       });
       setSelect("");
       setVoted(false);
-      setVote(vote - 1);
+      setUpVote(upvote - 1);
     } else if (select === "down") {
       await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
         postId: postId,
@@ -154,7 +157,8 @@ export default function usePostAPI() {
       });
       setSelect("up");
       setVoted(true);
-      setVote(vote + 2);
+      setDownVote(downvote - 1);
+      setUpVote(upvote + 1);
     }
   };
 
@@ -166,14 +170,14 @@ export default function usePostAPI() {
       });
       setSelect("down");
       setVoted(true);
-      setVote(vote - 1);
+      setDownVote(downvote + 1);
     } else if (select === "down") {
       await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
         postId: postDetail?.postId,
       });
       setSelect("");
       setVoted(false);
-      setVote(vote + 1);
+      setDownVote(downvote - 1);
     } else if (select === "up") {
       await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
         postId: postDetail?.postId,
@@ -184,7 +188,8 @@ export default function usePostAPI() {
       });
       setSelect("down");
       setVoted(true);
-      setVote(vote - 2);
+      setDownVote(downvote + 1);
+      setUpVote(upvote - 1);
     }
   };
 

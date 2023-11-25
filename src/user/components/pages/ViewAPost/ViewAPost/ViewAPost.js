@@ -4,9 +4,8 @@ import Text from "../../../atoms/Text/Text";
 import {
   Box,
   Chip,
-Container,
+  Container,
   Dialog,
-  DialogActions,
   DialogContent,
   Divider,
   IconButton,
@@ -79,16 +78,18 @@ export default function ViewAPost({ postDetail, handleActions, ...props }) {
           <Stack direction={"row"} alignItems={"center"} spacing={1}>
             {postDetail?.postSkill?.map((item) => (
               <Text>
-                <Chip
-                  label={item.skillName}
-                  sx={{
-                    minWidth: "50px",
-                    borderRadius: "5px",
-                    color: "secondary.main",
-                    bgcolor: "primary.main",
-                    fontSize: "16px",
-                  }}
-                />
+                <Link to={`/keywords/${item.skillName}`}>
+                  <Chip
+                    label={item.skillName}
+                    sx={{
+                      minWidth: "50px",
+                      borderRadius: "5px",
+                      color: "secondary.main",
+                      bgcolor: "primary.main",
+                      fontSize: "16px",
+                    }}
+                  />
+                </Link>
               </Text>
             ))}
           </Stack>
@@ -269,16 +270,22 @@ export default function ViewAPost({ postDetail, handleActions, ...props }) {
         >
           {postDetail?.postSkill?.map((item) => (
             <Text>
-              <Chip
-                label={item.skillName}
-                sx={{
-                  minWidth: "50px",
-                  borderRadius: "5px",
-                  color: "secondary.main",
-                  bgcolor: "primary.main",
-                  fontSize: "16px",
-                }}
-              />
+              <Link
+                to={`/keywords/${
+                  item.skillName !== "C#" ? item.skillName : "c-sharp"
+                }`}
+              >
+                <Chip
+                  label={item.skillName}
+                  sx={{
+                    minWidth: "50px",
+                    borderRadius: "5px",
+                    color: "secondary.main",
+                    bgcolor: "primary.main",
+                    fontSize: "16px",
+                  }}
+                />
+              </Link>
             </Text>
           ))}
         </Stack>
@@ -286,7 +293,7 @@ export default function ViewAPost({ postDetail, handleActions, ...props }) {
       {!props.previewHistory && (
         <>
           <PostInteractionService
-            vote={props.vote}
+            upvote={props.upvote}
             select={props.select}
             setSelect={props.setSelect}
             handleActions={handleActions}

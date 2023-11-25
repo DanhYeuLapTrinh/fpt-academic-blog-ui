@@ -16,6 +16,10 @@ export default function NotificationItem({ handleClose, notification }) {
   const readNotification = async () => {
     try {
       handleClose();
+      let readNotification = notifications?.find(
+        (item) => item?.notificationId === notification?.notificationId
+      );
+      if (readNotification?.read) return;
       await axiosPrivate.post(process.env.REACT_APP_READ_NOTIFICATION, {
         notificationId: notification?.notificationId,
       });
@@ -24,14 +28,17 @@ export default function NotificationItem({ handleClose, notification }) {
           (item) => item?.notificationId !== notification?.notificationId
         )
       );
-      let readNotification = notifications?.find(
-        (item) => item?.notificationId === notification?.notificationId
-      );
+
       readNotification.read = true;
       let newNotification = notifications?.filter(
         (item) => item?.notificationId !== notification?.notificationId
       );
-      setNotifications([readNotification, ...newNotification]);
+      setNotifications(
+        [readNotification, ...newNotification]?.sort(
+          (a, b) => (a, b) =>
+            new Date(b.notifyTime).getTime() - new Date(a.notifyTime).getTime()
+        )
+      );
     } catch (error) {
       if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
