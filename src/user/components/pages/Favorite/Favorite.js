@@ -2,11 +2,17 @@ import { Container, Stack } from "@mui/material";
 import React from "react";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
+import EmptyDisplay from "../../molecules/EmptyDisplay/EmptyDisplay";
 
 export default function Favorite({ favorite }) {
   return (
     <Container sx={{ pt: "37px", minHeight: "calc(120vh - 93px)" }}>
       <SectionTitle title="Mục yêu thích" />
+      {favorite?.length === 0 && (
+        <Stack>
+          <EmptyDisplay alignSelf="center" mt="140px" />
+        </Stack>
+      )}
       <Stack spacing={"20px"}>
         {favorite?.map((item) => (
           <RewardedPostsUnder

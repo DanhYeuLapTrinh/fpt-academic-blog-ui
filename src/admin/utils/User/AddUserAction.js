@@ -4,7 +4,13 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { useFormik } from "formik";
 import Button from "@mui/material/Button";
 import { addUserSchema } from "../../components/atoms/AddUserValidation";
@@ -35,6 +41,7 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
     email: "",
     phone: "",
     role: "",
+    majorID: "",
   };
 
   const formik = useFormik({
@@ -45,6 +52,7 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
       email: "",
       phone: "",
       role: "",
+      majorID: "",
     },
     validationSchema: addUserSchema,
 
@@ -201,9 +209,9 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
               formik.handleChange(e);
               setSelectedRole(e.target.value);
             }}
+            onBlur={formik.handleBlur}
             value={formik.values.role}
-            error={formik.errors.role}
-            helpertext={formik.errors.role}
+            error={formik.touched.role && !!formik.errors.role}
           >
             <MenuItem value="">
               <em>Chọn vai trò</em>
@@ -212,6 +220,9 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
             <MenuItem value="mentor">mentor</MenuItem>
             <MenuItem value="student">student</MenuItem>
           </Select>
+          {formik.touched.role && formik.errors.role ? (
+            <FormHelperText error>{formik.errors.role}</FormHelperText>
+          ) : null}
         </FormControl>
 
         <FormControl required fullWidth sx={{ paddingTop: "5px" }}>
@@ -232,6 +243,9 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
               </MenuItem>
             ))}
           </Select>
+          {formik.touched.majorID && formik.errors.majorID ? (
+            <FormHelperText error>{formik.errors.majorID}</FormHelperText>
+          ) : null}
         </FormControl>
       </DialogContent>
       <DialogActions style={{ paddingTop: "10px" }}>

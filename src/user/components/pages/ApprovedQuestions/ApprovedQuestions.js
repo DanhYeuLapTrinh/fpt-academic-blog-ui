@@ -1,11 +1,17 @@
-import { Stack } from '@mui/material'
-import React from 'react'
-import QA from '../../organisms/QA/QA'
-import { timeConverter } from '../../../utils/StringMethod'
+import { Stack } from "@mui/material";
+import React from "react";
+import QA from "../../organisms/QA/QA";
+import { timeConverter } from "../../../utils/StringMethod";
+import EmptyDisplay from "../../molecules/EmptyDisplay/EmptyDisplay";
 
 export default function ApprovedQuestions(props) {
   return (
     <Stack p={"20px 0"} spacing={2}>
+      {props?.approvedQ?.length === 0 && (
+        <Stack>
+          <EmptyDisplay alignSelf="center" mt="140px" />
+        </Stack>
+      )}
       {props?.approvedQ?.map((item) => (
         <QA
           key={item.postId}
@@ -27,5 +33,5 @@ export default function ApprovedQuestions(props) {
         />
       ))}
     </Stack>
-  )
+  );
 }

@@ -143,18 +143,22 @@ function UserResultList() {
       .then((response) => {
         if (response.status === 200) {
           toast.success("Thêm mới người dùng thành công");
+
+          const newData = [...data, userData];
+          const newRecords = [...records, userData];
+
+          setData(newData);
+          setRecords(newRecords);
         }
-        const newData = [...data, userData];
-
-        const newRecords = [...records, userData];
-
-        setData(newData);
-        setRecords(newRecords);
       })
       .catch((error) => {
         console.error("Lỗi khi thêm mới người dùng:", error);
-        if (error.response.status === 401) {
-          toast.error("Hãy điền đầy đủ thông tin");
+        if (error.response && error.response.status === 401) {
+          if (error.response.data.message === "Mail exist") {
+            toast.error("Email đã tồn tại");
+          } else {
+            toast.error("Hãy điền đầy đủ thông tin");
+          }
         }
       });
   };
@@ -505,7 +509,8 @@ function UserResultList() {
               },
             }}
             slots={{
-              noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+              noRowsOverlay: () =>
+                noRows && <CustomNoRowsOverlay title="Không có dữ liệu" />,
               loadingOverlay: () => loading && <LinearProgress />,
             }}
             rows={allUsers}

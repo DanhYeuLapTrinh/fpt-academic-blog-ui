@@ -173,7 +173,8 @@ function ReportedComment() {
           },
         }}
         slots={{
-          noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
+          noRowsOverlay: () =>
+            noRows && <CustomNoRowsOverlay title="Không có dữ liệu" />,
           loadingOverlay: () => loading && <LinearProgress />,
         }}
         getRowId={(row) => row.reportId}
