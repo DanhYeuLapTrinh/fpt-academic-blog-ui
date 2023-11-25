@@ -5,11 +5,17 @@ import { useNavigate } from "react-router-dom";
 import useHome from "../../../hooks/useHome";
 import { toast } from "react-toastify";
 import useHomeAPI from "../../pages/Home";
+import usePost from "../../../hooks/usePost";
 
 export default function SearchPopperService() {
-  const [inputTitle, setInputTitle] = useState(null);
-  const [inputContent, setInputContent] = useState([]);
-  const [inputKeywords, setInputKeywords] = useState([]);
+  const {
+    inputTitle,
+    setInputTitle,
+    inputContent,
+    setInputContent,
+    inputKeywords,
+    setInputKeywords,
+  } = usePost();
   const {
     setSearchPost,
     categoryList,
@@ -17,8 +23,6 @@ export default function SearchPopperService() {
     setKeywords,
     keywords,
   } = useHome();
-  console.log(inputContent);
-  console.log(inputKeywords);
   const { getCategories, getKeywords } = useHomeAPI();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();

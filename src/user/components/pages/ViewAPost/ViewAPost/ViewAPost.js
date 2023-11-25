@@ -4,7 +4,7 @@ import Text from "../../../atoms/Text/Text";
 import {
   Box,
   Chip,
-  Container,
+Container,
   Dialog,
   DialogActions,
   DialogContent,
