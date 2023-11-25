@@ -1,10 +1,16 @@
 import { Stack } from "@mui/material";
 import React from "react";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
+import EmptyDisplay from "../../molecules/EmptyDisplay/EmptyDisplay";
 
 export default function ApprovedPost(props) {
   return (
     <Stack p={"20px 0"} spacing={"20px"} mb={"300px"}>
+      {props?.approvedPosts?.length === 0 && (
+        <Stack>
+          <EmptyDisplay alignSelf="center" mt="140px" />
+        </Stack>
+      )}
       {props?.approvedPosts?.map((item) => (
         <RewardedPostsUnder
           key={item.postId}

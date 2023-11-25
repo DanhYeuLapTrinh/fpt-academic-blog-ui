@@ -2,6 +2,7 @@ import { Container, Stack } from "@mui/material";
 import React from "react";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
+import EmptyDisplay from "../../molecules/EmptyDisplay/EmptyDisplay";
 export default function PendingReward({ pendingReward }) {
   let sortedPendingReward = pendingReward?.sort(
     (a, b) =>
@@ -10,6 +11,11 @@ export default function PendingReward({ pendingReward }) {
   return (
     <Container sx={{ mt: "30px", minHeight: "calc(100vh - 93px - 30px)" }}>
       <SectionTitle title="Danh sách chờ xét thưởng" />
+      {sortedPendingReward?.length === 0 && (
+        <Stack>
+          <EmptyDisplay alignSelf="center" mt="140px" />
+        </Stack>
+      )}
       <Stack spacing={"20px"} mb={"300px"}>
         {sortedPendingReward?.map((item) => (
           <RewardedPostsUnder
