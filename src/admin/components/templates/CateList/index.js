@@ -7,7 +7,7 @@ import DeleteSpecPopup from "../../molecules/Category/DeleteSpecPopup";
 import DeleteSubjectPopup from "../../molecules/Category/DeleteSubjectPopup";
 import { toast } from "react-toastify";
 import EditCategoryModal from "../../../utils/Categories/EditCategory/EditCategory";
-
+import { useCategoriesContext } from "../../../context/CategoriesContext";
 import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
 
@@ -17,27 +17,37 @@ import { Card } from "@mui/material";
 function CateList() {
   const axiosPrivate = useAxiosPrivate();
 
-  const [categories, setCategories] = useState([]);
-  const [majors, setMajors] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSemester, setSelectedSemester] = useState(null);
-  const [selectedSubject, setSelectedSubject] = useState(null);
-
-  const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
-
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState(null);
-  const [isDeleteSubjectModalOpen, setIsDeleteSubjectModalOpen] =
-    useState(false);
-  const [subjectToDelete, setSubjectToDelete] = useState(null);
-
-  const [selectedRadioCategory, setSelectedRadioCategory] = useState(null);
-  const [selectedRadioSubject, setSelectedRadioSubject] = useState(null);
-
-  const [isEditCategoryModalOpen, setIsEditCategoryModalOpen] = useState(false);
-  const [categoryToEdit, setCategoryToEdit] = useState(null);
-
-  const [categoryStatusChanged, setCategoryStatusChanged] = useState(false);
+  const {
+    categories,
+    setCategories,
+    setMajors,
+    selectedCategory,
+    setSelectedCategory,
+    selectedSemester,
+    setSelectedSemester,
+    selectedSubject,
+    setSelectedSubject,
+    isAddCategoryModalOpen,
+    setIsAddCategoryModalOpen,
+    isDeleteModalOpen,
+    setIsDeleteModalOpen,
+    categoryToDelete,
+    setCategoryToDelete,
+    isDeleteSubjectModalOpen,
+    setIsDeleteSubjectModalOpen,
+    subjectToDelete,
+    setSubjectToDelete,
+    selectedRadioCategory,
+    setSelectedRadioCategory,
+    selectedRadioSubject,
+    setSelectedRadioSubject,
+    isEditCategoryModalOpen,
+    setIsEditCategoryModalOpen,
+    categoryToEdit,
+    setCategoryToEdit,
+    categoryStatusChanged,
+    setCategoryStatusChanged,
+  } = useCategoriesContext();
 
   //-----------------------------------------------------------------------------------
 

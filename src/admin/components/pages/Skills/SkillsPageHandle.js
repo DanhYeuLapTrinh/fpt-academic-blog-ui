@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import TitleHeader from "../../atoms/TitleHeader/TitleHeader";
-import { Chip, Box, Typography } from "@mui/material";
+import { Chip, Box } from "@mui/material";
 import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import AddSkillForm from "../../molecules/Skills/AddSkillForm";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import ConfirmDialog from "../../molecules/ReportedComment/ConfirmDialog";
 import { toast } from "react-toastify";
+import { useSkillsContext } from "../../../context/SkillsContext";
 import {
   skillsContainer,
   skillItem,
@@ -18,15 +19,18 @@ import {
 const SkillsPage = ({ skillsData, setSkillsData, fetchData }) => {
   const axiosPrivate = useAxiosPrivate();
 
-  const [open, setOpen] = useState(false);
-
-  const [idToDelete, setIdToDelete] = useState(null);
-
-  const [newSkillName, setNewSkillName] = useState("");
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const {
+    open,
+    setOpen,
+    idToDelete,
+    setIdToDelete,
+    newSkillName,
+    setNewSkillName,
+    errorMessage,
+    setErrorMessage,
+    deleteDialogOpen,
+    setDeleteDialogOpen,
+  } = useSkillsContext();
 
   const handleClickOpen = () => {
     setOpen(true);

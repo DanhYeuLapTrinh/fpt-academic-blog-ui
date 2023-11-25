@@ -6,7 +6,7 @@ import BanUnbanUser from "../../../utils/User/BanUnbanAction/BanUnbanAction";
 import { Link } from "react-router-dom";
 import { Button, Grid } from "@mui/material";
 
-function UserList({
+function UserListTable({
   loading,
   noRows,
   users,
@@ -57,4 +57,4 @@ function UserList({
   );
 }
 
-export default UserList;
+export default UserListTable;

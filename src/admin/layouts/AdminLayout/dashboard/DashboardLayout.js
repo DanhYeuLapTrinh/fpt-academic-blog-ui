@@ -9,6 +9,9 @@ import ThemeProvider from "../../../components/theme";
 import { NewsProvider } from "../../../context/NewsContext";
 import { UserProvider } from "../../../context/UserContext";
 import { ReportedProfileProvider } from "../../../context/ReportedProfileContext";
+import { TagsProvider } from "../../../context/TagsContext";
+import { CategoriesProvider } from "../../../context/CategoriesContext";
+import { SkillsProvider } from "../../../context/SkillsContext";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import enGB from "date-fns/locale/en-GB";
@@ -41,21 +44,27 @@ export default function AdminLayout() {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
       <UserProvider>
-        <ReportedProfileProvider>
-          <NewsProvider>
-            <ThemeProvider>
-              <StyledRoot>
-                <Header onOpenNav={() => setOpen(true)} />
+        <CategoriesProvider>
+          <TagsProvider>
+            <ReportedProfileProvider>
+              <NewsProvider>
+                <SkillsProvider>
+                  <ThemeProvider>
+                    <StyledRoot>
+                      <Header onOpenNav={() => setOpen(true)} />
 
-                <Nav openNav={open} onCloseNav={() => setOpen(false)} />
+                      <Nav openNav={open} onCloseNav={() => setOpen(false)} />
 
-                <Main>
-                  <Outlet />
-                </Main>
-              </StyledRoot>
-            </ThemeProvider>
-          </NewsProvider>
-        </ReportedProfileProvider>
+                      <Main>
+                        <Outlet />
+                      </Main>
+                    </StyledRoot>
+                  </ThemeProvider>
+                </SkillsProvider>
+              </NewsProvider>
+            </ReportedProfileProvider>
+          </TagsProvider>
+        </CategoriesProvider>
       </UserProvider>
     </LocalizationProvider>
   );
