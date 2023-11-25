@@ -69,7 +69,7 @@ export default function ViewAPostService() {
       }
     };
     fetchData();
-  }, []);
+  }, [slug]);
 
   const handleActions = async (action) => {
     try {

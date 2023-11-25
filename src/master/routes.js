@@ -46,6 +46,7 @@ import ViewNewsService from "../user/components/pages/News/ViewNewsService";
 import ViewAccoutListService from "../user/components/pages/ViewAccountsList/ViewAccoutListService";
 import PendingRewardService from "../user/components/pages/PendingReward/PendingRewardService";
 import ViewPendingRewardService from "../user/components/pages/PendingReward/ViewPendingRewardService";
+import SkillsService from "../user/components/pages/Skills/SkillsService";
 
 const publicRoutes = [
   { path: "/login", component: LoginForm },
@@ -60,7 +61,6 @@ const loggedInUserRoutes = [
   { path: "/", component: HomeService },
   { path: "/feed", component: FeedService },
   { path: "/news", component: NewsService },
-
   { path: "/favorite", component: FavoriteService },
   { path: "/trending", component: TrendingPostsSeeMoreService },
   { path: "/latest", component: LatestPostsSeeMoreService },
@@ -84,6 +84,7 @@ const loggedInUserRoutesOther = [
   { path: "/profile/:id/question", component: ViewProfileService },
   { path: "/profile/:id/follower", component: ViewProfileService },
   { path: "/profile/:id/following", component: ViewProfileService },
+  { path: "/keywords/:id", component: SkillsService },
 ];
 const lecturerRoutes = [
   { path: "/pending-posts", component: PendingPostsService },
