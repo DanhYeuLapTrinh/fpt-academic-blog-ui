@@ -4,6 +4,7 @@ export default function ProfileProvider({ children }) {
   const [selected, setSelected] = useState("Bài viết");
   const [user, setUser] = useState({});
   const [myUser, setMyUser] = useState({});
+  const [skills, setSkills] = useState([]);
   const [followingList, setFollowingList] = useState([]);
   const [followerList, setFollowerList] = useState([]);
   const [avatarURL, setAvatarURL] = useState(null);
@@ -25,6 +26,8 @@ export default function ProfileProvider({ children }) {
         setProfileCoverURL,
         myUser,
         setMyUser,
+        skills,
+        setSkills,
       }}
     >
       {children}

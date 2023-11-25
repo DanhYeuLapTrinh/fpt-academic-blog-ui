@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import Text from "../../atoms/Text/Text";
 import Box from "@mui/material/Box";
@@ -6,24 +6,21 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import {
-  FormControl,
-  IconButton,
-  Paper,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { FormControl, IconButton, Stack, TextField } from "@mui/material";
 import AutocompleteSearch from "../AutocompleteSearch/AutocompleteSearch";
+import AutocompleteSearchObj from "../AutocompleteSearch/AutocompleteSearchObj";
 
 export default function SearchPopper({
   categoryList,
+  keywords,
   setInputContent,
+  setInputKeywords,
   handleSearch,
   open,
   handleClickOpen,
   handleClose,
   setInputTitle,
-  inputTitle
+  inputTitle,
 }) {
   return (
     <div>
@@ -74,7 +71,20 @@ export default function SearchPopper({
                     />
                   </Box>
                 </Stack>
-            </FormControl>
+              </FormControl>
+              <FormControl sx={{ minWidth: "100%" }}>
+                <Stack direction={"row"} width={"100%"} alignItems={"center"}>
+                  <Box flex={2}>
+                    <Text>Từ khóa:</Text>
+                  </Box>
+                  <Box flex={10} width={"100%"}>
+                    <AutocompleteSearchObj
+                      categoryList={keywords}
+                      setInputContent={setInputKeywords}
+                    />
+                  </Box>
+                </Stack>
+              </FormControl>
             </Stack>
           </Box>
         </DialogContent>

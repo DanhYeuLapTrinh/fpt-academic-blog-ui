@@ -21,12 +21,10 @@ export default function HomeService() {
     setTrendingTags,
     qaList,
     setQAList,
-    setCategoryList,
   } = useHome();
   const navigate = useNavigate();
   const {
     getTrendingPosts,
-    getCategories,
     getLatestPosts,
     getRewardedPosts,
     getTrendingTags,
@@ -38,8 +36,6 @@ export default function HomeService() {
       try {
         const trendingPosts = await getTrendingPosts();
         setTrendingPosts(trendingPosts);
-        const categories = await getCategories();
-        setCategoryList(categories);
         const latestPosts = await getLatestPosts();
         setLatestPosts(latestPosts);
         const rewardedPosts = await getRewardedPosts();

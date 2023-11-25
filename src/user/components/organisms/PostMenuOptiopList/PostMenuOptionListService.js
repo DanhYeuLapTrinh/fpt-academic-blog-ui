@@ -16,7 +16,7 @@ export default function PostMenuOptionListService({ ...props }) {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
-  const { user } = useProfile();
+  const { skills } = useProfile();
   const auth = useAuth();
   const { slug } = useParams();
   const handleClick = (event) => {
@@ -76,16 +76,15 @@ export default function PostMenuOptionListService({ ...props }) {
   };
   let found = postDetail?.rewarder?.find((item) => item?.userId === auth?.id);
   let containsAll = postDetail?.postSkill?.every((obj) =>
-    user?.skills?.includes(obj.skillName)
+    skills?.includes(obj.skillName)
   );
   useEffect(() => {
     found = found === undefined ? false : true;
-
     if (!found && containsAll) {
       setHasPermisson(true);
     }
     return () => setHasPermisson(false);
-  }, [postDetail?.rewarder, user?.skills, postDetail?.postSkill]);
+  }, [postDetail?.rewarder, skills]);
 
   return (
     <>

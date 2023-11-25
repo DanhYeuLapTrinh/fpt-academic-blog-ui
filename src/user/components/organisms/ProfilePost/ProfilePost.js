@@ -1,5 +1,8 @@
 import {
   Box,
+  Dialog,
+  DialogContent,
+  Divider,
   IconButton,
   ListItemIcon,
   Menu,
@@ -18,20 +21,39 @@ import {
 } from "../../../utils/StringMethod";
 import { Link } from "react-router-dom";
 import { Icon } from "@iconify/react";
+import usePostAPI from "../../pages/ViewAPost/ViewAPost";
+import ViewAPost from "../../pages/ViewAPost/ViewAPost/ViewAPost";
 
-export default function ProfilePost({removePost, ...props}) {
+export default function ProfilePost({ removePost, ...props }) {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [preview, setPreview] = useState();
   const open = Boolean(anchorEl);
+  const { getPostDetails } = usePostAPI();
+  const handleClickOpen = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handlePreview = async (slug) => {
+    try {
+      let postDetail = await getPostDetails(slug);
+      setPreview(postDetail);
+      handleClickOpen();
+    } catch (error) {}
+  };
   return (
     <Stack direction={"row"} gap={"20px"}>
       <Link to={props.link} style={{ textDecoration: "none" }}>
-        <Box
+        <Box  
           sx={{
             width: "241px",
             height: "149px",
@@ -139,7 +161,6 @@ export default function ProfilePost({removePost, ...props}) {
                     id="account-menu"
                     open={open}
                     onClose={handleClose}
-                    onClick={handleClose}
                     PaperProps={{
                       elevation: 0,
                       sx: {
@@ -169,25 +190,52 @@ export default function ProfilePost({removePost, ...props}) {
                     transformOrigin={{ horizontal: "right", vertical: "top" }}
                     anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                   >
-                    <Link
-                      to={props?.link}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <MenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                          <Icon icon="uil:edit" color="#444746" width="24" />
-                        </ListItemIcon>
-                        <Text fontSize="14px">
-                          Sửa bài viết
-                        </Text>
-                      </MenuItem>
-                    </Link>
+                    <MenuItem onClick={() => handlePreview(props.slug)}>
+                      <ListItemIcon>
+                        <Icon icon="ph:eye-bold" color="#444746" width="22" />
+                      </ListItemIcon>
+                      <Text fontSize="14px">Bản xem trước</Text>
+                    </MenuItem>
+                    <Dialog open={openDialog} maxWidth="lg">
+                      <Stack
+                        direction={"row"}
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                        sx={{ p: "14px" }}
+                      >
+                        <Box />
+                        <Text fontSize="20px">Xem trước bài viết</Text>
+                        <IconButton
+                          sx={{
+                            p: "8px",
+                          }}
+                          disableFocusRipple
+                          disableRipple
+                          disableTouchRipple
+                          onClick={handleCloseDialog}
+                        >
+                          <Icon
+                            icon="octicon:x-12"
+                            color="#444746 "
+                            width="20"
+                          />
+                        </IconButton>
+                      </Stack>
+                      <Divider orientation="horizontal" />
+                      <DialogContent
+                        sx={{
+                          p: "20px 0 0",
+                        }}
+                      >
+                        <ViewAPost previewHistory postDetail={preview} />
+                      </DialogContent>
+                    </Dialog>
                     <MenuItem onClick={() => removePost(props.postId)}>
                       <ListItemIcon>
                         <Icon
                           icon="ant-design:delete-outlined"
                           color="red"
-                          width="24"
+                          width="22"
                         />
                       </ListItemIcon>
                       <Text fontSize="14px" color="red">

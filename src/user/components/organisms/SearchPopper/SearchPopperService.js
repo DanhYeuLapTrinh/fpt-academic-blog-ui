@@ -9,23 +9,43 @@ import useHomeAPI from "../../pages/Home";
 export default function SearchPopperService() {
   const [inputTitle, setInputTitle] = useState(null);
   const [inputContent, setInputContent] = useState([]);
-  const { setSearchPost, categoryList, setCategoryList } = useHome();
-  const { getCategories } = useHomeAPI();
+  const [inputKeywords, setInputKeywords] = useState([]);
+  const {
+    setSearchPost,
+    categoryList,
+    setCategoryList,
+    setKeywords,
+    keywords,
+  } = useHome();
+  console.log(inputContent);
+  console.log(inputKeywords);
+  const { getCategories, getKeywords } = useHomeAPI();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const categories = await getCategories();
         setCategoryList(categories);
-      } catch (error) {}
+        const keywords = await getKeywords();
+        setKeywords(keywords);
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, []);
+
   const handleClose = (event, reason) => {
     if (reason !== "backdropClick") {
       setOpen(false);
@@ -33,27 +53,28 @@ export default function SearchPopperService() {
   };
   const handleSearch = async () => {
     try {
-      if (inputTitle === null && inputContent.length === 0) {
-        toast.error("Vui lòng nhập tiêu đề hoặc chủ đề để tìm kiếm");
+      if (
+        inputTitle === null &&
+        inputContent.length === 0 &&
+        inputKeywords.length === 0
+      ) {
+        toast.error("Vui lòng nhập ít nhất một nội dung để tìm kiếm");
         return;
       }
-      let response = await axiosPrivate.post(
-        process.env.REACT_APP_FILTER_POSTS_HOME,
-        {
-          title: inputTitle,
-          listTagsAndCategories: inputContent,
-        }
-      );
-      setSearchPost([...response?.data?.postList, ...response?.data?.qaList]);
-      setOpen(false);
-      let params = inputContent?.join("-");
-      if (inputTitle === null) {
-        navigate(`/filter?c=${params}`);
-      } else if (inputContent.length === 0) {
-        navigate(`/filter?s=${inputTitle}`);
-      } else {
-        navigate(`/filter?s=${inputTitle}&c=${params}`);
+      let newKeywords = inputKeywords?.map((keyword) => keyword?.skillName);
+      let url = [];
+      if (inputTitle !== null) {
+        url.push(`s=${inputTitle}`);
       }
+      if (inputContent.length) {
+        url.push(`c=${inputContent.join("-")}`);
+      }
+      if (inputKeywords.length) {
+        url.push(`k=${newKeywords.join("-")}`);
+      }
+      let urlParams = url.join("&");
+      navigate(`/filter?${urlParams}`);
+      setOpen(false);
     } catch (error) {
       if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
@@ -65,10 +86,12 @@ export default function SearchPopperService() {
   return (
     <SearchPopper
       categoryList={categoryList}
+      keywords={keywords}
       inputContent={inputContent}
       inputTitle={inputTitle}
       setInputTitle={setInputTitle}
       setInputContent={setInputContent}
+      setInputKeywords={setInputKeywords}
       handleSearch={handleSearch}
       handleClickOpen={handleClickOpen}
       handleClose={handleClose}
