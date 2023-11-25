@@ -6,19 +6,20 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 export default function CommentInteractionService({ comment, ...props }) {
-  const [vote, setVote] = useState(props.vote);
+  const [upvote, setUpVote] = useState(props.upvote);
+  const [downvote, setDownVote] = useState(props.downvote);
   const [select, setSelect] = useState();
   const [voted, setVoted] = useState();
   const axiosPrivate = useAxiosPrivate();
   const { postDetail, voteList } = usePost();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     if (voteList) {
       let item = voteList.find((x) => x.commentId === comment.commentId);
       if (item?.typeOfVote === "up") {
         setSelect("up");
         setVoted(true);
-      } else if (item?.typeOfVote === "down"){
+      } else if (item?.typeOfVote === "down") {
         setSelect("down");
         setVoted(true);
       }
@@ -35,7 +36,7 @@ export default function CommentInteractionService({ comment, ...props }) {
         });
         setSelect("up");
         setVoted(true);
-        setVote(vote + 1);
+        setUpVote(upvote + 1);
       } else if (select === "up") {
         await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
           postId: postDetail?.postId,
@@ -43,7 +44,7 @@ export default function CommentInteractionService({ comment, ...props }) {
         });
         setSelect("");
         setVoted(false);
-        setVote(vote - 1);
+        setUpVote(upvote - 1);
       } else if (select === "down") {
         await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
           postId: postDetail?.postId,
@@ -56,13 +57,14 @@ export default function CommentInteractionService({ comment, ...props }) {
         });
         setSelect("up");
         setVoted(true);
-        setVote(vote + 2);
+        setDownVote(downvote - 1);
+        setUpVote(upvote + 1);
       }
     } catch (error) {
-      if(error?.response?.status === 405){
-        toast.error("Tài khoản của bạn đã bị khóa")
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
-        localStorage.removeItem("auth")
+        localStorage.removeItem("auth");
       }
     }
   };
@@ -77,7 +79,7 @@ export default function CommentInteractionService({ comment, ...props }) {
         });
         setSelect("down");
         setVoted(true);
-        setVote(vote - 1);
+        setDownVote(downvote + 1);
       } else if (select === "down") {
         await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
           postId: postDetail?.postId,
@@ -85,7 +87,7 @@ export default function CommentInteractionService({ comment, ...props }) {
         });
         setSelect("");
         setVoted(false);
-        setVote(vote + 1);
+        setDownVote(downvote - 1);
       } else if (select === "up") {
         await axiosPrivate.post(process.env.REACT_APP_REMOVE_VOTE, {
           postId: postDetail?.postId,
@@ -98,19 +100,20 @@ export default function CommentInteractionService({ comment, ...props }) {
         });
         setSelect("down");
         setVoted(true);
-        setVote(vote - 2);
+        setDownVote(downvote + 1);
+        setUpVote(upvote - 1);
       }
     } catch (error) {
-      if(error?.response?.status === 405){
-        toast.error("Tài khoản của bạn đã bị khóa")
+      if (error?.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
-        localStorage.removeItem("auth")
+        localStorage.removeItem("auth");
       }
     }
   };
   return (
     <CommentInteraction
-      vote={vote}
+      upvote={upvote}
       select={select}
       setSelect={setSelect}
       handleUpvoteComment={handleUpvoteComment}

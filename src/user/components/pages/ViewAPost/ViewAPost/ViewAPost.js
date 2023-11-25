@@ -6,7 +6,6 @@ import {
   Chip,
   Container,
   Dialog,
-  DialogActions,
   DialogContent,
   Divider,
   IconButton,
@@ -294,7 +293,7 @@ export default function ViewAPost({ postDetail, handleActions, ...props }) {
       {!props.previewHistory && (
         <>
           <PostInteractionService
-            vote={props.vote}
+            upvote={props.upvote}
             select={props.select}
             setSelect={props.setSelect}
             handleActions={handleActions}

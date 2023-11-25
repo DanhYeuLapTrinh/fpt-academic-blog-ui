@@ -11,7 +11,8 @@ export default function PostProvider({ children }) {
   const [isAllowComment, setIsAllowComment] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFavored, setIsFavored] = useState(false);
-  const [vote, setVote] = useState(0);
+  const [upvote, setUpVote] = useState(0);
+  const [downvote, setDownVote] = useState(0);
   // check xem vote gì trước up down ""
   const [select, setSelect] = useState("");
   // check xem đã vote chưa true false
@@ -42,8 +43,10 @@ export default function PostProvider({ children }) {
         setIsFollowing,
         isFavored,
         setIsFavored,
-        vote,
-        setVote,
+        upvote,
+        setUpVote,
+        upvote,
+        setDownVote,
         select,
         setSelect,
         voted,

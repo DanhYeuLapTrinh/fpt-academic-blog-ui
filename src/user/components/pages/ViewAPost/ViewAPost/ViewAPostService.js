@@ -18,7 +18,7 @@ export default function ViewAPostService() {
     isFollowing,
     setHistoryDetail,
     isFavored,
-    vote,
+    upvote,
     select,
     setSelect,
     setIsFavored,
@@ -110,7 +110,7 @@ export default function ViewAPostService() {
           postDetail={postDetail}
           isFollowing={isFollowing}
           isFavored={isFavored}
-          vote={vote}
+          upvote={upvote}
           select={select}
           setSelect={setSelect}
           handleActions={handleActions}

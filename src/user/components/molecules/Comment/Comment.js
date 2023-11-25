@@ -114,7 +114,8 @@ export default function Comment({
           {!isEditing && (
             <Stack direction={"row"} spacing={2} alignItems={"center"}>
               <CommentInteractionService
-                vote={comment?.numOfUpvote - comment?.numOfDownvote}
+                upvote={comment?.numOfUpvote}
+                downvote={comment?.numOfDownvote}
                 comment={comment}
               />
               <IconButton

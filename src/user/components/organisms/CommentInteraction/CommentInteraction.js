@@ -1,4 +1,4 @@
-import { IconButton, Stack } from "@mui/material";
+import { Box, Divider, IconButton, Stack } from "@mui/material";
 import { Icon } from "@iconify/react";
 import React from "react";
 import Text from "../../atoms/Text/Text";
@@ -8,39 +8,40 @@ export default function CommentInteraction(props) {
     <Stack
       direction={"row"}
       alignItems={"center"}
-      justifyContent={"space-around"}
+      justifyContent={"space-between"}
+      width={"80px"}
     >
       <Stack direction={"row"} alignItems={"center"}>
-        <IconButton onClick={props.handleUpvoteComment}>
+        <IconButton onClick={props.handleUpvoteComment} sx={{ p: "4px" }}>
           {props.select === "up" ? (
             <Icon
               icon="tabler:arrow-big-up-filled"
-              style={{ color: "#5927e5", fontSize: "22px" }}
+              style={{ color: "#5927e5", fontSize: "26px" }}
             />
           ) : (
             <Icon
               icon="tabler:arrow-big-up"
-              style={{ color: "#c3c3c3", fontSize: "22px" }}
+              style={{ color: "#c3c3c3", fontSize: "26px" }}
             />
           )}
         </IconButton>
-        <Text>{props.vote}</Text>
-        <IconButton onClick={props.handleDownvoteComment}>
-          {props.select === "down" ? (
-            <Icon
-              icon="tabler:arrow-big-up-filled"
-              style={{ color: "#5927e5", fontSize: "22px" }}
-              vFlip={true}
-            />
-          ) : (
-            <Icon
-              icon="tabler:arrow-big-up"
-              style={{ color: "#c3c3c3", fontSize: "22px" }}
-              vFlip={true}
-            />
-          )}
-        </IconButton>
+        <Text fontSize="14px">{props.upvote}</Text>
       </Stack>
+      <IconButton onClick={props.handleDownvoteComment} sx={{p: "4px"}}>
+        {props.select === "down" ? (
+          <Icon
+            icon="tabler:arrow-big-up-filled"
+            style={{ color: "#5927e5", fontSize: "26px" }}
+            vFlip={true}
+          />
+        ) : (
+          <Icon
+            icon="tabler:arrow-big-up"
+            style={{ color: "#c3c3c3", fontSize: "26px" }}
+            vFlip={true}
+          />
+        )}
+      </IconButton>
     </Stack>
   );
 }
