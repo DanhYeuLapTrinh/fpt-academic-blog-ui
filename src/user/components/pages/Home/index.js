@@ -4,7 +4,7 @@ import useHome from "../../../hooks/useHome";
 
 export default function useHomeAPI() {
   const axiosPrivate = useAxiosPrivate();
-  const { setAvatarURL, setUser, setMyUser } = useProfile();
+  const { setAvatarURL, setSkills } = useProfile();
   const { setUnreadNotifications, setNotifications } = useHome();
 
   const setUserAvatar = async () => {
@@ -18,10 +18,7 @@ export default function useHomeAPI() {
     let userSkills = await axiosPrivate.get(
       process.env.REACT_APP_GET_USER_SKILLS
     );
-    setUser((prevUser) => ({
-      ...prevUser,
-      skills: userSkills?.data,
-    }));
+    setSkills(userSkills?.data);
   };
 
   const getNotifications = async () => {
@@ -48,6 +45,11 @@ export default function useHomeAPI() {
   const getCategories = async () => {
     let categories = await axiosPrivate.get(process.env.REACT_APP_GET_CATEGORY);
     return categories?.data;
+  };
+  
+  const getKeywords = async () => {
+    let keywords = await axiosPrivate.get(process.env.REACT_APP_GET_KEYWORDS);
+    return keywords?.data;
   };
 
   const getLatestPosts = async () => {
@@ -87,5 +89,6 @@ export default function useHomeAPI() {
     getTrendingTags,
     getShortPosts,
     getQAList,
+    getKeywords,
   };
 }

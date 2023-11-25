@@ -236,7 +236,7 @@ export default function ViewProfile({ removePost, ...props }) {
                   </Stack>
                 </Box>
               )}
-              {props?.user?.skills?.length > 0 && (
+              {props?.user?.userSkillsList?.length > 0 && (
                 <Box
                   sx={{
                     width: "320px",
@@ -255,10 +255,10 @@ export default function ViewProfile({ removePost, ...props }) {
                     gap={1}
                     paddingTop={"10px"}
                   >
-                    {props?.user?.skills?.map((badge) => (
+                    {props?.user?.userSkillsList?.map((badge) => (
                       <Text>
                         <Chip
-                          label={badge}
+                          label={badge?.skillName}
                           size="small"
                           sx={{
                             minWidth: "50px",

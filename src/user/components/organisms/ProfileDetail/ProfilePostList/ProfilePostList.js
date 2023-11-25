@@ -5,8 +5,8 @@ import { MenuItem, Select, Stack } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { Icon } from "@iconify/react";
 import useAuth from "../../../../hooks/useAuth";
-import useProfile from "../../../../hooks/useProfile";
 import { useParams } from "react-router-dom";
+import usePostAPI from "../../../pages/ViewAPost/ViewAPost";
 export default function ProfilePostList({ removePost, ...props }) {
   const [type, setType] = useState("Bài viết của tôi");
   const auth = useAuth();
@@ -60,6 +60,7 @@ export default function ProfilePostList({ removePost, ...props }) {
             <ProfilePost
               key={index}
               url={item.coverURL}
+              slug={item.slug}
               postId={item.postId}
               isRewarded={item.is_rewarded}
               postTitle={item.title}
@@ -71,8 +72,8 @@ export default function ProfilePostList({ removePost, ...props }) {
               tagName={item?.tag.tagName}
               tagID={item?.tag.tagId}
               time={item.dateOfPost}
-              link={`/edit/${item?.slug}`}
               removePost={removePost}
+              link={`/edit/${item.slug}`}
               title="22px"
               small
               pending

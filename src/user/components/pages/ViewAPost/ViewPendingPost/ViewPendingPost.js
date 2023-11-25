@@ -44,7 +44,7 @@ export default function ViewPendingPost({
     }
   };
   return (
-    <Container sx={{ minHeight: "calc(130vh - 93px)" }}>
+    <Container sx={{ minHeight: "calc(130vh - 93px)", mb: "100px" }}>
       {hasGiveReward && !openNoti && (
         <Paper sx={{ mt: 3 }}>
           <Stack>

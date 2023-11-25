@@ -16,6 +16,7 @@ export default function HomeProvider({ children }) {
   const [searchPost, setSearchPost] = useState([]);
   const [users, setUsers] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
+  const [keywords, setKeywords] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [unreadNotifications, setUnreadNotifications] = useState([]);
   return (
@@ -55,6 +56,8 @@ export default function HomeProvider({ children }) {
         setNotifications,
         unreadNotifications,
         setUnreadNotifications,
+        keywords,
+        setKeywords,
       }}
     >
       {children}

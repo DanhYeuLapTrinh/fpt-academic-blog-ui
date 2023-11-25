@@ -5,7 +5,11 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
 import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import Text from "../../atoms/Text/Text";
-export default function AutocompleteSearch({ categoryList, setInputContent }) {
+
+export default function AutocompleteSearchObj({
+  categoryList,
+  setInputContent,
+}) {
   const icon = <CheckBoxOutlineBlankIcon fontSize="small" />;
   const checkedIcon = <CheckBoxIcon fontSize="small" />;
   return (
@@ -14,7 +18,7 @@ export default function AutocompleteSearch({ categoryList, setInputContent }) {
       options={categoryList}
       disableCloseOnSelect
       fullWidth
-      getOptionLabel={(option) => option}
+      getOptionLabel={(option) => option.skillName}
       renderOption={(props, option, { selected }) => (
         <Text {...props}>
           <Checkbox
@@ -23,10 +27,12 @@ export default function AutocompleteSearch({ categoryList, setInputContent }) {
             style={{ marginRight: 8 }}
             checked={selected}
           />
-          <Text>{option}</Text>
+          <Text>{option.skillName}</Text>
         </Text>
       )}
-      onChange={(event, value) => setInputContent(value)}
+      onChange={(event, value) => {
+        setInputContent(value);
+      }}
       renderInput={(params) => (
         <TextField {...params} placeholder="Nhập từ khóa để tìm kiếm..." />
       )}
