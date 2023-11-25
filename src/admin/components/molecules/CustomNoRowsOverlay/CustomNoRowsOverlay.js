@@ -26,7 +26,7 @@ const StyledGridOverlay = styled("div")(({ theme }) => ({
   },
 }));
 
-export default function CustomNoRowsOverlay() {
+export default function CustomNoRowsOverlay({ title }) {
   return (
     <StyledGridOverlay>
       <svg
@@ -68,7 +68,7 @@ export default function CustomNoRowsOverlay() {
           </g>
         </g>
       </svg>
-      <Box sx={{ mt: 1 }}>Không có dữ liệu</Box>
+      <Box sx={{ mt: 1 }}>{title}</Box>
     </StyledGridOverlay>
   );
 }

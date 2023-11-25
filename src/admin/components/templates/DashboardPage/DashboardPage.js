@@ -10,7 +10,11 @@ import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 
 import SimpleCharts from "../../molecules/BarChart/SimpleBarChart";
 
+import ActivityLogService from "../../organisms/ActivityLog/ActivityLogService";
+
 import CircularProgress from "@mui/material/CircularProgress";
+
+import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
 
 function DashboardPage() {
   const auth = useAuth();
@@ -18,6 +22,8 @@ function DashboardPage() {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [loadingBox, setLoadingBox] = useState(true);
 
   const totalReports =
     (data.total_reported_comment || 0) + (data.total_reported_profile || 0);
@@ -27,9 +33,11 @@ function DashboardPage() {
   console.log(data);
 
   const fetchData = async () => {
+    setLoadingBox(true);
     const res = await axiosPrivate.get("admin/dashboard");
     setData(res.data);
     setLoading(false);
+    setLoadingBox(false);
   };
 
   useEffect(() => {
@@ -92,8 +100,20 @@ function DashboardPage() {
           </Grid>
         </>
 
-        <Grid item xs={12} md={9} lg={9}>
-          <SimpleCharts totalVisit={data.total_visit} />
+        <Grid item xs={12} sm={6} md={6}>
+          {loadingBox ? (
+            <CustomNoRowsOverlay title="Đang tải dữ liệu" />
+          ) : (
+            <SimpleCharts totalVisit={data.total_visit} />
+          )}
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={6}>
+          {loadingBox ? (
+            <CustomNoRowsOverlay title="Đang tải dữ liệu" />
+          ) : (
+            <ActivityLogService />
+          )}
         </Grid>
       </Grid>
     </Container>

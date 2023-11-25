@@ -4,6 +4,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Text from "../../atoms/Text/Text";
 import useManagePost from "../../../hooks/useManagePost";
 import RewardedPostsUnder from "../../organisms/RewardedPosts/RewardedPostsUnder/RewardedPostsUnder";
+import EmptyDisplay from "../../molecules/EmptyDisplay/EmptyDisplay";
 export default function Draft({ removePost, removeDraft, draft, declined }) {
   const { sort, setSort, draftType, setDraftType } = useManagePost();
   return (
@@ -48,6 +49,11 @@ export default function Draft({ removePost, removeDraft, draft, declined }) {
           </FormControl>
         </Stack>
       </Stack>
+      {draftType === "Nháp" && draft?.length === 0 && (
+        <Stack>
+          <EmptyDisplay alignSelf="center" mt="140px" />
+        </Stack>
+      )}
       <Stack spacing={"20px"}>
         {draftType === "Nháp" &&
           draft?.map((item) => (
@@ -75,6 +81,11 @@ export default function Draft({ removePost, removeDraft, draft, declined }) {
             />
           ))}
       </Stack>
+      {draftType === "Bài viết bị từ chối" && declined?.length === 0 && (
+        <Stack>
+          <EmptyDisplay alignSelf="center" mt="140px" />
+        </Stack>
+      )}
       <Stack spacing={"20px"}>
         {draftType === "Bài viết bị từ chối" &&
           declined?.map((item) => (

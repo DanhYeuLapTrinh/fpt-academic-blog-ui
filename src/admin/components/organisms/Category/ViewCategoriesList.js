@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import Radio from "@mui/material/Radio";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -22,6 +22,7 @@ function ViewCategoriesList({
   handleRadioSubjectChange,
   openDeleteModal,
   openDeleteSubjectModal,
+  openEditCategoryModal,
 }) {
   const [isSemesterVisible, setSemesterVisible] = useState(false);
   const [isSubjectVisible, setSubjectVisible] = useState(false);
@@ -78,10 +79,16 @@ function ViewCategoriesList({
               </ListItemIcon>
               <ListItemText primary={category.categoryName} />
               {selectedRadioCategory === category.id && (
-                <DeleteIcon
-                  onClick={() => openDeleteModal(category)}
-                  sx={{ cursor: "pointer", color: "error.main" }}
-                />
+                <>
+                  <EditIcon
+                    onClick={() => openEditCategoryModal(category)}
+                    sx={{ cursor: "pointer", color: "primary.main" }}
+                  />
+                  <DeleteIcon
+                    onClick={() => openDeleteModal(category)}
+                    sx={{ cursor: "pointer", color: "error.main" }}
+                  />
+                </>
               )}
             </ListItem>
           ))}
@@ -145,10 +152,16 @@ function ViewCategoriesList({
                     sx={{ flexGrow: 1 }}
                   />
                   {selectedRadioSubject === subject.id && (
-                    <DeleteIcon
-                      onClick={() => openDeleteSubjectModal(subject)}
-                      sx={{ cursor: "pointer", color: "error.main" }}
-                    />
+                    <>
+                      <EditIcon
+                        onClick={() => openEditCategoryModal(subject)}
+                        sx={{ cursor: "pointer", color: "primary.main" }}
+                      />
+                      <DeleteIcon
+                        onClick={() => openDeleteSubjectModal(subject)}
+                        sx={{ cursor: "pointer", color: "error.main" }}
+                      />
+                    </>
                   )}
                 </ListItem>
               ))}

@@ -213,15 +213,6 @@ function CateList() {
       <div className="content-category">
         <h2 className="category-title">Danh sách các danh mục</h2>
         <div className="add-new-button">
-          {(selectedRadioCategory || selectedRadioSubject) && (
-            <div className="edit-cate-button">
-              <AddNewButton
-                title="Chỉnh sửa danh mục"
-                data={selectedRadioCategory || selectedRadioSubject}
-                handleClick={openEditCategoryModal}
-              />
-            </div>
-          )}
           <AddNewButton
             title="Thêm danh mục mới"
             handleClick={openAddCategoryModal}
@@ -241,8 +232,12 @@ function CateList() {
           handleRadioSubjectChange,
           openDeleteModal,
           openDeleteSubjectModal,
+          openEditCategoryModal,
           selectedRadioCategory,
+          setSelectedRadioCategory,
           selectedRadioSubject,
+          setSelectedRadioSubject,
+          setIsEditCategoryModalOpen,
         }}
       />
 
