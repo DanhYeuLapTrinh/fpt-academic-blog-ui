@@ -7,10 +7,12 @@ import {
   ListItem,
   Typography,
   Link,
+  Tooltip,
 } from "@mui/material";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import truncateText from "../../../utils/TruncateText/TruncateText";
 import { formatDistanceToNow } from "date-fns";
 import { vi } from "date-fns/locale";
 
@@ -29,15 +31,24 @@ function ActivityLog({ activityLogData }) {
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <CardHeader title="Nhật ký hoạt động" />
           <Box sx={{ padding: 2 }}>
-            <Link component="button" onClick={() => setSortOrder("asc")}>
+            <Link
+              component="button"
+              onClick={() => setSortOrder("asc")}
+              color={sortOrder === "asc" ? "#212121" : "#9e9e9e"}
+            >
               <ArrowUpwardIcon />
             </Link>
-            <Link component="button" onClick={() => setSortOrder("desc")}>
+            <Link
+              component="button"
+              onClick={() => setSortOrder("desc")}
+              color={sortOrder === "desc" ? "#212121" : "#9e9e9e"}
+            >
               <ArrowDownwardIcon />
             </Link>
           </Box>
         </div>
-        <Box sx={{ maxHeight: "400px", overflow: "auto" }}>
+
+        <Box sx={{ maxHeight: "365px", overflow: "auto", pb: 1 }}>
           <List>
             {sortedActivityLogData.map((log) => (
               <ListItem key={log.id}>
@@ -54,7 +65,11 @@ function ActivityLog({ activityLogData }) {
                   }}
                 >
                   <Box>
-                    <Typography variant="subtitle1">{log.action}</Typography>
+                    <Tooltip title={log.action}>
+                      <Typography variant="subtitle1">
+                        {truncateText(log.action, 10)}
+                      </Typography>
+                    </Tooltip>
                     <Typography
                       variant="subtitle2"
                       color="gray"

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import AddUserForm from "../../../utils/User/AddUserAction";
+import UserList from "../../organisms/UserList/UserList";
 import { handleSearch } from "../../../utils/User/SearchUserByFullname";
 import BanUnbanUser from "../../../utils/User/BanUnbanAction/BanUnbanAction";
 import { toast } from "react-toastify";
@@ -29,6 +30,7 @@ import {
   MenuItem,
   Stack,
   Box,
+  Typography,
 } from "@mui/material";
 
 import "./styles.scss";
@@ -73,9 +75,17 @@ function UserResultList() {
 
   const [setRoleChanged, setSetRoleChanged] = useState(false);
 
+  const [addUserChanged, setAddUserChanged] = useState(false);
+
   const [value, setValue] = useState(0);
 
   const [filterRole, setFilterRole] = useState("");
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [allUsersCount, setAllUsersCount] = useState(0);
+
+  const [bannedUsersCount, setBannedUsersCount] = useState(0);
 
   const allUsers = filterRole
     ? records.filter((user) => user.role.roleName === filterRole)
@@ -109,6 +119,15 @@ function UserResultList() {
 
     setLoading(false);
     console.log(res.data);
+
+    const notBannedUsers = res.data.filter(
+      (user) => !user.isBanned && !user.isMuted
+    );
+
+    const bannedUsers = res.data.filter((user) => user.isBanned);
+
+    setAllUsersCount(notBannedUsers.length);
+    setBannedUsersCount(bannedUsers.length);
   };
 
   useEffect(() => {
@@ -122,6 +141,10 @@ function UserResultList() {
   useEffect(() => {
     fetchData();
   }, [setRoleChanged]);
+
+  useEffect(() => {
+    fetchData();
+  }, [addUserChanged]);
 
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -138,9 +161,11 @@ function UserResultList() {
   };
 
   const handleAddUser = (userData) => {
+    setIsLoading(true);
     axiosPrivate
       .post(process.env.REACT_APP_NEW_USER, userData)
       .then((response) => {
+        setIsLoading(false);
         if (response.status === 200) {
           toast.success("Thêm mới người dùng thành công");
 
@@ -149,12 +174,14 @@ function UserResultList() {
 
           setData(newData);
           setRecords(newRecords);
+          setAddUserChanged(!addUserChanged);
         }
       })
       .catch((error) => {
+        setIsLoading(false);
         console.error("Lỗi khi thêm mới người dùng:", error);
-        if (error.response && error.response.status === 401) {
-          if (error.response.data.message === "Mail exist") {
+        if (error?.response && error?.response?.status === 401) {
+          if (error?.response?.data?.message === "Mail exist") {
             toast.error("Email đã tồn tại");
           } else {
             toast.error("Hãy điền đầy đủ thông tin");
@@ -432,141 +459,171 @@ function UserResultList() {
               onClose={handleCloseAddUserForm}
               data={data}
               onAddUser={handleAddUser}
+              isLoading={isLoading}
             />
           </form>
         </div>
       </div>
 
-      <Tabs value={value} onChange={handleChangeFilter}>
-        <Tab label="Tất cả" className="tab" />
-        <Tab label="Bị cấm" className="tab" />
-      </Tabs>
-
-      <Grid container>
-        <Grid item xs={2}>
-          <FormControl
-            variant="outlined"
-            sx={{ display: "flex", flex: 1, padding: 1.5 }}
-          >
-            <InputLabel id="role-label" sx={{ mt: 1.8, ml: 1, fontSize: 13 }}>
-              Vai trò
-            </InputLabel>
-            <Select
-              labelId="role-label"
-              id="role-select"
-              value={filterRole}
-              onChange={handleChangeSetRole}
-              label="Role"
-            >
-              <MenuItem value="">Chọn vai trò</MenuItem>
-              <MenuItem value="lecturer">Lecturer</MenuItem>
-              <MenuItem value="mentor">Mentor</MenuItem>
-              <MenuItem value="student">Student</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={10}>
-          <TextField
-            className="search-input"
-            placeholder="Tìm kiếm tài khoản..."
-            type="text"
-            variant="outlined"
-            fullWidth
-            sx={{
-              padding: 1.5,
-              fontSize: 13,
-            }}
-            onChange={handleSearchUser}
-            InputProps={{
-              startAdornment: <SearchIcon sx={{ marginRight: 1 }} />,
-            }}
-          />
-        </Grid>
-      </Grid>
-
       <Box
         sx={{
-          width: "100%",
-          "& .super-app-theme--header": {
-            backgroundColor: "rgb(193, 195, 196)",
-          },
+          border: "1px",
+          borderRadius: "20px",
+          boxShadow: 2,
+          mt: 5,
         }}
       >
-        {value === 0 && (
-          <DataGrid
-            getRowId={(row) => row.id || row.username}
-            loading={loading}
+        <Tabs
+          value={value}
+          onChange={handleChangeFilter}
+          variant="scrollable"
+          sx={{
+            borderBottom: 1,
+            borderColor: "divider",
+            ".MuiTabs-indicator": {
+              height: 2,
+            },
+            ".Mui-selected": {
+              color: "primary.main",
+            },
+          }}
+        >
+          <Tab
+            iconPosition="end"
+            label={
+              <>
+                Tất cả
+                <Box
+                  sx={{
+                    ml: 1,
+                    py: 0.5,
+                    px: 1,
+                    borderRadius: 1,
+                    color: "white",
+                    bgcolor: "primary.main",
+                  }}
+                >
+                  {allUsersCount}
+                </Box>
+              </>
+            }
             sx={{
-              "& .MuiDataGrid-cell": {
-                display: "flex",
-                padding: "8px",
-                whiteSpace: "normal",
-                wordWrap: "break-word",
-              },
-              "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-                outline: "none !important",
-              },
+              py: 2,
+              minWidth: 0,
+              color: "text.primary",
+              fontWeight: "bold",
+              textTransform: "none",
+              fontSize: "1rem",
             }}
-            slots={{
-              noRowsOverlay: () =>
-                noRows && <CustomNoRowsOverlay title="Không có dữ liệu" />,
-              loadingOverlay: () => loading && <LinearProgress />,
-            }}
-            rows={allUsers}
-            rowHeight={75}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            autoHeight
-            disableRowSelectionOnClick
-            disableColumnMenu
-            disableColumnFilter
           />
-        )}
 
-        {value === 1 && (
-          <DataGrid
-            getRowId={(row) => row.id || row.username}
-            loading={loading}
+          <Tab
+            iconPosition="end"
+            label={
+              <>
+                Bị cấm
+                <Box
+                  sx={{
+                    ml: 1,
+                    py: 0.5,
+                    px: 1,
+                    borderRadius: 1,
+                    color: "white",
+                    bgcolor: "error.main",
+                  }}
+                >
+                  {bannedUsersCount}
+                </Box>
+              </>
+            }
             sx={{
-              "& .MuiDataGrid-cell": {
-                display: "flex",
-                padding: "8px",
-                whiteSpace: "normal",
-                wordWrap: "break-word",
-              },
-              "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-                outline: "none !important",
-              },
+              py: 2,
+              minWidth: 0,
+              color: "text.primary",
+              fontWeight: "bold",
+              textTransform: "none",
+              fontSize: "1rem",
             }}
-            slots={{
-              noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
-              loadingOverlay: () => loading && <LinearProgress />,
-            }}
-            rows={bannedUsers}
-            rowHeight={75}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            autoHeight
-            disableRowSelectionOnClick
-            disableColumnMenu
-            disableColumnFilter
           />
-        )}
+        </Tabs>
+
+        <Grid container margin={1}>
+          <Grid item xs={2}>
+            <FormControl
+              variant="outlined"
+              sx={{ display: "flex", flex: 1, padding: 1.5 }}
+            >
+              <InputLabel id="role-label" sx={{ mt: 1.8, ml: 1, fontSize: 13 }}>
+                Vai trò
+              </InputLabel>
+              <Select
+                labelId="role-label"
+                id="role-select"
+                value={filterRole}
+                onChange={handleChangeSetRole}
+                label="Role"
+              >
+                <MenuItem value="">Chọn vai trò</MenuItem>
+                <MenuItem value="lecturer">Lecturer</MenuItem>
+                <MenuItem value="mentor">Mentor</MenuItem>
+                <MenuItem value="student">Student</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={10}>
+            <TextField
+              className="search-input"
+              placeholder="Tìm kiếm tài khoản..."
+              type="text"
+              variant="outlined"
+              fullWidth
+              sx={{
+                padding: 1.5,
+                fontSize: 13,
+              }}
+              onChange={handleSearchUser}
+              InputProps={{
+                startAdornment: <SearchIcon sx={{ marginRight: 1 }} />,
+              }}
+            />
+          </Grid>
+        </Grid>
+
+        <Box
+          sx={{
+            width: "100%",
+            "& .super-app-theme--header": {
+              backgroundColor: "rgb(244, 246, 248)",
+            },
+          }}
+        >
+          {value === 0 && (
+            <UserList
+              loading={loading}
+              noRows={noRows}
+              users={allUsers}
+              columns={columns}
+              banAccount={banAccount}
+              unbanAccount={unbanAccount}
+              banStatus={banStatus}
+              setBanStatus={setBanStatus}
+            />
+          )}
+
+          {value === 1 && (
+            <UserList
+              loading={loading}
+              noRows={noRows}
+              users={bannedUsers}
+              columns={columns}
+              banAccount={banAccount}
+              unbanAccount={unbanAccount}
+              banStatus={banStatus}
+              setBanStatus={setBanStatus}
+            />
+          )}
+        </Box>
       </Box>
 
       <MuteModal

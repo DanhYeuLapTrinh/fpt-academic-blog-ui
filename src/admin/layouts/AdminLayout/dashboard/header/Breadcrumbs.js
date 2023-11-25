@@ -3,6 +3,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import CategoryIcon from "@mui/icons-material/Category";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import ReportProblemIcon from "@mui/icons-material/ReportProblem";
+import HubIcon from "@mui/icons-material/Hub";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
 
 export const breadCrumbsRoutes = [
@@ -62,5 +63,19 @@ export const breadCrumbsRoutes = [
     path: "/add-news",
     label: "Thêm tin tức",
     icon: <FiberNewIcon sx={{ marginRight: 0.5, fontSize: "inherit" }} />,
+  },
+  {
+    path: "/skills-list",
+    label: "Danh sách kỹ năng",
+    icon: <HubIcon sx={{ marginRight: 0.5, fontSize: "inherit" }} />,
+  },
+  {
+    path: "/edit-skill",
+    label: "Thêm kỹ năng",
+    icon: <HubIcon sx={{ marginRight: 0.5, fontSize: "inherit" }} />,
+  },
+  {
+    path: "/users/view/:id",
+    label: "Chi tiết hồ sơ",
   },
 ];

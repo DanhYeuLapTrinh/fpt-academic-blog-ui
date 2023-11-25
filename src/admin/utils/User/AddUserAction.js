@@ -5,6 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import {
+  CircularProgress,
   FormControl,
   FormHelperText,
   InputLabel,
@@ -16,7 +17,7 @@ import Button from "@mui/material/Button";
 import { addUserSchema } from "../../components/atoms/AddUserValidation";
 import useAxiosPrivate from "../../../user/hooks/useAxiosPrivate";
 
-function AddUserForm({ open, onClose, onAddUser, data }) {
+function AddUserForm({ open, onClose, onAddUser, isLoading, data }) {
   const [selectedRole, setSelectedRole] = useState("");
 
   const [majors, setMajors] = useState([]);
@@ -277,9 +278,13 @@ function AddUserForm({ open, onClose, onAddUser, data }) {
             },
           }}
           onClick={formik.handleSubmit}
-          disabled={!formik.isValid}
+          disabled={!formik.isValid || isLoading}
         >
-          Thêm mới
+          {!isLoading ? (
+            "Thêm mới"
+          ) : (
+            <CircularProgress size={20} sx={{ color: "white" }} />
+          )}
         </Button>
       </DialogActions>
     </Dialog>

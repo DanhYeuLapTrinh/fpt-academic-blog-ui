@@ -37,6 +37,8 @@ function CateList() {
   const [isEditCategoryModalOpen, setIsEditCategoryModalOpen] = useState(false);
   const [categoryToEdit, setCategoryToEdit] = useState(null);
 
+  const [categoryStatusChanged, setCategoryStatusChanged] = useState(false);
+
   //-----------------------------------------------------------------------------------
 
   const fetchData = async () => {
@@ -52,6 +54,10 @@ function CateList() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [categoryStatusChanged]);
 
   //-----------------------------------------------------------------------------------
 
@@ -112,22 +118,27 @@ function CateList() {
   const handleDeleteCategory = async () => {
     if (categoryToDelete) {
       try {
-        await axiosPrivate.post(process.env.REACT_APP_DELETE_CATEGORY, {
-          id: categoryToDelete.id,
-        });
-
-        toast.success(
-          `Xóa chuyên ngành "${categoryToDelete.categoryName}" thành công`
+        const res = await axiosPrivate.post(
+          process.env.REACT_APP_DELETE_CATEGORY,
+          {
+            id: categoryToDelete.id,
+          }
         );
 
-        fetchData();
-
-        closeDeleteModal();
+        if (res.status === 200) {
+          toast.success(
+            `Xóa chuyên ngành "${categoryToDelete.categoryName}" thành công`
+          );
+          setCategoryStatusChanged(!categoryStatusChanged);
+          closeDeleteModal();
+        }
       } catch (error) {
         if (error.response.status === 409) {
           toast.error(
             "Không thể xóa chuyên ngành này vì đã được sử dụng trong bài viết"
           );
+        } else {
+          toast.error("Xóa danh mục xảy ra lỗi");
         }
         console.error("Error deleting category:", error);
       }
@@ -137,22 +148,29 @@ function CateList() {
   const handleDeleteSubject = async () => {
     if (subjectToDelete) {
       try {
-        await axiosPrivate.post(process.env.REACT_APP_DELETE_CATEGORY, {
-          id: subjectToDelete.id,
-        });
-        toast.success(
-          `Xóa môn học "${subjectToDelete.categoryName}" thành công`
+        const res = await axiosPrivate.post(
+          process.env.REACT_APP_DELETE_CATEGORY,
+          {
+            id: subjectToDelete.id,
+          }
         );
-        closeDeleteSubjectModal();
-        await fetchData();
+        if (res.status === 200) {
+          toast.success(
+            `Xóa môn học "${subjectToDelete.categoryName}" thành công`
+          );
+          setCategoryStatusChanged(!categoryStatusChanged);
+          closeDeleteSubjectModal();
 
-        setSelectedSubject(null);
-        setSelectedRadioSubject(null);
+          setSelectedSubject(null);
+          setSelectedRadioSubject(null);
+        }
       } catch (error) {
         if (error.response.status === 409) {
           toast.error(
             "Không thể xóa môn học này vì đã được sử dụng trong bài viết"
           );
+        } else {
+          toast.error("Xóa danh mục xảy ra lỗi");
         }
         console.error("Error deleting subject:", error);
       }
