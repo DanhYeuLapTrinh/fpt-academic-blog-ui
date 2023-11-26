@@ -37,6 +37,12 @@ export default function ViewPendingQuestionService() {
       });
       window.scrollTo(0, 0);
       navigate("/pending-questions", { replace: true });
+      await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
+        content: `Câu hỏi của bạn đã được duyệt: ${data?.title}`,
+        relatedId: data?.postId,
+        type: "post",
+        userId: data?.userId,
+      });
     } catch (error) {
       if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");

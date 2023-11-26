@@ -67,6 +67,14 @@ export default function ViewPendingPostService() {
           postId: data?.postId,
         });
       }
+      if (data?.reasonOfDecline) {
+        await axiosPrivate.post(process.env.REACT_APP_DELETE_NOTIFICATION, {
+          content: `bị từ chối`,
+          relatedId: data?.postId,
+          type: "post",
+          userId: data?.userId,
+        });
+      }
       await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
         content: `Bài viết của bạn đã được duyệt: ${data?.title}`,
         relatedId: data?.postId,

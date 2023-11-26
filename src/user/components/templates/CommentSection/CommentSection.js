@@ -54,9 +54,10 @@ export default function CommentSection({ rootComments, getReplies }) {
         if (userId !== auth?.id) {
           await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
             content: `đã phản hồi bình luận của bạn: ${value}`,
-            relatedId: commentId,
+            relatedId: postDetail?.postId,
             type: "comment",
             userId: userId,
+            commentId: commentId,
           });
         }
       } catch (error) {
@@ -73,6 +74,7 @@ export default function CommentSection({ rootComments, getReplies }) {
             relatedId: postDetail?.postId,
             type: "post",
             userId: postDetail?.userId,
+            commentId: commentId,
           });
         }
       } catch (error) {
@@ -110,6 +112,7 @@ export default function CommentSection({ rootComments, getReplies }) {
             relatedId: postDetail?.postId,
             type: "post",
             userId: postDetail?.userId,
+            commentId: commentId,
           });
         }
       } catch (error) {

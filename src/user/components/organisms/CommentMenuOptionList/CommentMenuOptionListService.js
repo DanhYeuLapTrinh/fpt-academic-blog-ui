@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CommentMenuOptionList from "./CommentMenuOptionList";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
-import { IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import usePost from "../../../hooks/usePost";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
@@ -11,7 +11,7 @@ export default function CommentMenuOptionListService({
   comment,
   deleteComment,
 }) {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { reportReasons } = usePost();
   const [anchorEl, setAnchorEl] = useState(null);
   const [reportId, setReportId] = useState(null);
@@ -57,7 +57,7 @@ export default function CommentMenuOptionListService({
     }
   };
   return (
-    <>
+    <Box sx={{ pr: "15px" }}>
       <IconButton
         disableFocusRipple
         disableRipple
@@ -81,6 +81,6 @@ export default function CommentMenuOptionListService({
         comment={comment}
         deleteComment={deleteComment}
       />
-    </>
+    </Box>
   );
 }

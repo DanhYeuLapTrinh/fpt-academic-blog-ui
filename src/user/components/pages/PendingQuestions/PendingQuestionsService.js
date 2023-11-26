@@ -8,11 +8,17 @@ import { toast } from "react-toastify";
 
 export default function PendingQuestionsService() {
   const { sort, pendingQ, setPendingQ, setQAmount } = useManagePost();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
-  let sortedPending = sortByPropertyName(pendingQ, "", "postId");
+  let sortedPending = pendingQ?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
   if (sort !== "Mới nhất") {
-    sortedPending = sortByPropertyName(pendingQ, "asc", "postId");
+    sortedPending = pendingQ?.sort(
+      (a, b) =>
+        new Date(a.dateOfPost).getTime() - new Date(b.dateOfPost).getTime()
+    );
   }
   useEffect(() => {
     const fetchData = async () => {

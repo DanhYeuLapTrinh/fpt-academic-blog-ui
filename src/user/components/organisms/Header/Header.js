@@ -51,8 +51,8 @@ export default function Header() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await getNotifications();
         await setUserAvatar();
+        await getNotifications();
       } catch (error) {
         if (error?.response?.status === 405) {
           toast.error("Tài khoản của bạn đã bị khóa");
@@ -64,6 +64,7 @@ export default function Header() {
     fetchData();
   }, []);
   const handleClick = (event) => {
+    getNotifications();
     setAnchorEl(event.currentTarget);
   };
 

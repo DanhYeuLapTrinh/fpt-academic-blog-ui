@@ -17,40 +17,41 @@ export default function PostInteraction({ handleActions, ...props }) {
           direction={"row"}
           alignItems={"center"}
           sx={{ bgcolor: "secondary.alt", borderRadius: "20px" }}
-          justifyContent={"space-evenly"}
+          justifyContent={"space-between"}
           width={"140px"}
         >
-          <IconButton
-            disableFocusRipple
-            disableRipple
-            disableTouchRipple
-            onClick={() => handleActions("upvote")}
-          >
-            {props.select === "up" ? (
-              <Icon
-                icon="tabler:arrow-big-up-filled"
-                style={{ color: "#5927e5", fontSize: "28px" }}
-              />
-            ) : (
-              <Icon
-                icon="tabler:arrow-big-up"
-                style={{ color: "#c3c3c3", fontSize: "28px" }}
-              />
-            )}
-          </IconButton>
-          <Text>{props.upvote}</Text>
-
-          <Stack direction={"row"}>
-            <Divider
-              orientation="vertical"
-              sx={{
-                height: "30px",
-                borderRight: "1px solid #c3c3c3",
-                alignSelf: "center",
-                p: "6px",
-              }}
-              flexItem
-            />
+          <Stack direction={"row"} alignItems={"center"}>
+            <IconButton
+              disableFocusRipple
+              disableRipple
+              disableTouchRipple
+              onClick={() => handleActions("upvote")}
+            >
+              {props.select === "up" ? (
+                <Icon
+                  icon="tabler:arrow-big-up-filled"
+                  style={{ color: "#5927e5", fontSize: "28px" }}
+                />
+              ) : (
+                <Icon
+                  icon="tabler:arrow-big-up"
+                  style={{ color: "#c3c3c3", fontSize: "28px" }}
+                />
+              )}
+            </IconButton>
+            <Text>{props.upvote}</Text>
+          </Stack>
+          <Divider
+            orientation="vertical"
+            sx={{
+              height: "30px",
+              borderRight: "1px solid #c3c3c3",
+              alignSelf: "center",
+            }}
+            flexItem
+          />
+          <Stack direction={"row"} alignItems={"center"}>
+            <Text>{props.downvote}</Text>
             <IconButton
               disableFocusRipple
               disableRipple

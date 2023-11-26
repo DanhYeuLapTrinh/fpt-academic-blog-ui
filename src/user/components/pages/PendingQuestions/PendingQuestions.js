@@ -2,7 +2,7 @@ import { Container, Stack } from "@mui/material";
 import React from "react";
 import QA from "../../organisms/QA/QA";
 import { Link } from "react-router-dom";
-import { getFirstChar, timeConverter } from "../../../utils/StringMethod";
+import { timeConverter } from "../../../utils/StringMethod";
 import EmptyDisplay from "../../molecules/EmptyDisplay/EmptyDisplay";
 
 export default function PendingQuestions(props) {

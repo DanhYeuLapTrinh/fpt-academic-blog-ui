@@ -26,14 +26,10 @@ export default function TagsService() {
             }
           );
         } else {
-          response = await axiosPrivate.post(
-            process.env.REACT_APP_FILTER_QA,
-            {
-              tagId: Number(id),
-            }
-          );
+          response = await axiosPrivate.post(process.env.REACT_APP_FILTER_QA, {
+            tagId: Number(id),
+          });
         }
-        console.log(response?.data)
         setData(response?.data);
         setAmount(response?.data?.length);
       } catch (error) {
@@ -46,5 +42,9 @@ export default function TagsService() {
     };
     fetchData();
   }, [id]);
-  return <Tags name={name} id={id} data={data} amount={amount} />;
+  let sortedList = data?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
+  return <Tags name={name} id={id} data={sortedList} amount={amount} />;
 }

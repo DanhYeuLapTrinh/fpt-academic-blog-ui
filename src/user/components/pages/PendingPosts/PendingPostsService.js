@@ -19,6 +19,7 @@ export default function PendingPostsService() {
     (a, b) =>
       new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
   );
+  
   if (sort !== "Mới nhất") {
     combinedArray = combinedArray?.sort(
       (a, b) =>

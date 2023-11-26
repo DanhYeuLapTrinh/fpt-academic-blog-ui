@@ -11,21 +11,20 @@ import "react-multi-carousel/lib/styles.css";
 import "./stylecaro.scss";
 const responsive = {
   superLargeDesktop: {
-    // the naming can be any, depends on you.
     breakpoint: { max: 4000, min: 3000 },
     items: 5,
   },
   desktop: {
-    breakpoint: { max: 3000, min: 1150 },
+    breakpoint: { max: 3000, min: 1160 },
     items: 4,
   },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
+    breakpoint: { max: 1160, min: 888 },
+    items: 3,
   },
   mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
+    breakpoint: { max: 888, min: 0 },
+    items: 2,
   },
 };
 export default function LatestPostSection(props) {
@@ -47,11 +46,10 @@ export default function LatestPostSection(props) {
           <Carousel
             responsive={responsive}
             arrows
+            renderButtonGroupOutside={true}
             autoPlaySpeed={1000 * 10}
             className="hello"
-            sliderClass=""
             slidesToSlide={4}
-            swipeable
           >
             {!props.latestPosts
               ? Array(4)
