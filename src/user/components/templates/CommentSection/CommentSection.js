@@ -28,8 +28,9 @@ export default function CommentSection({ rootComments, getReplies }) {
     }
     e.preventDefault();
     if (parentId && commentId && userId) {
+      let response
       try {
-        let response = await axiosPrivate.post(
+        response = await axiosPrivate.post(
           process.env.REACT_APP_REPLY_COMMENT,
           {
             postId: postDetail?.postId,
@@ -57,7 +58,7 @@ export default function CommentSection({ rootComments, getReplies }) {
             relatedId: postDetail?.postId,
             type: "comment",
             userId: userId,
-            commentId: commentId,
+            commentId: response?.data?.commentId,
           });
         }
       } catch (error) {
@@ -74,7 +75,7 @@ export default function CommentSection({ rootComments, getReplies }) {
             relatedId: postDetail?.postId,
             type: "post",
             userId: postDetail?.userId,
-            commentId: commentId,
+            commentId: response?.data?.commentId,
           });
         }
       } catch (error) {
@@ -85,8 +86,9 @@ export default function CommentSection({ rootComments, getReplies }) {
         }
       }
     } else {
+      let response;
       try {
-        let response = await axiosPrivate.post(
+        response = await axiosPrivate.post(
           process.env.REACT_APP_CREATE_COMMENT,
           {
             postId: postDetail?.postId,
@@ -112,7 +114,7 @@ export default function CommentSection({ rootComments, getReplies }) {
             relatedId: postDetail?.postId,
             type: "post",
             userId: postDetail?.userId,
-            commentId: commentId,
+            commentId: response?.data?.commentId,
           });
         }
       } catch (error) {
