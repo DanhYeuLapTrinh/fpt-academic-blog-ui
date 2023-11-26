@@ -47,7 +47,47 @@ export default function EditCategoryModal({
     );
 
     if (isSubjectNameConflict) {
-      toast.error("Môn học đã tồn tại");
+      const existingSubject = categories.find((c) =>
+        c.childCategories
+          ? c.childCategories.some(
+              (semester) =>
+                semester.childCategories &&
+                semester.childCategories.some(
+                  (subject) =>
+                    subject.categoryName === categoryName &&
+                    subject.id !== category.id
+                )
+            )
+          : false
+      );
+
+      const existingSemester = existingSubject.childCategories.find(
+        (semester) =>
+          semester.childCategories &&
+          semester.childCategories.some(
+            (subject) =>
+              subject.categoryName === categoryName &&
+              subject.id !== category.id
+          )
+      );
+
+      const existingCategory = categories.find((c) =>
+        c.childCategories
+          ? c.childCategories.some(
+              (semester) =>
+                semester.childCategories &&
+                semester.childCategories.some(
+                  (subject) =>
+                    subject.categoryName === categoryName &&
+                    subject.id !== category.id
+                )
+            )
+          : false
+      );
+
+      toast.error(
+        `Môn học đã tồn tại trong ${existingSemester.categoryName} của ${existingCategory.categoryName}`
+      );
       return;
     }
 

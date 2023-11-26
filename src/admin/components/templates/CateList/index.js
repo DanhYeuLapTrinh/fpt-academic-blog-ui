@@ -91,7 +91,6 @@ function CateList() {
   };
 
   const openDeleteModal = (category) => {
-    console.log("Category clicked:", category);
     setIsDeleteModalOpen(true);
     setCategoryToDelete(category);
   };
@@ -139,7 +138,7 @@ function CateList() {
           toast.success(
             `Xóa chuyên ngành "${categoryToDelete.categoryName}" thành công`
           );
-          setCategoryStatusChanged(!categoryStatusChanged);
+          setCategoryStatusChanged((prev) => !prev);
           closeDeleteModal();
         }
       } catch (error) {
@@ -168,11 +167,8 @@ function CateList() {
           toast.success(
             `Xóa môn học "${subjectToDelete.categoryName}" thành công`
           );
-          setCategoryStatusChanged(!categoryStatusChanged);
           closeDeleteSubjectModal();
-
-          setSelectedSubject(null);
-          setSelectedRadioSubject(null);
+          setCategoryStatusChanged((prev) => !prev);
         }
       } catch (error) {
         if (error.response.status === 409) {
@@ -227,10 +223,7 @@ function CateList() {
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.5)",
           }}
         >
-          <AddCategory
-            closeAddCategoryModal={closeAddCategoryModal}
-            fetchData={fetchData}
-          />
+          <AddCategory closeAddCategoryModal={closeAddCategoryModal} />
         </Card>
       </Modal>
     );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import { useCategoriesContext } from "../../../context/CategoriesContext";
 import {
   Box,
   Button,
@@ -11,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-function AddCategory({ closeAddCategoryModal, fetchData }) {
+function AddCategory({ closeAddCategoryModal }) {
   const axiosPrivate = useAxiosPrivate();
   const [cateList, setCateList] = useState([]);
   const [majorList, setMajorList] = useState([]);
@@ -22,6 +23,8 @@ function AddCategory({ closeAddCategoryModal, fetchData }) {
   const [subjectError, setSubjectError] = useState("");
   const [isNewCategoryOption, setIsNewCategoryOption] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
+
+  const { setCategoryStatusChanged } = useCategoriesContext();
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -56,13 +59,28 @@ function AddCategory({ closeAddCategoryModal, fetchData }) {
   };
 
   const isSubjectExists = (subject) => {
-    return cateList.some((category) =>
-      category.childCategories.some((semester) =>
-        semester.childCategories.some(
-          (subjectObj) => subjectObj.categoryName === subject
-        )
-      )
-    );
+    let found = false;
+    let foundSemester = "";
+    let foundSpecialization = "";
+
+    cateList.forEach((specialization) => {
+      specialization.childCategories.forEach((semester) => {
+        semester.childCategories.forEach((subjectObj) => {
+          if (subjectObj.categoryName === subject) {
+            found = true;
+            foundSemester = semester.categoryName;
+            foundSpecialization = specialization.categoryName;
+          }
+        });
+      });
+    });
+
+    if (found) {
+      const message = `Môn học đã tồn tại ở ${foundSemester} và chuyên ngành ${foundSpecialization}`;
+      toast.error(message);
+    }
+
+    return found;
   };
 
   const handleAddCategory = async (e) => {
@@ -81,7 +99,7 @@ function AddCategory({ closeAddCategoryModal, fetchData }) {
       const newMajorName = newCategoryName.trim();
 
       if (isMajorNameExists(newMajorName)) {
-        toast.error("Danh mục bạn tạo đã tồn tại đã tồn tại.");
+        toast.error("Ngành bạn tạo đã tồn tại.");
         return;
       }
 
@@ -103,7 +121,6 @@ function AddCategory({ closeAddCategoryModal, fetchData }) {
       }
     } else {
       if (isSubjectExists(selectedSubject)) {
-        toast.error("Môn học đã tồn tại.");
         return;
       }
 
@@ -120,9 +137,14 @@ function AddCategory({ closeAddCategoryModal, fetchData }) {
         process.env.REACT_APP_ADD_NEW_CATEGORY,
         data
       );
-      toast.success("Thêm danh mục thành công!");
-      closeAddCategoryModal();
-      fetchData();
+
+      if (response.status === 200) {
+        toast.success("Thêm danh mục thành công!");
+
+        closeAddCategoryModal();
+
+        setCategoryStatusChanged((prev) => !prev);
+      }
     } catch (error) {
       toast.error("Lỗi khi thêm danh mục.");
     }
