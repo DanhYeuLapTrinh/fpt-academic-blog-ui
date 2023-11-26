@@ -4,29 +4,31 @@ import { toast } from "react-toastify";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import DeleteConfirm from "../../molecules/Tag/DeleteConfirm";
+import TagListTable from "../../organisms/TagList/TagListTable";
 import AddTagForm from "../../molecules/Tag/AddTagForm";
-import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
-
-import { DataGrid } from "@mui/x-data-grid";
-import { LinearProgress } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
+import { useTagsContext } from "../../../context/TagsContext";
 
 import "./styles.scss";
 
 function TagList() {
-  const [tagData, setTagData] = useState([]);
-
-  const [open, setOpen] = useState(false);
-
-  const [newTagName, setNewTagName] = useState("");
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
-
-  const [tagToDelete, setTagToDelete] = useState({ id: null, name: null });
-
   const axiosPrivate = useAxiosPrivate();
+
+  const {
+    tagData,
+    setTagData,
+    open,
+    setOpen,
+    newTagName,
+    setNewTagName,
+    errorMessage,
+    setErrorMessage,
+    deleteConfirmationOpen,
+    setDeleteConfirmationOpen,
+    tagToDelete,
+    setTagToDelete,
+  } = useTagsContext();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -98,8 +100,11 @@ function TagList() {
         toast.success(`Đã xóa thẻ: ${tagToDelete.name}`);
       })
       .catch((error) => {
-        console.error("Error deleting tag: " + error);
-        toast.error(`Xóa thẻ không thành công`);
+        if (error.response.status === 409) {
+          toast.error("Xóa thẻ không thành công do thẻ đã được sử dụng");
+        } else if (error.response) {
+          toast.error("Xóa thẻ xảy ra lỗi, vui lòng thủ lại sau!");
+        }
         setDeleteConfirmationOpen(false);
       });
   };
@@ -145,31 +150,7 @@ function TagList() {
         </div>
       </div>
 
-      <DataGrid
-        loading={tagData.length === 0}
-        sx={{
-          "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-            outline: "none !important",
-          },
-        }}
-        slots={{
-          loadingOverlay: LinearProgress,
-        }}
-        rows={tagData}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: {
-              pageSize: 5,
-            },
-          },
-        }}
-        pageSizeOptions={[5, 10, 25]}
-        autoHeight
-        disableRowSelectionOnClick
-        disableColumnMenu
-        disableColumnFilter
-      />
+      <TagListTable tagData={tagData} columns={columns} />
 
       <DeleteConfirm
         open={deleteConfirmationOpen}

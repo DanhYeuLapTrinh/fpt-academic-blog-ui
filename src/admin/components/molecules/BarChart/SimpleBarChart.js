@@ -5,7 +5,7 @@ import { DatePicker } from "@mui/x-date-pickers";
 
 export default function SimpleCharts({ totalVisit }) {
   const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 6);
 
   const totalVisitWithoutYear = totalVisit
     ? Object.keys(totalVisit).reduce((acc, dateKey) => {
@@ -43,7 +43,7 @@ export default function SimpleCharts({ totalVisit }) {
   return (
     <Box>
       <Card>
-        <CardHeader title="Lượng truy cập vào trang Fblog" />
+        <CardHeader title="Lượng truy cập vào trang Fblog theo tuần" />
         <DatePicker
           label="Ngày bắt đầu"
           value={startDate}

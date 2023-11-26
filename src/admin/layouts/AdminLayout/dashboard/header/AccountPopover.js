@@ -42,7 +42,7 @@ export default function AccountPopover() {
   };
 
   const handleLogout = async () => {
-    const res = await axiosPrivate.post("auth/remove-token", {
+    const res = await axiosPrivate.post(process.env.REACT_APP_LOGOUT_API, {
       refreshToken: auth?.refreshToken,
     });
     if (res) {

@@ -3,33 +3,22 @@ import React, { useState, useEffect } from "react";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import AddUserForm from "../../../utils/User/AddUserAction";
+import TabsTable from "../../organisms/UserList/TabsTable";
+import SearchUserByFullname from "../../organisms/UserList/SearchUserByFullname";
+import FilterRole from "../../organisms/UserList/FilterRole";
+import UserListTable from "../../organisms/UserList/UserList";
 import { handleSearch } from "../../../utils/User/SearchUserByFullname";
 import BanUnbanUser from "../../../utils/User/BanUnbanAction/BanUnbanAction";
 import { toast } from "react-toastify";
-import MuteModal from "../../atoms/MuteModal/MuteModal";
-import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
 import { useUserContext } from "../../../context/UserContext";
 
-import TextField from "@mui/material/TextField";
-import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import Modal from "react-modal";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { DataGrid } from "@mui/x-data-grid";
+
 import Button from "@mui/material/Button";
-import {
-  Grid,
-  LinearProgress,
-  Tabs,
-  Tab,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Stack,
-  Box,
-} from "@mui/material";
+import { Grid, Box } from "@mui/material";
 
 import "./styles.scss";
 import { Link } from "react-router-dom";
@@ -37,52 +26,45 @@ import { Link } from "react-router-dom";
 function UserResultList() {
   const axiosPrivate = useAxiosPrivate();
 
-  const [isAddUserFormOpen, setAddUserFormOpen] = useState(false);
-
-  const { data, setData } = useUserContext();
-
-  const [records, setRecords] = useState([]);
-
-  const [showMuteModal, setShowMuteModal] = useState(false);
-
-  const [muteDuration, setMuteDuration] = useState(1);
-
-  const [isMuted, setIsMuted] = useState({});
-
-  const [isMutedChanged, setIsMutedChanged] = useState(false);
-
-  const [selectedUserId, setSelectedUserId] = useState("");
-
-  const [selectedUsername, setSelectedUsername] = useState("");
-
-  const [editingUserId, setEditingUserId] = useState(null);
-
-  const [role, setRole] = useState("");
-
-  const [newRole, setNewRole] = useState("");
-
-  const [originalRole, setOriginalRole] = useState("");
-
-  const [loading, setLoading] = useState(false);
-
-  const [noRows, setNoRows] = useState(false);
-
-  const [banStatus, setBanStatus] = useState({});
-
-  const [banStatusChanged, setBanStatusChanged] = useState(false);
-
-  const [setRoleChanged, setSetRoleChanged] = useState(false);
-
-  const [value, setValue] = useState(0);
-
-  const [filterRole, setFilterRole] = useState("");
-
-  const allUsers = filterRole
-    ? records.filter((user) => user.role.roleName === filterRole)
-    : records.filter(
-        (user) => user.isBanned === false && user.isMuted === false
-      );
-  const bannedUsers = records.filter((user) => user.isBanned === true);
+  const {
+    data,
+    setData,
+    records,
+    setRecords,
+    isAddUserFormOpen,
+    setAddUserFormOpen,
+    isMuted,
+    setIsMuted,
+    editingUserId,
+    setEditingUserId,
+    newRole,
+    setNewRole,
+    setOriginalRole,
+    loading,
+    setLoading,
+    noRows,
+    setNoRows,
+    banStatus,
+    setBanStatus,
+    banStatusChanged,
+    setBanStatusChanged,
+    setRoleChanged,
+    setSetRoleChanged,
+    addUserChanged,
+    setAddUserChanged,
+    value,
+    setValue,
+    filterRole,
+    setFilterRole,
+    isLoading,
+    setIsLoading,
+    allUsersCount,
+    setAllUsersCount,
+    bannedUsersCount,
+    setBannedUsersCount,
+    allUsers,
+    bannedUsers,
+  } = useUserContext();
 
   //----------------------------------------------------------------------------
 
@@ -109,6 +91,15 @@ function UserResultList() {
 
     setLoading(false);
     console.log(res.data);
+
+    const notBannedUsers = res.data.filter(
+      (user) => !user.isBanned && !user.isMuted
+    );
+
+    const bannedUsers = res.data.filter((user) => user.isBanned);
+
+    setAllUsersCount(notBannedUsers.length);
+    setBannedUsersCount(bannedUsers.length);
   };
 
   useEffect(() => {
@@ -117,11 +108,7 @@ function UserResultList() {
 
   useEffect(() => {
     fetchData();
-  }, [banStatusChanged]);
-
-  useEffect(() => {
-    fetchData();
-  }, [setRoleChanged]);
+  }, [banStatusChanged || setRoleChanged || addUserChanged]);
 
   useEffect(() => {
     Modal.setAppElement("#root");
@@ -138,9 +125,11 @@ function UserResultList() {
   };
 
   const handleAddUser = (userData) => {
+    setIsLoading(true);
     axiosPrivate
       .post(process.env.REACT_APP_NEW_USER, userData)
       .then((response) => {
+        setIsLoading(false);
         if (response.status === 200) {
           toast.success("Thêm mới người dùng thành công");
 
@@ -149,12 +138,14 @@ function UserResultList() {
 
           setData(newData);
           setRecords(newRecords);
+          setAddUserChanged(!addUserChanged);
         }
       })
       .catch((error) => {
+        setIsLoading(false);
         console.error("Lỗi khi thêm mới người dùng:", error);
-        if (error.response && error.response.status === 401) {
-          if (error.response.data.message === "Mail exist") {
+        if (error?.response && error?.response?.status === 401) {
+          if (error?.response?.data?.message === "Mail exist") {
             toast.error("Email đã tồn tại");
           } else {
             toast.error("Hãy điền đầy đủ thông tin");
@@ -175,19 +166,6 @@ function UserResultList() {
     const role = event.target.value;
 
     setFilterRole(role);
-  };
-
-  const openMuteModal = (id) => {
-    setSelectedUserId(id);
-    const selectedUser = data.find((user) => user.id === id);
-    if (selectedUser) {
-      setSelectedUsername(selectedUser.username);
-    }
-    setShowMuteModal(true);
-  };
-
-  const closeMuteModal = () => {
-    setShowMuteModal(false);
   };
 
   //----------------------------------------------------------------------------
@@ -238,46 +216,6 @@ function UserResultList() {
     return await axiosPrivate
       .post(process.env.REACT_APP_UNBAN_ACCOUNT, { id })
       .then(() => setBanStatusChanged(!banStatusChanged));
-  };
-
-  const muteUser = () => {
-    const duration = parseInt(muteDuration, 10);
-    if (selectedUserId) {
-      axiosPrivate
-        .post(process.env.REACT_APP_MUTE_ACCOUNT, {
-          id: selectedUserId,
-          muteDuration: duration,
-        })
-        .then((res) => {
-          const updatedIsMuted = { ...isMuted };
-          updatedIsMuted[selectedUserId] = true;
-
-          setIsMuted(updatedIsMuted);
-
-          setShowMuteModal(false);
-
-          setIsMutedChanged(!isMutedChanged);
-
-          toast.success(`Hạn chế ${selectedUsername} thành công!`);
-        });
-    }
-  };
-
-  const unmuteUser = (userId) => {
-    axiosPrivate
-      .post(process.env.REACT_APP_UNMUTE_ACCOUNT, { id: userId })
-      .then((res) => {
-        const updatedIsMuted = { ...isMuted };
-        updatedIsMuted[userId] = false;
-
-        setIsMuted(updatedIsMuted);
-
-        setShowMuteModal(false);
-
-        setIsMutedChanged(!isMutedChanged);
-
-        toast.success(`Hủy hạn chế ${selectedUsername} thành công!`);
-      });
   };
 
   //----------------------------------------------------------------------------
@@ -432,150 +370,71 @@ function UserResultList() {
               onClose={handleCloseAddUserForm}
               data={data}
               onAddUser={handleAddUser}
+              isLoading={isLoading}
             />
           </form>
         </div>
       </div>
 
-      <Tabs value={value} onChange={handleChangeFilter}>
-        <Tab label="Tất cả" className="tab" />
-        <Tab label="Bị cấm" className="tab" />
-      </Tabs>
-
-      <Grid container>
-        <Grid item xs={2}>
-          <FormControl
-            variant="outlined"
-            sx={{ display: "flex", flex: 1, padding: 1.5 }}
-          >
-            <InputLabel id="role-label" sx={{ mt: 1.8, ml: 1, fontSize: 13 }}>
-              Vai trò
-            </InputLabel>
-            <Select
-              labelId="role-label"
-              id="role-select"
-              value={filterRole}
-              onChange={handleChangeSetRole}
-              label="Role"
-            >
-              <MenuItem value="">Chọn vai trò</MenuItem>
-              <MenuItem value="lecturer">Lecturer</MenuItem>
-              <MenuItem value="mentor">Mentor</MenuItem>
-              <MenuItem value="student">Student</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-
-        <Grid item xs={10}>
-          <TextField
-            className="search-input"
-            placeholder="Tìm kiếm tài khoản..."
-            type="text"
-            variant="outlined"
-            fullWidth
-            sx={{
-              padding: 1.5,
-              fontSize: 13,
-            }}
-            onChange={handleSearchUser}
-            InputProps={{
-              startAdornment: <SearchIcon sx={{ marginRight: 1 }} />,
-            }}
-          />
-        </Grid>
-      </Grid>
-
       <Box
         sx={{
-          width: "100%",
-          "& .super-app-theme--header": {
-            backgroundColor: "rgb(193, 195, 196)",
-          },
+          border: "1px",
+          borderRadius: "20px",
+          boxShadow: 2,
+          mt: 5,
         }}
       >
-        {value === 0 && (
-          <DataGrid
-            getRowId={(row) => row.id || row.username}
-            loading={loading}
-            sx={{
-              "& .MuiDataGrid-cell": {
-                display: "flex",
-                padding: "8px",
-                whiteSpace: "normal",
-                wordWrap: "break-word",
-              },
-              "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-                outline: "none !important",
-              },
-            }}
-            slots={{
-              noRowsOverlay: () =>
-                noRows && <CustomNoRowsOverlay title="Không có dữ liệu" />,
-              loadingOverlay: () => loading && <LinearProgress />,
-            }}
-            rows={allUsers}
-            rowHeight={75}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            autoHeight
-            disableRowSelectionOnClick
-            disableColumnMenu
-            disableColumnFilter
-          />
-        )}
+        <TabsTable
+          value={value}
+          handleChangeFilter={handleChangeFilter}
+          allUsersCount={allUsersCount}
+          bannedUsersCount={bannedUsersCount}
+        />
 
-        {value === 1 && (
-          <DataGrid
-            getRowId={(row) => row.id || row.username}
-            loading={loading}
-            sx={{
-              "& .MuiDataGrid-cell": {
-                display: "flex",
-                padding: "8px",
-                whiteSpace: "normal",
-                wordWrap: "break-word",
-              },
-              "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
-                outline: "none !important",
-              },
-            }}
-            slots={{
-              noRowsOverlay: () => noRows && <CustomNoRowsOverlay />,
-              loadingOverlay: () => loading && <LinearProgress />,
-            }}
-            rows={bannedUsers}
-            rowHeight={75}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
-              },
-            }}
-            pageSizeOptions={[5, 10, 25]}
-            autoHeight
-            disableRowSelectionOnClick
-            disableColumnMenu
-            disableColumnFilter
+        <Grid container margin={1}>
+          <FilterRole
+            filterRole={filterRole}
+            handleChangeSetRole={handleChangeSetRole}
           />
-        )}
+
+          <SearchUserByFullname handleSearchUser={handleSearchUser} />
+        </Grid>
+
+        <Box
+          sx={{
+            width: "100%",
+            "& .super-app-theme--header": {
+              backgroundColor: "rgb(244, 246, 248)",
+            },
+          }}
+        >
+          {value === 0 && (
+            <UserListTable
+              loading={loading}
+              noRows={noRows}
+              users={allUsers}
+              columns={columns}
+              banAccount={banAccount}
+              unbanAccount={unbanAccount}
+              banStatus={banStatus}
+              setBanStatus={setBanStatus}
+            />
+          )}
+
+          {value === 1 && (
+            <UserListTable
+              loading={loading}
+              noRows={noRows}
+              users={bannedUsers}
+              columns={columns}
+              banAccount={banAccount}
+              unbanAccount={unbanAccount}
+              banStatus={banStatus}
+              setBanStatus={setBanStatus}
+            />
+          )}
+        </Box>
       </Box>
-
-      <MuteModal
-        isOpen={showMuteModal}
-        onRequestClose={closeMuteModal}
-        muteDuration={muteDuration}
-        onMuteDurationChange={setMuteDuration}
-        onMuteUser={muteUser}
-      />
     </>
   );
 }

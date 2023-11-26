@@ -7,7 +7,7 @@ import DeleteSpecPopup from "../../molecules/Category/DeleteSpecPopup";
 import DeleteSubjectPopup from "../../molecules/Category/DeleteSubjectPopup";
 import { toast } from "react-toastify";
 import EditCategoryModal from "../../../utils/Categories/EditCategory/EditCategory";
-
+import { useCategoriesContext } from "../../../context/CategoriesContext";
 import Paper from "@mui/material/Paper";
 import Modal from "@mui/material/Modal";
 
@@ -17,25 +17,37 @@ import { Card } from "@mui/material";
 function CateList() {
   const axiosPrivate = useAxiosPrivate();
 
-  const [categories, setCategories] = useState([]);
-  const [majors, setMajors] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedSemester, setSelectedSemester] = useState(null);
-  const [selectedSubject, setSelectedSubject] = useState(null);
-
-  const [isAddCategoryModalOpen, setIsAddCategoryModalOpen] = useState(false);
-
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [categoryToDelete, setCategoryToDelete] = useState(null);
-  const [isDeleteSubjectModalOpen, setIsDeleteSubjectModalOpen] =
-    useState(false);
-  const [subjectToDelete, setSubjectToDelete] = useState(null);
-
-  const [selectedRadioCategory, setSelectedRadioCategory] = useState(null);
-  const [selectedRadioSubject, setSelectedRadioSubject] = useState(null);
-
-  const [isEditCategoryModalOpen, setIsEditCategoryModalOpen] = useState(false);
-  const [categoryToEdit, setCategoryToEdit] = useState(null);
+  const {
+    categories,
+    setCategories,
+    setMajors,
+    selectedCategory,
+    setSelectedCategory,
+    selectedSemester,
+    setSelectedSemester,
+    selectedSubject,
+    setSelectedSubject,
+    isAddCategoryModalOpen,
+    setIsAddCategoryModalOpen,
+    isDeleteModalOpen,
+    setIsDeleteModalOpen,
+    categoryToDelete,
+    setCategoryToDelete,
+    isDeleteSubjectModalOpen,
+    setIsDeleteSubjectModalOpen,
+    subjectToDelete,
+    setSubjectToDelete,
+    selectedRadioCategory,
+    setSelectedRadioCategory,
+    selectedRadioSubject,
+    setSelectedRadioSubject,
+    isEditCategoryModalOpen,
+    setIsEditCategoryModalOpen,
+    categoryToEdit,
+    setCategoryToEdit,
+    categoryStatusChanged,
+    setCategoryStatusChanged,
+  } = useCategoriesContext();
 
   //-----------------------------------------------------------------------------------
 
@@ -52,6 +64,10 @@ function CateList() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [categoryStatusChanged]);
 
   //-----------------------------------------------------------------------------------
 
@@ -75,7 +91,6 @@ function CateList() {
   };
 
   const openDeleteModal = (category) => {
-    console.log("Category clicked:", category);
     setIsDeleteModalOpen(true);
     setCategoryToDelete(category);
   };
@@ -112,22 +127,27 @@ function CateList() {
   const handleDeleteCategory = async () => {
     if (categoryToDelete) {
       try {
-        await axiosPrivate.post(process.env.REACT_APP_DELETE_CATEGORY, {
-          id: categoryToDelete.id,
-        });
-
-        toast.success(
-          `Xóa chuyên ngành "${categoryToDelete.categoryName}" thành công`
+        const res = await axiosPrivate.post(
+          process.env.REACT_APP_DELETE_CATEGORY,
+          {
+            id: categoryToDelete.id,
+          }
         );
 
-        fetchData();
-
-        closeDeleteModal();
+        if (res.status === 200) {
+          toast.success(
+            `Xóa chuyên ngành "${categoryToDelete.categoryName}" thành công`
+          );
+          setCategoryStatusChanged((prev) => !prev);
+          closeDeleteModal();
+        }
       } catch (error) {
         if (error.response.status === 409) {
           toast.error(
             "Không thể xóa chuyên ngành này vì đã được sử dụng trong bài viết"
           );
+        } else {
+          toast.error("Xóa danh mục xảy ra lỗi");
         }
         console.error("Error deleting category:", error);
       }
@@ -137,22 +157,26 @@ function CateList() {
   const handleDeleteSubject = async () => {
     if (subjectToDelete) {
       try {
-        await axiosPrivate.post(process.env.REACT_APP_DELETE_CATEGORY, {
-          id: subjectToDelete.id,
-        });
-        toast.success(
-          `Xóa môn học "${subjectToDelete.categoryName}" thành công`
+        const res = await axiosPrivate.post(
+          process.env.REACT_APP_DELETE_CATEGORY,
+          {
+            id: subjectToDelete.id,
+          }
         );
-        closeDeleteSubjectModal();
-        await fetchData();
-
-        setSelectedSubject(null);
-        setSelectedRadioSubject(null);
+        if (res.status === 200) {
+          toast.success(
+            `Xóa môn học "${subjectToDelete.categoryName}" thành công`
+          );
+          closeDeleteSubjectModal();
+          setCategoryStatusChanged((prev) => !prev);
+        }
       } catch (error) {
         if (error.response.status === 409) {
           toast.error(
             "Không thể xóa môn học này vì đã được sử dụng trong bài viết"
           );
+        } else {
+          toast.error("Xóa danh mục xảy ra lỗi");
         }
         console.error("Error deleting subject:", error);
       }
@@ -199,10 +223,7 @@ function CateList() {
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.5)",
           }}
         >
-          <AddCategory
-            closeAddCategoryModal={closeAddCategoryModal}
-            fetchData={fetchData}
-          />
+          <AddCategory closeAddCategoryModal={closeAddCategoryModal} />
         </Card>
       </Modal>
     );

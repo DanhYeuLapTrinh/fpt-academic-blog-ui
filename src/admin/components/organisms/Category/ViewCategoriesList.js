@@ -14,8 +14,6 @@ function ViewCategoriesList({
   selectedCategory,
   selectedSemester,
   selectedSubject,
-  selectedRadioCategory,
-  selectedRadioSubject,
   handleSelectCategory,
   handleSelectSemester,
   handleRadioCategoryChange,
@@ -23,6 +21,11 @@ function ViewCategoriesList({
   openDeleteModal,
   openDeleteSubjectModal,
   openEditCategoryModal,
+  selectedRadioCategory,
+  setSelectedRadioCategory,
+  selectedRadioSubject,
+  setSelectedRadioSubject,
+  setIsEditCategoryModalOpen,
 }) {
   const [isSemesterVisible, setSemesterVisible] = useState(false);
   const [isSubjectVisible, setSubjectVisible] = useState(false);
@@ -32,9 +35,11 @@ function ViewCategoriesList({
       handleSelectCategory(null);
       setSemesterVisible(false);
       setSubjectVisible(false);
+      setSelectedRadioCategory(null);
     } else {
       handleSelectCategory(category);
       setSemesterVisible(true);
+      setSelectedRadioCategory(null);
     }
   };
 
