@@ -45,7 +45,7 @@ export default function PostProvider({ children }) {
         setIsFavored,
         upvote,
         setUpVote,
-        upvote,
+        downvote,
         setDownVote,
         select,
         setSelect,

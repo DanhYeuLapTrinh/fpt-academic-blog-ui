@@ -22,7 +22,7 @@ export default function WriteService() {
     setFile,
     setTopic,
     skills,
-    setSkills
+    setSkills,
   } = useContent();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -79,25 +79,23 @@ export default function WriteService() {
   const handleSubmit = useCallback(
     async (e) => {
       try {
-        if (
-          !title ||
-          wordcount < 30 ||
-          (!coverURL && tag !== "Q&A") ||
-          !contentTiny ||
-          !tagID ||
-          !subjectID
-        ) {
-          toast.error("Vui lòng điền đầy đủ thông tin");
+        if (!title) {
+          toast.error("Vui lòng nhập tiêu đề hợp lệ");
           return;
-        } else if (charCount >= 100) {
-          toast.error("Tiêu đề không được dài hơn 100 ký tự");
+        } else if (charCount < 30 || charCount > 100) {
+          toast.error("Tiêu đề phải có độ dài từ 30 đến 100 ký tự");
           return;
-        } else if (charCount < 30) {
-          toast.error("Tiêu đề quá ngắn");
+        } else if (!coverURL && tag !== "Q&A") {
+          toast.error("Vui lòng chọn ảnh bìa");
+          return;
+        } else if (wordcount < 30) {
+          toast.error("Nội dung bài viết phải có ít nhất 30 từ");
           return;
         } else if (skills.length === 0) {
-          console.log(skills);
-          toast.error("Vui lòng chọn từ khóa");
+          toast.error("Vui lòng chọn ít nhất một từ khóa");
+          return;
+        } else if (!tagID || !subjectID) {
+          toast.error("Vui lòng chọn đầy đủ chủ đề");
           return;
         }
         let apiCallURL =
@@ -129,7 +127,7 @@ export default function WriteService() {
           setTitle("");
           setFile("");
           setCoverURL("");
-          setSkills([])
+          setSkills([]);
           window.scrollTo(0, 0);
           toast.success(
             e.target.value === "draft" ? "Đã lưu nháp" : "Đăng bài thành công"
@@ -156,11 +154,13 @@ export default function WriteService() {
           process.env.REACT_APP_CATEGORIES_API
         );
         setData(response.data);
-      } catch (error) {if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, []);
@@ -170,11 +170,13 @@ export default function WriteService() {
       try {
         const tagList = await axiosPrivate.get(process.env.REACT_APP_TAGS_API);
         setTagList(tagList.data);
-      } catch (error) {if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     if (data) fetchData();
   }, [data]);
@@ -184,11 +186,13 @@ export default function WriteService() {
       try {
         const topics = await axiosPrivate.get(process.env.REACT_APP_GET_TOPICS);
         setTopic(topics.data);
-      } catch (error) {if (error?.response?.status === 405) {
-        toast.error("Tài khoản của bạn đã bị khóa");
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth");
-      }}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     if (tagList) fetchData();
   }, [tagList]);

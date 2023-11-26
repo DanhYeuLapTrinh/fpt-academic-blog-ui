@@ -12,7 +12,7 @@ export default function CategoriesService() {
   const axiosPrivate = useAxiosPrivate();
   const [data, setData] = useState();
   const { amount, setAmount } = useHome();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   window.scrollTo(0, 0);
   useEffect(() => {
     const fetchData = async () => {
@@ -25,13 +25,19 @@ export default function CategoriesService() {
         );
         setData(response?.data);
         setAmount(response?.data?.length);
-      } catch (error) {if(error?.response?.status === 405){
-        toast.error("Tài khoản của bạn đã bị khóa")
-        navigate("/login", { replace: true });
-        localStorage.removeItem("auth")
-      }}
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        }
+      }
     };
     fetchData();
   }, [id]);
-  return <Categories name={name} id={id} data={data} amount={amount} />;
+  let sortedList = data?.sort(
+    (a, b) =>
+      new Date(b.dateOfPost).getTime() - new Date(a.dateOfPost).getTime()
+  );
+  return <Categories name={name} id={id} data={sortedList} amount={amount} />;
 }

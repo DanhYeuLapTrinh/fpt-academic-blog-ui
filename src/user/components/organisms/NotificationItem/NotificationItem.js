@@ -28,22 +28,23 @@ export default function NotificationItem({ handleClose, notification }) {
           (item) => item?.notificationId !== notification?.notificationId
         )
       );
-
-      readNotification.read = true;
-      let newNotification = notifications?.filter(
-        (item) => item?.notificationId !== notification?.notificationId
-      );
-      setNotifications(
-        [readNotification, ...newNotification]?.sort(
-          (a, b) => (a, b) =>
-            new Date(b.notifyTime).getTime() - new Date(a.notifyTime).getTime()
-        )
-      );
+      // readNotification.read = true;
+      // let newNotification = notifications?.filter(
+      //   (item) => item?.notificationId !== notification?.notificationId
+      // );
+      // setNotifications(
+      //   [readNotification, ...newNotification]?.sort(
+      //     (a, b) => (a, b) =>
+      //       new Date(b.notifyTime).getTime() - new Date(a.notifyTime).getTime()
+      //   )
+      // );
     } catch (error) {
       if (error?.response?.status === 405) {
         toast.error("Tài khoản của bạn đã bị khóa");
         navigate("/login", { replace: true });
         localStorage.removeItem("auth");
+      } else if (error?.response?.status === 404) {
+        navigate("/404-not-found", { replace: true });
       }
     }
   };
@@ -51,7 +52,7 @@ export default function NotificationItem({ handleClose, notification }) {
   return (
     <Link
       to={
-        notification?.content?.includes("từ chối")
+        notification?.content?.includes("Bài viết của bạn đã bị từ chối")
           ? `/edit-draft/${notification?.relatedUrl}`
           : `/view/${notification?.relatedUrl}`
       }
@@ -68,7 +69,9 @@ export default function NotificationItem({ handleClose, notification }) {
         <Link
           to={
             !notification?.content?.includes("được duyệt") &&
-            !notification?.content?.includes("từ chối") &&
+            !notification?.content?.includes(
+              "Bài viết của bạn đã bị từ chối"
+            ) &&
             `/profile/${notification?.triggerUser}`
           }
         >
@@ -84,7 +87,9 @@ export default function NotificationItem({ handleClose, notification }) {
               height="50px"
               src={
                 notification?.content?.includes("được duyệt") ||
-                notification?.content?.includes("từ chối") ||
+                notification?.content?.includes(
+                  "Bài viết của bạn đã bị từ chối"
+                ) ||
                 notification?.content?.includes("xét thưởng")
                   ? null
                   : notification?.avatarOfTriggerUser
@@ -137,7 +142,9 @@ export default function NotificationItem({ handleClose, notification }) {
                 <Icon icon="mdi:check-bold" color="#5927e5" width="14" />
               </IconButton>
             )}
-            {notification?.content?.includes("từ chối") && (
+            {notification?.content?.includes(
+              "Bài viết của bạn đã bị từ chối"
+            ) && (
               <IconButton
                 sx={{
                   bgcolor: "secondary.alt",
@@ -150,7 +157,9 @@ export default function NotificationItem({ handleClose, notification }) {
                 <Icon icon="ph:x-fill" color="red" width="16" />
               </IconButton>
             )}
-            {!notification?.content?.includes("từ chối") &&
+            {!notification?.content?.includes(
+              "Bài viết của bạn đã bị từ chối"
+            ) &&
               !notification?.content?.includes("được duyệt") &&
               !notification?.content?.includes("xét thưởng") &&
               !notification?.content?.includes("trao thưởng") && (
@@ -173,7 +182,9 @@ export default function NotificationItem({ handleClose, notification }) {
             <Text fontSize="15px" fontWeight="400" lineHeight="20px">
               <span style={{ fontWeight: "500" }}>
                 {notification?.content?.includes("được duyệt") ||
-                notification?.content?.includes("từ chối")
+                notification?.content?.includes(
+                  "Bài viết của bạn đã bị từ chối"
+                )
                   ? ""
                   : notification?.fullNameOfTriggerUser}
               </span>{" "}

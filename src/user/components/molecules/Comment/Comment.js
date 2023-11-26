@@ -48,9 +48,10 @@ export default function Comment({
                 bgcolor={"secondary.alt"}
                 minHeight={"80px"}
                 borderRadius={"10px"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
               >
                 <Stack
-                  width={"100%"}
                   p={2}
                   height={"100%"}
                   justifyContent={"space-evenly"}
@@ -138,7 +139,9 @@ export default function Comment({
           autoFocus
           auth={auth}
           reply
-          handleSubmit={(e) => addComment(e, replyId, props?.commentId, props?.userId)}
+          handleSubmit={(e) =>
+            addComment(e, replyId, props?.commentId, props?.userId)
+          }
         />
       )}
 
@@ -156,6 +159,7 @@ export default function Comment({
             commentId={reply.commentId}
             addComment={addComment}
             deleteComment={deleteComment}
+            editComment={editComment}
             replies={[]}
             comment={reply}
             vote={comment?.numOfUpvote - comment?.numOfDownvote}

@@ -25,7 +25,7 @@ export default function QAList(props) {
                   <Skeleton
                     animation="wave"
                     variant="rectangular"
-                    width={740}
+                    width={"100%"}
                     height={135}
                     sx={{ borderRadius: "10px" }}
                   />

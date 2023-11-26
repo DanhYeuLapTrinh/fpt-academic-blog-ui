@@ -12,8 +12,8 @@ export default function Feed(props) {
     <Box mb={"20px"}>
       <Box
         sx={{
-          p: "37px 0 57px",
-          bgcolor: "secondary.alt",
+          p: props?.data?.length >= 5 ? "37px 0 57px" : "37px 0 0",
+          bgcolor: props?.data?.length >= 5 ? "secondary.alt" : "",
         }}
       >
         <Container>

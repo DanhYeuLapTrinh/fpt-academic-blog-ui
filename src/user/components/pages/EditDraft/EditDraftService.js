@@ -61,6 +61,53 @@ export default function EditDraftService() {
     setTag();
     setTagID();
   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let draft = await axiosPrivate.post(process.env.REACT_APP_VIEW_A_POST, {
+          slug: slug,
+        });
+        localStorage.setItem(
+          "draftContent",
+          JSON.stringify({
+            contentTiny: draft?.data?.content,
+            title: draft?.data?.title,
+          })
+        );
+        setDraftDetail(draft?.data);
+        setTitle(draft?.data?.title);
+        setCharCount(draft?.data?.title?.length);
+        setCoverURL(draft?.data?.coverURL);
+        setMajor(draft?.data?.category[0]?.categoryName);
+        setSubject(draft?.data?.category[2]?.categoryName);
+        setSubjectID(draft?.data?.category[2].categoryId);
+        setSemester(draft?.data?.category[1]?.categoryName);
+        setTag(draft?.data?.tag.tagName);
+        setTagID(draft?.data?.tag.tagId);
+        setSkills(draft?.data?.postSkill);
+      } catch (error) {
+        if (error?.response?.status === 405) {
+          toast.error("Tài khoản của bạn đã bị khóa");
+          navigate("/login", { replace: true });
+          localStorage.removeItem("auth");
+        } else if (error?.response?.status === 404) {
+          navigate("/404-not-found", { replace: true });
+        }
+      }
+    };
+    fetchData();
+    return () => {
+      localStorage.removeItem("draftContent");
+      setMajor(undefined);
+      setSemester(undefined);
+      setSubject(undefined);
+      setTag(undefined);
+      setTitle("");
+      setFile("");
+      setCoverURL("");
+      setSkills([]);
+    };
+  }, [slug]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,52 +158,6 @@ export default function EditDraftService() {
     };
     if (tagList && skills) fetchData();
   }, [tagList]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let draft = await axiosPrivate.post(process.env.REACT_APP_VIEW_A_POST, {
-          slug: slug,
-        });
-        localStorage.setItem(
-          "draftContent",
-          JSON.stringify({
-            contentTiny: draft?.data?.content,
-            title: draft?.data?.title,
-          })
-        );
-        setDraftDetail(draft?.data);
-        setTitle(draft?.data?.title);
-        setCharCount(draft?.data?.title?.length);
-        setCoverURL(draft?.data?.coverURL);
-        setMajor(draft?.data?.category[0]?.categoryName);
-        setSubject(draft?.data?.category[2]?.categoryName);
-        setSubjectID(draft?.data?.category[2].categoryId);
-        setSemester(draft?.data?.category[1]?.categoryName);
-        setTag(draft?.data?.tag.tagName);
-        setTagID(draft?.data?.tag.tagId);
-        setSkills(draft?.data?.postSkill);
-      } catch (error) {
-        if (error?.response?.status === 405) {
-          toast.error("Tài khoản của bạn đã bị khóa");
-          navigate("/login", { replace: true });
-          localStorage.removeItem("auth");
-        }
-      }
-    };
-    fetchData();
-    return () => {
-      localStorage.removeItem("draftContent");
-      setMajor(undefined);
-      setSemester(undefined);
-      setSubject(undefined);
-      setTag(undefined);
-      setTitle("");
-      setFile("");
-      setCoverURL("");
-      setSkills([]);
-    };
-  }, [slug]);
 
   const handleImage = async (blobInfo) => {
     try {

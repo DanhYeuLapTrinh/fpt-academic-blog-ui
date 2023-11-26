@@ -26,7 +26,6 @@ export default function RewardedPostsSeeMoreService() {
     };
     fetchData();
   }, []);
-  let sortedRewardedPosts = sortByPropertyName(rewardedPosts, "", "postId");
 
-  return <RewardedPostsSeeMore data={sortedRewardedPosts} />;
+  return <RewardedPostsSeeMore data={rewardedPosts} />;
 }

@@ -22,7 +22,7 @@ import { toast } from "react-toastify";
 import useProfile from "../../../hooks/useProfile";
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
-  const {setAvatarURL} = useProfile()
+  const { setAvatarURL } = useProfile();
   const { isLoading, setIsLoading } = useHome();
   const navigate = useNavigate();
   const INITIAL_FORM_STATE = {
@@ -45,8 +45,6 @@ export default function LoginForm() {
         username: values.username,
         password: values.password,
       });
-      if (response?.data?.isBanned)
-        throw new Error("Tài khoản không được phép đăng nhập vào hệ thống");
       const auth = {
         id: response?.data?.id,
         user: response?.data?.fullname,
@@ -56,7 +54,7 @@ export default function LoginForm() {
         profileURL: response?.data?.profileURL,
         coverURL: response?.data?.coverURL,
       };
-      setAvatarURL(response?.data?.profileURL)
+      setAvatarURL(response?.data?.profileURL);
       localStorage.setItem("auth", JSON.stringify(auth));
       values.username = "";
       values.password = "";
@@ -79,8 +77,8 @@ export default function LoginForm() {
       } else if (error.response?.status === 401) {
         setFieldError("password", "Sai thông tin tài khoản");
         values.password = "";
-      } else {
-        toast.error("Đăng nhập thất bại");
+      } else if (error.response?.status === 405) {
+        toast.error("Tài khoản của bạn đã bị khóa");
         values.username = "";
         values.password = "";
       }

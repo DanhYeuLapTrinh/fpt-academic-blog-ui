@@ -4,11 +4,14 @@ import useAuth from "../hooks/useAuth";
 
 export default function RequireAuth({ allowRoles }) {
   const location = useLocation();
-  const auth = useAuth()
-  return (allowRoles.find((role) => role === auth?.role) && auth?.token) ? (
+  const auth = useAuth();
+  return allowRoles.find((role) => role === auth?.role) &&
+    auth?.refreshToken ? (
     <Outlet />
-  ) : auth?.user ? (
-    <Navigate to="/404-not-found" state={{ from: location }} replace />
+  ) : auth?.role === "admin" ? (
+    <Navigate to="/welcome" state={{ from: location }} replace />
+  ) : auth?.refreshToken ? (
+    <Navigate to="/" state={{ from: location }} replace />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
   );

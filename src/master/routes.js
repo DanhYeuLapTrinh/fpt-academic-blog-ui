@@ -59,21 +59,22 @@ const recoverPasswordRoutes = [
 
 const loggedInUserRoutes = [
   { path: "/", component: HomeService },
-  { path: "/feed", component: FeedService },
-  { path: "/news", component: NewsService },
+
   { path: "/favorite", component: FavoriteService },
   { path: "/trending", component: TrendingPostsSeeMoreService },
   { path: "/latest", component: LatestPostsSeeMoreService },
   { path: "/draft", component: DraftService },
   { path: "/rewarded", component: RewardedPostsSeeMoreService },
   { path: "/shorts", component: ShortPostSeeMoreService },
-  { path: "/categories", component: CategoriesService },
-  { path: "/tags", component: TagsService },
   { path: "/view/:slug", component: ViewAPostService },
   { path: "/news/:id", component: ViewNewsService },
 ];
 
 const loggedInUserRoutesOther = [
+  { path: "/categories", component: CategoriesService },
+  { path: "/tags", component: TagsService },
+  { path: "/news", component: NewsService },
+  { path: "/feed", component: FeedService },
   { path: "/write", component: WriteService },
   { path: "/edit/:slug", component: EditPostService },
   { path: "/edit-draft/:slug", component: EditDraftService },

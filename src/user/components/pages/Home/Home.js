@@ -22,18 +22,23 @@ export default function Home({ qaList, ...props }) {
       <LatestPostSection latestPosts={props.latestPosts} />
       <RewardedPostList />
       <Container>
-        <Grid2 container xs={12} columnGap={"20px"}>
-          <Grid2 item xs={8}>
+        <Grid2
+          container
+          md={12}
+          columnGap={"20px"}
+          direction={{ md: "column", lg: "row" }}
+        >
+          <Grid2 item sm={12} md={12} lg={8}>
             <QAList qaList={qaList} />
-            <PostList qaList={qaList}/>
           </Grid2>
-          <Grid2 item xs>
+          <Grid2 item sm={12} md={12} lg>
             <Stack spacing={12}>
               <TrendingTagSection trendingTags={props.trendingTags} />
               <ShortList shortPosts={props.shortPosts} />
             </Stack>
           </Grid2>
         </Grid2>
+        <PostList qaList={qaList} />
       </Container>
     </div>
   );

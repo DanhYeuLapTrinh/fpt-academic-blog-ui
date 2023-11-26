@@ -8,13 +8,13 @@ import PostCardV2Skeleton from "../../organisms/Skeleton/PostCardV2Skeleton/Post
 
 export default function TrendingList(props) {
   return (
-    <Grid2 container xs={12} columnGap={"20px"} paddingTop={"37px"}>
+    <Grid2 container md={12} columnGap={"20px"} paddingTop={"37px"} rowGap={"20px"}>
       <Grid2 item xs={12}>
         <SectionTitle title="Thịnh hành" see link="/trending" />
       </Grid2>
       {props?.trendingPosts?.length >= 4 ? (
         <>
-          <Grid2 item xs>
+          <Grid2 item sm={12} md>
             <PostCardV1
               url={props?.trendingPosts[1]?.coverURL}
               src={props?.trendingPosts[1]?.avatarURL}
@@ -37,7 +37,7 @@ export default function TrendingList(props) {
               title="21px"
             />
           </Grid2>
-          <Grid2 item xs={5}>
+          <Grid2 item sm={12} md={5}>
             <PostCardV2
               url={props?.trendingPosts[0]?.coverURL}
               src={props?.trendingPosts[0]?.avatarURL}
@@ -60,9 +60,14 @@ export default function TrendingList(props) {
               title="30px"
             />
           </Grid2>
-          <Grid2 item xs>
-            <Grid2 container direction={"column"} rowGap={"20px"}>
-              <Grid2 item xs style={{ height: "50%" }}>
+          <Grid2 item sm={12} md>
+            <Grid2
+              container
+              direction={{ sm: "row", md: "column" }}
+              rowGap={"20px"}
+              spacing={"20px"}
+            >
+              <Grid2 item sm={6} md={12} style={{ height: "50%" }}>
                 <PostCardV1
                   url={props?.trendingPosts[2]?.coverURL}
                   src={props?.trendingPosts[2]?.avatarURL}
@@ -87,7 +92,7 @@ export default function TrendingList(props) {
                   small={true}
                 />
               </Grid2>
-              <Grid2 item xs style={{ height: "50%" }}>
+              <Grid2 item sm={6} md={12} style={{ height: "50%" }}>
                 <PostCardV1
                   url={props?.trendingPosts[3]?.coverURL}
                   src={props?.trendingPosts[3]?.avatarURL}

@@ -16,17 +16,20 @@ export default function CommentBar({
 }) {
   const [text, setText] = useState(initialText);
   const { setActiveComment } = usePost();
-  const { avatarURL, setAvatarURL } = useProfile();
+  const { avatarURL } = useProfile();
   const auth = useAuth();
-  const navigate = useNavigate();
-  const axiosPrivate = useAxiosPrivate();
   const onSubmit = (e) => {
     if (e.keyCode === 13 && e.shiftKey === false) {
-      handleSubmit(e);
-      !props.reply && setText("");
+      if (e.target.value.trim().length > 300) {
+        toast.error("Bình luận không được dài quá 300 kí tự");
+        return;
+      } else {
+        handleSubmit(e);
+        !props.reply && setText("");
+      }
     }
   };
-  
+
   return (
     <Stack
       spacing={2}

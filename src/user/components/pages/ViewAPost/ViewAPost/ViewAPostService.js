@@ -7,6 +7,8 @@ import usePost from "../../../../hooks/usePost";
 import { toast } from "react-toastify";
 import usePostAPI from ".";
 import useHomeAPI from "../../Home";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { Container } from "@mui/material";
 
 export default function ViewAPostService() {
   const { slug } = useParams();
@@ -19,6 +21,7 @@ export default function ViewAPostService() {
     setHistoryDetail,
     isFavored,
     upvote,
+    downvote,
     select,
     setSelect,
     setIsFavored,
@@ -106,15 +109,23 @@ export default function ViewAPostService() {
       {!postDetail ? (
         <ViewAPostSkeleton />
       ) : (
-        <ViewAPost
-          postDetail={postDetail}
-          isFollowing={isFollowing}
-          isFavored={isFavored}
-          upvote={upvote}
-          select={select}
-          setSelect={setSelect}
-          handleActions={handleActions}
-        />
+        // <Container>
+        //   <Grid2 container>
+        //     <Grid2 item xs={8}>
+              <ViewAPost
+                postDetail={postDetail}
+                isFollowing={isFollowing}
+                isFavored={isFavored}
+                upvote={upvote}
+                downvote={downvote}
+                select={select}
+                setSelect={setSelect}
+                handleActions={handleActions}
+              />
+        //     </Grid2>
+        //     <Grid2 item xs={4}></Grid2>
+        //   </Grid2>
+        // </Container>
       )}
     </>
   );
