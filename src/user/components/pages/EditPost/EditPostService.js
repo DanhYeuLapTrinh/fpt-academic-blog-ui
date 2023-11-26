@@ -151,24 +151,23 @@ export default function EditPostService() {
 
   const handleSubmit = useCallback(async () => {
     try {
-      if (
-        !title ||
-        wordcount < 30 ||
-        (!coverURL && tag !== "Q&A") ||
-        !contentTiny ||
-        !tagID ||
-        !subjectID
-      ) {
-        toast.error("Vui lòng điền đầy đủ thông tin");
+      if (!title) {
+        toast.error("Vui lòng nhập tiêu đề hợp lệ");
         return;
-      } else if (charCount >= 100) {
-        toast.error("Tiêu đề không được dài hơn 100 ký tự");
+      } else if (charCount < 30 || charCount > 100) {
+        toast.error("Tiêu đề phải có độ dài từ 30 đến 100 ký tự");
         return;
-      } else if (charCount < 30) {
-        toast.error("Tiêu đề quá ngắn");
+      } else if (!coverURL && tag !== "Q&A") {
+        toast.error("Vui lòng chọn ảnh bìa");
+        return;
+      } else if (wordcount < 30) {
+        toast.error("Nội dung bài viết phải có ít nhất 30 từ");
         return;
       } else if (skills.length === 0) {
-        toast.error("Vui lòng chọn từ khóa");
+        toast.error("Vui lòng chọn ít nhất một từ khóa");
+        return;
+      } else if (!tagID || !subjectID) {
+        toast.error("Vui lòng chọn đầy đủ chủ đề");
         return;
       }
       let slug = toSlug(title);
