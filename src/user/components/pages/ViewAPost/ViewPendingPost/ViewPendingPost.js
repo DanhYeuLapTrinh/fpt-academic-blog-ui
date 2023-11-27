@@ -200,9 +200,7 @@ export default function ViewPendingPost({
             </Stack>
             <Divider orientation="horizontal" />
             <Box sx={{ p: 2 }}>
-              <Text>
-                {props.data?.reasonOfDecline}
-              </Text>
+              <Text>{props.data?.reasonOfDecline}</Text>
             </Box>
           </DialogContent>
         </Dialog>
@@ -260,16 +258,22 @@ export default function ViewPendingPost({
       >
         {props.data?.postSkill?.map((item) => (
           <Text>
-            <Chip
-              label={item.skillName}
-              sx={{
-                minWidth: "50px",
-                borderRadius: "5px",
-                color: "secondary.main",
-                bgcolor: "primary.main",
-                fontSize: "16px",
-              }}
-            />
+            <Link
+              to={`/keywords/${
+                item.skillName !== "C#" ? item.skillName : "c-sharp"
+              }`}
+            >
+              <Chip
+                label={item.skillName}
+                sx={{
+                  minWidth: "50px",
+                  borderRadius: "5px",
+                  color: "secondary.main",
+                  bgcolor: "primary.main",
+                  fontSize: "16px",
+                }}
+              />
+            </Link>
           </Text>
         ))}
       </Stack>
