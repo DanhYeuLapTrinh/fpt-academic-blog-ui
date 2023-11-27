@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-function AddCategory({ closeAddCategoryModal }) {
+function AddCategory({ closeAddCategoryModal, fetchData }) {
   const axiosPrivate = useAxiosPrivate();
   const [cateList, setCateList] = useState([]);
   const [majorList, setMajorList] = useState([]);
@@ -24,7 +24,7 @@ function AddCategory({ closeAddCategoryModal }) {
   const [isNewCategoryOption, setIsNewCategoryOption] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState("");
 
-  const { setCategoryStatusChanged } = useCategoriesContext();
+  const { setSemesterVisible, setSubjectVisible } = useCategoriesContext();
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -139,11 +139,16 @@ function AddCategory({ closeAddCategoryModal }) {
       );
 
       if (response.status === 200) {
-        toast.success("Thêm danh mục thành công!");
+        const successMessage = `Thêm môn học "${selectedSubject}" thành công trong "${selectedSemester}" của chuyên ngành "${selectedCategory}"`;
+        toast.success(successMessage);
 
         closeAddCategoryModal();
 
-        setCategoryStatusChanged((prev) => !prev);
+        setSemesterVisible(false);
+
+        setSubjectVisible(false);
+
+        fetchData();
       }
     } catch (error) {
       toast.error("Lỗi khi thêm danh mục.");

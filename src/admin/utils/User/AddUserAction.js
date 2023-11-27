@@ -91,6 +91,11 @@ function AddUserForm({ open, onClose, onAddUser, isLoading, data }) {
         hasError = true;
       }
 
+      if (!values.role) {
+        formik.setFieldError("role", "Vui lòng chọn vai trò");
+        hasError = true;
+      }
+
       if (!values.majorID) {
         formik.setFieldError("majorID", "Vui lòng chọn ngành");
         hasError = true;

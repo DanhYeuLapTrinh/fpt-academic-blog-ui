@@ -47,6 +47,8 @@ function CateList() {
     setCategoryToEdit,
     categoryStatusChanged,
     setCategoryStatusChanged,
+    setSemesterVisible,
+    setSubjectVisible,
   } = useCategoriesContext();
 
   //-----------------------------------------------------------------------------------
@@ -138,7 +140,7 @@ function CateList() {
           toast.success(
             `Xóa chuyên ngành "${categoryToDelete.categoryName}" thành công`
           );
-          setCategoryStatusChanged((prev) => !prev);
+          fetchData();
           closeDeleteModal();
         }
       } catch (error) {
@@ -165,18 +167,22 @@ function CateList() {
         );
         if (res.status === 200) {
           toast.success(
-            `Xóa môn học "${subjectToDelete.categoryName}" thành công`
+            `Xóa môn học "${subjectToDelete.categoryName}" thành công ở "${selectedSemester.categoryName}" trong chuyên ngành "${selectedCategory.categoryName}"`
           );
+          fetchData();
+          setSemesterVisible(false);
+          setSubjectVisible(false);
           closeDeleteSubjectModal();
-          setCategoryStatusChanged((prev) => !prev);
         }
       } catch (error) {
         if (error.response.status === 409) {
           toast.error(
-            "Không thể xóa môn học này vì đã được sử dụng trong bài viết"
+            `Không thể xóa môn học "${subjectToDelete.categoryName}" vì đã được sử dụng trong bài viết`
           );
         } else {
-          toast.error("Xóa danh mục xảy ra lỗi");
+          toast.error(
+            `Xóa môn học "${subjectToDelete.categoryName}"  xảy ra lỗi`
+          );
         }
         console.error("Error deleting subject:", error);
       }
@@ -223,7 +229,10 @@ function CateList() {
             boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.5)",
           }}
         >
-          <AddCategory closeAddCategoryModal={closeAddCategoryModal} />
+          <AddCategory
+            closeAddCategoryModal={closeAddCategoryModal}
+            fetchData={fetchData}
+          />
         </Card>
       </Modal>
     );

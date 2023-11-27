@@ -9,6 +9,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import CategoryTitle from "../../atoms/CategoryTitle/CategoryTitle";
 
+import { useCategoriesContext } from "../../../context/CategoriesContext";
+
 function ViewCategoriesList({
   categories,
   selectedCategory,
@@ -27,8 +29,12 @@ function ViewCategoriesList({
   setSelectedRadioSubject,
   setIsEditCategoryModalOpen,
 }) {
-  const [isSemesterVisible, setSemesterVisible] = useState(false);
-  const [isSubjectVisible, setSubjectVisible] = useState(false);
+  const {
+    isSemesterVisible,
+    setSemesterVisible,
+    isSubjectVisible,
+    setSubjectVisible,
+  } = useCategoriesContext();
 
   const handleCategoryClick = (category) => {
     if (selectedCategory === category) {
