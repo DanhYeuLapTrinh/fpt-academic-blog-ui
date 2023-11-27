@@ -36,9 +36,9 @@ export default function ContentField({ ...props }) {
               if (!content) content = {};
               content.contentTiny = newValue;
               localStorage.setItem("content", JSON.stringify(content));
-              setContent(newValue);
               let wordcount1 = editor.plugins.wordcount;
               setWordcount(wordcount1.body.getWordCount());
+              setContent(newValue);
             } else if (props.draft) {
               let draftContent = JSON.parse(
                 localStorage.getItem("draftContent")
@@ -49,9 +49,9 @@ export default function ContentField({ ...props }) {
                 "draftContent",
                 JSON.stringify(draftContent)
               );
-              setContent(newValue);
               let wordcount1 = editor.plugins.wordcount;
               setWordcount(wordcount1.body.getWordCount());
+              setContent(newValue);
             } else {
               let editedContent = JSON.parse(
                 localStorage.getItem("editedContent")
@@ -62,12 +62,12 @@ export default function ContentField({ ...props }) {
                 "editedContent",
                 JSON.stringify(editedContent)
               );
-              setContent(newValue);
               let wordcount1 = editor.plugins.wordcount;
               setWordcount(wordcount1.body.getWordCount());
+              setContent(newValue);
             }
             props.setIsSaving("Đã lưu");
-          }, 1000);
+          }, 1500);
         }}
         onInit={(evt, editor) => {
           setTimeout(() => {
@@ -97,7 +97,7 @@ export default function ContentField({ ...props }) {
                 setWordcount(wordcount1.body.getWordCount());
               }
             }
-          }, 500);
+          }, 800);
         }}
         init={{
           entity_encoding: "raw",

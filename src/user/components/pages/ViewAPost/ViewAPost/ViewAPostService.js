@@ -89,6 +89,7 @@ export default function ViewAPostService() {
       }
     };
     fetchData();
+    return () => setPostDetail(null);
   }, [slug]);
 
   const handleActions = async (action) => {

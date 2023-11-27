@@ -82,9 +82,11 @@ export default function EditProfileService() {
     try {
       if (updatedEmail === myUser?.email) {
         toast.error("Bạn chưa thay đổi thông tin nào");
+        setNewPassword("");
         return;
       } else if (!regex.test(updatedEmail)) {
         toast.error("Email không hợp lệ");
+        setNewPassword("");
         return;
       }
       let isUser = await verifyPassword();

@@ -64,8 +64,10 @@ export default function Header() {
     fetchData();
   }, []);
   const handleClick = (event) => {
-    getNotifications();
-    setAnchorEl(event.currentTarget);
+    try {
+      getNotifications();
+      setAnchorEl(event.currentTarget);
+    } catch (error) {}
   };
 
   const handleClose = () => {
