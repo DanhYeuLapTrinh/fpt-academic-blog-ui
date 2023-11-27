@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import Post from "../../organisms/Post/Post";
 import Text from "../../atoms/Text/Text";
+import EmptyDisplay from "../../molecules/EmptyDisplay/EmptyDisplay";
 
 export default function Feed(props) {
   return (
@@ -18,6 +19,11 @@ export default function Feed(props) {
       >
         <Container>
           <SectionTitle title="Trang xem bảng tin" />
+          {props?.data?.length === 0 && (
+            <Stack>
+              <EmptyDisplay alignSelf="center" mt="140px" />
+            </Stack>
+          )}
           {props?.data?.length >= 5 && (
             <Box width={"100%"}>
               <Stack direction={"row"} width={"100%"} spacing={"20px"} mb={2}>

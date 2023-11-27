@@ -1,14 +1,16 @@
 import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import { Icon } from "@iconify/react";
-import { Button, Stack } from "@mui/material";
+import { Button, Chip, Stack } from "@mui/material";
 import UserProfile from "../../atoms/UserProfile/UserProfile";
 import Text from "../../atoms/Text/Text";
 import { timeConverter } from "../../../utils/StringMethod";
 import { Link } from "react-router-dom";
+import usePost from "../../../hooks/usePost";
 
 export default function AuthorPost({ handleActions, ...props }) {
   const auth = useAuth();
+  const { postDetail } = usePost();
   return (
     <Stack direction={"row"} sx={{ alignItems: "center" }} spacing={"10px"}>
       <Link to={`/profile/${props.userId}`}>
@@ -60,6 +62,25 @@ export default function AuthorPost({ handleActions, ...props }) {
           ) : (
             ""
           )}
+          {postDetail?.userBadge?.map((badge, index) => (
+            <Text>
+              <Chip
+                key={index}
+                label={
+                  badge.badgeName === "Lecturer"
+                    ? "Giảng viên"
+                    : badge.badgeName
+                }
+                size="small"
+                sx={{
+                  minWidth: "50px",
+                  borderRadius: "5px",
+                  color: "#FF8300",
+                  bgcolor: "#FFEDCB",
+                }}
+              />
+            </Text>
+          ))}
         </Stack>
         <Stack direction={"row"} sx={{ alignItems: "center" }} spacing={"6px"}>
           <Text

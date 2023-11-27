@@ -239,6 +239,15 @@ export default function EditDraftService() {
           response = await axiosPrivate.post(apiCallURL, {
             postId: draftDetail.postId,
           });
+
+          if (draftDetail?.reasonOfDecline) {
+            await axiosPrivate.post(process.env.REACT_APP_DELETE_NOTIFICATION, {
+              content: `bị từ chối`,
+              relatedId: draftDetail?.postId,
+              type: "post",
+              userId: draftDetail?.userId,
+            });
+          }
         }
 
         if (response.status === 200) {
@@ -267,7 +276,7 @@ export default function EditDraftService() {
         }
       }
     },
-    [tagID, subjectID, contentTiny, title, coverURL, skills]
+    [tagID, subjectID, contentTiny, title, coverURL, skills, draftDetail]
   );
 
   const deleteDraft = async () => {

@@ -9,14 +9,14 @@ import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import QA from "../../organisms/QA/QA";
 import { timeConverter } from "../../../utils/StringMethod";
 
-export default function Filter({accountName, setAccountName }) {
-  const {searchPost} = useHome()
+export default function Filter({ accountName, setAccountName }) {
+  const { searchPost } = useHome();
   return (
     <Container sx={{ mt: "37px", minHeight: "calc(100vh - 93px)" }}>
       <Stack
         sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
         width="100%"
-        mb={"20px"}
+        pb={"20px"}
       >
         <SearchBar
           accountName={accountName}
@@ -49,7 +49,7 @@ export default function Filter({accountName, setAccountName }) {
           </Box>
         </Stack>
       )}
-      <Stack spacing={"20px"}>
+      <Stack spacing={"20px"} pb={"20px"}>
         {searchPost?.map((item) => {
           if (item.tag.tagName !== "Q&A") {
             return (

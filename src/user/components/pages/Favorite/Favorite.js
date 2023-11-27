@@ -13,7 +13,7 @@ export default function Favorite({ favorite }) {
           <EmptyDisplay alignSelf="center" mt="140px" />
         </Stack>
       )}
-      <Stack spacing={"20px"}>
+      <Stack spacing={"20px"} pb={"20px"}>
         {favorite?.map((item) => (
           <RewardedPostsUnder
             key={item.postListDto.postId}

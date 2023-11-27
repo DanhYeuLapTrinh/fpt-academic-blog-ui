@@ -28,7 +28,7 @@ export default function CommentSection({ rootComments, getReplies }) {
     }
     e.preventDefault();
     if (parentId && commentId && userId) {
-      let response
+      let response;
       try {
         response = await axiosPrivate.post(
           process.env.REACT_APP_REPLY_COMMENT,
@@ -151,6 +151,13 @@ export default function CommentSection({ rootComments, getReplies }) {
   };
   const editComment = async (commentId, content) => {
     try {
+      if (content.trim() === "") {
+        toast.error("Bình luận không thể trống");
+        return;
+      } else if (content.length > 300) {
+        toast.error("Bình luận không được quá 300 ký tự");
+        return;
+      }
       let response = await axiosPrivate.post(
         process.env.REACT_APP_EDIT_COMMENT,
         {

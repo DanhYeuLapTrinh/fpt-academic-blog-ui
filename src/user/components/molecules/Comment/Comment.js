@@ -51,11 +51,7 @@ export default function Comment({
                 justifyContent={"space-between"}
                 alignItems={"center"}
               >
-                <Stack
-                  p={2}
-                  height={"100%"}
-                  justifyContent={"space-evenly"}
-                >
+                <Stack p={2} height={"100%"} justifyContent={"space-evenly"}>
                   <Stack
                     direction={"row"}
                     spacing={"10px"}
