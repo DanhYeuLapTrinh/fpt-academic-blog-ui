@@ -28,6 +28,10 @@ export const CategoriesProvider = ({ children }) => {
 
   const [categoryStatusChanged, setCategoryStatusChanged] = useState(false);
 
+  const [isSemesterVisible, setSemesterVisible] = useState(false);
+
+  const [isSubjectVisible, setSubjectVisible] = useState(false);
+
   return (
     <CategoriesContext.Provider
       value={{
@@ -61,6 +65,10 @@ export const CategoriesProvider = ({ children }) => {
         setCategoryToEdit,
         categoryStatusChanged,
         setCategoryStatusChanged,
+        isSemesterVisible,
+        setSemesterVisible,
+        isSubjectVisible,
+        setSubjectVisible,
       }}
     >
       {children}
