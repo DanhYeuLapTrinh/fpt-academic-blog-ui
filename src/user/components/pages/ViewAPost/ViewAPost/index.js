@@ -85,6 +85,7 @@ export default function usePostAPI() {
     );
     setIsFollowing(isFollowingUser);
   };
+  
   const getReportReasons = async () => {
     let reportReasons = await axiosPrivate.get(
       process.env.REACT_APP_REPORT_REASONS
