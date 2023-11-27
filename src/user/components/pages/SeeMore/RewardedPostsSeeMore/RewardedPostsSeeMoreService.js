@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import RewardedPostsSeeMore from "./RewardedPostsSeeMore";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 import useHome from "../../../../hooks/useHome";
-import { sortByPropertyName } from "../../../../utils/StringMethod";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
