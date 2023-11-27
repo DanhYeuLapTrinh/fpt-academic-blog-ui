@@ -201,7 +201,6 @@ export default function ViewPendingPost({
             <Divider orientation="horizontal" />
             <Box sx={{ p: 2 }}>
               <Text>
-                <span style={{ fontWeight: "400" }}>Lý do:</span>{" "}
                 {props.data?.reasonOfDecline}
               </Text>
             </Box>

@@ -13,6 +13,12 @@ export default function CommentInteractionService({ comment, ...props }) {
   const axiosPrivate = useAxiosPrivate();
   const { postDetail, voteList } = usePost();
   const navigate = useNavigate();
+  
+  useEffect(() => {
+    setUpVote(props.upvote);
+    setDownVote(props.downvote);
+  }, [comment]);
+
   useEffect(() => {
     if (voteList) {
       let item = voteList.find((x) => x.commentId === comment.commentId);
