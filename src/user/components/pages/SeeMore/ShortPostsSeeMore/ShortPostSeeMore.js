@@ -177,6 +177,7 @@ export default function ShortPostSeeMore(props) {
             {props?.data?.slice(5)?.map((item, index) => (
               <Post
                 key={index}
+                userId={item?.userId}
                 url={item?.coverURL}
                 title={item?.title}
                 description={item?.description}

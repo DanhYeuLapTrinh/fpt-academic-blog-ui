@@ -9,11 +9,14 @@ import usePostAPI from ".";
 import useHomeAPI from "../../Home";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { Container } from "@mui/material";
+import useHome from "../../../../hooks/useHome";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 
 export default function ViewAPostService() {
   const { slug } = useParams();
   const auth = useAuth();
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
   const {
     postDetail,
     setPostDetail,
@@ -42,7 +45,7 @@ export default function ViewAPostService() {
     getReportReasons,
   } = usePostAPI();
   const { getUserSkills } = useHomeAPI();
-
+  const { deleteNotification } = useHome();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -67,7 +70,21 @@ export default function ViewAPostService() {
           navigate("/login", { replace: true });
           localStorage.removeItem("auth");
         } else if (error?.response?.status === 404) {
+          console.log(deleteNotification?.relatedId + "deleteNotification");
           navigate("/404-not-found", { replace: true });
+          
+          if (deleteNotification?.type === "post") {
+            await axiosPrivate.post(process.env.REACT_APP_DELETE_NOTIFICATION, {
+              content: deleteNotification?.content?.includes(
+                "Bài viết của bạn đã được duyệt"
+              )
+                ? "đã được duyệt"
+                : "bị từ chối",
+              relatedId: deleteNotification?.relatedId,
+              type: "post",
+              userId: deleteNotification?.userId,
+            });
+          }
         }
       }
     };
@@ -112,16 +129,16 @@ export default function ViewAPostService() {
         // <Container>
         //   <Grid2 container>
         //     <Grid2 item xs={8}>
-              <ViewAPost
-                postDetail={postDetail}
-                isFollowing={isFollowing}
-                isFavored={isFavored}
-                upvote={upvote}
-                downvote={downvote}
-                select={select}
-                setSelect={setSelect}
-                handleActions={handleActions}
-              />
+        <ViewAPost
+          postDetail={postDetail}
+          isFollowing={isFollowing}
+          isFavored={isFavored}
+          upvote={upvote}
+          downvote={downvote}
+          select={select}
+          setSelect={setSelect}
+          handleActions={handleActions}
+        />
         //     </Grid2>
         //     <Grid2 item xs={4}></Grid2>
         //   </Grid2>

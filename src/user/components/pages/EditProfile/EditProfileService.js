@@ -42,6 +42,12 @@ export default function EditProfileService() {
       if (updatedName === myUser?.fullName) {
         toast.error("Bạn chưa thay đổi thông tin nào");
         return;
+      } else if (updatedName.length < 6) {
+        toast.error("Tên hiển thị phải có ít nhất 6 ký tự");
+        return;
+      } else if (updatedName.length > 50) {
+        toast.error("Tên hiển thị không được quá 50 ký tự");
+        return;
       }
       let response = await axiosPrivate.post(
         process.env.REACT_APP_CHANGE_USER_INFORMATION,

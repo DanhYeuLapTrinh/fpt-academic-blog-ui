@@ -12,7 +12,7 @@ import { Icon } from "@iconify/react";
 export default function NotificationItem({ handleClose, notification }) {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
-  const { setUnreadNotifications, notifications, setNotifications } = useHome();
+  const { setUnreadNotifications, notifications } = useHome();
   const readNotification = async () => {
     try {
       handleClose();

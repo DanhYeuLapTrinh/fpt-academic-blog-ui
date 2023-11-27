@@ -19,7 +19,7 @@ export default function CommentBar({
   const { avatarURL } = useProfile();
   const auth = useAuth();
   const onSubmit = (e) => {
-    if (e.keyCode === 13 && e.shiftKey === false) {
+    if (e.keyCode === 13 && e.shiftKey === false && !props.edit) {
       if (e.target.value.trim().length > 300) {
         toast.error("Bình luận không được dài quá 300 kí tự");
         return;

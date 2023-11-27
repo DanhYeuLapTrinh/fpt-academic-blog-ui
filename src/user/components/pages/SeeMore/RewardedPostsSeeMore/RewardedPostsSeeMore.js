@@ -179,6 +179,7 @@ export default function RewardedPostsSeeMore(props) {
               ?.map((item, index) => (
                 <Post
                   key={index}
+                  userId={item?.userId}
                   url={item?.coverURL}
                   title={item?.title}
                   description={item?.description}

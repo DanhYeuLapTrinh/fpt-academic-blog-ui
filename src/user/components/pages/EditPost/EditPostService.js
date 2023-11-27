@@ -14,9 +14,6 @@ export default function EditPostService() {
   const navigate = useNavigate();
   const { title, contentTiny } =
     JSON.parse(localStorage.getItem("editedContent")) || "";
-  const content = JSON.parse(localStorage.getItem("editedContent")) || "";
-  const [oldSlug, setOldSlug] = useState();
-  const [oldTitle, setOldTitle] = useState();
   const {
     data,
     setData,
@@ -73,7 +70,6 @@ export default function EditPostService() {
           })
         );
         setPostDetail(post?.data);
-        setOldTitle(post?.data?.title);
         setTitle(post?.data?.title);
         setCharCount(post?.data?.title?.length);
         setCoverURL(post?.data?.coverURL);
@@ -83,7 +79,6 @@ export default function EditPostService() {
         setSemester(post?.data?.category[1]?.categoryName);
         setTag(post?.data?.tag.tagName);
         setTagID(post?.data?.tag.tagId);
-        setOldSlug(post?.data?.slug);
         setSkills(post?.data?.postSkill);
       } catch (error) {}
     };
@@ -200,10 +195,16 @@ export default function EditPostService() {
         toast.success("Đăng bài thành công");
         navigate(-2, { replace: true });
       }
+      await axiosPrivate.post(process.env.REACT_APP_DELETE_NOTIFICATION, {
+        content: `đã được duyệt`,
+        relatedId: postDetail?.postId,
+        type: "post",
+        userId: postDetail?.userId,
+      });
     } catch (error) {
       toast.error("Có lỗi trong quá trình xử lý");
     }
-  }, [tagID, subjectID, contentTiny, title, coverURL, skills]);
+  }, [tagID, subjectID, contentTiny, title, coverURL, skills, postDetail]);
   return (
     <EditPost
       post={postDetail}
