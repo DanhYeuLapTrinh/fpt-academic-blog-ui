@@ -59,7 +59,7 @@ export default function PostMenuOptionList({
             postId: postDetail?.postId,
           }
         );
-        if (postDetail?.rewarder?.length >= 2) {
+        if (postDetail?.rewarder?.length >= 1) {
           await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
             content: `đã trao thưởng cho bài viết ${postDetail?.title} của bạn`,
             relatedId: postDetail?.postId,
