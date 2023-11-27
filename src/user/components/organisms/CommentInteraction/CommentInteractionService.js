@@ -16,12 +16,17 @@ export default function CommentInteractionService({ comment, ...props }) {
   useEffect(() => {
     if (voteList) {
       let item = voteList.find((x) => x.commentId === comment.commentId);
-      if (item?.typeOfVote === "up") {
-        setSelect("up");
-        setVoted(true);
-      } else if (item?.typeOfVote === "down") {
-        setSelect("down");
-        setVoted(true);
+      if (!item) {
+        setSelect("");
+        setVoted(false);
+      } else {
+        if (item?.typeOfVote == "up") {
+          setSelect("up");
+          setVoted(true);
+        } else if (item?.typeOfVote == "down") {
+          setSelect("down");
+          setVoted(true);
+        }
       }
     }
   }, [voteList]);
