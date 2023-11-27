@@ -15,8 +15,14 @@ export const NewsProvider = ({ children }) => {
     localStorage.setItem("news", JSON.stringify(news));
   }, [news]);
 
+  const [detailNew, setDetailNew] = useState([]);
+
+  const [newFound, setNewFound] = useState(true);
+
   return (
-    <NewsContext.Provider value={{ news, setNews }}>
+    <NewsContext.Provider
+      value={{ news, setNews, detailNew, setDetailNew, newFound, setNewFound }}
+    >
       {children}
     </NewsContext.Provider>
   );

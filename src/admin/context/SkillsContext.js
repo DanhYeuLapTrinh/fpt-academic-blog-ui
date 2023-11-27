@@ -7,6 +7,8 @@ export const useSkillsContext = () => {
 };
 
 export const SkillsProvider = ({ children }) => {
+  const [skillsData, setSkillsData] = useState([]);
+
   const [open, setOpen] = useState(false);
 
   const [idToDelete, setIdToDelete] = useState(null);
@@ -20,6 +22,8 @@ export const SkillsProvider = ({ children }) => {
   return (
     <SkillsContext.Provider
       value={{
+        skillsData,
+        setSkillsData,
         open,
         setOpen,
         idToDelete,

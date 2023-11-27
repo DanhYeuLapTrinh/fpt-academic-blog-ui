@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import { useSkillsContext } from "../../../context/SkillsContext";
 import { toast } from "react-toastify";
 
 export const EditSkill = () => {
@@ -23,21 +24,13 @@ export const EditSkill = () => {
     skillName: "",
   });
 
-  const [skillList, setSkillList] = useState([]);
+  const { skillsData, setSkillsData } = useSkillsContext();
+
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleInput = (e) => {
     setSkill({ ...skill, [e.target.name]: e.target.value });
   };
-
-  const fetchData = async () => {
-    const res = await axiosPrivate.get(process.env.REACT_APP_VIEW_SKILLS_LIST);
-    setSkillList(res.data);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -52,7 +45,7 @@ export const EditSkill = () => {
       return;
     }
 
-    const isDuplicate = skillList.some(
+    const isDuplicate = skillsData.some(
       (sk) => sk.skillName === skill.skillName
     );
     if (isDuplicate) {
@@ -62,12 +55,12 @@ export const EditSkill = () => {
     axiosPrivate
       .post(process.env.REACT_APP_EDIT_SKILL, skill)
       .then((res) => {
-        const updatedSkillList = [...skillList];
+        const updatedSkillList = [...skillsData];
         const index = updatedSkillList.findIndex((sk) => sk.id === skill.id);
         if (index !== -1) {
           updatedSkillList[index].skillName = skill.skillName;
         }
-        setSkillList(updatedSkillList);
+        setSkillsData(updatedSkillList);
         setSkill({ id: "", skillName: "" });
         toast.success("Chỉnh sửa kỹ năng thành công");
       })
@@ -120,7 +113,7 @@ export const EditSkill = () => {
               <MenuItem disabled value="">
                 Chọn một kỹ năng
               </MenuItem>
-              {skillList.map((sk) => (
+              {skillsData.map((sk) => (
                 <MenuItem key={sk.id} value={sk.id}>
                   {sk.skillName}
                 </MenuItem>

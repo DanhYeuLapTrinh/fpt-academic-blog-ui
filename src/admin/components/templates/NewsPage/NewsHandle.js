@@ -16,15 +16,24 @@ function NewsHandle() {
   const [noRows, setNoRows] = useState(false);
 
   const fetchData = async () => {
-    const newsRes = await axiosPrivate.get("news/list");
+    try {
+      const newsRes = await axiosPrivate.get("news/list");
 
-    if (!newsRes.length) {
-      setNoRows(true);
+      if (!newsRes.length) {
+        setNoRows(true);
+      }
+
+      if (newsRes.status === 200) {
+        setNews(newsRes.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      if (error.request) {
+        console.log("Server không phản hồi");
+      } else {
+        console.log(error);
+      }
     }
-
-    setNews(newsRes.data);
-    setLoading(false);
-    console.log(newsRes.data);
   };
 
   useEffect(() => {

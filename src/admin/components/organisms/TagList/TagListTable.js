@@ -2,18 +2,21 @@ import React from "react";
 
 import { DataGrid } from "@mui/x-data-grid";
 import { LinearProgress } from "@mui/material";
+import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRowsOverlay";
 
-function TagListTable({ tagData, columns }) {
+function TagListTable({ tagData, columns, loading, noRows }) {
   return (
     <DataGrid
-      loading={tagData.length === 0}
+      loading={loading}
       sx={{
         "&.MuiDataGrid-root .MuiDataGrid-cell:focus-within": {
           outline: "none !important",
         },
       }}
       slots={{
-        loadingOverlay: LinearProgress,
+        noRowsOverlay: () =>
+          noRows && <CustomNoRowsOverlay title="Không có dữ liệu" />,
+        loadingOverlay: () => loading && <LinearProgress />,
       }}
       rows={tagData}
       columns={columns}

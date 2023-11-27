@@ -7,17 +7,28 @@ export const useReportedProfileContext = () => {
 };
 
 export const ReportedProfileProvider = ({ children }) => {
-  const [reportedProfile, setReportedProfile] = useState(
-    JSON.parse(localStorage.getItem("reportedProfile")) || {}
-  );
+  const [reportedProfiles, setReportedProfiles] = useState(
+    JSON.parse(localStorage.getItem("reportedProfiles")) || {}
+  ); //Đây là List hồ sơ bị báo cáo
 
   useEffect(() => {
-    localStorage.setItem("reportedProfile", JSON.stringify(reportedProfile));
-  }, [reportedProfile]);
+    localStorage.setItem("reportedProfiles", JSON.stringify(reportedProfiles));
+  }, [reportedProfiles]);
+
+  const [reportedProfile, setReportedProfile] = useState({}); //Đây là chi tiết hồ sơ bị báo cáo
+
+  const [profileFound, setProfileFound] = useState(true);
 
   return (
     <ReportedProfileContext.Provider
-      value={{ reportedProfile, setReportedProfile }}
+      value={{
+        reportedProfiles,
+        setReportedProfiles,
+        reportedProfile,
+        setReportedProfile,
+        profileFound,
+        setProfileFound,
+      }}
     >
       {children}
     </ReportedProfileContext.Provider>

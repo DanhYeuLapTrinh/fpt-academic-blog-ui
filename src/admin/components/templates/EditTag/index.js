@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
+import { useTagsContext } from "../../../context/TagsContext";
 import { toast } from "react-toastify";
 
 export const EditTag = () => {
@@ -23,21 +24,13 @@ export const EditTag = () => {
     tagName: "",
   });
 
-  const [tagList, setTagList] = useState([]);
+  const { tagData, setTagData } = useTagsContext();
+
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleInput = (e) => {
     setTag({ ...tag, [e.target.name]: e.target.value });
   };
-
-  useEffect(() => {
-    axiosPrivate
-      .get(process.env.REACT_APP_TAGS_LIST)
-      .then((res) => {
-        setTagList(res.data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -52,7 +45,7 @@ export const EditTag = () => {
       return;
     }
 
-    const isDuplicate = tagList.some((t) => t.tagName === tag.tagName);
+    const isDuplicate = tagData.some((t) => t.tagName === tag.tagName);
     if (isDuplicate) {
       setErrorMessage("Tên thẻ đã tồn tại.");
       return;
@@ -60,12 +53,12 @@ export const EditTag = () => {
     axiosPrivate
       .post(process.env.REACT_APP_EDIT_TAG, tag)
       .then((res) => {
-        const updatedTagList = [...tagList];
+        const updatedTagList = [...tagData];
         const index = updatedTagList.findIndex((t) => t.id === tag.tagId);
         if (index !== -1) {
           updatedTagList[index].tagName = tag.tagName;
         }
-        setTagList(updatedTagList);
+        setTagData(updatedTagList);
         setTag({ tagId: "", tagName: "" });
         toast.success("Chỉnh sửa thẻ thành công");
       })
@@ -118,11 +111,13 @@ export const EditTag = () => {
               <MenuItem disabled value="">
                 Chọn một thẻ
               </MenuItem>
-              {tagList.map((t) => (
-                <MenuItem key={t.id} value={t.id}>
-                  {t.tagName}
-                </MenuItem>
-              ))}
+              {tagData
+                .filter((t) => t.tagName !== "Q&A")
+                .map((t) => (
+                  <MenuItem key={t.id} value={t.id}>
+                    {t.tagName}
+                  </MenuItem>
+                ))}
             </Select>
           </Grid>
 

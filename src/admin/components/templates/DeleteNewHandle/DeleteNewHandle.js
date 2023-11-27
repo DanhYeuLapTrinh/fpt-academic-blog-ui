@@ -24,12 +24,10 @@ function DeleteNewHandle({ id, fetchData }) {
       .then((response) => {
         fetchData();
         toast.success("Xóa tin tức thành công");
-        console.log(response.data);
         handleClose();
       })
       .catch((error) => {
         toast.error("Xóa tin tức thất bại");
-        console.error(error);
         handleClose();
       });
   };

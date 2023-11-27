@@ -30,6 +30,10 @@ function TagList() {
     setTagToDelete,
   } = useTagsContext();
 
+  const [loading, setLoading] = useState(false);
+
+  const [noRows, setNoRows] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -41,9 +45,25 @@ function TagList() {
   };
 
   const fetchData = async () => {
-    const res = await axiosPrivate.get(process.env.REACT_APP_TAGS_LIST);
+    try {
+      setLoading(true);
+      const res = await axiosPrivate.get(process.env.REACT_APP_TAGS_LIST);
 
-    setTagData(res.data);
+      if (!res.length) {
+        setNoRows(true);
+      }
+
+      if (res.status === 200) {
+        setTagData(res.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      if (error.request) {
+        console.log("Server không phản hồi");
+      } else {
+        console.log(error);
+      }
+    }
   };
 
   useEffect(() => {
@@ -150,7 +170,12 @@ function TagList() {
         </div>
       </div>
 
-      <TagListTable tagData={tagData} columns={columns} />
+      <TagListTable
+        tagData={tagData}
+        columns={columns}
+        loading={loading}
+        noRows={noRows}
+      />
 
       <DeleteConfirm
         open={deleteConfirmationOpen}

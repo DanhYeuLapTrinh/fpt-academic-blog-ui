@@ -54,13 +54,23 @@ function CateList() {
   //-----------------------------------------------------------------------------------
 
   const fetchData = async () => {
-    const categoriesRes = await axiosPrivate.get(
-      process.env.REACT_APP_CATEGORIES_LIST
-    );
-    setCategories(categoriesRes.data);
+    try {
+      const categoriesRes = await axiosPrivate.get(
+        process.env.REACT_APP_CATEGORIES_LIST
+      );
+      setCategories(categoriesRes.data);
 
-    const majorsRes = await axiosPrivate.get(process.env.REACT_APP_MAJORS_LIST);
-    setMajors(majorsRes.data);
+      const majorsRes = await axiosPrivate.get(
+        process.env.REACT_APP_MAJORS_LIST
+      );
+      setMajors(majorsRes.data);
+    } catch (error) {
+      if (error.request) {
+        console.log("Server không phản hồi");
+      } else {
+        console.log(error);
+      }
+    }
   };
 
   useEffect(() => {
@@ -167,7 +177,7 @@ function CateList() {
         );
         if (res.status === 200) {
           toast.success(
-            `Xóa môn học "${subjectToDelete.categoryName}" thành công ở "${selectedSemester.categoryName}" trong chuyên ngành "${selectedCategory.categoryName}"`
+            `Xóa môn học "${subjectToDelete.categoryName}" ở "${selectedSemester.categoryName}" trong chuyên ngành "${selectedCategory.categoryName}" thành công`
           );
           fetchData();
           setSemesterVisible(false);
@@ -252,10 +262,6 @@ function CateList() {
       {renderAddCategoryModal()}
       <ViewCategoriesList
         {...{
-          categories,
-          selectedCategory,
-          selectedSemester,
-          selectedSubject,
           handleSelectCategory,
           handleSelectSemester,
           handleRadioCategoryChange,
@@ -263,11 +269,6 @@ function CateList() {
           openDeleteModal,
           openDeleteSubjectModal,
           openEditCategoryModal,
-          selectedRadioCategory,
-          setSelectedRadioCategory,
-          selectedRadioSubject,
-          setSelectedRadioSubject,
-          setIsEditCategoryModalOpen,
         }}
       />
 

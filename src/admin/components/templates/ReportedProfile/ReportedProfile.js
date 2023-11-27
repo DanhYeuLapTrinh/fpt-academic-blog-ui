@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
-
+import { useReportedProfileContext } from "../../../context/ReportedProfileContext";
 import { DataGrid } from "@mui/x-data-grid";
 import { Button, LinearProgress, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -10,7 +10,7 @@ import CustomNoRowsOverlay from "../../molecules/CustomNoRowsOverlay/CustomNoRow
 function ReportedProfile() {
   const axiosPrivate = useAxiosPrivate();
 
-  const [reportedProfiles, setReportedProfiles] = useState([]);
+  const { reportedProfiles, setReportedProfiles } = useReportedProfileContext();
 
   const [loading, setLoading] = useState(false);
 
@@ -19,16 +19,24 @@ function ReportedProfile() {
   //----------------------------------------------------------------
 
   const fetchData = async () => {
-    const reportedProfilesRes = await axiosPrivate.get(
-      process.env.REACT_APP_VIEW_REPORT_PROFILES
-    );
-    if (!reportedProfilesRes.length) {
-      setNoRows(true);
-    }
+    try {
+      setLoading(true);
+      const reportedProfilesRes = await axiosPrivate.get(
+        process.env.REACT_APP_VIEW_REPORT_PROFILES
+      );
+      if (!reportedProfilesRes.length) {
+        setNoRows(true);
+      }
 
-    setReportedProfiles(reportedProfilesRes.data);
-    setLoading(false);
-    console.log(reportedProfilesRes.data);
+      setReportedProfiles(reportedProfilesRes.data);
+      setLoading(false);
+    } catch (error) {
+      if (error.request) {
+        console.log("Server không phản hồi");
+      } else {
+        console.log(error);
+      }
+    }
   };
 
   useEffect(() => {
@@ -101,6 +109,7 @@ function ReportedProfile() {
         Danh sách các hồ sơ bị báo cáo
       </Typography>
       <DataGrid
+        loading={loading}
         getRowId={(row) => row.reportedUserId}
         rows={reportedProfiles}
         columns={columns}
