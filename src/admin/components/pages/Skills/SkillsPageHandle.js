@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import TitleHeader from "../../atoms/TitleHeader/TitleHeader";
-import { Chip, Box } from "@mui/material";
+import { Chip, Box, TextField, Typography } from "@mui/material";
 import AddNewButton from "../../atoms/ButtonHeader/AddNewButton";
 import AddSkillForm from "../../molecules/Skills/AddSkillForm";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
 import ConfirmDialog from "../../molecules/ReportedComment/ConfirmDialog";
 import { toast } from "react-toastify";
 import { useSkillsContext } from "../../../context/SkillsContext";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   skillsContainer,
   skillItem,
@@ -33,6 +34,8 @@ const SkillsPage = ({ fetchData }) => {
     deleteDialogOpen,
     setDeleteDialogOpen,
   } = useSkillsContext();
+
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -113,6 +116,15 @@ const SkillsPage = ({ fetchData }) => {
     setDeleteDialogOpen(false);
   };
 
+  const handleSearchSkill = (event) => {
+    const term = event.target.value.toLowerCase();
+    setSearchTerm(term);
+  };
+
+  const filteredSkills = skillsData.filter((skill) =>
+    skill.skillName.toLowerCase().includes(searchTerm)
+  );
+
   return (
     <>
       <div style={divHeader}>
@@ -127,6 +139,23 @@ const SkillsPage = ({ fetchData }) => {
           skillsData={(e) => setNewSkillName(e.target.value)}
         />
       </div>
+
+      <TextField
+        className="search-input"
+        placeholder="Tìm kiếm kỹ năng..."
+        type="text"
+        variant="outlined"
+        fullWidth
+        sx={{
+          padding: 1.5,
+          fontSize: 13,
+        }}
+        onChange={handleSearchSkill}
+        InputProps={{
+          startAdornment: <SearchIcon sx={{ marginRight: 1 }} />,
+        }}
+      />
+
       <Box border={1} borderColor="#ddd" borderRadius={2} p={2}>
         <motion.ul
           variants={container}
@@ -134,15 +163,39 @@ const SkillsPage = ({ fetchData }) => {
           animate="show"
           style={skillsContainer}
         >
-          {skillsData.map((skill) => (
-            <motion.li variants={item} key={skill.id}>
-              <Chip
-                style={skillItem}
-                label={skill.skillName}
-                onDelete={() => openDelete(skill.id)}
-              />
-            </motion.li>
-          ))}
+          {filteredSkills.length > 0 ? (
+            filteredSkills.map((skill) => (
+              <motion.li variants={item} key={skill.id}>
+                <Chip
+                  style={skillItem}
+                  label={
+                    searchTerm.length > 0 ? (
+                      <span>
+                        {skill.skillName
+                          .split(new RegExp(`(${searchTerm})`, "gi"))
+                          .map((part, index) =>
+                            part.toLowerCase() === searchTerm.toLowerCase() ? (
+                              <mark key={index}>{part}</mark>
+                            ) : (
+                              part
+                            )
+                          )}
+                      </span>
+                    ) : (
+                      skill.skillName
+                    )
+                  }
+                  onDelete={() => openDelete(skill.id)}
+                />
+              </motion.li>
+            ))
+          ) : (
+            <Box mt={2}>
+              <Typography variant="body1">
+                Không tìm thấy kỹ năng nào.
+              </Typography>
+            </Box>
+          )}
         </motion.ul>
       </Box>
 
