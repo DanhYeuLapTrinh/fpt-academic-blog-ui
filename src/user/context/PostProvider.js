@@ -19,6 +19,7 @@ export default function PostProvider({ children }) {
   const [inputTitle, setInputTitle] = useState(null);
   const [inputContent, setInputContent] = useState([]);
   const [inputKeywords, setInputKeywords] = useState([]);
+  const [hasPermission, setHasPermisson] = useState(false);
   return (
     <PostContext.Provider
       value={{
@@ -54,6 +55,8 @@ export default function PostProvider({ children }) {
         setInputContent,
         inputKeywords,
         setInputKeywords,
+        hasPermission,
+        setHasPermisson,
       }}
     >
       {children}
