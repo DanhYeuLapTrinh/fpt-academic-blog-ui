@@ -7,8 +7,6 @@ import usePost from "../../../../hooks/usePost";
 import { toast } from "react-toastify";
 import usePostAPI from ".";
 import useHomeAPI from "../../Home";
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Container } from "@mui/material";
 import useHome from "../../../../hooks/useHome";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
 
@@ -44,9 +42,7 @@ export default function ViewAPostService() {
     handleDownvote,
     getReportReasons,
   } = usePostAPI();
-  const { getUserSkills } = useHomeAPI();
   const { deleteNotification } = useHome();
-  const { setIsAllowComment } = usePost();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -63,7 +59,6 @@ export default function ViewAPostService() {
           const postEditHistory = await getPostEditHistory(postDetails?.postId);
           setHistoryDetail(postEditHistory[0]);
         }
-        await getUserSkills();
         await getReportReasons();
       } catch (error) {
         if (error?.response?.status === 405) {
@@ -125,14 +120,14 @@ export default function ViewAPostService() {
       }
     }
   };
+  if (postDetail?.pending && auth.id === postDetail?.userId) {
+    navigate(`/edit/${postDetail?.slug}`, { replace: true });
+  }
   return (
     <>
       {!postDetail ? (
         <ViewAPostSkeleton />
       ) : (
-        // <Container>
-        //   <Grid2 container>
-        //     <Grid2 item xs={8}>
         <ViewAPost
           postDetail={postDetail}
           isFollowing={isFollowing}
@@ -143,10 +138,6 @@ export default function ViewAPostService() {
           setSelect={setSelect}
           handleActions={handleActions}
         />
-        //     </Grid2>
-        //     <Grid2 item xs={4}></Grid2>
-        //   </Grid2>
-        // </Container>
       )}
     </>
   );

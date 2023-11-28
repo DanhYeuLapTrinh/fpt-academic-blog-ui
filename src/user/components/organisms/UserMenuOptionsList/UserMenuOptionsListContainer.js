@@ -11,7 +11,7 @@ export default function UserMenuOptionsListContainer() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const auth = useAuth();
-  const {avatarURL} = useProfile()
+  const {avatarURL, setSkills} = useProfile()
   const navigate = useNavigate();
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

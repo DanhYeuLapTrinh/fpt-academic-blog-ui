@@ -30,10 +30,12 @@ export default function HomeService() {
     getTrendingTags,
     getShortPosts,
     getQAList,
+    getUserSkills,
   } = useHomeAPI();
   useEffect(() => {
     const fetchData = async () => {
       try {
+        await getUserSkills();
         const trendingPosts = await getTrendingPosts();
         setTrendingPosts(trendingPosts);
         const latestPosts = await getLatestPosts();

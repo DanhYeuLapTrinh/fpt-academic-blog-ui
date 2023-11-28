@@ -10,8 +10,13 @@ import { toast } from "react-toastify";
 import useProfile from "../../../hooks/useProfile";
 export default function PostMenuOptionListService({ ...props }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { setIsAuthor, postDetail, setPostDetail } = usePost();
-  const [hasPermission, setHasPermisson] = useState(false);
+  const {
+    setIsAuthor,
+    postDetail,
+    setPostDetail,
+    hasPermission,
+    setHasPermisson,
+  } = usePost();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const open = Boolean(anchorEl);
@@ -76,17 +81,23 @@ export default function PostMenuOptionListService({ ...props }) {
       }
     }
   };
-  let found = postDetail?.rewarder?.find((item) => item?.userId === auth?.id);
-  let containsAll = postDetail?.postSkill?.every((obj) =>
-    skills?.includes(obj.skillName)
-  );
+  let found = false;
+  let containsAll = true;
   useEffect(() => {
+    found = postDetail?.rewarder?.find((item) => item?.userId === auth?.id);
+    containsAll = postDetail?.postSkill?.every((obj) =>
+      skills?.includes(obj.skillName)
+    );
     found = found === undefined ? false : true;
+    console.log(found, containsAll);
+    console.log(skills);
     if (!found && containsAll) {
       setHasPermisson(true);
     }
-    return () => setHasPermisson(false);
-  }, [postDetail?.rewarder, skills]);
+    return () => {
+      setHasPermisson(false);
+    };
+  }, [skills]);
 
   return (
     <>
