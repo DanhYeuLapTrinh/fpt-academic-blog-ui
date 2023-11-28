@@ -13,7 +13,7 @@ export default function ViewPendingPostService() {
   const [data, setData] = useState();
   const [oldLink, setOldLink] = useState(null);
   const [open, setOpen] = useState();
-  const [isRewaded, setIsRewarded] = useState();
+  const [isRewarded, setIsRewarded] = useState("Trao thưởng");
   const [hasGiveReward, setHasGiveReward] = useState(false);
 
   const handleClose = (event, reason) => {
@@ -21,9 +21,7 @@ export default function ViewPendingPostService() {
       setOpen(false);
     }
   };
-  const handleGiveReward = (e) => {
-    setIsRewarded(e.target.checked);
-  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -62,7 +60,7 @@ export default function ViewPendingPostService() {
       await axiosPrivate.post(process.env.REACT_APP_APPROVE_POST, {
         postId: data?.postId,
       });
-      if (isRewaded) {
+      if (isRewarded === "Đã trao thưởng") {
         await axiosPrivate.post(process.env.REACT_APP_GIVE_REWARD, {
           postId: data?.postId,
         });
@@ -121,6 +119,7 @@ export default function ViewPendingPostService() {
       setHasGiveReward(true);
     }
   }, [data?.postId]);
+
   return (
     <ViewPendingPost
       data={data}
@@ -129,7 +128,8 @@ export default function ViewPendingPostService() {
       handleSubmit={handleSubmit}
       handleClickOpen={handleClickOpen}
       handleClose={handleClose}
-      handleGiveReward={handleGiveReward}
+      setIsRewarded={setIsRewarded}
+      isRewarded={isRewarded}
       oldLink={oldLink}
       hasGiveReward={hasGiveReward}
       setHasGiveReward={setHasGiveReward}
