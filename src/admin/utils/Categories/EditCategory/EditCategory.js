@@ -95,7 +95,7 @@ export default function EditCategoryModal({
         );
 
         toast.error(
-          `Môn học đã tồn tại trong ${existingSemester.categoryName} của ${existingCategory.categoryName}`
+          `Môn học đã tồn tại trong ${existingSemester.categoryName} của chuyên ngành ${existingCategory.categoryName}`
         );
         return;
       }
@@ -115,10 +115,16 @@ export default function EditCategoryModal({
         closeModal();
       } else {
         toast.error("Lỗi khi cập nhật danh mục");
+        setSemesterVisible(false);
+        setSubjectVisible(false);
+        closeModal();
       }
     } catch (error) {
       console.error("Error editing category:", error);
       toast.error("Lỗi khi cập nhật danh mục");
+      setSemesterVisible(false);
+      setSubjectVisible(false);
+      closeModal();
     }
   };
 
