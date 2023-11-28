@@ -3,7 +3,7 @@ import CommentSection from "./CommentSection";
 import usePost from "../../../hooks/usePost";
 
 export default function CommentSectionService() {
-  const { postDetail, activeComment, setActiveComment } = usePost();
+  const { postDetail } = usePost();
 
   const rootComments = postDetail?.comments
     ?.filter((comment) => comment.parent_id === null)

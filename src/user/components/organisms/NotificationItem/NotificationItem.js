@@ -72,6 +72,9 @@ export default function NotificationItem({ handleClose, notification }) {
             !notification?.content?.includes(
               "Bài viết của bạn đã bị từ chối"
             ) &&
+            !notification?.content?.includes(
+              "Bài viết của bạn đã đủ điều kiện xét thưởng"
+            ) &&
             `/profile/${notification?.triggerUser}`
           }
         >
@@ -184,7 +187,8 @@ export default function NotificationItem({ handleClose, notification }) {
                 {notification?.content?.includes("được duyệt") ||
                 notification?.content?.includes(
                   "Bài viết của bạn đã bị từ chối"
-                )
+                ) ||
+                notification?.content?.includes("xét thưởng")
                   ? ""
                   : notification?.fullNameOfTriggerUser}
               </span>{" "}

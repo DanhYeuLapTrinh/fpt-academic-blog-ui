@@ -8,7 +8,6 @@ export default function PostProvider({ children }) {
   const [voteList, setVoteList] = useState([]);
   const [reportReasons, setReportReasons] = useState([]);
   const [isAuthor, setIsAuthor] = useState(false);
-  const [isAllowComment, setIsAllowComment] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFavored, setIsFavored] = useState(false);
   const [upvote, setUpVote] = useState(0);
@@ -37,8 +36,6 @@ export default function PostProvider({ children }) {
         setIsAuthor,
         historyDetail,
         setHistoryDetail,
-        isAllowComment,
-        setIsAllowComment,
         isFollowing,
         setIsFollowing,
         isFavored,

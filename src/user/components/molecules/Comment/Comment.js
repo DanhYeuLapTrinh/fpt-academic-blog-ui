@@ -10,6 +10,7 @@ import CommentBar from "../../organisms/CommentBar/CommentBar";
 import CommentInteractionService from "../../organisms/CommentInteraction/CommentInteractionService";
 import CommentMenuOptionListService from "../../organisms/CommentMenuOptionList/CommentMenuOptionListService";
 export default function Comment({
+  isAllowComment,
   deleteComment,
   addComment,
   editComment,
@@ -18,7 +19,7 @@ export default function Comment({
   ...props
 }) {
   const auth = useAuth();
-  const { activeComment, setActiveComment } = usePost();
+  const { activeComment, setActiveComment, postDetail } = usePost();
   const isReplying =
     activeComment &&
     activeComment.id === props.commentId &&
@@ -89,12 +90,13 @@ export default function Comment({
                     {props.content}
                   </Text>
                 </Stack>
-                {!isEditing && (
-                  <CommentMenuOptionListService
-                    comment={comment}
-                    deleteComment={deleteComment}
-                  />
-                )}
+                {(!postDetail?.allowComment && auth.id === comment.userId) ||
+                  (!isEditing && (
+                    <CommentMenuOptionListService
+                      comment={comment}
+                      deleteComment={deleteComment}
+                    />
+                  ))}
               </Stack>
             )}
           </Stack>
@@ -104,6 +106,7 @@ export default function Comment({
               autoFocus
               auth={auth}
               edit
+              postDetail={postDetail}
               initialText={props.content}
               handleEdit={(e) => editComment(comment.commentId, e)}
             />
@@ -115,17 +118,19 @@ export default function Comment({
                 downvote={comment?.numOfDownvote}
                 comment={comment}
               />
-              <IconButton
-                disableFocusRipple
-                disableRipple
-                disableTouchRipple
-                onClick={() =>
-                  setActiveComment({ id: props.commentId, type: "reply" })
-                }
-                sx={{ p: 0 }}
-              >
-                <Text fontSize="12px">Phản hồi</Text>
-              </IconButton>
+              {postDetail?.allowComment && (
+                <IconButton
+                  disableFocusRipple
+                  disableRipple
+                  disableTouchRipple
+                  onClick={() =>
+                    setActiveComment({ id: props.commentId, type: "reply" })
+                  }
+                  sx={{ p: 0 }}
+                >
+                  <Text fontSize="12px">Phản hồi</Text>
+                </IconButton>
+              )}
             </Stack>
           )}
         </Stack>
@@ -135,6 +140,7 @@ export default function Comment({
           autoFocus
           auth={auth}
           reply
+          postDetail={postDetail}
           handleSubmit={(e) =>
             addComment(e, replyId, props?.commentId, props?.userId)
           }

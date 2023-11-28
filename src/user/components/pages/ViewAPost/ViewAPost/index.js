@@ -9,7 +9,6 @@ export default function usePostAPI() {
   const {
     postDetail,
     setVoteList,
-    setIsAllowComment,
     setIsFollowing,
     setIsFavored,
     setSelect,
@@ -29,7 +28,6 @@ export default function usePostAPI() {
         slug: slug,
       }
     );
-    setIsAllowComment(postDetails?.data?.allowComment);
     setUpVote(postDetails?.data?.numOfUpVote);
     setDownVote(postDetails?.data?.numOfDownVote);
     return postDetails?.data;

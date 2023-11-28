@@ -206,7 +206,7 @@ export default function PostMenuOptionList({
               </Button>
             </DialogActions>
           </Dialog>
-          {props.isAllowComment ? (
+          {postDetail.allowComment ? (
             <MenuItem onClick={toggleComment}>
               <ListItemIcon>
                 <Icon

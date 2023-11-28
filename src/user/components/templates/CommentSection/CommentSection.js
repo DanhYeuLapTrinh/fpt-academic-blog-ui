@@ -11,8 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function CommentSection({ rootComments, getReplies }) {
   const axiosPrivate = useAxiosPrivate();
-  const { postDetail, setPostDetail, setActiveComment, isAllowComment } =
-    usePost();
+  const { postDetail, setPostDetail, setActiveComment } = usePost();
   const navigate = useNavigate();
   const auth = useAuth();
   const addComment = async (
@@ -54,7 +53,7 @@ export default function CommentSection({ rootComments, getReplies }) {
       try {
         if (userId !== auth?.id) {
           await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
-            content: `đã phản hồi bình luận của bạn: ${value}`,
+            content: `đã phản hồi bình luận của bạn`,
             relatedId: postDetail?.postId,
             type: "comment",
             userId: userId,
@@ -71,7 +70,7 @@ export default function CommentSection({ rootComments, getReplies }) {
       try {
         if (auth.id !== postDetail?.userId && userId !== postDetail?.userId) {
           await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
-            content: `đã bình luận về bài viết của bạn: ${value}`,
+            content: `đã bình luận về bài viết của bạn`,
             relatedId: postDetail?.postId,
             type: "post",
             userId: postDetail?.userId,
@@ -110,7 +109,7 @@ export default function CommentSection({ rootComments, getReplies }) {
       try {
         if (auth.id !== postDetail?.userId) {
           await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
-            content: `đã bình luận về bài viết của bạn: ${value}`,
+            content: `đã bình luận về bài viết của bạn`,
             relatedId: postDetail?.postId,
             type: "post",
             userId: postDetail?.userId,
@@ -184,32 +183,28 @@ export default function CommentSection({ rootComments, getReplies }) {
   };
   return (
     <>
-      {isAllowComment ? (
-        <>
-          <CommentBar handleSubmit={addComment} />
-          <CommentsList
-            rootComments={rootComments}
-            getReplies={getReplies}
-            deleteComment={deleteComment}
-            addComment={addComment}
-            editComment={editComment}
-          />
-        </>
-      ) : (
-        <>
-          <CommentBar handleSubmit={addComment} noComment />
-          <Box
-            width={"100%"}
-            display={"flex"}
-            justifyContent={"center"}
-            borderRadius={"10px"}
-            p={"10px 0"}
-          >
-            <Text color="middleText.main">
-              Tác giả đã tắt tính năng bình luận của bài viết này
-            </Text>
-          </Box>
-        </>
+      <CommentBar handleSubmit={addComment} postDetail={postDetail} />
+      <CommentsList
+        rootComments={rootComments}
+        getReplies={getReplies}
+        deleteComment={deleteComment}
+        addComment={addComment}
+        editComment={editComment}
+      />
+      {!postDetail?.allowComment && (
+        <Box
+          sx={{
+            textAlign: "center",
+            mt: "20px",
+            bgcolor: "secondary.alt",
+            p: "10px",
+            borderRadius: "10px",
+          }}
+        >
+          <Text color="middleText.main" fontWeight="400" fontSize="14px">
+            Tác giả đã tắt tính năng bình luận của bài viết
+          </Text>
+        </Box>
       )}
     </>
   );
