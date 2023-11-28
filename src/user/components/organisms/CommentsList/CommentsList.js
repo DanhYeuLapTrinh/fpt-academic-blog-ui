@@ -28,6 +28,7 @@ export default function CommentsList({
           addComment={addComment}
           editComment={editComment}
           comment={comment}
+          isAllowComment={props.isAllowComment}
         />
       ))}
     </Stack>

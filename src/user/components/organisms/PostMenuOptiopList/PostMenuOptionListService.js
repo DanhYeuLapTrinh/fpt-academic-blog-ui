@@ -10,8 +10,7 @@ import { toast } from "react-toastify";
 import useProfile from "../../../hooks/useProfile";
 export default function PostMenuOptionListService({ ...props }) {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { setIsAuthor, isAllowComment, setIsAllowComment, postDetail } =
-    usePost();
+  const { setIsAuthor, postDetail, setPostDetail } = usePost();
   const [hasPermission, setHasPermisson] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
@@ -64,7 +63,10 @@ export default function PostMenuOptionListService({ ...props }) {
         }
       );
       if (response) {
-        setIsAllowComment((prev) => !prev);
+        setPostDetail({
+          ...postDetail,
+          allowComment: !postDetail?.allowComment,
+        });
       }
     } catch (error) {
       if (error?.response?.status === 405) {
@@ -95,7 +97,6 @@ export default function PostMenuOptionListService({ ...props }) {
         handleClose={handleClose}
         anchorEl={anchorEl}
         open={open}
-        isAllowComment={isAllowComment}
         isEdited={props.isEdited}
         deletePost={deletePost}
         postDetail={postDetail}

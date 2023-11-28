@@ -19,7 +19,7 @@ import usePost from "../../../hooks/usePost";
 
 export default function CommentMenuOptionList({ comment, ...props }) {
   const auth = useAuth();
-  const { setActiveComment } = usePost();
+  const { setActiveComment, postDetail } = usePost();
   return (
     <>
       <Menu

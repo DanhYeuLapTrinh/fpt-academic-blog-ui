@@ -46,6 +46,7 @@ export default function ViewAPostService() {
   } = usePostAPI();
   const { getUserSkills } = useHomeAPI();
   const { deleteNotification } = useHome();
+  const { setIsAllowComment } = usePost();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -72,7 +73,7 @@ export default function ViewAPostService() {
         } else if (error?.response?.status === 404) {
           console.log(deleteNotification?.relatedId + "deleteNotification");
           navigate("/404-not-found", { replace: true });
-          
+
           if (deleteNotification?.type === "post") {
             await axiosPrivate.post(process.env.REACT_APP_DELETE_NOTIFICATION, {
               content: deleteNotification?.content?.includes(
@@ -89,7 +90,9 @@ export default function ViewAPostService() {
       }
     };
     fetchData();
-    return () => setPostDetail(null);
+    return () => {
+      setPostDetail(null);
+    };
   }, [slug]);
 
   const handleActions = async (action) => {

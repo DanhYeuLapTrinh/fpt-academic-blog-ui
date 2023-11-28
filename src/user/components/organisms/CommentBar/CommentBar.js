@@ -12,6 +12,7 @@ export default function CommentBar({
   handleSubmit,
   handleEdit,
   initialText = "",
+  postDetail,
   ...props
 }) {
   const [text, setText] = useState(initialText);
@@ -61,7 +62,7 @@ export default function CommentBar({
           autoFocus={props.autoFocus}
           onChange={(e) => setText(e.target.value)}
           onKeyUp={onSubmit}
-          disabled={props.noComment}
+          disabled={!postDetail?.allowComment}
           onKeyDown={(event) => {
             if (event.key === "Enter" && !event.shiftKey) {
               event.preventDefault();
