@@ -33,11 +33,19 @@ function DashboardPage() {
   console.log(data);
 
   const fetchData = async () => {
-    setLoadingBox(true);
-    const res = await axiosPrivate.get("admin/dashboard");
-    setData(res.data);
-    setLoading(false);
-    setLoadingBox(false);
+    try {
+      setLoadingBox(true);
+      const res = await axiosPrivate.get("admin/dashboard");
+      setData(res.data);
+      setLoading(false);
+      setLoadingBox(false);
+    } catch (error) {
+      if (error.response) {
+        console.log(error);
+      } else if (error.request) {
+        console.log("Server không phản hồi");
+      }
+    }
   };
 
   useEffect(() => {

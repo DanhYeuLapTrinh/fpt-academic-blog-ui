@@ -16,10 +16,12 @@ import {
   divHeader,
 } from "./StylesSx";
 
-const SkillsPage = ({ skillsData, setSkillsData, fetchData }) => {
+const SkillsPage = ({ fetchData }) => {
   const axiosPrivate = useAxiosPrivate();
 
   const {
+    skillsData,
+    setSkillsData,
     open,
     setOpen,
     idToDelete,

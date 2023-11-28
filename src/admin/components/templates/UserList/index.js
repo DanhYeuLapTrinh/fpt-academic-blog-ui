@@ -69,37 +69,40 @@ function UserResultList() {
   //----------------------------------------------------------------------------
 
   const fetchData = async () => {
-    setLoading(true);
-    const res = await axiosPrivate.get(process.env.REACT_APP_USER_LIST);
-    if (!records.length) {
-      setNoRows(true);
+    try {
+      setLoading(true);
+      const res = await axiosPrivate.get(process.env.REACT_APP_USER_LIST);
+      if (!records.length) {
+        setNoRows(true);
+      }
+      setData(res.data);
+      setRecords(res.data);
+
+      const banStatusObj = {};
+      res.data.forEach((item) => {
+        banStatusObj[item.id] = item.isBanned;
+      });
+      setBanStatus(banStatusObj);
+
+      const isMutedObj = {};
+      res.data.forEach((item) => {
+        isMutedObj[item.id] = item.isMuted;
+      });
+      setIsMuted(isMutedObj);
+
+      setLoading(false);
+
+      const notBannedUsers = res.data.filter(
+        (user) => !user.isBanned && !user.isMuted
+      );
+
+      const bannedUsers = res.data.filter((user) => user.isBanned);
+
+      setAllUsersCount(notBannedUsers.length);
+      setBannedUsersCount(bannedUsers.length);
+    } catch (error) {
+      console.log(error);
     }
-    setData(res.data);
-    setRecords(res.data);
-
-    const banStatusObj = {};
-    res.data.forEach((item) => {
-      banStatusObj[item.id] = item.isBanned;
-    });
-    setBanStatus(banStatusObj);
-
-    const isMutedObj = {};
-    res.data.forEach((item) => {
-      isMutedObj[item.id] = item.isMuted;
-    });
-    setIsMuted(isMutedObj);
-
-    setLoading(false);
-    console.log(res.data);
-
-    const notBannedUsers = res.data.filter(
-      (user) => !user.isBanned && !user.isMuted
-    );
-
-    const bannedUsers = res.data.filter((user) => user.isBanned);
-
-    setAllUsersCount(notBannedUsers.length);
-    setBannedUsersCount(bannedUsers.length);
   };
 
   useEffect(() => {

@@ -11,7 +11,6 @@ export default function App() {
   const [content, setContent] = useState("");
   const [hasInputData, setHasInputData] = useState(false);
 
-  console.log(hasInputData);
   useEffect(() => {
     const handleBeforeUnload = (e) => {
       if (hasInputData === true) {

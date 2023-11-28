@@ -28,16 +28,27 @@ function ReportedComment() {
   //-------------------------------------------------------------------------
 
   const fetchData = async () => {
-    const reportedCommentsRes = await axiosPrivate.get(
-      process.env.REACT_APP_VIEW_REPORT_COMMENTS
-    );
+    try {
+      setLoading(true);
+      const reportedCommentsRes = await axiosPrivate.get(
+        process.env.REACT_APP_VIEW_REPORT_COMMENTS
+      );
 
-    if (!reportedCommentsRes.length) {
-      setNoRows(true);
+      if (!reportedCommentsRes.length) {
+        setNoRows(true);
+      }
+
+      if (reportedCommentsRes.status === 200) {
+        setReportedComments(reportedCommentsRes.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      if (error.request) {
+        console.log("Server không phản hồi");
+      } else {
+        console.log(error);
+      }
     }
-    setReportedComments(reportedCommentsRes.data);
-    setLoading(false);
-    console.log(reportedCommentsRes.data);
   };
 
   useEffect(() => {
@@ -161,6 +172,7 @@ function ReportedComment() {
         Danh sách các bình luận bị báo cáo
       </Typography>
       <DataGrid
+        loading={loading}
         sx={{
           "& .MuiDataGrid-cell": {
             display: "flex",

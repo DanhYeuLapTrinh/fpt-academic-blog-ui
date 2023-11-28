@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
-import { Divider, Typography } from "@mui/material";
+import { useNewsContext } from "../../../context/NewsContext";
+import { Box, Container, Divider, Typography } from "@mui/material";
 import NewsBottom from "../../organisms/NewsBottom/NewsBottom";
 import "./styles.scss";
 function DetailNew() {
@@ -9,20 +10,42 @@ function DetailNew() {
 
   const axiosPrivate = useAxiosPrivate();
 
-  const [detailNew, setDetailNew] = useState([]);
+  const { news, setNews, detailNew, setDetailNew, newFound, setNewFound } =
+    useNewsContext();
 
   const fetchData = async () => {
-    const detailNewRes = await axiosPrivate.get(`news/view?id=${id}`);
-    setDetailNew(detailNewRes.data);
-    console.log(detailNewRes.data);
+    try {
+      const detailNewRes = await axiosPrivate.get(`news/view?id=${id}`);
+      setDetailNew(detailNewRes.data);
+    } catch (error) {
+      if (error.request) {
+        console.log("Server không phản hồi");
+      } else {
+        console.log(error);
+      }
+    }
   };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  if (!detailNew) {
-    return <div>Loading...</div>;
+  useEffect(() => {
+    const found = news.some(
+      (newDetail) => newDetail.newsId === detailNew.newsId
+    );
+
+    setNewFound(found);
+  }, [detailNew.newsId, news]);
+
+  if (!newFound) {
+    return (
+      <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
+        <Container>
+          <Typography variant="h6">Không tìm thấy tin tức này</Typography>
+        </Container>
+      </Box>
+    );
   }
 
   const contentParagraphs = detailNew.content

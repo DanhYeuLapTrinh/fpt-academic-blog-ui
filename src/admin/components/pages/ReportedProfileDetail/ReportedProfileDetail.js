@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import HeaderDetail from "../../organisms/ReportedProfileDetail/HeaderDetail";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 import TitleHeader from "../../atoms/TitleHeader/TitleHeader";
 import ContentDetail from "../../organisms/ReportedProfileDetail/ContentDetail";
 import useAxiosPrivate from "../../../../user/hooks/useAxiosPrivate";
@@ -13,7 +13,14 @@ function ReportedProfileDetail() {
 
   const axiosPrivate = useAxiosPrivate();
 
-  const { reportedProfile, setReportedProfile } = useReportedProfileContext();
+  const {
+    reportedProfiles,
+    setReportedProfiles,
+    reportedProfile,
+    setReportedProfile,
+    profileFound,
+    setProfileFound,
+  } = useReportedProfileContext();
 
   const { fullname, userStory } = reportedProfile;
 
@@ -24,15 +31,25 @@ function ReportedProfileDetail() {
       });
 
       setReportedProfile(res.data);
-      console.log(res.data);
     } catch (err) {
-      console.log(err);
+      if (err.request) {
+        console.log("Server không phản hồi");
+      } else {
+        console.log(err);
+      }
     }
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const found = reportedProfiles.some(
+      (profile) => profile.reportedUserId === reportedProfile.userId
+    );
+    setProfileFound(found);
+  }, [reportedProfile.userId, reportedProfiles]);
 
   return (
     <Box
@@ -45,11 +62,21 @@ function ReportedProfileDetail() {
         width: "calc(100% - 10px)",
       }}
     >
-      <Container className="container">
-        <TitleHeader title="Hồ sơ" />
-        <HeaderDetail id={reportedUserId} />
-        <ContentDetail userStory={userStory} fullName={fullname} />
-      </Container>
+      {profileFound ? (
+        <Container className="container">
+          <TitleHeader title="Hồ sơ" />
+          <HeaderDetail id={reportedUserId} />
+          <ContentDetail userStory={userStory} fullName={fullname} />
+        </Container>
+      ) : (
+        <Box sx={{ flexGrow: 1, display: "flex", alignItems: "center" }}>
+          <Container>
+            <Typography variant="h6">
+              Hồ sơ người dùng này chưa bị báo cáo hoặc không tìm thấy
+            </Typography>
+          </Container>
+        </Box>
+      )}
     </Box>
   );
 }

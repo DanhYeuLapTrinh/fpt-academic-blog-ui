@@ -156,7 +156,6 @@ function InformationDetail() {
       if (res.status === 200) {
         toast.success("Cập nhật kỹ năng thành công!");
 
-        // Tải lại dữ liệu từ API sau khi cập nhật thành công
         const updatedUser = await getUserById(userId);
         const updatedData = data.map((user) => {
           if (user.id === userId) {

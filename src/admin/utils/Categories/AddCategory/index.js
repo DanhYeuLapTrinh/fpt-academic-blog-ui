@@ -139,7 +139,7 @@ function AddCategory({ closeAddCategoryModal, fetchData }) {
       );
 
       if (response.status === 200) {
-        const successMessage = `Thêm môn học "${selectedSubject}" thành công trong "${selectedSemester}" của chuyên ngành "${selectedCategory}"`;
+        const successMessage = `Thêm môn học "${selectedSubject}" trong "${selectedSemester}" của chuyên ngành "${selectedCategory}" thành công `;
         toast.success(successMessage);
 
         closeAddCategoryModal();

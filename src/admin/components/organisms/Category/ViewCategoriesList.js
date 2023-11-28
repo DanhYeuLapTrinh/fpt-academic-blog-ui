@@ -12,10 +12,6 @@ import CategoryTitle from "../../atoms/CategoryTitle/CategoryTitle";
 import { useCategoriesContext } from "../../../context/CategoriesContext";
 
 function ViewCategoriesList({
-  categories,
-  selectedCategory,
-  selectedSemester,
-  selectedSubject,
   handleSelectCategory,
   handleSelectSemester,
   handleRadioCategoryChange,
@@ -23,17 +19,19 @@ function ViewCategoriesList({
   openDeleteModal,
   openDeleteSubjectModal,
   openEditCategoryModal,
-  selectedRadioCategory,
-  setSelectedRadioCategory,
-  selectedRadioSubject,
-  setSelectedRadioSubject,
-  setIsEditCategoryModalOpen,
 }) {
   const {
+    categories,
+    selectedCategory,
+    selectedSemester,
     isSemesterVisible,
     setSemesterVisible,
     isSubjectVisible,
     setSubjectVisible,
+    selectedRadioCategory,
+    setSelectedRadioCategory,
+    selectedRadioSubject,
+    setSelectedRadioSubject,
   } = useCategoriesContext();
 
   const handleCategoryClick = (category) => {
@@ -42,10 +40,12 @@ function ViewCategoriesList({
       setSemesterVisible(false);
       setSubjectVisible(false);
       setSelectedRadioCategory(null);
+      setSelectedRadioSubject(null);
     } else {
       handleSelectCategory(category);
       setSemesterVisible(true);
       setSelectedRadioCategory(null);
+      setSelectedRadioSubject(null);
     }
   };
 
