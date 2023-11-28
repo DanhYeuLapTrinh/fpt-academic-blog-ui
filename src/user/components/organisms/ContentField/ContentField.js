@@ -106,7 +106,7 @@ export default function ContentField({ ...props }) {
           placeholder:
             "Nhập đoạn giới thiệu để mọi người biết rõ về bài viết hơn nhé...",
           content_style:
-            "body { font-family:Roboto,sans-serif; font-size:18px; font-weight:400;color:#444746; margin: 8px !important;} img { width: 100%; height:100%; border-radius: 10px;} iframe { width: 1128px !important; height: 628px !important;}",
+            "body { font-family:Roboto,sans-serif; font-size:18px; font-weight:400;color:#444746; margin: 8px !important;} img {width: 100%; height:100%; border-radius: 10px;} iframe { width: 1128px !important; height: 628px !important;}",
           menubar: false,
           media_alt_source: false,
           image_dimensions: false,

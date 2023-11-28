@@ -67,10 +67,10 @@ const loggedInUserRoutes = [
   { path: "/rewarded", component: RewardedPostsSeeMoreService },
   { path: "/shorts", component: ShortPostSeeMoreService },
   { path: "/view/:slug", component: ViewAPostService },
-  { path: "/news/:id", component: ViewNewsService },
 ];
 
 const loggedInUserRoutesOther = [
+  { path: "/news/:id", component: ViewNewsService },
   { path: "/categories", component: CategoriesService },
   { path: "/tags", component: TagsService },
   { path: "/news", component: NewsService },

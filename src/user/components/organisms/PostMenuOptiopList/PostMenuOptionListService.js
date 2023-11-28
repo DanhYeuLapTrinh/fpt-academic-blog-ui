@@ -89,8 +89,6 @@ export default function PostMenuOptionListService({ ...props }) {
       skills?.includes(obj.skillName)
     );
     found = found === undefined ? false : true;
-    console.log(found, containsAll);
-    console.log(skills);
     if (!found && containsAll) {
       setHasPermisson(true);
     }

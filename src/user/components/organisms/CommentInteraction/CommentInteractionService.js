@@ -125,6 +125,7 @@ export default function CommentInteractionService({ comment, ...props }) {
   return (
     <CommentInteraction
       upvote={upvote}
+      downvote={downvote}
       select={select}
       setSelect={setSelect}
       handleUpvoteComment={handleUpvoteComment}
