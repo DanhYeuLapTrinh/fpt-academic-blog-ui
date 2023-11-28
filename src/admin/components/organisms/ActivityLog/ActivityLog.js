@@ -75,7 +75,9 @@ function ActivityLog({ activityLogData }) {
                       color="gray"
                       fontWeight="normal"
                       fontSize="0.8rem"
-                    >{`Thực hiện bởi ${log.actor}`}</Typography>
+                    >{`Thực hiện bởi ${log.actor} vào lúc ${new Date(
+                      log.actionTime
+                    ).toLocaleString()}`}</Typography>
                   </Box>
                   <Typography
                     variant="caption"
