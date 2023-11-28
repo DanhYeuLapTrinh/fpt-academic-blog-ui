@@ -59,16 +59,9 @@ export default function PostMenuOptionList({
             postId: postDetail?.postId,
           }
         );
-        if (postDetail?.rewarder?.length >= 2) {
+        if (postDetail?.rewarder?.length >= 1) {
           await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
             content: `đã trao thưởng cho bài viết ${postDetail?.title} của bạn`,
-            relatedId: postDetail?.postId,
-            type: "post",
-            userId: postDetail?.userId,
-          });
-        } else if (postDetail?.rewarder?.length === 1) {
-          await axiosPrivate.post(process.env.REACT_APP_SEND_NOTIFICATION, {
-            content: `Bài viết của bạn đã đủ điều kiện xét thưởng: ${postDetail?.title}`,
             relatedId: postDetail?.postId,
             type: "post",
             userId: postDetail?.userId,
