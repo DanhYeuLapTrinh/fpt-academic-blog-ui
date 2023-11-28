@@ -15,7 +15,10 @@ export const addUserSchema = Yup.object().shape({
     )
     .required("Tên đầy đủ không được bỏ trống"),
   email: Yup.string()
-    .email("Email không hợp lệ")
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@gmail.com$/,
+      "Email không hợp lệ, chỉ chấp nhận địa chỉ @gmail.com"
+    )
     .required("Email không được bỏ trống"),
   phone: Yup.string()
     .matches(
