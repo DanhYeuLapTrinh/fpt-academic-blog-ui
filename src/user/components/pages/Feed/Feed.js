@@ -1,4 +1,4 @@
-import { Box, Container, Stack } from "@mui/material";
+import { Box, Button, Container, Stack } from "@mui/material";
 import React from "react";
 import SectionTitle from "../../molecules/SectionTitle/SectionTitle";
 import PostCardV1 from "../../organisms/PostCardV1/PostCardV1";
@@ -7,8 +7,10 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import Post from "../../organisms/Post/Post";
 import Text from "../../atoms/Text/Text";
 import EmptyDisplay from "../../molecules/EmptyDisplay/EmptyDisplay";
+import QA from "../../organisms/QA/QA";
+import { timeConverter } from "../../../utils/StringMethod";
 
-export default function Feed(props) {
+export default function Feed({ isSelected, setIsSelected, ...props }) {
   return (
     <Box mb={"20px"}>
       <Box
@@ -180,30 +182,91 @@ export default function Feed(props) {
       <Container>
         <Grid2 container>
           <Grid2 item xs={8} direction={"column"}>
-            {props?.data
-              ?.slice(props?.data?.length >= 5 ? 5 : 0)
-              ?.map((item, index) => (
-                <Post
-                  key={index}
-                  userId={item?.userId}
-                  url={item?.coverURL}
-                  title={item?.title}
-                  description={item?.description}
-                  author={item?.accountName}
-                  src={item?.avatarURL}
-                  time={item?.dateOfPost}
-                  majorName={item?.category[0]?.categoryName}
-                  majorID={item?.category[0]?.categoryId}
-                  subjectName={item?.category[2]?.categoryName}
-                  subjectID={item?.category[2]?.categoryId}
-                  tagName={item?.tag.tagName}
-                  tagID={item?.tag.tagId}
-                  isRewarded={item?.is_rewarded}
-                  small
-                  slug={item?.slug}
-                  tagColor="primary.main"
-                />
-              ))}
+            {props.data && (
+              <Stack direction={"row"} spacing={1} pt={"20px"}>
+                <Button
+                  variant={isSelected === "Bài viết" ? "contained" : "outlined"}
+                  sx={{ textTransform: "none", borderRadius: "5px" }}
+                  onClick={() => setIsSelected("Bài viết")}
+                >
+                  <Text
+                    color={
+                      isSelected === "Bài viết"
+                        ? "secondary.main"
+                        : "primary.main"
+                    }
+                    fontSize="14px"
+                  >
+                    Bài viết
+                  </Text>
+                </Button>
+                <Button
+                  variant={isSelected === "Câu hỏi" ? "contained" : "outlined"}
+                  sx={{ textTransform: "none", borderRadius: "5px" }}
+                  onClick={() => setIsSelected("Câu hỏi")}
+                >
+                  <Text
+                    color={
+                      isSelected === "Câu hỏi"
+                        ? "secondary.main"
+                        : "primary.main"
+                    }
+                    fontSize="14px"
+                  >
+                    Câu hỏi
+                  </Text>
+                </Button>
+              </Stack>
+            )}
+            {isSelected === "Bài viết" &&
+              props?.data
+                ?.slice(props?.data?.length >= 5 ? 5 : 0)
+                ?.map((item, index) => (
+                  <Post
+                    key={index}
+                    userId={item?.userId}
+                    url={item?.coverURL}
+                    title={item?.title}
+                    description={item?.description}
+                    author={item?.accountName}
+                    src={item?.avatarURL}
+                    time={item?.dateOfPost}
+                    majorName={item?.category[0]?.categoryName}
+                    majorID={item?.category[0]?.categoryId}
+                    subjectName={item?.category[2]?.categoryName}
+                    subjectID={item?.category[2]?.categoryId}
+                    tagName={item?.tag.tagName}
+                    tagID={item?.tag.tagId}
+                    isRewarded={item?.is_rewarded}
+                    small
+                    slug={item?.slug}
+                    tagColor="primary.main"
+                  />
+                ))}
+            <Stack spacing={"20px"} pt={"20px"}>
+              {isSelected === "Câu hỏi" &&
+                props.question?.map((item) => (
+                  <QA
+                    slug={`/view/${item.slug}`}
+                    label={item.accountName}
+                    src={item.avatarURL}
+                    time={timeConverter(item.dateOfPost)}
+                    title={item.title}
+                    description={item.description}
+                    vote={item.numOfUpVote - item.numOfDownVote}
+                    text={item.numberOfComment}
+                    majorName={item?.category[0]?.categoryName}
+                    majorID={item?.category[0]?.categoryId}
+                    subjectName={item?.category[2]?.categoryName}
+                    subjectID={item?.category[2]?.categoryId}
+                    tagName={item?.tag.tagName}
+                    tagID={item?.tag.tagId}
+                    isRewarded={item?.is_rewarded}
+                    rewarder={item?.rewarder}
+                    userId={item?.userId}
+                  />
+                ))}
+            </Stack>
           </Grid2>
         </Grid2>
       </Container>

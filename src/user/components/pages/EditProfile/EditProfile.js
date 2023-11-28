@@ -11,10 +11,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import Text from "../../atoms/Text/Text";
-import UploadCoverIcon from "../../organisms/UploadImageIcon/UploadCoverIcon";
 import UploadImageIcon from "../../organisms/UploadImageIcon/UploadImageIcon";
 import useProfile from "../../../hooks/useProfile";
-import { Icon } from "@iconify/react";
 
 export default function EditProfile({
   profile,
