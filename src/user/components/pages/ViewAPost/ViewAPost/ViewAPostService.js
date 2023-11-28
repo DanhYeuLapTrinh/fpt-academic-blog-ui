@@ -123,6 +123,7 @@ export default function ViewAPostService() {
   if (postDetail?.pending && auth.id === postDetail?.userId) {
     navigate(`/edit/${postDetail?.slug}`, { replace: true });
   }
+  
   return (
     <>
       {!postDetail ? (

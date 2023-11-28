@@ -77,7 +77,12 @@ export default function SearchPopperService() {
         url.push(`k=${newKeywords.join("-")}`);
       }
       let urlParams = url.join("&");
-      navigate(`/filter?${urlParams}`);
+      if (inputTitle?.trim()?.length > 0) {
+        navigate(`/filter?${urlParams}`);
+      } else {
+        toast.error("Vui lòng nhập tiêu đề hợp lệ");
+        return;
+      }
       setOpen(false);
     } catch (error) {
       if (error?.response?.status === 405) {

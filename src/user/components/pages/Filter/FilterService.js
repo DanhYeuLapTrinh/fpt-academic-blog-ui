@@ -12,7 +12,7 @@ export default function FilterService() {
   const [searchParams] = useSearchParams();
   const { setInputTitle, setInputContent, setInputKeywords } = usePost();
   const navigate = useNavigate();
-  let s = searchParams.get("s") || null;
+  let s = searchParams.get("s").trim() || null;
   let c = searchParams.get("c")?.split("-") || [];
   let k = searchParams.get("k")?.split("-") || [];
   const fetchData = async () => {
