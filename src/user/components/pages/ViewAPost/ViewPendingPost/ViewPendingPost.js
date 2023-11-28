@@ -23,6 +23,8 @@ import { Link } from "react-router-dom";
 import UserProfile from "../../../atoms/UserProfile/UserProfile";
 export default function ViewPendingPost({
   setHasGiveReward,
+  setIsRewarded,
+  isRewarded,
   hasGiveReward,
   ...props
 }) {
@@ -278,16 +280,40 @@ export default function ViewPendingPost({
         ))}
       </Stack>
       {!hasGiveReward && (
-        <FormControlLabel
-          control={<Switch color="warning" onChange={props.handleGiveReward} />}
-          label={<Text>Trao thưởng</Text>}
-        />
+        <>
+          {isRewarded === "Trao thưởng" ? (
+            <Button
+              variant="outlined"
+              onClick={() => setIsRewarded("Đã trao thưởng")}
+              sx={{ p: "10px" }}
+              fullWidth
+            >
+              {isRewarded}
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              onClick={() => setIsRewarded("Trao thưởng")}
+              startIcon={
+                <Icon
+                  icon="material-symbols:rewarded-ads-outline-rounded"
+                  color="white"
+                  width="24"
+                />
+              }
+              sx={{ p: "10px" }}
+              fullWidth
+            >
+              {isRewarded}
+            </Button>
+          )}
+        </>
       )}
       <Stack
         direction={"row"}
         justifyContent={"flex-end"}
         spacing={1}
-        padding={"30px 0 100px"}
+        padding={"20px 0 100px"}
       >
         <Button
           onClick={props.handleClickOpen}
