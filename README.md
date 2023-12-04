@@ -7,7 +7,7 @@ FPTU Academic Blog is a mini project in the SWP391 subject of FPT University wit
 
 **Client:** React, MUI, Axios, TinyMCE
 
-**Server:** Spring Boot, MySQL, JWT, WebSocket
+**Server:** Spring Boot, SQL, JWT, WebSocket
 
 **Others:** Google Cloud Console, ngrok, Vercel
 
